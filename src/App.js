@@ -101,6 +101,7 @@ function App() {
             <button onClick={upload}>
                 Display North America geojson
                 come onaaa
+                attempting push request
             </button>
 
             <div>
