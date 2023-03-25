@@ -100,7 +100,7 @@ function App() {
         <div className="App">
             <button onClick={upload}>
                 Display North America geojson
-                come onaa
+                come onaaa
             </button>
 
             <div>
