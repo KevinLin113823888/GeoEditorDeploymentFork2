@@ -100,9 +100,7 @@ function App() {
         <div className="App">
             <button onClick={upload}>
                 Display North America geojson
-                come onaaa
-                attempting push request
-                to davids
+                testing 123
             </button>
 
             <div>
