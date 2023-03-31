@@ -1,35 +1,26 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import {React, useState} from "react";
 import Axios from "axios";
 
 function App() {
-  Axios({
-    method: "GET",
-    url: "http://localhost:5000/",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  }).then(res => {
-    console.log(res.data.message);
-  });
+  const [state, setState] = useState("");
+
+  function getReq() {
+    Axios({
+      method: "GET",
+      url: "http://localhost:9000/",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(res => {
+      console.log(res.data.message);
+      setState(res.data.message);
+    });
+  }
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={getReq}>Default</button>
+      <div>{state}</div>
     </div>
   );
 }
