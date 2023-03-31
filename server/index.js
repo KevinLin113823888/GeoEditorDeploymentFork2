@@ -1,11 +1,11 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require("express"),
+  app = express(),
+  port = process.env.PORT || 5000,
+  cors = require("cors");
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.use(cors());
+app.listen(port, () => console.log("Backend server live on " + port));
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.get("/", (req, res) => {
+  res.send({ message: "Hello" });
+});
