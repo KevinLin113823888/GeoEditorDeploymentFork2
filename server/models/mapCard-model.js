@@ -5,7 +5,7 @@ const ObjectId = Schema.Types.ObjectId
     This is where we specify the format of the data we're going to put into
     the database.
 */
-const mapSchema = new Schema(
+const mapCardSchema = new Schema(
     {
         title: { type: String, required: true },
         mapImages:{type: String,required: true},
@@ -17,4 +17,4 @@ const mapSchema = new Schema(
     { timestamps: true },
 )
 
-module.exports = mongoose.model('Map', mapSchema)
+module.exports = mongoose.model('MapCard', mapCardSchema)
