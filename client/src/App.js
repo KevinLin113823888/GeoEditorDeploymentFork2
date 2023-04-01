@@ -47,19 +47,19 @@ function App() {
       <form>
         <label>
           Name:
-          <input onChange={changeName} type="text" name="name" />
+          <input onChange={changeName} type="text" />
         </label>
         <label>
           UserName:
-          <input onChange={changeUserName} type="text" name="name" />
+          <input onChange={changeUserName} type="text" />
         </label>
         <label>
           Email:
-          <input onChange={changeEmail} type="text" name="name" />
+          <input onChange={changeEmail} type="text" />
         </label>
         <label>
           Password:
-          <input onChange={changePassword} type="text" name="name" />
+          <input onChange={changePassword} type="text" />
         </label>
         <input onClick={postReq} type="submit" value="Submit" />
       </form>
