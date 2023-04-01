@@ -34,17 +34,17 @@ function Login() {
 
   return (
     <div className="Login">
-      Login Page
-      UserName:
-      <input onChange={changeUserName} type="text" />
+      <h1>Login Page</h1>
+      Username:
+      <input data-cy="username-input" onChange={changeUserName} type="text" />
       Password:
-      <input onChange={changePassword} type="text" />
-      <button onClick={postReq} type="submit" value="Submit">Submit</button>
+      <input data-cy="password-input" onChange={changePassword} type="text" />
+      <button data-cy="submit-button" onClick={postReq} type="submit" value="Submit">Submit</button>
       <div>
         <nav>
-          <Link to="/">Home</Link>
-          <Link to="/register">Register</Link>
-          <Link to="/ForgotUsername">Forgot Username</Link>
+          <Link data-cy="home-link" to="/">Home</Link>
+          <Link data-cy="register-link" to="/register">Register</Link>
+          <Link data-cy="forgotusername-link" to="/ForgotUsername">Forgot Username</Link>
         </nav>
       </div>
     </div>

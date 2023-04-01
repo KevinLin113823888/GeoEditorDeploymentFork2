@@ -47,19 +47,19 @@ function Register() {
 
   return (
     <div className="Register">
-      Register Page
+      <h1>Register Page</h1>
       Name:
-      <input onChange={changeName} type="text" />
-      UserName:
-      <input onChange={changeUserName} type="text" />
+      <input data-cy="name-input" onChange={changeName} type="text" />
+      Username:
+      <input data-cy="username-input" onChange={changeUserName} type="text" />
       Email:
-      <input onChange={changeEmail} type="text" />
+      <input data-cy="email-input" onChange={changeEmail} type="text" />
       Password:
-      <input onChange={changePassword} type="text" />
-      <button onClick={postReq} type="submit" value="Submit">Submit</button>
+      <input data-cy="password-input" onChange={changePassword} type="text" />
+      <button data-cy="submit-button" onClick={postReq} type="submit" value="Submit">Submit</button>
       <div>
         <nav>
-          <Link to="/">Home</Link>
+          <Link data-cy="home-link" to="/">Home</Link>
         </nav>
       </div>
     </div>

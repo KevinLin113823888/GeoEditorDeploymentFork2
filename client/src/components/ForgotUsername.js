@@ -1,5 +1,6 @@
 import {React, useState} from "react";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 function ForgotUsername() {
   const [email, setEmail] = useState("");
@@ -32,6 +33,12 @@ function ForgotUsername() {
       <button onClick={postReq} type="submit" value="Submit">Submit</button>
       <div>
         Your Username: {username}
+      </div>
+      <div>
+        <nav>
+          <Link data-cy="home-link" to="/">Home</Link>
+          <Link data-cy="login-link" to="/login">Login</Link>
+        </nav>
       </div>
     </div>
   );
