@@ -7,7 +7,7 @@ const ObjectId = Schema.Types.ObjectId
 */
 const mapSchema = new Schema(
     {
-        title: { type: String, required: true },
+        title: { type: String, required: true, unique: true },
         owner: { type: ObjectId, required: true },
         mapData: { type: ObjectId, required: true },
         mapData: { type: ObjectId, required: true },

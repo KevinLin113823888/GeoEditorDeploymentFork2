@@ -7,7 +7,7 @@ const ObjectId = Schema.Types.ObjectId
 */
 const mapCardSchema = new Schema(
     {
-        title: { type: String, required: true },
+        title: { type: String, required: true, unique: true },
         mapImages:{type: String,required: true},
         classification:{type:[String],required:true},
         lastModifiedDate:{type:Date, required:true},
