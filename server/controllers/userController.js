@@ -48,12 +48,12 @@ class userController {
         }
     }
 
-    static async logoutUser(req, res, next) {
+    static async logout(req, res, next) {
         console.log("LOGGING OUT");
         res.status(200).clearCookie("values").json({status: 'OK'});
     }
 
-    static async verifyUser(req, res, next) {
+    static async verifyUser(req, res) {
        try{
            var { email, key} = req.query;
            var emailUser = await userInfoSchema.findOne({email});
@@ -75,6 +75,56 @@ class userController {
        }catch(e){
            return res.status(400).json({error: true, message: e.toString()});
        }
+    }
+
+    static async forgotUsername(req, res) {
+        try{
+            var { email } = req.query;
+
+            var emailUser = await userInfoSchema.findOne({email});
+            if(emailUser === null){
+                throw new Error("email is null")
+            }
+
+            // send username to email here
+            // nodemailer stuff
+
+
+            return res.status(200).json({status: 'OK', username: emailUser.username});
+        }catch(e){
+            return res.status(400).json({error: true, message: e.toString()});
+        }
+    }
+
+    static async sendPasswordRecoveryCode(req, res) {
+        try{
+            var { email } = req.query;
+
+            var emailUser = await userInfoSchema.findOne({email});
+            if(emailUser === null){
+                throw new Error("email is null")
+            }
+
+            var code = makeKey();
+            // add code to db of email user
+            // send code to email here
+            // nodemailer stuff
+
+            return res.status(200).json({status: 'OK'});
+        }catch(e){
+            return res.status(400).json({error: true, message: e.toString()});
+        }
+    }
+
+    static async changePassword(req, res) {
+        try{
+            var { code, password } = req.query;
+            // check code if it exists in db
+
+            return res.status(200).json({status: 'OK'});
+        }catch(e){
+            return res.status(400).json({error: true, message: e.toString()});
+        }
     }
 }
 
