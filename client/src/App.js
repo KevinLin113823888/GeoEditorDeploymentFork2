@@ -44,25 +44,15 @@ function App() {
 
   return (
     <div className="App">
-      <form>
-        <label>
-          Name:
-          <input onChange={changeName} type="text" />
-        </label>
-        <label>
-          UserName:
-          <input onChange={changeUserName} type="text" />
-        </label>
-        <label>
-          Email:
-          <input onChange={changeEmail} type="text" />
-        </label>
-        <label>
-          Password:
-          <input onChange={changePassword} type="text" />
-        </label>
-        <input onClick={postReq} type="submit" value="Submit" />
-      </form>
+      Name:
+      <input onChange={changeName} type="text" />
+      UserName:
+      <input onChange={changeUserName} type="text" />
+      Email:
+      <input onChange={changeEmail} type="text" />
+      Password:
+      <input onChange={changePassword} type="text" />
+      <button onClick={postReq} type="submit" value="Submit">Submit</button>
     </div>
   );
 }
