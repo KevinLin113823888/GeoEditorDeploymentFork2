@@ -10,6 +10,7 @@ class userController {
             var user = await userInfoSchema.findOne({email});
 
             var key = makeKey();
+            console.log(req);
             var hashpswd = await bcrypt.hash(password, 9);
             console.log(name, username, email, password, key);
             var user = new userInfoSchema({
@@ -25,6 +26,7 @@ class userController {
         }
         catch (e){
             if (!user)
+                console.log(e);
                 return res.status(400).json({ error: true, message: "User is empty in the request body" });
             return res.status(400).json({error: true, message: e.toString() });
         }
@@ -53,29 +55,29 @@ class userController {
         res.status(200).clearCookie("values").json({status: 'OK'});
     }
 
-    static async verifyUser(req, res) {
-       try{
-           var { email, key} = req.query;
-           var emailUser = await userInfoSchema.findOne({email});
-           var keyUser = await userInfoSchema.findOne({key});
-           if(emailUser === null || keyUser === null){
-               throw new Error("email or key is null")
-           }
-           if (emailUser._id.toString() != keyUser._id.toString()) {
-               await userModel.deleteOne({email});
-               throw new Error("user is not the same")
-           }
-           var curr_date = new Date();
-           let result = {
-               status: 'OK',
-               email: email,
-               date: curr_date,
-           };
-           return res.status(200).json({status: 'OK', name: emailUser.name});
-       }catch(e){
-           return res.status(400).json({error: true, message: e.toString()});
-       }
-    }
+    // static async verifyUser(req, res) {
+    //    try{
+    //        var { email, key} = req.query;
+    //        var emailUser = await userInfoSchema.findOne({email});
+    //        var keyUser = await userInfoSchema.findOne({key});
+    //        if(emailUser === null || keyUser === null){
+    //            throw new Error("email or key is null")
+    //        }
+    //        if (emailUser._id.toString() != keyUser._id.toString()) {
+    //            await userModel.deleteOne({email});
+    //            throw new Error("user is not the same")
+    //        }
+    //        var curr_date = new Date();
+    //        let result = {
+    //            status: 'OK',
+    //            email: email,
+    //            date: curr_date,
+    //        };
+    //        return res.status(200).json({status: 'OK', name: emailUser.name});
+    //    }catch(e){
+    //        return res.status(400).json({error: true, message: e.toString()});
+    //    }
+    // }
 
     static async forgotUsername(req, res) {
         try{

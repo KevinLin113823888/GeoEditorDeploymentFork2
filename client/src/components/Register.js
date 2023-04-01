@@ -9,6 +9,7 @@ function Register() {
 
   function postReq() {
     if (name !== "" & username !== "" & email !== "" & password !== "") {
+      console.log(name, username, email, password);
       axios.post('http://localhost:9000/user/register', {
         name: name,
         username: username, 
