@@ -5,8 +5,8 @@ const ObjectId = Schema.Types.ObjectId
     This is where we specify the format of the data we're going to put into
     the database.
 */
-const mapSchema = new Schema(
-    {
+const communityPreviewSchema = new Schema(
+    { 
         mapData: { type: ObjectId, required: true },
         comments: { type: [{
             comment: String,
@@ -19,4 +19,4 @@ const mapSchema = new Schema(
     { timestamps: true },
 )
 
-module.exports = mongoose.model('Map', mapSchema)
+module.exports = mongoose.model('CommunityPreview', communityPreviewSchema)
