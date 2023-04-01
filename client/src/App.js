@@ -2,15 +2,17 @@ import {React, useState} from "react";
 import axios from "axios";
 
 function App() {
-  const [state, setState] = useState("");
+  const [name, setName] = useState("a");
+  const [username, setUserName] = useState("a");
+  const [email, setEmail] = useState("a");
+  const [password, setPassword] = useState("a");
 
   function postReq() {
-    axios.post('http://localhost:9000/register', {
-      name: 'David',
-      username: 'Wang', 
-      email: "blah@gmail.com",
-      password: "42069", 
-      key: "aaa"
+    axios.post('http://localhost:9000/user/register', {
+      name: name,
+      username: username, 
+      email: email,
+      password: password, 
     })
     .then(function (response) {
       console.log(response);
@@ -20,26 +22,44 @@ function App() {
     });
   }
 
+  function changeName(event) {
+    setName(event.target.value);
+    console.log(name);
+  }
+
+  function changeUserName(event) {
+    setUserName(event.target.value);
+    console.log(username);
+  }
+
+  function changeEmail(event) {
+    setEmail(event.target.value);
+    console.log(email);
+  }
+
+  function changePassword(event) {
+    setPassword(event.target.value);
+    console.log(password);
+  }
+
   return (
     <div className="App">
-      {/* <button onClick={getReq}>Default</button> */}
-      {/* <div>{state}</div> */}
       <form>
         <label>
           Name:
-          <input type="text" name="name" />
+          <input onChange={changeName} type="text" name="name" />
         </label>
         <label>
           UserName:
-          <input type="text" name="name" />
+          <input onChange={changeUserName} type="text" name="name" />
         </label>
         <label>
           Email:
-          <input type="text" name="name" />
+          <input onChange={changeEmail} type="text" name="name" />
         </label>
         <label>
           Password:
-          <input type="text" name="name" />
+          <input onChange={changePassword} type="text" name="name" />
         </label>
         <input onClick={postReq} type="submit" value="Submit" />
       </form>
