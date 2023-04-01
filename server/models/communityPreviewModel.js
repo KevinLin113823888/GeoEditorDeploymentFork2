@@ -7,7 +7,7 @@ const ObjectId = Schema.Types.ObjectId
 */
 const communityPreviewSchema = new Schema(
     { 
-        mapData: { type: ObjectId, required: true },
+        mapData: { type: ObjectId, required: false },
         comments: { type: [{
             comment: String,
             username: String

@@ -18,7 +18,7 @@ const mapDataSchema = new Schema(
             }]},
             borderColor: String,
             subRegionColor: String
-        }], required: true },
+        }], required: false },
         mapProperties: { type: Object, required: true },
         graphicalData:{type:{
             backgroundColor:String,
@@ -30,7 +30,7 @@ const mapDataSchema = new Schema(
                 color: String,
                 legendText: String
             }]}
-        }, required: true }
+        }, required: false }
     },
     { timestamps: true },
 )
