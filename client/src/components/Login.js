@@ -1,5 +1,8 @@
 import {React, useState} from "react";
 import axios from "axios";
+import { Routes, Route, Link } from 'react-router-dom';
+import Register from './Register';
+import ForgotUsername from './ForgotUsername';
 
 function Login() {
   const [username, setUserName] = useState("");
@@ -36,6 +39,15 @@ function Login() {
       Password:
       <input onChange={changePassword} type="text" />
       <button onClick={postReq} type="submit" value="Submit">Submit</button>
+      <div>
+        <nav>
+          <Link to="/register">Register</Link>
+          <Link to="/ForgotPassword">Forgot Password</Link>
+        </nav>
+        <Routes>
+          <Route path="/ForgotUsername" exact element={<ForgotUsername/>} />
+        </Routes>
+      </div>
     </div>
   );
 }

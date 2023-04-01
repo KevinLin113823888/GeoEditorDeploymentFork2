@@ -1,8 +1,8 @@
-const Map = require('../models/map-model')
-const User = require('../models/userInfo-model');
-const MapCard = require('../models/mapCard-model')
-const MapData = require('../models/mapData-model')
-const CommunityPreview = require('../models/communityPreview-model')
+const Map = require('../models/mapModel')
+const User = require('../models/userInfoModel');
+const MapCard = require('../models/mapCardModel')
+const MapData = require('../models/mapDataModel')
+const CommunityPreview = require('../models/communityPreviewModel')
 
 createMap = (req, res) => {
     const body = req.body;
