@@ -1,8 +1,6 @@
 import {React, useState} from "react";
 import axios from "axios";
-import { Routes, Route, Link } from 'react-router-dom';
-import Register from './Register';
-import ForgotUsername from './ForgotUsername';
+import { Link } from 'react-router-dom';
 
 function Login() {
   const [username, setUserName] = useState("");
@@ -42,11 +40,11 @@ function Login() {
       <div>
         <nav>
           <Link to="/register">Register</Link>
-          <Link to="/ForgotPassword">Forgot Password</Link>
+          <Link to="/ForgotUsername">Forgot Username</Link>
         </nav>
-        <Routes>
+        {/* <Routes>
           <Route path="/ForgotUsername" exact element={<ForgotUsername/>} />
-        </Routes>
+        </Routes> */}
       </div>
     </div>
   );
