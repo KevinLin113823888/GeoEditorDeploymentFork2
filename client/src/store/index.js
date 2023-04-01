@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+
 import api from './store-request-api'
 
 // THIS IS THE CONTEXT WE'LL USE TO SHARE OUR STORE
@@ -41,7 +41,7 @@ function GlobalStoreContextProvider(props) {
         adminMode: false,
         userMapCards: [{}],
     });
-    const history =useHistory();
+    
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
     // const { auth } = useContext(AuthContext);
 
@@ -127,4 +127,14 @@ function GlobalStoreContextProvider(props) {
     store.getUserMapCards = function (){
 
     }
+    return (
+        <GlobalStoreContext.Provider value={{
+            store
+        }}>
+            {props.children}
+        </GlobalStoreContext.Provider>
+    );
 }
+
+export default GlobalStoreContext;
+export { GlobalStoreContextProvider };
