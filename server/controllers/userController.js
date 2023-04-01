@@ -34,10 +34,10 @@ class userController {
 
     static async login(req, res) {
         try{
-            var { email, password } = req.body;
-            var user = await userInfoSchema.findOne({email : email});
+            var { username, password } = req.body;
+            var user = await userInfoSchema.findOne({username : username});
             if(!user)
-                throw new Error ("Invalid email")
+                throw new Error ("Invalid username")
 
             var isMatch = await bcrypt.compare(password, user.password);
             if(!isMatch)
@@ -81,26 +81,28 @@ class userController {
 
     static async forgotUsername(req, res) {
         try{
-            var { email } = req.query;
+            var { email } = req.body;
 
             var emailUser = await userInfoSchema.findOne({email});
             if(emailUser === null){
                 throw new Error("email is null")
             }
-
+            
+            console.log("username", emailUser.username);
             // send username to email here
             // nodemailer stuff
 
 
             return res.status(200).json({status: 'OK', username: emailUser.username});
         }catch(e){
+            // console.log("bad error", e);
             return res.status(400).json({error: true, message: e.toString()});
         }
     }
 
     static async sendPasswordRecoveryCode(req, res) {
         try{
-            var { email } = req.query;
+            var { email } = req.body;
 
             var emailUser = await userInfoSchema.findOne({email});
             if(emailUser === null){
@@ -120,7 +122,7 @@ class userController {
 
     static async changePassword(req, res) {
         try{
-            var { code, password } = req.query;
+            var { code, password } = req.body;
             // check code if it exists in db
 
             return res.status(200).json({status: 'OK'});

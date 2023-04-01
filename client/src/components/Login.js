@@ -8,16 +8,19 @@ function Login() {
 
   function postReq() {
     if (username !== "" & password !== "") {
-      axios.post('http://localhost:9000/user/login', {
-        username: username, 
-        password: password, 
+      fetch('http://localhost:9000/user/login', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          username: username,
+          password: password
+        }),
       })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch(err => console.log(err));
     }
   }
 
@@ -39,12 +42,10 @@ function Login() {
       <button onClick={postReq} type="submit" value="Submit">Submit</button>
       <div>
         <nav>
+          <Link to="/">Home</Link>
           <Link to="/register">Register</Link>
           <Link to="/ForgotUsername">Forgot Username</Link>
         </nav>
-        {/* <Routes>
-          <Route path="/ForgotUsername" exact element={<ForgotUsername/>} />
-        </Routes> */}
       </div>
     </div>
   );

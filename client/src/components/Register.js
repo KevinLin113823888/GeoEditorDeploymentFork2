@@ -1,5 +1,6 @@
 import {React, useState} from "react";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 function Register() {
   const [name, setName] = useState("");
@@ -10,18 +11,21 @@ function Register() {
   function postReq() {
     if (name !== "" & username !== "" & email !== "" & password !== "") {
       console.log(name, username, email, password);
-      axios.post('http://localhost:9000/user/register', {
-        name: name,
-        username: username, 
-        email: email,
-        password: password, 
+      fetch('http://localhost:9000/user/register', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          name: name,
+          username: username, 
+          email: email,
+          password: password
+        }),
       })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch(err => console.log(err));
     }
   }
 
@@ -53,6 +57,11 @@ function Register() {
       Password:
       <input onChange={changePassword} type="text" />
       <button onClick={postReq} type="submit" value="Submit">Submit</button>
+      <div>
+        <nav>
+          <Link to="/">Home</Link>
+        </nav>
+      </div>
     </div>
   );
 }

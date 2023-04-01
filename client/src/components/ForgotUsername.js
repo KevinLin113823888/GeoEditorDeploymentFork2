@@ -3,18 +3,20 @@ import axios from "axios";
 
 function ForgotUsername() {
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
 
   function postReq() {
     if (email !== "") {
-      axios.post('http://localhost:9000/user/forgotUsername', {
-        email: email, 
+      fetch('http://localhost:9000/user/forgotUsername', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email }),
       })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .then((res) => res.json())
+      .then((data) => setUsername(data.username))
+      .catch(err => console.log(err));
     }
   }
 
@@ -28,6 +30,9 @@ function ForgotUsername() {
       Email:
       <input onChange={changeEmail} type="text" />
       <button onClick={postReq} type="submit" value="Submit">Submit</button>
+      <div>
+        Your Username: {username}
+      </div>
     </div>
   );
 }
