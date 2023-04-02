@@ -99,18 +99,20 @@ class userController {
     static async sendPasswordRecoveryCode(req, res) {
         try{
             var { email } = req.body;
-
             var emailUser = await userInfoSchema.findOne({email});
             if(emailUser === null){
                 throw new Error("email is null")
             }
 
-            var code = makeKey();
-            // add code to db of email user
+            let passwordRecoveryCode = makeKey()
+            await userInfoSchema.updateOne({email},{
+                passwordRecoveryCode: passwordRecoveryCode
+            })
+
             // send code to email here
             // nodemailer stuff
 
-            return res.status(200).json({status: 'OK'});
+            return res.status(200).json({status: 'OK', passwordRecoveryCode: passwordRecoveryCode});
         }catch(e){
             return res.status(400).json({error: true, message: e.toString()});
         }
@@ -118,14 +120,39 @@ class userController {
 
     static async changePassword(req, res) {
         try{
-            var { code, password } = req.body;
+            var { email,passwordRecoveryCode, password } = req.body;
+            var emailUser = await userInfoSchema.findOne({email});
+
+            if(emailUser.passwordRecoveryCode !== passwordRecoveryCode){
+                throw new Error("invalid passwordRecoveryCode")
+            }
+            var hashpswd = await bcrypt.hash(password, 9);
+
+            await userInfoSchema.updateOne({email},{
+                password: hashpswd
+            })
+
             // check code if it exists in db
 
             return res.status(200).json({status: 'OK'});
         }catch(e){
-            return res.status(400).json({error: true, message: e.toString()});
+            return res.status(400).json({ error: true, message: e.toString()});
         }
     }
+
+    // static async changeUsername(req, res) {
+    //     try{
+    //         var { code, password } = req.body;
+    //         var emailUser = await userInfoSchema.findOne({email});
+    //
+    //         // check code if it exists in db
+    //
+    //         return res.status(200).json({status: 'OK'});
+    //     }catch(e){
+    //         return res.status(400).json({error: true, message: e.toString()});
+    //     }
+    // }
+
 }
 
 function makeKey() {

@@ -22,7 +22,10 @@ const userInfoSchema = new Schema({
   key: {
     type: String, 
     required: true
-  }, 
+  },
+  passwordRecoveryCode: {
+    type: String,
+  },
   ownedMaps: {
     type: [Schema.Types.ObjectId], 
     required: true
