@@ -1,5 +1,4 @@
 import {React, useState} from "react";
-import axios from "axios";
 import { Link } from 'react-router-dom';
 
 function Login() {
@@ -8,7 +7,7 @@ function Login() {
 
   function postReq() {
     if (username !== "" & password !== "") {
-      fetch(process.env.API_URL + 'user/login', {
+      fetch('http://localhost:9000/' + 'user/login', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

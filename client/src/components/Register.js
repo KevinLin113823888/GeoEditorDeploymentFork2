@@ -1,5 +1,4 @@
 import {React, useState} from "react";
-import axios from "axios";
 import { Link } from 'react-router-dom';
 
 function Register() {
@@ -11,7 +10,7 @@ function Register() {
   function postReq() {
     if (name !== "" & username !== "" & email !== "" & password !== "") {
       console.log(name, username, email, password);
-      fetch(process.env.API_URL + 'user/register', {
+      fetch('http://localhost:9000/' + 'user/register', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

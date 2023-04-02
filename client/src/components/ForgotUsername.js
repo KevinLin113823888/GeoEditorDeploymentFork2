@@ -1,7 +1,6 @@
 import {React, useState} from "react";
-import axios from "axios";
 import { Link } from 'react-router-dom';
-import dotenv from 'dotenv';
+
 
 function ForgotUsername() {
   const [email, setEmail] = useState("");
@@ -9,7 +8,7 @@ function ForgotUsername() {
 
   function postReq() {
     if (email !== "") {
-      fetch(process.env.API_URL + 'user/forgotUsername', {
+      fetch("http://localhost:9000/" + 'user/forgotUsername', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
