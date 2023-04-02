@@ -51,6 +51,8 @@ function Login() {
           <Link data-cy="home-link" to="/">Home</Link>
           <Link data-cy="register-link" to="/register">Register</Link>
           <Link data-cy="forgotusername-link" to="/forgotUsername">Forgot Username</Link>
+          <Link data-cy="forgotpassword-link" to="/forgotPassword">Forgot password?</Link>
+
         </nav>
       </div>
     </div>

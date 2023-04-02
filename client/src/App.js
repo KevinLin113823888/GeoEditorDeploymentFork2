@@ -5,6 +5,7 @@ import Login from './components/Login';
 import ForgotUsername from './components/ForgotUsername';
 import Welcome from './components/Welcome';
 import YourMap from './components/YourMap';
+import ForgotPassword from "./components/ForgotPassword";
 import { GlobalStoreContextProvider } from './store'
 // import { Button } from '@mui/material';
 
@@ -17,7 +18,10 @@ function App() {
           <Route path="/register" exact element={<Register/>} />
           <Route path="/login" exact element={<Login/>} />
           <Route path="/forgotUsername" exact element={<ForgotUsername/>} />
-          <Route path="/map" exact element={<YourMap/>} />
+          <Route path="/forgotPassword" exact element={<ForgotPassword/>} />
+
+            <Route path="/map" exact element={<YourMap/>} />
+
         </Routes>
       {/* </GlobalStoreContextProvider> */}
     </div>

@@ -5,8 +5,11 @@ const mongoose = require("mongoose");
 //TODO: .... mongodb needs to be mocked because all the tests are actual api requests....
 
 describe('Testing user controller', () => {
-    const mockCredentials = new mongoose.Types.ObjectId().toString()
+    let mockCredentials = new mongoose.Types.ObjectId().toString()
+    mockCredentials = "abc1233"
     console.log(mockCredentials)
+
+
 
     test("register", async () => {
         const response =  await request(app).post("/user/register").send({
@@ -64,11 +67,12 @@ describe('Testing user controller', () => {
     })
 
     test("changePassword", async () => {
-        const response =  await request(app).post("/user/changePassword").send({
+        const response =  await request(app).put("/user/changePassword").send({
             // name: mockCredentials,
             // username: mockCredentials,
-            // email: mockCredentials,
-            // password: mockCredentials
+            email: mockCredentials,
+            passwordRecoveryCode: "YT8fR6s0NLGObIyz1vvQ",
+            password: "new password idk"
         })
         console.log(response)
         expect(response.statusCode).toBe(200)
