@@ -1,13 +1,17 @@
 name: Cypress test
-on: [push]
+on:
+  push: 
+    branches:
+      - main
 jobs:
   cypress-run: 
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout GeoEditor
         uses: actions/checkout@v2.7.0
         
-      - name: Cypress.io
-        uses: cypress-io/github-action@v5.5.1
-        with: 
-          start: npm start
+#       - name: Run Cypress Test
+#         uses: cypress-io/github-action@v5.5.1
+#         with: 
+#           command: npm run cypress
+#           browser: chrome
