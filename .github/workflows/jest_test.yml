@@ -1,5 +1,7 @@
 name: Jest test
 on: [push]
+env:
+  CI: true
 jobs:
   jest-run:
     runs-on: ubuntu-latest
