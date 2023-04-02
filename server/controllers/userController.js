@@ -24,8 +24,8 @@ class userController {
             return res.status(200).json({status: 'OK'});
         }
         catch (e){
+            console.log(e.toString());
             if (!user)
-                console.log(e);
                 return res.status(400).json({ error: true, message: "User is empty in the request body" });
             return res.status(400).json({error: true, message: e.toString() });
         }

@@ -5,7 +5,7 @@ const connectDB = require("./mongo");
 var userRouter = require('./routes/userRoute');
 // var mapRouter = require('./routes/mapRoute');
 
-app = express();
+const app = express();
 port = process.env.PORT || 9000;
 
 app.use(cors());
@@ -16,3 +16,5 @@ app.use('/user', userRouter);
 // app.use('/map', mapRouter);
 
 app.listen(port, () => console.log("Backend server live on " + port));
+
+module.exports = app;
