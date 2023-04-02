@@ -1,8 +1,6 @@
 import {React, useState} from "react";
 import { Link } from 'react-router-dom';
 
-
-
 function ForgotPassword() {
     const [email, setEmail] = useState("");
     const [passwordRecoveryCode, setPasswordRecoveryCode] = useState("");
@@ -67,25 +65,14 @@ function ForgotPassword() {
             Email:
             <input onChange={changeEmail} type="text" />
             <button onClick={postReqSendPasswordRecoveryCode} type="submit" value="Submit">Submit email</button>
-
-
-
             <div>
                 Your passwordRecoveryCode :  {displayedCode}
             </div>
-
-
             enter code
             <input onChange={changeCode} type="text" />
-
             enter password
             <input onChange={changePassword} type="text" />
-
             <button onClick={putReqChangePassword} type="submit" value="Submit">Submit code and password</button>
-
-
-
-
             <div>
                 <nav>
                     <Link data-cy="home-link" to="/">Home</Link>
