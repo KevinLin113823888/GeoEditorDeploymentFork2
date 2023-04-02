@@ -5,12 +5,18 @@ const userInfoSchema = require("../models/userInfoModel");
 
 class userController {
     static async getLoggedIn(req, res) {
-        let session = req.cookies.values;
+        try{
+            let session = req.cookies.values;
 
-        var user = await userInfoSchema.findOne({username: session.username});
-        // console.log("owned map cards of ", session.username, session.ownedMapCards);
+            var user = await userInfoSchema.findOne({username: session.username});
+            console.log("owned map cards of ", session.username, session.ownedMapCards);
 
-        return res.status(200).json({status: 'OK', username: session.username, mapcards: user.ownedMapCards});
+            return res.status(200).json({status: 'OK', username: session.username, mapcards: user.ownedMapCards});
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
     }
 
     static async register(req, res) {
@@ -26,17 +32,17 @@ class userController {
                 username,
                 email,
                 password: hashpswd,
-                key: key, 
-                ownedMaps: [], 
-                ownedMapCards: [], 
-                blockedUsers: [], 
+                key: key,
+                ownedMaps: [],
+                ownedMapCards: [],
+                blockedUsers: [],
                 usersFollowing: []
             });
             await user.save();
             console.log("saved to db");
-            return res.status(200).cookie("values", 
+            return res.status(200).cookie("values",
                 {
-                    id: user._id, 
+                    id: user._id,
                     username: user.username
                 }
             ).json({status: 'OK', name: user.name});
@@ -61,20 +67,26 @@ class userController {
             if(!isMatch)
                 throw new Error("Invalid password")
 
-            return res.status(200).cookie("values", 
+            return res.status(200).cookie("values",
                 {
-                    id: user._id, 
+                    id: user._id,
                     username: user.username
                 }
             ).json({status: 'OK', name: user.name});
         }
         catch(e){
+            console.log(e.toString())
             return res.status(400).json({error: true, message: e.toString()});
         }
     }
 
     static async logout(req, res, next) {
-        res.status(200).clearCookie("values").json({status: 'OK'});
+        try{
+            return res.status(200).clearCookie("values").json({status: 'OK'});
+        }catch (e){
+            console.log(e)
+            return res.status(400).clearCookie("values").json({status: e.toString()});
+        }
     }
 
     static async forgotUsername(req, res) {
@@ -85,7 +97,7 @@ class userController {
             if(emailUser === null){
                 throw new Error("email is null")
             }
-            
+
             console.log("username", emailUser.username);
             // send username to email here
             // nodemailer stuff
