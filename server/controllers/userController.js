@@ -7,7 +7,10 @@ class userController {
     static async getLoggedIn(req, res) {
         let session = req.cookies.values;
 
-        return res.status(200).json({status: 'OK', username: session.username});
+        var user = await userInfoSchema.findOne({username: session.username});
+        console.log("owned map cards of ", session.username, session.ownedMapCards);
+
+        return res.status(200).json({status: 'OK', username: session.username, mapcards: user.ownedMapCards});
     }
 
     static async register(req, res) {
@@ -23,7 +26,11 @@ class userController {
                 username,
                 email,
                 password: hashpswd,
-                key: key
+                key: key, 
+                ownedMaps: [], 
+                ownedMapCards: [], 
+                blockedUsers: [], 
+                usersFollowing: []
             });
             await user.save();
             console.log("saved to db");
@@ -76,7 +83,6 @@ class userController {
             console.log("username", emailUser.username);
             // send username to email here
             // nodemailer stuff
-
 
             return res.status(200).json({status: 'OK', username: emailUser.username});
         }catch(e){

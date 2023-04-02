@@ -22,6 +22,22 @@ const userInfoSchema = new Schema({
   key: {
     type: String, 
     required: true
+  }, 
+  ownedMaps: {
+    type: [Schema.Types.ObjectId], 
+    required: true
+  }, 
+  ownedMapCards: {
+    type: [Schema.Types.ObjectId],
+    required: true
+  }, 
+  blockedUsers: {
+    type: [Schema.Types.ObjectId], 
+    required: true
+  }, 
+  usersFollowing: {
+    type: [Schema.Types.ObjectId], 
+    required: true
   }
 });
 
