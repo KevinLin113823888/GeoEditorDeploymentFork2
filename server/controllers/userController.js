@@ -4,6 +4,12 @@ const bcrypt = require('bcrypt');
 const userInfoSchema = require("../models/userInfoModel");
 
 class userController {
+    static async getLoggedIn(req, res) {
+        let session = req.cookies.values;
+
+        return res.status(200).json({status: 'OK', username: session.username});
+    }
+
     static async register(req, res) {
         try{
             var { name, username, email, password } = req.body;
@@ -42,7 +48,12 @@ class userController {
             if(!isMatch)
                 throw new Error("Invalid password")
 
-            return res.status(200).cookie("values", {randomid: makeKey(), id: user._id, name: user.name}).json({status: 'OK', name: user.name});
+            return res.status(200).cookie("values", 
+                {
+                    id: user._id, 
+                    username: user.username
+                }
+            ).json({status: 'OK', name: user.name});
         }
         catch(e){
             return res.status(400).json({error: true, message: e.toString()});

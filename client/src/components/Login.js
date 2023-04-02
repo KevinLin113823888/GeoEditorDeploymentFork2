@@ -1,7 +1,8 @@
 import {React, useState} from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
+  const navigate = useNavigate();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -10,15 +11,20 @@ function Login() {
       fetch('http://localhost:9000/' + 'user/login', {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({ 
           username: username,
           password: password
         }),
       })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((res) => {
+        res.json();
+        if (res.status === 200) {
+          console.log("LOGGED IN, going to your maps");
+          navigate('/map');
+        }
+      })
       .catch(err => console.log(err));
     }
   }
@@ -43,7 +49,7 @@ function Login() {
         <nav>
           <Link data-cy="home-link" to="/">Home</Link>
           <Link data-cy="register-link" to="/register">Register</Link>
-          <Link data-cy="forgotusername-link" to="/ForgotUsername">Forgot Username</Link>
+          <Link data-cy="forgotusername-link" to="/forgotUsername">Forgot Username</Link>
         </nav>
       </div>
     </div>

@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require('cookie-parser');
 cors = require("cors");
 
 const connectDB = require("./mongo");
@@ -8,8 +9,12 @@ var userRouter = require('./routes/userRoute');
 const app = express();
 port = process.env.PORT || 9000;
 
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    credentials: true
+}));
 app.use(express.json());
+app.use(cookieParser());
 connectDB();
 
 app.use('/user', userRouter);

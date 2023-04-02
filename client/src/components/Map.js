@@ -15,7 +15,11 @@ function Map() {
         store.createMap(title,mapCard,mapData)
       }
     
-    return(<div><button onClick={postMap} type="submit" value="Create Map">Map</button></div>)
+    return(
+      <div>
+        <button onClick={postMap} type="submit" value="Create Map">Map</button>
+      </div>
+    )
 }
 
 export default Map;
