@@ -8,7 +8,7 @@ function Login() {
 
   function postReq() {
     if (username !== "" & password !== "") {
-      fetch('http://localhost:9000/user/login', {
+      fetch(process.env.API_URL + 'user/login', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

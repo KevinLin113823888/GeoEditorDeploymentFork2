@@ -11,7 +11,7 @@ function Register() {
   function postReq() {
     if (name !== "" & username !== "" & email !== "" & password !== "") {
       console.log(name, username, email, password);
-      fetch('http://localhost:9000/user/register', {
+      fetch(process.env.API_URL + 'user/register', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
