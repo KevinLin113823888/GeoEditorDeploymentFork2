@@ -1,7 +1,8 @@
 import {React, useState} from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Register() {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ function Register() {
       console.log(name, username, email, password);
       fetch('http://localhost:9000/' + 'user/register', {
         method: "POST",
+        credentials: 'include',
         headers: {
           "Content-Type": "application/json",
         },
@@ -22,8 +24,13 @@ function Register() {
           password: password
         }),
       })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((res) => {
+        res.json();
+        if (res.status === 200) {
+          console.log("REGISTERED, going to your maps");
+          navigate('/map');
+        }
+      })
       .catch(err => console.log(err));
     }
   }

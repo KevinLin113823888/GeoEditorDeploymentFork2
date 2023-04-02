@@ -10,6 +10,7 @@ function Login() {
     if (username !== "" & password !== "") {
       fetch('http://localhost:9000/' + 'user/login', {
         method: "POST",
+        credentials: 'include',
         headers: {
           "Content-Type": "application/json"
         },

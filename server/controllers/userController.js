@@ -34,7 +34,13 @@ class userController {
             });
             await user.save();
             console.log("saved to db");
-            return res.status(200).json({status: 'OK'});
+            return res.status(200).cookie("values", 
+                {
+                    id: user._id, 
+                    username: user.username
+                }
+            ).json({status: 'OK', name: user.name});
+            // return res.status(200).json({status: 'OK'});
         }
         catch (e){
             console.log(e.toString());
