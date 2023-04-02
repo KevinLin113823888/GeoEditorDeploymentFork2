@@ -44,7 +44,6 @@ function YourMap(){
             }
         })
         .catch(err => console.log(err));
-<<<<<<< HEAD
     }, []);
 
 
@@ -83,9 +82,6 @@ function YourMap(){
 
     const openCreateModal = () => setMapNameModelOpen(true);
     const closeCreateModal = () => setMapNameModelOpen(false);
-=======
-    },[]);
->>>>>>> a8cc6149aaf7fe16bc76856a96b5fcf9e6c4bb3a
 
     return(
         <div className="YourMap">
