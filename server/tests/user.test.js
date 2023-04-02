@@ -26,8 +26,9 @@ describe('Testing user controller', () => {
             email: mockCredentials,
             password: mockCredentials
         })
-        console.log(response)
+        // console.log(response)
         expect(response.statusCode).toBe(200)
+        expect(response.body.name).toBeDefined();
     })
 
     test("login, loggedIn, logout cookie tests", async () => {
@@ -38,8 +39,14 @@ describe('Testing user controller', () => {
         })
         const response2 =  await agent.get("/user/loggedIn")
         const response3 =  await request(app).delete("/user/logout")
+
         expect(response1.statusCode).toBe(200)
+        expect(response1.body.name).toBeDefined();
+
         expect(response2.statusCode).toBe(200)
+        expect(response2.body.username).toBeDefined();
+        expect(response2.body.mapcards).toBeDefined();
+
         expect(response3.statusCode).toBe(200)
 
     })
@@ -72,8 +79,10 @@ describe('Testing user controller', () => {
             email: mockCredentials,
             // password: mockCredentials
         })
-        console.log(response)
+        // console.log(response)
         expect(response.statusCode).toBe(200)
+        expect(response.body.username).toBeDefined();
+
     })
 
     test("sendPasswordRecoveryCode", async () => {
@@ -82,9 +91,11 @@ describe('Testing user controller', () => {
             email: mockCredentials,
             // password: mockCredentials
         })
-        recoveryCode = response.body.passwordRecoveryCode
         // console.log(response.body.passwordRecoveryCode)
         expect(response.statusCode).toBe(200)
+        expect(response.body.passwordRecoveryCode).toBeDefined();
+        
+        recoveryCode = response.body.passwordRecoveryCode
     })
 
     test("changePassword", async () => {
@@ -95,7 +106,7 @@ describe('Testing user controller', () => {
             passwordRecoveryCode: recoveryCode,
             password: "new password idk"
         })
-        console.log(response)
+        // console.log(response)
         expect(response.statusCode).toBe(200)
     })
 
