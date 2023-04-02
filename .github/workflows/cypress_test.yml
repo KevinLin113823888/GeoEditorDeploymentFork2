@@ -1,22 +1,22 @@
 name: Cypress test
-on:
-  push: 
-    branches:
-      - main
+on: [push]
 jobs:
   cypress-run: 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
     steps:
       - name: Checkout GeoEditor
         uses: actions/checkout@v3.5.0
-        
-#       - name: Setup npm package
-#         working-directory: ./client
-#         run: npm install
-        
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - run: npm ci
+
       - name: Run Cypress Test
         uses: cypress-io/github-action@v5.5.1
         with: 
-          working-directory: ./client
-          command: npm run cypress
-          browser: chrome
+          eun: npm run cypress
