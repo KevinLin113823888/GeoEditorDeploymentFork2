@@ -8,7 +8,7 @@ class userController {
         let session = req.cookies.values;
 
         var user = await userInfoSchema.findOne({username: session.username});
-        console.log("owned map cards of ", session.username, session.ownedMapCards);
+        // console.log("owned map cards of ", session.username, session.ownedMapCards);
 
         return res.status(200).json({status: 'OK', username: session.username, mapcards: user.ownedMapCards});
     }
