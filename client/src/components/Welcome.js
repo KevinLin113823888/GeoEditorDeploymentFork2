@@ -5,7 +5,6 @@ function Welcome() {
     return (
         <div className="Welcome">
             <h1>Welcome to GeoEditor</h1>
-            <h1>Test things</h1>
 
             <nav>
                 <Link data-cy="home-link" to="/">Home</Link>
