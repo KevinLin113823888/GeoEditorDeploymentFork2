@@ -8,7 +8,7 @@ function Login() {
 
   function postReq() {
     if (username !== "" & password !== "") {
-      fetch(process.env.REACT_APP_API_URL + 'user/login', {
+      fetch("http://199.19.72.130:9000/" + 'user/login', {
         method: "POST",
         credentials: 'include',
         headers: {

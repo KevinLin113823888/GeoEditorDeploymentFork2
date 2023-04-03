@@ -29,7 +29,7 @@ function YourMap(){
     const [newMapName, setNewMapName] = useState("");
 
     useEffect(() => {
-        fetch(process.env.REACT_APP_API_URL + 'user/loggedIn', {
+        fetch("http://199.19.72.130:9000/" + 'user/loggedIn', {
             method: "GET",
             credentials: 'include',
             headers: {
@@ -54,7 +54,7 @@ function YourMap(){
     function createNewMap(){
         console.log(newMapName)
         if (newMapName !== "") {
-            fetch(process.env.REACT_APP_API_URL + 'map/createMap', {
+            fetch("http://199.19.72.130:9000/" + 'map/createMap', {
                 method: "POST",
                 credentials: 'include',
                 headers: {
