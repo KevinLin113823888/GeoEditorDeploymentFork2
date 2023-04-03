@@ -13,7 +13,7 @@ function Mapeditor(){
     console.log(state)
     
     // useEffect(() => {
-    //     fetch('http://localhost:9000/' + 'map/loggedIn', {
+    //     fetch('http://199.19.72.130:9000/' + 'map/loggedIn', {
     //         method: "GET",
     //         credentials: 'include',
     //         headers: {

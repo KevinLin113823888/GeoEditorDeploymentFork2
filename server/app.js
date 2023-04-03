@@ -9,7 +9,7 @@ var mapRouter = require('./routes/mapRoute');
 const app = express();
 
 app.use(cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://199.19.72.130:3000"],
     credentials: true
 }));
 app.use(express.json());
