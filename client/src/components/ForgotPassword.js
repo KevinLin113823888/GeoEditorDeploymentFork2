@@ -61,7 +61,7 @@ function ForgotPassword() {
     }
     return (
         <div className="ForgotPassword">
-            Forgot Password?
+            Forgot Password
             Email:
             <input onChange={changeEmail} type="text" />
             <button onClick={postReqSendPasswordRecoveryCode} type="submit" value="Submit">Submit email</button>
