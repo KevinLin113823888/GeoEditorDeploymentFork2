@@ -11,7 +11,7 @@ function Register() {
   function postReq() {
     if (name !== "" & username !== "" & email !== "" & password !== "") {
       console.log(name, username, email, password);
-      fetch('http://199.19.72.130:9000/' + 'user/register', {
+      fetch(process.env.REACT_APP_API_URL + 'user/register', {
         method: "POST",
         credentials: 'include',
         headers: {
