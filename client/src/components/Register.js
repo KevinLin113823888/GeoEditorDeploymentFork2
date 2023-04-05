@@ -1,5 +1,5 @@
 import {React, useState} from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -7,6 +7,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 function Register() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -24,7 +25,7 @@ function Register() {
       const email = formData.get('email');
       const password = formData.get('password');
       const verifypassword = formData.get('passwordVerify');
-      fetch("http://159.203.180.161:9000//" + 'user/register', {
+      fetch("http://localhost:9000/" + 'user/register', {
         method: "POST",
         credentials: 'include',
         headers: {
@@ -97,7 +98,7 @@ function Register() {
             Sign up
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2, fontSize:"1vw" }}>
-            <Grid container spacing={1}>
+            <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <TextField
                         required
