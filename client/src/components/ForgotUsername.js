@@ -39,11 +39,10 @@ function ForgotUsername() {
                 
                 paddingTop= "10%"
             >
-                <Box
-                    style={{ fontSize: "2rem", fontFamily: "Satisfy", color: "#000000", fontWeight: "bold" }}
-                    >
-                    Retrive your username by entering your email below
-                </Box>
+                
+                <Typography component="h3" variant="h5">
+                  Retrive your username by entering your email below
+                </Typography>
                 <Box
                   paddingTop= '3%'
                   
