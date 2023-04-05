@@ -1,5 +1,10 @@
 import {React, useState} from "react";
 import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button';
+import Input from '@mui/material/Input';
+import TextField from '@mui/material/TextField';
 
 function ForgotUsername() {
   const [email, setEmail] = useState("");
@@ -7,7 +12,7 @@ function ForgotUsername() {
 
   function postReq() {
     if (email !== "") {
-      fetch("http://199.19.72.130:9000/" + 'user/forgotUsername', {
+      fetch("http://localhost:9000/" + 'user/forgotUsername', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +31,43 @@ function ForgotUsername() {
 
   return (
     <div className="ForgotUsername">
-      Forgot Username
+      <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                
+                paddingTop= "10%"
+            >
+                <Box
+                    style={{ fontSize: "2rem", fontFamily: "Satisfy", color: "#000000", fontWeight: "bold" }}
+                    >
+                    Retrive your username by entering your email below
+                </Box>
+                <Box
+                  paddingTop= '3%'
+                  
+                >
+                  <TextField
+                  id="email-field"
+                  label="email"
+                  placeholder="email"
+                  onChange={changeEmail}
+                />
+                </Box>
+                <Box
+                  paddingTop= '3%'
+                >
+                <Button variant="contained" color="primary" sx={{ marginTop: '2%' }} onClick={postReq}>
+                    Sent Username to Email
+                </Button>
+                </Box>
+            </Box>
+
+
+
+
+      {/* Forgot Username
       Email:
       <input onChange={changeEmail} type="text" />
       <button onClick={postReq} type="submit" value="Submit">Submit</button>
@@ -38,7 +79,7 @@ function ForgotUsername() {
           <Link data-cy="home-link" to="/">Home</Link>
           <Link data-cy="login-link" to="/login">Login</Link>
         </nav>
-      </div>
+      </div> */}
     </div>
   );
 }
