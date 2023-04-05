@@ -5,9 +5,9 @@ import Login from './components/Login';
 import ForgotUsername from './components/ForgotUsername';
 import Welcome from './components/Welcome';
 import YourMap from './components/YourMap';
-import MapEditor from './components/MapEditor'
 import ForgotPassword from "./components/ForgotPassword";
 import { GlobalStoreContextProvider } from './store'
+import MapViewerScreen from "./components/MapViewer/MapViewerScreen";
 // import { Button } from '@mui/material';
 
 function App() {
@@ -20,9 +20,9 @@ function App() {
           <Route path="/login" exact element={<Login/>} />
           <Route path="/forgotUsername" exact element={<ForgotUsername/>} />
           <Route path="/map" exact element={<YourMap/>} />
-          <Route path='/editor' exact element={<MapEditor/>} />
+          {/*<Route path='/editor' exact element={<MapEditor/>} />*/}
           <Route path="/forgotPassword" exact element={<ForgotPassword/>} />
-          <Route path="/map" exact element={<YourMap/>} />
+          <Route path="/editMap" exact element={<MapViewerScreen/>} />
         </Routes>
       {/* </GlobalStoreContextProvider> */}
     </div>
