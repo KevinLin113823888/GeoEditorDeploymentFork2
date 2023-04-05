@@ -5,11 +5,12 @@ cors = require("cors");
 const connectDB = require("./mongo");
 var userRouter = require('./routes/userRoute');
 var mapRouter = require('./routes/mapRoute');
+var communityRouter = require('./routes/communityRoute');
 
 const app = express();
 
 app.use(cors({
-    origin: ['http://199.19.72.130:3000'],
+    origin: ['http://localhost:3000'],
     credentials: true
 }));
 app.use(express.json());
@@ -18,6 +19,7 @@ connectDB();
 
 app.use('/user', userRouter);
 app.use('/map', mapRouter);
+app.use('/community', communityRouter);
 
 
 module.exports = app;
