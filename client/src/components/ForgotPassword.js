@@ -1,5 +1,11 @@
 import {React, useState} from "react";
 import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button';
+import Input from '@mui/material/Input';
+import TextField from '@mui/material/TextField';
+
 
 function ForgotPassword() {
     const [email, setEmail] = useState("");
@@ -11,7 +17,7 @@ function ForgotPassword() {
 
     function postReqSendPasswordRecoveryCode() {
         if (email !== "") {
-            fetch("http://159.203.180.161:9000//" + 'user/sendPasswordRecoveryCode', {
+            fetch("http://localhost:9000//" + 'user/sendPasswordRecoveryCode', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -28,7 +34,7 @@ function ForgotPassword() {
 
     function putReqChangePassword() {
         if (email !== "") {
-            fetch("http://159.203.180.161:9000//" + 'user/changePassword', {
+            fetch("http://localhost:9000//" + 'user/changePassword', {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -61,7 +67,93 @@ function ForgotPassword() {
     }
     return (
         <div className="ForgotPassword">
-            Forgot Password
+
+            <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"    
+                paddingTop= "1%"
+            >
+                
+                <Typography component="h3" variant="h5">
+                  Reset your password by entering your email below
+                </Typography>
+                <Box
+                  paddingTop= '3%'
+                >
+                  <TextField
+                  id="email-field"
+                  label="email"
+                  placeholder="email"
+                  onChange={changeEmail}
+                />
+                </Box>
+                <Box
+                  paddingTop= '3%'
+                >
+                <Button variant="contained" color="primary" sx={{ marginTop: '2%' }} onClick={postReqSendPasswordRecoveryCode}>
+                    Sent Password recovery code
+                </Button>
+                </Box>
+                <Box
+                  paddingTop= '3%'
+                >
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"    
+                    paddingTop= "1%"
+                >
+                <Typography component="h3" variant="h5">
+                    Your passwordRecoveryCode :  {displayedCode}
+                </Typography>
+                <Typography component="h3" variant="h5">
+                    Enter recovery code and new password
+                </Typography>
+                
+                <Typography component="h3" variant="h5">
+                    Password will only change after entering valid recovery code
+                </Typography>
+            </Box>
+                </Box>
+
+                <Box
+                  paddingTop= '3%'
+                >
+                  <TextField
+                  id="recovery-code"
+                  label="Enter recovery code"
+                  placeholder="recovery code"
+                  onChange={changeCode}
+                />
+                </Box>
+                
+                <Box
+                  paddingTop= '3%'
+                >
+                  <TextField
+                  id="new-password"
+                  label="Enter new password"
+                  placeholder="new password"
+                  onChange={changePassword}
+                />
+                </Box>
+
+                <Box
+                  paddingTop= '3%'
+                >
+                <Button variant="contained" color="primary" sx={{ marginTop: '2%' }} onClick={putReqChangePassword}>
+                    Sent Password recovery code
+                </Button>
+                </Box>
+
+            </Box>
+
+
+
+            {/* Forgot Password
             Email:
             <input onChange={changeEmail} type="text" />
             <button onClick={postReqSendPasswordRecoveryCode} type="submit" value="Submit">Submit email</button>
@@ -78,7 +170,11 @@ function ForgotPassword() {
                     <Link data-cy="home-link" to="/">Home</Link>
                     <Link data-cy="login-link" to="/login">Login</Link>
                 </nav>
-            </div>
+            </div> */}
+
+
+
+
         </div>
     );
 }
