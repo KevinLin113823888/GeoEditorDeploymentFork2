@@ -3,6 +3,6 @@ const router = express.Router()
 //const auth = require('../auth')
 const CommunityController = require('../controllers/communityController')
 
-router.post('/getCommunity', CommunityController.getCommunity);
+router.get('/getCommunity', CommunityController.getCommunity);
 
 module.exports = router

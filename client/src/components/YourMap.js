@@ -1,6 +1,8 @@
 import {React, useState, useEffect} from "react";
 import { Link, useNavigate } from 'react-router-dom';
 
+import TextField from '@mui/material/TextField';
+
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -17,16 +19,15 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-  };
-  
+};  
 
 function YourMap(){
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [mapCards, setMapCards] = useState([])
     const [mapNameModelOpen, setMapNameModelOpen] = useState(false)
-
     const [newMapName, setNewMapName] = useState("");
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
         fetch("http://localhost:9000//" + 'user/loggedIn', {
@@ -49,6 +50,18 @@ function YourMap(){
 
     function changeMapName(event){
         setNewMapName(event.target.value);
+    }
+
+    function handleUpdateSearch(event) {
+        setSearch(event.target.value);
+    }
+
+    function handleKeyPress(event) {
+        if(search != "") {
+            if (event.code === "Enter") {
+                console.log("search for", search);
+            }
+        }
     }
 
     function createNewMap(){
@@ -85,6 +98,14 @@ function YourMap(){
 
     return(
         <div className="YourMap">
+            <div id = "borderchange">  <TextField type="text" id="outlined-basic"  variant="outlined" onChange={ 
+                handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw" placeholder="Search" style={{marginTop:"0.1vw",marginLeft:"5vw",background:"#ffffff",width:"45vw"}} 
+                inputProps={{
+                    style: {
+                        fontSize:"1vw",
+                        height: "0vw"
+                }}} />
+            </div>
             <h1>{username} Maps</h1>
             <button data-cy="createmap-button" onClick={openCreateModal}>Create New Map</button>
             {mapCards 
