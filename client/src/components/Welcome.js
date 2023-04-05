@@ -1,16 +1,47 @@
-import {React} from "react";
+import { React } from "react";
 import { Link } from 'react-router-dom';
-
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button';
 function Welcome() {
     return (
         <div className="Welcome">
-            <h1>Welcome to GeoEditor</h1>
+            <Box
+            >
+                <Typography
+                    style={{ fontSize: "7rem", fontFamily: "October Tamil", color: "#0049ff", fontWeight: "bold", display: "inline" }}
+                    sx={{ paddingLeft: '30%' }}
+                    component="span">
+                    Geo
+                </Typography>
+                <Typography
+                    style={{ fontSize: "7rem", fontFamily: "Satisfy", color: "#009800", fontWeight: "bold", display: "inline" }}
+                    component="span">
+                    Editor
+                </Typography>
+            </Box>
+            <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+            >
+                <Box
+                    style={{ fontSize: "2rem", fontFamily: "Satisfy", color: "#000000", fontWeight: "bold" }}
+                    >
+                    Create, share, and explore community maps with an easy to use map editor
+                </Box>
+                <Button component={Link} to="/login" variant="contained" color="primary" sx={{ marginTop: '5%' }}>
+                    Login
+                </Button>
+                <Button component={Link} to="/register" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
+                    Register
+                </Button>
+                <Button component={Link} to="/" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
+                    Continue as Guest
+                </Button>
+            </Box>
 
-            <nav>
-                <Link data-cy="home-link" to="/">Home</Link>
-                <Link data-cy="register-link" to="/register">Register</Link>
-                <Link data-cy="login-link" to="/login">Login</Link>
-            </nav>
         </div>
     );
 }
