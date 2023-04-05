@@ -1,4 +1,4 @@
-import {React, useState} from "react";
+import {React, useState, useEffect} from "react";
 import { Link } from 'react-router-dom';
 
 function Community() {
@@ -14,10 +14,7 @@ function Community() {
         })
         .then((res) => res.json())
         .then((data) => {
-            setUsername(data.username);
-            if (data.ownedMapCards === undefined) {
-                setMapCards([]);
-            }
+           console.log(data)
         })
         .catch(err => console.log(err));
     }, []);
@@ -29,4 +26,4 @@ function Community() {
     );
 }
 
-export default ForgotUsername;
+export default Community;
