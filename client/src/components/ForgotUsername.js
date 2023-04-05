@@ -7,7 +7,7 @@ function ForgotUsername() {
 
   function postReq() {
     if (email !== "") {
-      fetch("http://199.19.72.130:9000/" + 'user/forgotUsername', {
+      fetch("http://159.203.180.161:9000//" + 'user/forgotUsername', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
