@@ -29,7 +29,7 @@ function YourMap(){
     const [newMapName, setNewMapName] = useState("");
 
     useEffect(() => {
-        fetch("http://199.19.72.130:9000/" + 'user/loggedIn', {
+        fetch("http://159.203.180.161:9000//" + 'user/loggedIn', {
             method: "GET",
             credentials: 'include',
             headers: {
@@ -54,7 +54,7 @@ function YourMap(){
     function createNewMap(){
         console.log(newMapName)
         if (newMapName !== "") {
-            fetch("http://199.19.72.130:9000/" + 'map/createMap', {
+            fetch("http://159.203.180.161:9000//" + 'map/createMap', {
                 method: "POST",
                 credentials: 'include',
                 headers: {
