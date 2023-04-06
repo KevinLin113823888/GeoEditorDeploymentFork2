@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Input from '@mui/material/Input';
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from '@mui/icons-material/Search';
 
 const style = {
     position: 'absolute',
@@ -102,9 +104,11 @@ function YourMap(){
                 handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw" placeholder="Search" style={{marginTop:"0.1vw",marginLeft:"5vw",background:"#ffffff",width:"45vw"}} 
                 inputProps={{
                     style: {
-                        fontSize:"1vw",
                         height: "0vw"
                 }}} />
+                <IconButton type="submit" aria-label="search">
+                    <SearchIcon style={{ fill: "blue" }} />
+                </IconButton>
             </div>
             <h1>{username} Maps</h1>
             <button data-cy="createmap-button" onClick={openCreateModal}>Create New Map</button>
