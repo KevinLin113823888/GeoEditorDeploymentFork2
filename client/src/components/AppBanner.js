@@ -15,6 +15,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import PeopleIcon from '@mui/icons-material/People';
 import MapIcon from '@mui/icons-material/Map';
+import MenuIcon from '@mui/icons-material/Menu';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 
 export default function AppBanner() {
    
@@ -72,13 +75,11 @@ export default function AppBanner() {
     
     function getAccountMenu() {
             return <IconButton
-            sx={{left:"84%"}}
-            size="medium"
             aria-label="account of current user"
             aria-controls={menuId}
             aria-haspopup="true"
             onClick={handleProfileMenuOpen}
-            style={{border:".16vw solid #000000",color:"black"}}
+            style={{border:"solid #000000",color:"black"}}
         >
             <AccountCircle />
         </IconButton>;
@@ -100,29 +101,25 @@ export default function AppBanner() {
                     component="span">
                     Editor
                 </Typography>
-                <IconButton
-                    component={Link}
-                    to="/map"
-                    sx={{left:"80%"}}
-                    size="medium"
-                    edge="end"
-                    style={{border:".16vw solid #000000",color:"black"}}
-                >
-                    <MapIcon />
-                </IconButton>
-                <IconButton
-                    component={Link}
-                    to="/community"
-                    sx={{left:"82%"}}
-                    size="medium"
-                    edge="end"
-                    style={{border:".16vw solid #000000",color:"black"}}
-                >
-                    <PeopleIcon />
-                </IconButton>
-                        
-                            { getAccountMenu() }
-      
+                <Grid container justifyContent="flex-end" style={{ gap: 10 }}>
+                    <IconButton
+                        component={Link}
+                        to="/map"
+                        style={{border:"solid #000000",color:"black"}}
+                    >
+                        <MapIcon />
+                    </IconButton>
+                    <IconButton
+                        component={Link}
+                        to="/community"
+                        style={{border:"solid #000000",color:"black"}}
+                    >
+                        <PeopleIcon />
+                    </IconButton>
+                            
+                                { getAccountMenu() }
+        
+                </Grid>
                 </Toolbar>
             </AppBar>
             {
