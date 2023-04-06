@@ -11,13 +11,15 @@ import Community from "./components/Community";
 import { GlobalStoreContextProvider } from './store'
 import MapViewerScreen from "./components/MapViewer/MapViewerScreen";
 import AppBanner from "./components/AppBanner"
+import MUIDeleteAccModal from './components/MUIDeleteAccModal'
 // import { Button } from '@mui/material';
 
 function App() {
   return (
     <div className="App">
-      {/* <GlobalStoreContextProvider>  */}
+      <GlobalStoreContextProvider> 
       <AppBanner/>
+      <MUIDeleteAccModal/>
         <Routes>
           
           <Route path='/' exact element={<Welcome/>} />
@@ -30,7 +32,7 @@ function App() {
           <Route path="/editMap" exact element={<MapViewerScreen/>} />
           <Route path="/community" exact element={<Community/>} />
         </Routes>
-      {/* </GlobalStoreContextProvider> */}
+      </GlobalStoreContextProvider>
     </div>
   );
 }

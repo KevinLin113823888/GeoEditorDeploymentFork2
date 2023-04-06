@@ -1,15 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { MapContainer, TileLayer, useMap, GeoJSON, LayerGroup, FeatureGroup } from 'react-leaflet';
-// import 'leaflet/dist/leaflet.css';
-// import 'leaflet-draw/dist/leaflet.draw.css';
-import { GeomanControls } from 'react-leaflet-geoman-v2';
+import 'leaflet/dist/leaflet.css';
 // import { topojson } from 'topojson';
-import { topology } from 'topojson-server';
-import { merge as mergeRegion } from 'topojson-client';
 import * as turf from '@turf/turf'
-import GeomanJsWrapper from './GeomanJsWrapper'
-import {empty} from "leaflet/src/dom/DomUtil";
-import { useLeafletContext } from "@react-leaflet/core";
+import GeomanJsWrapper from "./GeomanJsWrapper";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 
@@ -251,7 +245,6 @@ function MapEditor(props) {
                         style={{ height: "80vh" }} zoom={2} center={[20, 100]}
                         editable={true}
                     >
-
                         <GeomanJsWrapper
                             merge={handleMerge}
                             toggleSelectMode={toggleSelectMode}
@@ -264,27 +257,6 @@ function MapEditor(props) {
                                 data={props.file.features}
                                 onEachFeature={onEachCountry}
                             />
-                            {/*<GeomanControls*/}
-                            {/*    options={{*/}
-                            {/*        position: 'topleft',*/}
-                            {/*        drawMarker: false,*/}
-                            {/*        drawText: false,*/}
-                            {/*        drawPolyline: false,*/}
-                            {/*        drawRectangle: false,*/}
-                            {/*        drawPolygon: false,*/}
-                            {/*        drawCircle: false,*/}
-                            {/*        drawCircleMarker:false*/}
-                            {/*    }}*/}
-                            {/*    globalOptions={{*/}
-                            {/*        continueDrawing: true,*/}
-                            {/*        editable: false,*/}
-                            {/*        limitMarkersToCount: 20,*/}
-                            {/*        removeVertexOn: "contextmenu", //right click on verticies to remove*/}
-                            {/*        hideMiddleMarkers: true,*/}
-                            {/*    }}*/}
-                            {/*    onCreate={handleCreate}*/}
-                            {/*    onChange={(e) => console.log('onChange', e)}*/}
-                            {/*/>*/}
 
                         </FeatureGroup>
 
@@ -297,28 +269,7 @@ function MapEditor(props) {
                             />
                             <TileLayer url="http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png" />
                         </LayerGroup>
-
-                        {/* <GeoJSON
-                                    data={props.file.features}
-                                    onEachFeature={onEachCountry}
-                                /> */}
-
                     </MapContainer>
-
-
-                    {/*<ReactLeafletEditable*/}
-                    {/*    ref={editRef}*/}
-                    {/*    map={map}*/}
-                    {/*>*/}
-                    {/*    <MapContainer style={{ height: "80vh" }} zoom={2} center={[20, 100]}*/}
-                    {/*                  editable={true}>*/}
-                    {/*        <GeoJSON*/}
-                    {/*            data={props.file.features}*/}
-                    {/*            onEachFeature={onEachCountry}*/}
-                    {/*        />*/}
-                    {/*    </MapContainer>*/}
-                    {/*</ReactLeafletEditable>*/}
-
 
 
                 </div>

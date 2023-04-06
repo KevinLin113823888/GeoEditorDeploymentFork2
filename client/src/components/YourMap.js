@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from "react";
+import { React, useState, useEffect,useContext } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 
 import TextField from '@mui/material/TextField';
@@ -13,6 +13,13 @@ import SortIcon from '@mui/icons-material/Sort';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
+import Grid from '@mui/material/Grid';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+
+
+import MUIDeleteAccModal from './MUIDeleteAccModal'
+import { GlobalStoreContext } from '../store'
 
 const style = {
     position: 'absolute',
@@ -24,14 +31,14 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-};  
+};
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     borderStyle: 'solid',
     marginLeft: 0,
@@ -55,48 +62,90 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: '12ch',
-        '&:focus': {
-          width: '20ch',
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: '12ch',
+            '&:focus': {
+                width: '20ch',
+            },
         },
-      },
     },
 }));
 
-function YourMap(){
+function YourMap() {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [mapCards, setMapCards] = useState([])
     const [mapNameModelOpen, setMapNameModelOpen] = useState(false)
     const [newMapName, setNewMapName] = useState("");
     const [search, setSearch] = useState("");
+    const [anchorEl, setAnchorEl] = useState(null);
+    const isMenuOpen = Boolean(anchorEl);
+    const { store } = useContext(GlobalStoreContext);
+
 
     useEffect(() => {
         fetch("http://localhost:9000/" + 'user/loggedIn', {
             method: "GET",
             credentials: 'include',
             headers: {
-            "Content-Type": "application/json",
+                "Content-Type": "application/json",
             }
         })
-        .then((res) => res.json())
-        .then((data) => {
-            setUsername(data.username);
-            if (data.ownedMapCards === undefined) {
-                setMapCards([]);
-            }
-        })
-        .catch(err => console.log(err));
+            .then((res) => res.json())
+            .then((data) => {
+                setUsername(data.username);
+                if (data.ownedMapCards === undefined) {
+                    setMapCards([]);
+                }
+            })
+            .catch(err => console.log(err));
     }, []);
 
+    const handleSortMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleSortByDate = (event) => {
+        //store.sortMapCardsByDate()
+        setAnchorEl(null);
+        
+    };
+    const handleSortByName = (event) => {
+        //store.sortMapCardsByName()
+        setAnchorEl(null);
+    };
 
-    function changeMapName(event){
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const menuId = 'sort-menu';
+    const sortMenu = <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+        }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+        }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+    >
+
+        <MenuItem onClick={handleSortByName}>Sort By Name</MenuItem>
+        <MenuItem onClick={handleSortByDate}>Sort By Date</MenuItem>
+
+    </Menu>
+
+    function changeMapName(event) {
         setNewMapName(event.target.value);
     }
 
@@ -106,7 +155,7 @@ function YourMap(){
     }
 
     function handleKeyPress(event) {
-        if(search != "") {
+        if (search != "") {
             if (event.type === "keypress" && event.code === "Enter") {
                 console.log("search for", search);
             }
@@ -120,7 +169,7 @@ function YourMap(){
         console.log("sorting that needs to be implemented");
     }
 
-    function createNewMap(){
+    function createNewMap() {
         console.log(newMapName)
         if (newMapName !== "") {
             fetch("http://159.203.180.161:9000//" + 'map/createMap', {
@@ -129,54 +178,71 @@ function YourMap(){
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     title: newMapName
                 }),
             })
-            .then((res) => {
-                if (res.status === 200) {
-                    console.log("new map created");
-                }
-                else{
-                    throw new Error('map not created');
-                }
-                return res.json();
-            }).then((data) => {
-                console.log(data);
-                navigate('/editor', { state: { mapId: data.mapId } });
-            })
-            .catch(err => console.log(err));
+                .then((res) => {
+                    if (res.status === 200) {
+                        console.log("new map created");
+                    }
+                    else {
+                        throw new Error('map not created');
+                    }
+                    return res.json();
+                }).then((data) => {
+                    console.log(data);
+                    navigate('/editor', { state: { mapId: data.mapId } });
+                })
+                .catch(err => console.log(err));
         }
     }
 
     const openCreateModal = () => setMapNameModelOpen(true);
     const closeCreateModal = () => setMapNameModelOpen(false);
 
-    return(
+    return (
         <div className="YourMap">
-            <div id = "borderchange">  
-                {/* <TextField type="text" id="outlined-basic"  variant="outlined" onChange={ 
-                handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw" placeholder="Search" style={{marginTop:"0.1vw",marginLeft:"5vw",background:"#ffffff",width:"45vw"}} 
-                inputProps={{
-                    style: {
-                        height: "0vw"
-                }}} />
-                <IconButton type="submit" aria-label="search" onClick={handleKeyPress}>
-                    <SearchIcon style={{ fill: "black" }} />
-                </IconButton> */}
+            <MUIDeleteAccModal />
+            <div id="borderchange">
+                <Grid container rowSpacing={1} columnSpacing={0}>
+                    <Grid item xs={4} >
+                        <IconButton type="submit" aria-label="search" onClick={handleKeyPress}>
+                            <SearchIcon style={{ fill: "black" }} />
+                        </IconButton>
+                    </Grid>
+                    <Grid item xs={4} >
 
-                <Search>
+                        <TextField type="text" id="outlined-basic" variant="outlined" onChange={
+                            handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw" placeholder="Search" style={{ marginTop: "0.1vw", background: "#ffffff", width: "100%" }}
+                            inputProps={{
+                                style: {
+                                    height: "0vw"
+                                }
+                            }} />
+                    </Grid>
+                    <Grid item xs={4} >
+                        <IconButton type="submit" aria-label="sort" onClick={handleSortMenuOpen} >
+                            <SortIcon style={{ fill: "black" }} />
+                        </IconButton>
+                    </Grid>
+
+                </Grid>
+
+
+
+
+
+                {/* <Search>
                     <SearchIconWrapper>
                         <IconButton type="submit" aria-label="search" onClick={handleKeyPress}>
                             <SearchIcon style={{ fill: "black" }} />
                         </IconButton> 
                     </SearchIconWrapper>
-                    <StyledInputBase type="text" id="outlined-basic" placeholder="Search…" variant="outlined" onChange={ handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw"/>
-                </Search>
+                    <StyledInputBase type="text" id="outlined-basic" placeholder="Search…" variant="outlined" onChange={ handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw" style={{width:"100%"}}/>
+                </Search> */}
 
-                <IconButton type="submit" aria-label="sort" onClick={handleSort} >
-                    <SortIcon style={{ fill: "black"}} />
-                </IconButton>
+
             </div>
             <h1>{username} Maps</h1>
 
@@ -184,11 +250,11 @@ function YourMap(){
                 <AddCircleIcon style={{ fill: "black" }} />
             </IconButton>
 
-            {mapCards 
-            ?
-            <div>You currently have no maps</div>
-            :
-            <div>Here are your maps</div>
+            {mapCards
+                ?
+                <div>You currently have no maps</div>
+                :
+                <div>Here are your maps</div>
             }
 
             <Modal
@@ -205,7 +271,7 @@ function YourMap(){
                     <Button variant="contained" onClick={createNewMap} >Create Map</Button>
                 </Box>
             </Modal>
-
+            {sortMenu}
         </div>
     )
 }

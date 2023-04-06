@@ -19,6 +19,7 @@ export const GlobalStoreActionType = {
 
 const CurrentModal = {
     NONE:"NONE",
+    DELETE_ACCOUNT:"DELETE_ACCOUNT",
     NEW_MAP_NAME:"NEW_MAP_NAME",
     COMMUNITY_PREVIEW_FORK: "COMMUNITY_PREVIEW_FORK",
     COMMUNITY_PREVIEW_DOWNLOAD: "COMMUNITY_PREVIEW_DOWNLOAD",
@@ -49,6 +50,17 @@ function GlobalStoreContextProvider(props) {
         const { type, payload } = action;
         switch (type) {
             // LIST UPDATE OF ITS NAME
+            case GlobalStoreActionType.CHANGE_MODAL: {
+                return setStore({
+                    currentModal : payload,
+                    currentMap: store.currentMap,
+                    currentMapData : store.currentMapData, //the current map data we are editing
+                    currentScreen: store.currentScreen ,
+                    guestMode: store.guestMode,
+                    adminMode: store.adminMode,
+                    userMapCards: store.userMapCards,
+                });
+            }
             case GlobalStoreActionType.NEW_MAP_NAME: {
                 return setStore({
                     currentModal : CurrentModal.NONE,
@@ -127,6 +139,15 @@ function GlobalStoreContextProvider(props) {
     store.getUserMapCards = function (){
 
     }
+
+    store.changeModal= function(modal){
+        storeReducer({
+            type: GlobalStoreActionType.CHANGE_MODAL,
+            payload: modal
+        }
+        );
+    }
+
     return (
         <GlobalStoreContext.Provider value={{
             store

@@ -5,7 +5,13 @@ import Button from '@mui/material/Button';
 import MapEditor from './MapEditor';
 import * as shapefile from "shapefile";
 import na from './na.json'
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import MapPropertySidebar from "./MapPropertySidebar";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function MapViewerScreen(){
 
@@ -20,6 +26,10 @@ function MapViewerScreen(){
     let shpfile = null;
     let dbffile = null;
 
+    useEffect(() => {
+        upload()
+    },[])
+
 
     const readShapefile = (e) => {
         count = 0;
@@ -31,7 +41,6 @@ function MapViewerScreen(){
         shapefile
             .open(
                 e,
-                //"https://cdn.rawgit.com/mbostock/shapefile/master/test/points.shp",
                 null
             ).then(function (e){
             e.read().then(
@@ -153,18 +162,32 @@ function MapViewerScreen(){
                 Display North America geojson
             </button>
 
+
             <div>Shapefile:
                 <input type="file" accept="geo.json" onChange={handleSelectFile}/>
             </div>
             <div>Dbf:
                 <input type="file" accept="geo.json" onChange={handleSelectFile2}/>
 
+
             </div>
-            <div></div>
             <div> <input type="submit" value="submit" onClick={handleSubmit} /></div>
 
             <div>Right click to delete vertex</div>
-            {fileExist ? <MapEditor file={GeoJson} changeName={changeRegionName}/> : <></>}
+
+            <TextField
+                name="your mom lol i meant your map"
+            />
+            <Grid container spacing={2}>
+                <Grid item xs={8}>
+                    <MapEditor file={GeoJson} changeName={changeRegionName}/>
+                </Grid>
+                <Grid item xs={4}>
+                    <MapPropertySidebar file={GeoJson}/>
+                </Grid>
+            </Grid>
+
+
 
         </div>
     );

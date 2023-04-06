@@ -1,5 +1,6 @@
 import {React, useState, useEffect} from "react";
 import { Link } from 'react-router-dom';
+import MUIDeleteAccModal from './MUIDeleteAccModal'
 
 function Community() {
     const [username, setUsername] = useState("");
@@ -21,6 +22,7 @@ function Community() {
 
     return (
         <div className="Community">
+            <MUIDeleteAccModal/>
             <h1>Community</h1>
         </div>
     );
