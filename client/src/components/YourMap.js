@@ -13,6 +13,7 @@ import SortIcon from '@mui/icons-material/Sort';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
+import MUIDeleteAccModal from './MUIDeleteAccModal'
 
 const style = {
     position: 'absolute',
@@ -154,6 +155,7 @@ function YourMap(){
 
     return(
         <div className="YourMap">
+            <MUIDeleteAccModal/>
             <div id = "borderchange">  
                 {/* <TextField type="text" id="outlined-basic"  variant="outlined" onChange={ 
                 handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw" placeholder="Search" style={{marginTop:"0.1vw",marginLeft:"5vw",background:"#ffffff",width:"45vw"}} 

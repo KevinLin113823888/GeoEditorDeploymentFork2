@@ -32,6 +32,10 @@ export default function AppBanner() {
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
+    const handleDeleteAccount = () => {
+        setAnchorEl(null);
+        store.changeModal("DELETE_ACCOUNT")
+    };
     const handleMenuCloseGuest=()=>{
         setAnchorEl(null);
     }
@@ -60,10 +64,10 @@ export default function AppBanner() {
     onClose={handleMenuClose}
 >
     
-    <MenuItem onClick={handleMenuClose}><Link to='#'>View My Maps</Link></MenuItem>
+    <MenuItem onClick={handleMenuClose}><Link to='/map'>View My Maps</Link></MenuItem>
     <MenuItem onClick={handleMenuClose}><Link to='/forgotUsername/'>Change Username</Link></MenuItem>
     <MenuItem onClick={handleMenuCloseGuest}><Link to='/forgotPassword/'>Change Password</Link></MenuItem>
-    <MenuItem onClick={handleMenuCloseGuest}><Link to='#'>Delete Account</Link></MenuItem>
+    <MenuItem onClick={handleDeleteAccount}><Link to='#'>Delete Account</Link></MenuItem>
     <MenuItem onClick={handleMenuCloseGuest}><Link to='/'>Sign Out</Link></MenuItem>
 </Menu>
     
