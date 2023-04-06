@@ -9,13 +9,16 @@ import ForgotPassword from "./components/ForgotPassword";
 import Community from "./components/Community";
 import { GlobalStoreContextProvider } from './store'
 import MapViewerScreen from "./components/MapViewer/MapViewerScreen";
+import AppBanner from "./components/AppBanner"
 // import { Button } from '@mui/material';
 
 function App() {
   return (
     <div className="App">
       {/* <GlobalStoreContextProvider>  */}
+      <AppBanner/>
         <Routes>
+          
           <Route path='/' exact element={<Welcome/>} />
           <Route path="/register" exact element={<Register/>} />
           <Route path="/login" exact element={<Login/>} />

@@ -17,7 +17,7 @@ function ForgotPassword() {
 
     function postReqSendPasswordRecoveryCode() {
         if (email !== "") {
-            fetch("http://localhost:9000//" + 'user/sendPasswordRecoveryCode', {
+            fetch("http://localhost:9000/" + 'user/sendPasswordRecoveryCode', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -34,7 +34,7 @@ function ForgotPassword() {
 
     function putReqChangePassword() {
         if (email !== "") {
-            fetch("http://localhost:9000//" + 'user/changePassword', {
+            fetch("http://localhost:9000/" + 'user/changePassword', {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

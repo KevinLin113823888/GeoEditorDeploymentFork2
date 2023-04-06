@@ -32,7 +32,7 @@ function YourMap(){
     const [search, setSearch] = useState("");
 
     useEffect(() => {
-        fetch("http://localhost:9000//" + 'user/loggedIn', {
+        fetch("http://localhost:9000/" + 'user/loggedIn', {
             method: "GET",
             credentials: 'include',
             headers: {
@@ -69,7 +69,7 @@ function YourMap(){
     function createNewMap(){
         console.log(newMapName)
         if (newMapName !== "") {
-            fetch("http://localhost:9000//" + 'map/createMap', {
+            fetch("http://159.203.180.161:9000//" + 'map/createMap', {
                 method: "POST",
                 credentials: 'include',
                 headers: {

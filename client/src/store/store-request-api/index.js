@@ -1,7 +1,7 @@
 import axios from 'axios'
 axios.defaults.withCredentials = true;
 const api = axios.create({
-    baseURL: 'http://localhost:9000//',
+    baseURL: 'http://localhost:9000/',
 })
 
 export const createMap = (title,newMapCardData,mapData) => {
