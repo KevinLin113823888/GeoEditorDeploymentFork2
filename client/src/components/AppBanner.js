@@ -72,7 +72,7 @@ export default function AppBanner() {
     
     function getAccountMenu() {
             return <IconButton
-            sx={{left:"79%"}}
+            sx={{left:"84%"}}
             size="medium"
             aria-label="account of current user"
             aria-controls={menuId}
@@ -103,7 +103,7 @@ export default function AppBanner() {
                 <IconButton
                     component={Link}
                     to="/map"
-                    sx={{left:"75%"}}
+                    sx={{left:"80%"}}
                     size="medium"
                     edge="end"
                     style={{border:".16vw solid #000000",color:"black"}}
@@ -113,7 +113,7 @@ export default function AppBanner() {
                 <IconButton
                     component={Link}
                     to="/community"
-                    sx={{left:"77%"}}
+                    sx={{left:"82%"}}
                     size="medium"
                     edge="end"
                     style={{border:".16vw solid #000000",color:"black"}}
