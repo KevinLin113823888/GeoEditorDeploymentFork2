@@ -15,8 +15,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import PeopleIcon from '@mui/icons-material/People';
 import MapIcon from '@mui/icons-material/Map';
-import MenuIcon from '@mui/icons-material/Menu';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
 export default function AppBanner() {
