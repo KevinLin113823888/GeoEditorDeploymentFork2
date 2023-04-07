@@ -46,9 +46,6 @@ function MUIChangeMapNameModal() {
                  onClick={e => e.stopPropagation()}
 
             >
-
-
-        
     
     <Box
         display="flex"
@@ -57,7 +54,7 @@ function MUIChangeMapNameModal() {
         alignItems="center" style={{backgroundColor:"#f1f1f1", color:"#000000"}}>    
         
     <Typography style={{fontSize:"2rem"}} sx={{marginBottom:"5%"}}>
-            <strong>Enter New Map Name</strong>
+            <strong>Change Map Name</strong>
     </Typography>
     <TextField type="text" id="outlined-basic"  variant="outlined" onChange={ 
                     handleUpdateSearch} height="2.2vw" placeholder="Enter Name" style={{background:"#ffffff",width:"50%"}} 
@@ -68,8 +65,6 @@ function MUIChangeMapNameModal() {
                         }}} />
         <Box>
     <input type="button" 
-                 
-                 
                  class="modal-confirm-button" 
                  onClick={() => {
                      handleChangeMapName();}}

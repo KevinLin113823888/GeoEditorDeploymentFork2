@@ -49,8 +49,14 @@ function MUIDeleteAccModal() {
 
             >
 
-    <header className="dialog-header">
-        <Box style={{backgroundColor:"#f1f1f1", color:"#ff0000",paddingTop:"1vh",paddingBottom:"1vh",paddingLeft:"20%"}}>
+    
+    <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center">
+
+        <Box style={{backgroundColor:"#f1f1f1", color:"#ff0000",paddingTop:"1vh",paddingBottom:"1vh"}}>
     <Typography style={{fontSize:"1.4rem"}}>
             <strong>Delete Account?</strong>
     </Typography>
@@ -58,16 +64,17 @@ function MUIDeleteAccModal() {
     <Typography style={{fontSize:"1rem"}}>
     <strong> Are you sure you want to delete the your account? This action can not be reversed. Enter your password to confirm.</strong>
     </Typography>
-    </header>
-    <div></div>
+   
+   
     <TextField type="text" id="outlined-basic"  variant="outlined" onChange={ 
-                    handleUpdateSearch} height="2.2vw" placeholder="Enter Password" style={{marginTop:"10%",marginLeft:"5%",background:"#ffffff",width:"90%"}} 
+                    handleUpdateSearch} height="2.2vw" placeholder="Enter Password" style={{marginTop:"10%",background:"#ffffff",width:"90%"}} 
                     inputProps={{
                         style: {
                           fontSize:"1rem",
                           height: "0vw"
                         }}} />
-    <div class="modal-footer" id="confirm-cancel-container">
+                        
+    <Box>
     <input type="button" 
                  id="delete-account-confirm-button" 
                  class="modal-confirm-button" 
@@ -80,7 +87,8 @@ function MUIDeleteAccModal() {
               onClick={() => {
                  handleCloseModal();}}
                  value='Cancel' />
-    </div>
+    </Box>
+    </Box>
     
                 
             </Box>
