@@ -23,8 +23,8 @@ function MapCard(props) {
         event.preventDefault();
     }
     function handleEditMap(event) {
-        event.stopPropagation();
-        event.preventDefault();
+        
+        store.changeModal("NEW_MAP_NAME");
     }
     
 
@@ -38,11 +38,9 @@ function MapCard(props) {
                 flexDirection="column"
                 justifyContent="center"
                 alignItems="center"> <Box style={{fontWeight: "medium"}}>{map.title}</Box>
-                <Box sx={{marginTop:"3%",}}><FileCopyIcon onclick = {handleDuplicateMap} sx={{"&:hover": { fill: "yellow"}}}/>
-                <BorderColorIcon onclick = {handleEditMap} sx={{"&:hover": { fill: "yellow"}}}/><DeleteIcon onclick = {handleRemoveMap}sx={{"&:hover": { fill: "yellow"}}}/></Box>
-                
+                <Box sx={{marginTop:"3%",}}><FileCopyIcon onClick = {handleDuplicateMap} sx={{"&:hover": { fill: "yellow"}}}/>
+                <BorderColorIcon onClick = {handleEditMap} sx={{"&:hover": { fill: "yellow"}}}/><DeleteIcon onClick = {handleRemoveMap}sx={{"&:hover": { fill: "yellow"}}}/></Box>
             </Box>
-           
         </Box>
     </Box>
     </Box>

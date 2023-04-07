@@ -21,6 +21,7 @@ import MapCard from './MapCard.js'
 
 
 import MUIDeleteAccModal from './MUIDeleteAccModal'
+import MUIChangeMapNameModal from './MUIChangeMapNameModal'
 import { GlobalStoreContext } from '../store'
 
 const style = {
@@ -208,6 +209,7 @@ function YourMap() {
     return (
         <div className="YourMap">
             <MUIDeleteAccModal />
+            <MUIChangeMapNameModal/>
             <div id="borderchange">
                 <Box sx={{ marginTop: "1%" }}>
                     <Grid container rowSpacing={2} columnSpacing={4}>
