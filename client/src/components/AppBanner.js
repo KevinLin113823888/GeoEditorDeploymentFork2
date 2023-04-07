@@ -27,6 +27,12 @@ export default function AppBanner() {
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
+    const handleSetScreenCommunity=()=>{
+        store.changeScreen("community")
+    };
+    const handleSetScreenYourMap=()=>{
+        store.changeScreen("yourmaps")
+    };
 
     const handleMenuClose = () => {
         setAnchorEl(null);
@@ -107,6 +113,7 @@ export default function AppBanner() {
                 <PublicIcon style={{fontSize: "2rem",color:"#009800"}}/>
                 <Grid container justifyContent="flex-end" style={{ gap: 10 }}>
                     <IconButton
+                        onClick={handleSetScreenYourMap}
                         component={Link}
                         to="/map"
                         style={{border:"solid #000000",color:"black"}}
@@ -114,6 +121,7 @@ export default function AppBanner() {
                         <MapIcon />
                     </IconButton>
                     <IconButton
+                        onClick={handleSetScreenCommunity}
                         component={Link}
                         to="/community"
                         style={{border:"solid #000000",color:"black"}}

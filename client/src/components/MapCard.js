@@ -53,7 +53,7 @@ function MapCard(props) {
         <Box sx={{ marginLeft: "10%",width:"100%"}}>
             <Box onClick = {handleClick} sx={{ width: "100%", backgroundColor: "lightgreen", height: "20vh"}}/>
             <Box sx={{ width: "100%", backgroundColor: "#ededed", height: "10vh"}}>
-                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"/> 
+                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"> 
                 <Box style={{fontWeight: "medium"}}>{map.title}</Box>
                 <Box sx={{marginTop:"3%",}}>
                     <FileCopyIcon onClick = {handleDuplicateMap} sx={{"&:hover": { fill: "yellow"}}}/>
@@ -61,8 +61,23 @@ function MapCard(props) {
                     <DeleteIcon onClick = {handleRemoveMap}sx={{"&:hover": { fill: "yellow"}}}/>
                 </Box>
             </Box>
+            </Box>
         </Box>
     </Box>
+    if(store.currentScreen=="community"){
+        cardElement=
+        <Box sx={{"&:hover": {backgroundColor: "rgba(255,240,10,0.8)",}}}>
+        <Box sx={{ marginLeft: "10%",width:"100%"}}>
+            <Box onClick = {handleClick} sx={{ width: "100%", backgroundColor: "lightgreen", height: "20vh"}}/>
+            <Box sx={{ width: "100%", backgroundColor: "#ededed", height: "10vh"}}>
+                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"> 
+                <Box style={{fontWeight: "medium"}}>{map.title}</Box>
+                
+                </Box>
+            </Box>
+        </Box>
+        </Box>
+    }
     return (
         cardElement
     );
