@@ -1,4 +1,4 @@
-import { React, useState, useEffect,useContext } from "react";
+import { React, useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 
 import TextField from '@mui/material/TextField';
@@ -16,6 +16,8 @@ import InputBase from '@mui/material/InputBase';
 import Grid from '@mui/material/Grid';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import MapCard from './MapCard.js'
 
 
 import MUIDeleteAccModal from './MUIDeleteAccModal'
@@ -101,6 +103,8 @@ function YourMap() {
                 setUsername(data.username);
                 if (data.ownedMapCards === undefined) {
                     setMapCards([]);
+                } else {
+                    setMapCards(data.ownedMapCards);
                 }
             })
             .catch(err => console.log(err));
@@ -112,7 +116,7 @@ function YourMap() {
     const handleSortByDate = (event) => {
         //store.sortMapCardsByDate()
         setAnchorEl(null);
-        
+
     };
     const handleSortByName = (event) => {
         //store.sortMapCardsByName()
@@ -172,7 +176,7 @@ function YourMap() {
     function createNewMap() {
         console.log(newMapName)
         if (newMapName !== "") {
-            fetch("http://159.203.180.161:9000//" + 'map/createMap', {
+            fetch("http://localhost:9000/" + 'map/createMap', {
                 method: "POST",
                 credentials: 'include',
                 headers: {
@@ -200,38 +204,73 @@ function YourMap() {
 
     const openCreateModal = () => setMapNameModelOpen(true);
     const closeCreateModal = () => setMapNameModelOpen(false);
-
+    let mapCardsArr =[{title:"map1"},{title:"map2"},{title:"map3"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"} ];
     return (
         <div className="YourMap">
             <MUIDeleteAccModal />
             <div id="borderchange">
-                <Grid container rowSpacing={1} columnSpacing={0}>
-                    <Grid item xs={4} >
-                        <IconButton type="submit" aria-label="search" onClick={handleKeyPress}>
-                            <SearchIcon style={{ fill: "black" }} />
-                        </IconButton>
+                <Box sx={{ marginTop: "1%" }}>
+                    <Grid container rowSpacing={2} columnSpacing={4}>
+                        <Grid item xs={4} >
+
+                        </Grid>
+                        <Grid item xs={6} >
+
+                            <TextField type="text" id="outlined-basic" variant="outlined" onChange={
+                                handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw" placeholder="Search" style={{ marginTop: "0.1vw", background: "#ffffff", width: "60%" }}
+                                inputProps={{
+                                    style: {
+                                        height: "0vw"
+                                    }
+                                }} />
+                                 <IconButton type="submit" aria-label="search" onClick={handleKeyPress}>
+                                <SearchIcon style={{ fill: "black" }} />
+                            </IconButton>
+                            <IconButton type="submit" aria-label="sort" onClick={handleSortMenuOpen} >
+                                <SortIcon style={{ fill: "black" }} />
+                            </IconButton>
+                        </Grid>
+                        <Grid item xs={2} >
+                           
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Typography id="newmap-modal-title" variant="h6" component="h2" sx={{ marginLeft: "5%" }} style={{color: "#8c8a8a"}}>
+                                My Maps
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={10}>
+
+                        </Grid>
+                        <Grid item  xs={1.4} >
+                            <Box sx={{ width: "100%", backgroundColor: "#ededed", height: "30vh", marginLeft: "10%","&:hover": { backgroundColor: "grey",}}} onClick={openCreateModal} >
+                                <ControlPointIcon style={{ fill: "black", fontSize: "5rem", marginLeft: "17%", marginTop: "35%" }} />
+                            </Box>
+                        </Grid>
+                        
+                        { 
+                            mapCardsArr.map((map, index) => (
+                                <Grid item xs={1.4} key = {index} >
+                                <MapCard
+                                    id = {"map-card"+ (index)}
+                                    key = {"map-card"+ (index)}
+                                    index={index}
+                                    map={map}
+                                    
+                                />
+                                </Grid>
+                            ))
+                        }
+
                     </Grid>
-                    <Grid item xs={4} >
-
-                        <TextField type="text" id="outlined-basic" variant="outlined" onChange={
-                            handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw" placeholder="Search" style={{ marginTop: "0.1vw", background: "#ffffff", width: "100%" }}
-                            inputProps={{
-                                style: {
-                                    height: "0vw"
-                                }
-                            }} />
-                    </Grid>
-                    <Grid item xs={4} >
-                        <IconButton type="submit" aria-label="sort" onClick={handleSortMenuOpen} >
-                            <SortIcon style={{ fill: "black" }} />
-                        </IconButton>
-                    </Grid>
-
-                </Grid>
+                </Box>
 
 
 
-
+                {/* <Grid item xs ={1} sx={{height:"20%"}} >
+                        <Box sx={{width:"100%" ,backgroundColor:"grey", height:"100%"}}>
+                            <ControlPointIcon style={{ fill: "black" }} />
+                        </Box>
+                    </Grid> */}
 
                 {/* <Search>
                     <SearchIconWrapper>
@@ -244,18 +283,13 @@ function YourMap() {
 
 
             </div>
-            <h1>{username} Maps</h1>
 
-            <IconButton data-cy="createmap-button" onClick={openCreateModal}>
-                <AddCircleIcon style={{ fill: "black" }} />
-            </IconButton>
 
-            {mapCards
-                ?
-                <div>You currently have no maps</div>
-                :
-                <div>Here are your maps</div>
-            }
+            {/* <IconButton data-cy="createmap-button" onClick={openCreateModal}>
+                <ControlPointIcon style={{ fill: "black" }} />
+            </IconButton> */}
+
+
 
             <Modal
                 open={mapNameModelOpen}

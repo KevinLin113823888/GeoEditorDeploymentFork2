@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import PeopleIcon from '@mui/icons-material/People';
 import MapIcon from '@mui/icons-material/Map';
 import Grid from '@mui/material/Grid';
+import PublicIcon from '@mui/icons-material/Public';
 
 export default function AppBanner() {
    
@@ -103,6 +104,7 @@ export default function AppBanner() {
                     component="span">
                     Editor
                 </Typography>
+                <PublicIcon style={{fontSize: "2rem",color:"#009800"}}/>
                 <Grid container justifyContent="flex-end" style={{ gap: 10 }}>
                     <IconButton
                         component={Link}
