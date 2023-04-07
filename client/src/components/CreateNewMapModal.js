@@ -81,7 +81,7 @@ function CreateNewMapModal() {
                     sx={style}>
                 <header className="dialog-header">
                     <Box style={{marginBottom:"10%"}}>
-                    <Typography id="newmap-modal-title" variant="h6" component="h2" >
+                    <Typography id="newmap-modal-title" variant="h6" component="h2" style={{fontSize:"2rem"}}>
                         <strong>Enter new Map name</strong>
                     </Typography>
                     </Box>

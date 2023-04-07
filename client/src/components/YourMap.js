@@ -168,6 +168,7 @@ function YourMap() {
     return (
         <div className="YourMap">
             <MUIDeleteAccModal />
+            <CreateNewMapModal/>
             <MUIChangeMapNameModal/>
             <div id="borderchange">
                 <Box sx={{ marginTop: "1%" }}>
