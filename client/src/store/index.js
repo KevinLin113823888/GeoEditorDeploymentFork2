@@ -65,9 +65,20 @@ function GlobalStoreContextProvider(props) {
                     userMapCards: store.userMapCards,
                 });
             }
+            case GlobalStoreActionType.CHANGE_SCREEN: {
+                return setStore({
+                    currentModal: CurrentModal.NONE,
+                    currentMap: store.currentMap,
+                    currentMapData : store.currentMapData, //the current map data we are editing
+                    currentScreen: payload ,
+                    guestMode: store.guestMode,
+                    adminMode: store.adminMode,
+                    userMapCards: store.userMapCards,
+                });
+            }
             case GlobalStoreActionType.NEW_MAP_NAME: {
                 return setStore({
-                    currentModal : CurrentModal.NONE,
+                    currentModal: CurrentModal.NONE,
                     currentMap: payload,
                     currentMapData : store.currentMapData, //the current map data we are editing
                     currentScreen: store.currentScreen ,
@@ -148,6 +159,13 @@ function GlobalStoreContextProvider(props) {
         storeReducer({
             type: GlobalStoreActionType.CHANGE_MODAL,
             payload: modal
+        }
+        );
+    }
+    store.changeScreen= function(screen){
+        storeReducer({
+            type: GlobalStoreActionType.CHANGE_SCREEN,
+            payload: screen
         }
         );
     }
