@@ -69,7 +69,6 @@ function MUIDeleteAccModal() {
                         }}} />
     <div class="modal-footer" id="confirm-cancel-container">
     <input type="button" 
-                 
                  id="delete-account-confirm-button" 
                  class="modal-confirm-button" 
                  onClick={() => {
@@ -77,9 +76,10 @@ function MUIDeleteAccModal() {
                  value='Confirm' />
      <input type="button" 
               class="modal-cancel-button" 
+              style= {{"background-color": "lightgrey"}}
               onClick={() => {
                  handleCloseModal();}}
-              value='Cancel' />
+                 value='Cancel' />
     </div>
     
                 

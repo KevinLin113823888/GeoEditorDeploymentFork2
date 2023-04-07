@@ -21,19 +21,10 @@ import MapCard from './MapCard.js'
 
 
 import MUIDeleteAccModal from './MUIDeleteAccModal'
-import { GlobalStoreContext } from '../store'
+import CreateNewMapModal from './CreateNewMapModal'
+import { CurrentModal, GlobalStoreContext } from '../store'
 
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
+
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -82,8 +73,6 @@ function YourMap() {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [mapCards, setMapCards] = useState([])
-    const [mapNameModelOpen, setMapNameModelOpen] = useState(false)
-    const [newMapName, setNewMapName] = useState("");
     const [search, setSearch] = useState("");
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
@@ -149,9 +138,6 @@ function YourMap() {
 
     </Menu>
 
-    function changeMapName(event) {
-        setNewMapName(event.target.value);
-    }
 
     function handleUpdateSearch(event) {
         console.log("searching...", event.target.value);
@@ -169,45 +155,19 @@ function YourMap() {
         }
     }
 
+    function openCreateModal(){
+        store.changeModal(CurrentModal.CREATE_NEW_MAP)
+    }
+
     function handleSort() {
         console.log("sorting that needs to be implemented");
     }
 
-    function createNewMap() {
-        console.log(newMapName)
-        if (newMapName !== "") {
-            fetch("http://localhost:9000/" + 'map/createMap', {
-                method: "POST",
-                credentials: 'include',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    title: newMapName
-                }),
-            })
-                .then((res) => {
-                    if (res.status === 200) {
-                        console.log("new map created");
-                    }
-                    else {
-                        throw new Error('map not created');
-                    }
-                    return res.json();
-                }).then((data) => {
-                    console.log(data);
-                    navigate('/editor', { state: { mapId: data.mapId } });
-                })
-                .catch(err => console.log(err));
-        }
-    }
-
-    const openCreateModal = () => setMapNameModelOpen(true);
-    const closeCreateModal = () => setMapNameModelOpen(false);
     let mapCardsArr =[{title:"map1"},{title:"map2"},{title:"map3"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"} ];
     return (
         <div className="YourMap">
             <MUIDeleteAccModal />
+            <CreateNewMapModal/>
             <div id="borderchange">
                 <Box sx={{ marginTop: "1%" }}>
                     <Grid container rowSpacing={2} columnSpacing={4}>
@@ -289,22 +249,6 @@ function YourMap() {
                 <ControlPointIcon style={{ fill: "black" }} />
             </IconButton> */}
 
-
-
-            <Modal
-                open={mapNameModelOpen}
-                onClose={closeCreateModal}
-                aria-labelledby="newmap-modal-title"
-                aria-describedby="newmap-modal-description"
-            >
-                <Box sx={style}>
-                    <Typography id="newmap-modal-title" variant="h6" component="h2">
-                        Enter new Map name
-                    </Typography>
-                    <Input placeholder="Map name" onChange={changeMapName} />
-                    <Button variant="contained" onClick={createNewMap} >Create Map</Button>
-                </Box>
-            </Modal>
             {sortMenu}
         </div>
     )
