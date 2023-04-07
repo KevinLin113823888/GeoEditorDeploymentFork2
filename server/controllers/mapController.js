@@ -40,6 +40,15 @@ class mapController {
         }
     }
 
+    static async getMapById(req, res) {
+        var { id } = req.body;
+
+        var currentMap = Map.findOne({ _id: mongoose.Types.ObjectId(id) });
+        var currentMapData = MapData.findOne({ _id: currentMap.mapData });
+
+        return res.status(400).json({status: 'OK', title: currentMap.title});
+    }
+
     static async deleteMapById(req, res) {
         var { id } = req.body;
 

@@ -37,7 +37,23 @@ function MapViewerScreen(){
     useEffect(() => {
         upload();
         console.log("map id", id);
-        
+
+        if (id !== undefined) {
+            fetch("http://localhost:9000/" + 'user/loggedIn', {
+                method: "GET",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id: id }),
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log("map data", data);
+                })
+                .catch(err => console.log(err)
+            );
+        }
     },[])
 
 

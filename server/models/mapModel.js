@@ -10,7 +10,6 @@ const mapSchema = new Schema(
         title: { type: String, required: true, unique: true },
         owner: { type: ObjectId, required: true },
         mapData: { type: ObjectId, required: false },
-        mapData: { type: ObjectId, required: false },
         published: {type: Boolean, required: false},
         publishDate:{type:Date,required:false},
         lastModifiedDate:{type:Date,required:false},
