@@ -1,17 +1,12 @@
-import { Link } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button';
 import MapEditor from './MapEditor';
 import * as shapefile from "shapefile";
 import na from './na.json'
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import MapPropertySidebar from "./MapPropertySidebar";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-import DeleteIcon from '@mui/icons-material/Delete';
+import {CurrentModal, GlobalStoreContext} from "../../store";
 
 function MapViewerScreen(){
 
@@ -20,6 +15,10 @@ function MapViewerScreen(){
     const [state, setState] = useState(false);
 
     const [data, setData] = React.useState([]);
+
+
+    const { store } = useContext(GlobalStoreContext);
+
 
     const names = [];
     let count = 0;
@@ -155,13 +154,31 @@ function MapViewerScreen(){
         setGeoJson(na);
         setFileExist(true);
     }
+    const Buttons = (Function,Text) => {
+        const wrappedButton =
+
+            <Grid item xs >
+                <Button
+                    variant="contained"
+                    onClick={Function}
+                >
+                    {Text}
+                </Button>
+            </Grid>
+
+        return wrappedButton
+    }
+
+    const handleCompress = () => {}
+    const handleImport = () => {store.changeModal(CurrentModal.MAP_IMPORT)}
+    const handleExport = () => {store.changeModal(CurrentModal.MAP_EXPORT)}
+    const handleSave = () =>   {}
+    const handlePublish = () => {}
+    const handleMapClassification = () => {store.changeModal(CurrentModal.MAP_CLASSIFICATION)}
+
 
     return (
         <div className="App">
-            <button onClick={upload}>
-                Display North America geojson
-            </button>
-
 
             <div>Shapefile:
                 <input type="file" accept="geo.json" onChange={handleSelectFile}/>
@@ -173,11 +190,32 @@ function MapViewerScreen(){
             </div>
             <div> <input type="submit" value="submit" onClick={handleSubmit} /></div>
 
-            <div>Right click to delete vertex</div>
 
-            <TextField
-                name="your mom lol i meant your map"
-            />
+
+
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <TextField
+                        label="name of the map"
+                        disabled = {true}
+                        variant="standard"
+                        InputProps={{
+                            disableUnderline: true
+                        }}
+                    />
+                </Grid>
+                <Grid container spacing={2} item xs>
+                    {Buttons(handleCompress, "Compress")}
+                    {Buttons(handleImport, "Import")}
+                    {Buttons(handleExport, "Export")}
+                    {Buttons(handlePublish, "Publish")}
+                    {Buttons(handleSave, "Save")}
+                    {Buttons(handleMapClassification, "Map Classification")}
+
+                </Grid>
+            </Grid>
+
+
             <Grid container spacing={2}>
                 <Grid item xs={8}>
                     <MapEditor file={GeoJson} changeName={changeRegionName}/>

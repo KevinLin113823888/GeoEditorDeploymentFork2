@@ -12,6 +12,10 @@ import { GlobalStoreContextProvider } from './store'
 import MapViewerScreen from "./components/MapViewer/MapViewerScreen";
 import AppBanner from "./components/AppBanner"
 import MUIDeleteAccModal from './components/MUIDeleteAccModal'
+import ExportModal from "./components/MapViewer/MapViewerModal/ExportModal";
+import MapClassificationModal from "./components/MapViewer/MapViewerModal/MapClassificationModal";
+import MapColorwheelModal from "./components/MapViewer/MapViewerModal/MapColorwheelModal";
+import MapMergeChangeRegionNameModal from "./components/MapViewer/MapViewerModal/MapMergeChangeRegionNameModal";
 // import { Button } from '@mui/material';
 
 function App() {
@@ -19,6 +23,11 @@ function App() {
     <div className="App">
       <GlobalStoreContextProvider> 
       <AppBanner/>
+      <ExportModal/>
+      <MapClassificationModal/>
+      <MapColorwheelModal/>
+      <MapMergeChangeRegionNameModal/>
+
       <MUIDeleteAccModal/>
         <Routes>
           

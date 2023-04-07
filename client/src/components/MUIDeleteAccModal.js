@@ -41,8 +41,13 @@ function MUIDeleteAccModal() {
     return (
         <Modal
             open={store.currentModal == "DELETE_ACCOUNT"}
+            onClick={handleCloseModal}
+
         >
-            <Box sx={style}>
+            <Box sx={style}
+                 onClick={e => e.stopPropagation()}
+
+            >
 
     <header className="dialog-header">
         <Box style={{backgroundColor:"#f1f1f1", color:"#ff0000",paddingTop:"1vh",paddingBottom:"1vh",paddingLeft:"20%"}}>
