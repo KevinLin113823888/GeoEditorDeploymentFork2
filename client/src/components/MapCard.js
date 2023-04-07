@@ -5,7 +5,10 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from 'react-router-dom'
+
 function MapCard(props) {
+    const navigate = useNavigate();
     const { store } = useContext(GlobalStoreContext);
     const { id, map, index } = props;
 
@@ -34,6 +37,7 @@ function MapCard(props) {
         event.stopPropagation();
         event.preventDefault();
         // GO TO MAP EDITOR SCREEN
+        navigate("/map/" + id);
     }
     function handleDuplicateMap(event) {
         console.log("duplicating map of ", id);

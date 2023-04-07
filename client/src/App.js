@@ -34,7 +34,7 @@ function App() {
           <Route path="/map" exact element={<YourMap/>} />
           {/*<Route path='/editor' exact element={<MapEditor/>} />*/}
           <Route path="/forgotPassword" exact element={<ForgotPassword/>} />
-          <Route path="/editMap" exact element={<MapViewerScreen/>} />
+          <Route path="/map/:id" exact element={<MapViewerScreen/>} />
           <Route path="/community" exact element={<Community/>} />
         </Routes>
       </GlobalStoreContextProvider>

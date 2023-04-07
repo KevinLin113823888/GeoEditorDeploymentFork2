@@ -15,23 +15,19 @@ import {InputAdornment} from "@mui/material";
 import {Input} from "@mui/icons-material";
 import ImportModal from "./MapViewerModal/ImportModal";
 import MapLegendFooter from "./MapLegendFooter";
+import {useParams} from 'react-router-dom';
 
 function MapViewerScreen(){
 
     const [fileExist, setFileExist] = useState(false);
     const [GeoJson, setGeoJson] = useState({});
     const [state, setState] = useState(true);
-
-
-
-    const [data, setData] = React.useState([]);
-
-
-    const { store } = useContext(GlobalStoreContext);
+    const [data, setData] = useState([]);
     const [mapNameEdit, toggleMapNameEdit] = useState(false);
     const [mapName,setMapChange] = useState("Untitled");
 
-
+    const { store } = useContext(GlobalStoreContext);
+    const { id } = useParams();
 
     const names = [];
     let count = 0;
@@ -39,7 +35,9 @@ function MapViewerScreen(){
     let dbffile = null;
 
     useEffect(() => {
-        upload()
+        upload();
+        console.log("map id", id);
+        
     },[])
 
 
@@ -87,7 +85,7 @@ function MapViewerScreen(){
             ).then(function (e){
             e.read().then(
                 function next(result){
-                    console.log(result)
+                    // console.log(result)
                     if(result.value)
                     {
                         if(result.value.NAME_3)
@@ -120,18 +118,16 @@ function MapViewerScreen(){
                 reader.onload = async e => {
                     await readShapefile(reader.result)
                 }
-                console.log("shp file read");
+                // console.log("shp file read");
             }
         }
     }
-
-
 
     const handleSelectFile = (e) => {
         {
             shpfile = e.target.files[0];
 
-            console.log("shp file read");
+            // console.log("shp file read");
         }
     }
     const handleSelectFile2 = (e) => {
@@ -144,12 +140,12 @@ function MapViewerScreen(){
             reader.onload = async e => {
                 await readShapefile2(reader.result)
             }
-            console.log("dbf file read");
+            // console.log("dbf file read");
         }
     }
 
     const changeRegionName = (oldName, newName) =>{
-        console.log("newold", oldName, newName);
+        // console.log("newold", oldName, newName);
         let temp = GeoJson;
         temp.features.forEach((i) => {
             if (i.properties.name === oldName) {
@@ -157,16 +153,17 @@ function MapViewerScreen(){
                 setGeoJson(temp);
             }
         })
-        console.log("features", GeoJson.features);
+        // console.log("features", GeoJson.features);
         setState(!state);
     }
 
     const upload = () => {
-        console.log("upload the stuff")
-        console.log(na)
+        // console.log("upload the stuff")
+        // console.log(na)
         setGeoJson(na);
         setFileExist(true);
     }
+
     const Buttons = (Function,Text) => {
         const wrappedButton =
 
@@ -199,24 +196,18 @@ function MapViewerScreen(){
             <MapColorwheelModal/>
             <MapMergeChangeRegionNameModal/>
 
-            <div>Shapefile:
+            <div>
+                Shapefile:
                 <input type="file" accept="geo.json" onChange={handleSelectFile}/>
             </div>
-            <div>Dbf:
+            <div>
+                Dbf:
                 <input type="file" accept="geo.json" onChange={handleSelectFile2}/>
-
-
             </div>
             <div> <input type="submit" value="submit" onClick={handleSubmit} /></div>
 
-
-
-
             <Grid container spacing={2}>
                 <Grid item xs={6}>
-
-
-
 
                     <TextField
                         defaultValue={mapName}
@@ -225,7 +216,7 @@ function MapViewerScreen(){
                             toggleMapNameEdit(false)
                         }}
                         onBlur={(e) =>{
-                            console.log(e)
+                            // console.log(e)
                             toggleMapNameEdit(true)
                         }}
                         disabled = {mapNameEdit}
