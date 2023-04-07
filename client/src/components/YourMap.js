@@ -38,6 +38,10 @@ function YourMap() {
 
 
     useEffect(() => {
+        onLoad();
+    }, []);
+
+    function onLoad() {
         fetch("http://localhost:9000/" + 'user/loggedIn', {
             method: "GET",
             credentials: 'include',
@@ -55,7 +59,7 @@ function YourMap() {
                 }
             })
             .catch(err => console.log(err));
-    }, []);
+    }
 
     const handleSortMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
