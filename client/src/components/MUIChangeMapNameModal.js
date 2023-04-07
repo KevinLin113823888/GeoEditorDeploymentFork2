@@ -69,7 +69,7 @@ function MUIChangeMapNameModal() {
         <Box>
     <input type="button" 
                  
-                 id="delete-account-confirm-button" 
+                 
                  class="modal-confirm-button" 
                  onClick={() => {
                      handleChangeMapName();}}
