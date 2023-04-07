@@ -52,37 +52,31 @@ function MapClassificationModal() {
                 <header className="dialog-header">
                     <Box style={{backgroundColor:"#f1f1f1", color:"green",paddingTop:"1vh",paddingBottom:"1vh",paddingLeft:"20%"}}>
                         <Typography style={{fontSize:"1.4rem"}}>
-                            <strong>Select Export File Format</strong>
+                            <strong>Enter a brief description of your Map</strong>
                         </Typography>
                     </Box>
+
+
+                    <TextField
+                        onBlur={(e) =>{
+                            console.log(e)
+                        }}
+                            variant="filled"
+                        InputProps={{
+                            disableUnderline: true
+                        }}
+                    />
+
                 </header>
 
                 <Grid container spacing={2}>
-                    <Grid item xs >
-                        <Button
-                            variant="contained"
-                            onClick={Function}
-                        >
-                            GEOJSON
-                        </Button>
-                    </Grid>
-
 
                     <Grid item xs >
                         <Button
                             variant="contained"
                             onClick={Function}
                         >
-                            SHP/DBF
-                        </Button>
-                    </Grid>
-
-                    <Grid item xs >
-                        <Button
-                            variant="contained"
-                            onClick={Function}
-                        >
-                            JPEG
+                            Confirm
                         </Button>
                     </Grid>
 

@@ -23,10 +23,6 @@ function App() {
     <div className="App">
       <GlobalStoreContextProvider> 
       <AppBanner/>
-      <ExportModal/>
-      <MapClassificationModal/>
-      <MapColorwheelModal/>
-      <MapMergeChangeRegionNameModal/>
 
       <MUIDeleteAccModal/>
         <Routes>

@@ -6,18 +6,31 @@ import React, {useContext, useEffect, useState} from 'react';
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import MapPropertySidebar from "./MapPropertySidebar";
-import {CurrentModal, GlobalStoreContext} from "../../store";
+import {CurrentModal, GlobalStoreContext, GlobalStoreContextProvider} from "../../store";
+import ExportModal from "./MapViewerModal/ExportModal";
+import MapClassificationModal from "./MapViewerModal/MapClassificationModal";
+import MapColorwheelModal from "./MapViewerModal/MapColorwheelModal";
+import MapMergeChangeRegionNameModal from "./MapViewerModal/MapMergeChangeRegionNameModal";
+import {InputAdornment} from "@mui/material";
+import {Input} from "@mui/icons-material";
+import ImportModal from "./MapViewerModal/ImportModal";
+import MapLegendFooter from "./MapLegendFooter";
 
 function MapViewerScreen(){
 
     const [fileExist, setFileExist] = useState(false);
     const [GeoJson, setGeoJson] = useState({});
-    const [state, setState] = useState(false);
+    const [state, setState] = useState(true);
+
+
 
     const [data, setData] = React.useState([]);
 
 
     const { store } = useContext(GlobalStoreContext);
+    const [mapNameEdit, toggleMapNameEdit] = useState(false);
+    const [mapName,setMapChange] = useState("Untitled");
+
 
 
     const names = [];
@@ -180,6 +193,12 @@ function MapViewerScreen(){
     return (
         <div className="App">
 
+            <ImportModal/>
+            <ExportModal/>
+            <MapClassificationModal/>
+            <MapColorwheelModal/>
+            <MapMergeChangeRegionNameModal/>
+
             <div>Shapefile:
                 <input type="file" accept="geo.json" onChange={handleSelectFile}/>
             </div>
@@ -195,10 +214,22 @@ function MapViewerScreen(){
 
             <Grid container spacing={2}>
                 <Grid item xs={6}>
+
+
+
+
                     <TextField
-                        label="name of the map"
-                        disabled = {true}
-                        variant="standard"
+                        defaultValue={mapName}
+                        hiddenLabel
+                        onClick={() => {
+                            toggleMapNameEdit(false)
+                        }}
+                        onBlur={(e) =>{
+                            console.log(e)
+                            toggleMapNameEdit(true)
+                        }}
+                        disabled = {mapNameEdit}
+                        variant="filled"
                         InputProps={{
                             disableUnderline: true
                         }}
@@ -222,6 +253,10 @@ function MapViewerScreen(){
                 </Grid>
                 <Grid item xs={4}>
                     <MapPropertySidebar file={GeoJson}/>
+                </Grid>
+
+                <Grid item xs={8}>
+                    <MapLegendFooter file={GeoJson}/>
                 </Grid>
             </Grid>
 

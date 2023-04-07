@@ -12,6 +12,9 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from '@mui/icons-material/Close';
+import { HexColorPicker } from "react-colorful";
+
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -34,6 +37,9 @@ function MapColorwheelModal() {
         store.changeModal("NONE");
     }
 
+    const [color, setColor] = useState("#aabbcc");
+
+
     return (
         <Modal open={store.currentModal === CurrentModal.MAP_PICK_COLOR_WHEEL}
                onClick={handleCloseModal}
@@ -52,37 +58,22 @@ function MapColorwheelModal() {
                 <header className="dialog-header">
                     <Box style={{backgroundColor:"#f1f1f1", color:"green",paddingTop:"1vh",paddingBottom:"1vh",paddingLeft:"20%"}}>
                         <Typography style={{fontSize:"1.4rem"}}>
-                            <strong>Select Export File Format</strong>
+                            <strong>Choose a new Color</strong>
                         </Typography>
                     </Box>
                 </header>
 
                 <Grid container spacing={2}>
+
+
                     <Grid item xs >
+                        <HexColorPicker color={color} onChange={setColor} />;
+
                         <Button
                             variant="contained"
                             onClick={Function}
                         >
-                            GEOJSON
-                        </Button>
-                    </Grid>
-
-
-                    <Grid item xs >
-                        <Button
-                            variant="contained"
-                            onClick={Function}
-                        >
-                            SHP/DBF
-                        </Button>
-                    </Grid>
-
-                    <Grid item xs >
-                        <Button
-                            variant="contained"
-                            onClick={Function}
-                        >
-                            JPEG
+                            Confirm
                         </Button>
                     </Grid>
 
