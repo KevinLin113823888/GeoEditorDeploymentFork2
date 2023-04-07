@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { GlobalStoreContext } from '../store'
 
@@ -19,7 +19,7 @@ import Grid from '@mui/material/Grid';
 import PublicIcon from '@mui/icons-material/Public';
 
 export default function AppBanner() {
-   
+    const navigate = useNavigate();
     const { store } = useContext(GlobalStoreContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
@@ -50,6 +50,10 @@ export default function AppBanner() {
   
     }
     const handleHome = () => {
+    }
+
+    const goHome = () => {
+        navigate("/");
     }
 
     const menuId = 'primary-search-account-menu';
@@ -98,18 +102,19 @@ export default function AppBanner() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" style={{background: '#C6DCE5', margin:'0'}} elevation={0}>
                 <Toolbar variant = "regular">
-                    
-                <Typography
-                    style={{ fontSize: "2rem", fontFamily: "October Tamil", color: "#0049ff", fontWeight: "bold", display: "inline" }}
-                    
-                    component="span">
-                    Geo
-                </Typography>
-                <Typography
-                    style={{ fontSize: "2rem", fontFamily: "Satisfy", color: "#009800", fontWeight: "bold", display: "inline" }}
-                    component="span">
-                    Editor
-                </Typography>
+                <div onClick={goHome}>   
+                    <Typography
+                        style={{ fontSize: "2rem", fontFamily: "October Tamil", color: "#0049ff", fontWeight: "bold", display: "inline" }}
+                        
+                        component="span">
+                        Geo
+                    </Typography>
+                    <Typography
+                        style={{ fontSize: "2rem", fontFamily: "Satisfy", color: "#009800", fontWeight: "bold", display: "inline" }}
+                        component="span">
+                        Editor
+                    </Typography>
+                </div>
                 <PublicIcon style={{fontSize: "2rem",color:"#009800"}}/>
                 <Grid container justifyContent="flex-end" style={{ gap: 10 }}>
                     <IconButton
