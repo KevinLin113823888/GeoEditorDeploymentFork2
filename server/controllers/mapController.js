@@ -54,11 +54,34 @@ class mapController {
     }
 
     static async duplicateMapById(req, res) {
+        var { id } = req.body;
 
+        var currentMapCard = MapCard.findOne({ _id: mongoose.Types.ObjectId(id) });
+
+        var currentMap = Map.findOne({ _id: currentMapCard._id });
+        
+        var currentMapData = MapData.findOne({ _id: currentMap._id });
+
+        currentMapCard._id = mongoose.Types.ObjectId();
+        currentMap._id = mongoose.Types.ObjectId();
+        currentMapData._id = mongoose.Types.ObjectId();
+
+        currentMapCard.map = currentMap._id;
+        currentMap.mapData = currentMapData._id;
+
+        MapCard.insert(currentMapCard);
+        Map.insert(currentMap);
+        MapData.insert(currentMapData);
+
+        return res.status(400).json({status: 'OK'});
     }
 
     static async changeMapNameById(req, res) {
+        var { id, newName } = req.body;
+        var currentMapCard = await MapCard.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, { title: newName });
+        Map.Update({ _id: currentMapCard.map }, { title: newName });
         
+        return res.status(400).json({status: 'OK'});
     }
 }
 
