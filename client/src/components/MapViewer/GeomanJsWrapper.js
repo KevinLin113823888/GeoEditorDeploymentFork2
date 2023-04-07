@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import { useLeafletContext } from "@react-leaflet/core";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
+import './geomanButton.css';
 
 function GeomanJsWrapper(props) {
     //with this we can actually customize all of the buttons
@@ -19,22 +20,42 @@ function GeomanJsWrapper(props) {
         const leafletContainer = L
 
         const mergeButtonAction = [
+            'merge',
             {
                 text: 'merge selected region',
                 onClick: () => {
                     props.merge()
                 },
             },
-        ];
+        ]
 
-        map.pm.Toolbar.createCustomControl({
-            name: 'MergeButton',
-            block: 'edit',
-            actions: mergeButtonAction,
-            onClick: ()=>{
-                props.toggleSelectMode()
-            }
-        });
+        const customButtonNameList = [
+            "merge", "addRegion", "addLegend", "changeBackgroundColor", "changeRegionColor",
+            "changeBorderColor", "addText",
+            "editVertex", "moveRegion", "splitRegion", "deleteRegion", "undo", "redo"
+        ]
+        const actionsList = [
+
+        ]
+        let onClickFunction = []
+
+        for(let index in customButtonNameList){
+            let name = customButtonNameList[index]
+            let action = actionsList[index]
+            let onClickHandler = onClickFunction[index]
+
+            map.pm.Toolbar.createCustomControl({
+                className:name,
+                name: name,
+                block: 'edit',
+                actions: action,
+                onClick: ()=>{onClickHandler()}
+            });
+        }
+
+
+
+
             L.pm.addControls({
                 position: 'topleft',
                 drawMarker: false,

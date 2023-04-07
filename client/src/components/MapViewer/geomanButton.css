@@ -1,0 +1,55 @@
+
+.merge{
+    background-image: url('geomanButtonIcons/merge.svg')
+}
+
+
+.addRegion{
+    background-image: url('geomanButtonIcons/addRegion.svg')
+}
+
+
+
+.addLegend{
+    background-image: url('geomanButtonIcons/border-all.svg')
+}
+
+.changeBackgroundColor{
+    background-image: url('geomanButtonIcons/paint-bucket.svg')
+}
+
+
+.changeRegionColor{
+    background-image: url('geomanButtonIcons/easel2-fill.svg')
+}
+
+.changeBorderColor{
+    background-image: url('geomanButtonIcons/easel2.svg')
+}
+
+.addText{
+    background-image: url('geomanButtonIcons/fonts.svg')
+}
+.editVertex{
+    background-image: url('geomanButtonIcons/bounding-box.svg')
+}
+
+.moveRegion{
+    background-image: url('geomanButtonIcons/arrows-move.svg')
+}
+.splitRegion{
+    background-image: url('geomanButtonIcons/scissors.svg')
+}
+
+.deleteRegion{
+    background-image: url('geomanButtonIcons/trash.svg')
+}
+
+.undo{
+    background-image: url('geomanButtonIcons/arrow-counterclockwise.svg')
+}
+
+.redo{
+    background-image: url('geomanButtonIcons/arrow-clockwise.svg')
+}
+
