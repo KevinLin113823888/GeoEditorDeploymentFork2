@@ -24,6 +24,7 @@ import MUIDeleteAccModal from './MUIDeleteAccModal'
 import CreateNewMapModal from './CreateNewMapModal'
 import { CurrentModal, GlobalStoreContext } from '../store'
 
+import MUIChangeMapNameModal from './MUIChangeMapNameModal'
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -167,7 +168,7 @@ function YourMap() {
     return (
         <div className="YourMap">
             <MUIDeleteAccModal />
-            <CreateNewMapModal/>
+            <MUIChangeMapNameModal/>
             <div id="borderchange">
                 <Box sx={{ marginTop: "1%" }}>
                     <Grid container rowSpacing={2} columnSpacing={4}>
