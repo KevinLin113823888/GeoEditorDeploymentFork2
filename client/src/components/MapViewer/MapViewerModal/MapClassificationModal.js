@@ -79,13 +79,7 @@ function MapClassificationModal() {
                             Confirm
                         </Button>
                     </Grid>
-
-
-
                 </Grid>
-
-
-
             </Box>
         </Modal>
     );

@@ -1,15 +1,12 @@
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
+
 import {React} from "react";
-import MapEditor from "./MapEditor";
-import Typography from "@mui/material/Typography";
+
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+
+import PropertyCard from './PropertyCard.js'
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from '@mui/icons-material/Add';
-import styled from "@emotion/styled";
-import {Add, List} from "@mui/icons-material";
-import {ListItem, ListItemIcon, ListItemText} from "@mui/material";
 
 function MapPropertySidebar(props) {
 
@@ -32,20 +29,36 @@ function MapPropertySidebar(props) {
 
     return (
     <div >
-
-
-        <Grid item xs={12}
-        >
-
-            <ListItem
+            <Box sx={{width:"80%",height:"100vh",maxHeight:"80%"}} style={{ border:"1px solid black"}}>
+                <Box sx={{marginLeft:"3%"}}>
+            <Typography
+                    style={{ fontSize: "1.8rem", fontFamily: "October Tamil", color: "#000000", fontWeight: "bold", display: "inline" }}
+                   
+                    component="span">
+                    Properties
+                </Typography>
+                <IconButton >
+                        < AddIcon style={{fill:"#000000"}}/>
+                </IconButton>
+            {propertiesMapList.map((propertyObj, index) => (
+                    <PropertyCard
+                        key={'map-property-' + (index)}
+                        index={index}
+                        propertyObj={propertyObj}
+                        propertyMap= {propertiesMap}
+                    />
+                ))} 
+                </Box> 
+            {/* <ListItem
                 secondaryAction={
-                    <IconButton aria-label="comment">
+                    <IconButton >
                         < AddIcon/>
                     </IconButton>
 
                 }
                 sx={{
                     width: 150,
+                    
                 }}
             >
                 <ListItemText primary={`properties: `} />
@@ -56,9 +69,6 @@ function MapPropertySidebar(props) {
                         <ListItem
                             sx={{
                                 width: 300,
-                                color: 'black',
-                                border: 'solid'
-
                             }}
                             key={key}
                             secondaryAction={
@@ -71,8 +81,8 @@ function MapPropertySidebar(props) {
                             <ListItemText primary={`${propertiesMap.get(key)}: `} />
 
                         </ListItem>
-                    )}
-        </Grid>
+                    )} */}
+            </Box>
 
     </div>
 )}
