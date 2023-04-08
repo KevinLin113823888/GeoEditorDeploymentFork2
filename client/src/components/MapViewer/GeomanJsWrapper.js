@@ -37,7 +37,9 @@ function GeomanJsWrapper(props) {
         const actionsList = [
 
         ]
-        let onClickFunction = []
+        let onClickFunction = [
+
+        ]
 
         for(let index in customButtonNameList){
             let name = customButtonNameList[index]
@@ -47,6 +49,7 @@ function GeomanJsWrapper(props) {
             map.pm.Toolbar.createCustomControl({
                 className:name,
                 name: name,
+                title: name,
                 block: 'edit',
                 actions: action,
                 onClick: ()=>{onClickHandler()}
@@ -70,6 +73,7 @@ function GeomanJsWrapper(props) {
                 removalMode:false,
                 cutPolygon:false,
                 dragMode:false,
+                editMode:false
             });
             L.pm.setGlobalOptions({
                 continueDrawing: true,

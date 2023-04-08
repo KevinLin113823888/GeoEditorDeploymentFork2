@@ -11,11 +11,12 @@ import ExportModal from "./MapViewerModal/ExportModal";
 import MapClassificationModal from "./MapViewerModal/MapClassificationModal";
 import MapColorwheelModal from "./MapViewerModal/MapColorwheelModal";
 import MapMergeChangeRegionNameModal from "./MapViewerModal/MapMergeChangeRegionNameModal";
-import {InputAdornment} from "@mui/material";
+import {FormControl, InputAdornment} from "@mui/material";
 import {Input} from "@mui/icons-material";
 import ImportModal from "./MapViewerModal/ImportModal";
 import MapLegendFooter from "./MapLegendFooter";
 import {useParams} from 'react-router-dom';
+import Box from "@mui/material/Box";
 
 function MapViewerScreen(){
 
@@ -23,7 +24,6 @@ function MapViewerScreen(){
     const [GeoJson, setGeoJson] = useState({});
     const [state, setState] = useState(true);
     const [data, setData] = useState([]);
-    const [mapNameEdit, toggleMapNameEdit] = useState(false);
     const [mapName,setMapChange] = useState("Untitled");
 
     const { store } = useContext(GlobalStoreContext);
@@ -185,6 +185,9 @@ function MapViewerScreen(){
 
             <Grid item xs >
                 <Button
+                    sx={{
+                        width: 150
+                    }}
                     variant="contained"
                     onClick={Function}
                 >
@@ -203,6 +206,8 @@ function MapViewerScreen(){
     const handleMapClassification = () => {store.changeModal(CurrentModal.MAP_CLASSIFICATION)}
 
 
+
+
     return (
         <div className="App">
 
@@ -212,59 +217,81 @@ function MapViewerScreen(){
             <MapColorwheelModal/>
             <MapMergeChangeRegionNameModal/>
 
-            <div>
-                Shapefile:
-                <input type="file" accept="geo.json" onChange={handleSelectFile}/>
-            </div>
-            <div>
-                Dbf:
-                <input type="file" accept="geo.json" onChange={handleSelectFile2}/>
-            </div>
-            <div> <input type="submit" value="submit" onClick={handleSubmit} /></div>
+            {/*<div>*/}
+            {/*    Shapefile:*/}
+            {/*    <input type="file" accept="geo.json" onChange={handleSelectFile}/>*/}
+            {/*</div>*/}
+            {/*<div>*/}
+            {/*    Dbf:*/}
+            {/*    <input type="file" accept="geo.json" onChange={handleSelectFile2}/>*/}
+            {/*</div>*/}
+            {/*<div> <input type="submit" value="submit" onClick={handleSubmit} /></div>*/}
 
             <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={4}
+                >
 
-                    <TextField
-                        defaultValue={mapName}
-                        hiddenLabel
-                        onClick={() => {
-                            toggleMapNameEdit(false)
-                        }}
-                        onBlur={(e) =>{
-                            // console.log(e)
-                            toggleMapNameEdit(true)
-                        }}
-                        disabled = {mapNameEdit}
-                        variant="filled"
-                        InputProps={{
-                            disableUnderline: true
-                        }}
-                    />
+                    <Box
+                        sx={{
+                            paddingLeft: "2%",
+                            paddingTop: "1%",
+                            maxWidth: '100%'}}>
+                        <TextField
+                            sx={{
+                                fontSize: 100
+                            }}
+                            defaultValue={mapName}
+                            hiddenLabel
+                            variant="standard"
+
+
+                            InputProps={{
+                                style: {fontSize: 40},
+                                disableUnderline: true
+                            }}
+                            onChange={
+                                (event)=>{
+                                    console.log("searching...", event.target.value);
+                                    setMapChange(event.target.value)}}
+                            fullWidth  />
+                    </Box>
+
                 </Grid>
-                <Grid container spacing={2} item xs>
-                    {Buttons(handleCompress, "Compress")}
-                    {Buttons(handleImport, "Import")}
-                    {Buttons(handleExport, "Export")}
-                    {Buttons(handlePublish, "Publish")}
-                    {Buttons(handleSave, "Save")}
-                    {Buttons(handleMapClassification, "Map Classification")}
 
+                <Box item xs={8} sx={{
+                    paddingTop: "2%"
+                }}>
+                <Grid container spacing={2} >
+                        {Buttons(handleCompress, "Compress")}
+                        {Buttons(handleImport, "Import")}
+                        {Buttons(handleExport, "Export")}
+                        {Buttons(handlePublish, "Publish")}
+                        {Buttons(handleSave, "Save")}
+                        {Buttons(handleMapClassification, "Classification")}
+                    </Grid>
+                </Box>
+
+                <Grid item xs={9}>
+                    <Box
+                        sx={{
+                            paddingLeft: "1.5%"
+                        }}>
+                        <MapEditor file={GeoJson} changeName={changeRegionName}/>
+
+                    </Box>
                 </Grid>
-            </Grid>
-
-
-            <Grid container spacing={2}>
-                <Grid item xs={8}>
-                    <MapEditor file={GeoJson} changeName={changeRegionName}/>
-                </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={3}>
                     <MapPropertySidebar file={GeoJson}/>
                 </Grid>
 
                 <Grid item xs={8}>
                     <MapLegendFooter file={GeoJson}/>
                 </Grid>
+            </Grid>
+
+
+            <Grid container spacing={2}>
+
             </Grid>
 
 

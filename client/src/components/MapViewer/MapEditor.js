@@ -236,11 +236,11 @@ function MapEditor(props) {
         <div>
             {props.file.features ?
                 <div>
-                    <button
-                        onClick={handleMerge
-                        }>
-                        merge your last 2 clicked regions
-                    </button>
+                    {/*<button*/}
+                    {/*    onClick={handleMerge*/}
+                    {/*    }>*/}
+                    {/*    merge your last 2 clicked regions*/}
+                    {/*</button>*/}
                     <MapContainer
                         style={{ height: "80vh" }} zoom={2} center={[20, 100]}
                         editable={true}

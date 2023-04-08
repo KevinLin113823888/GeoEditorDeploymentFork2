@@ -15,12 +15,12 @@ function MapLegendFooter(props) {
         {
             color:"#123456",
             legendText: "Sample one idk"
+        },
+        {
+            color:"#123453",
+            legendText: "Sample two idk"
         }
     ]
-    legend=legend.concat(legend)
-    legend=legend.concat(legend)
-    legend=legend.concat(legend)
-
 
     function handleChangeLegendColor(index) {
         store.changeModal(CurrentModal.MAP_PICK_COLOR_WHEEL)
