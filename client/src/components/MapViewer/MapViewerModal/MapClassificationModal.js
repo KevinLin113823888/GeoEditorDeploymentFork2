@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from '@mui/icons-material/Close';
+import MapLegendFooter from "../MapLegendFooter";
 const style = {
     position: 'absolute',
     top: '50%',
@@ -38,36 +39,53 @@ function MapClassificationModal() {
         <Modal open={store.currentModal === CurrentModal.MAP_CLASSIFICATION}
                onClick={handleCloseModal}
         >
+
             <Box sx={style}
-                 onClick={e => e.stopPropagation()}
-            >
-                <Grid item xs >
+                 onClick={e => e.stopPropagation()}>
+
+
+
+
+
+                <Grid container spacing={2}>
+                    <Box style={{backgroundColor:"#f1f1f1", color:"black",paddingTop:"1vh",paddingBottom:"1vh",paddingLeft:"5%"}}>
+                        <header className="dialog-header">
+
+                            <Typography style={{
+                                fontSize:"1.4rem",
+                            }}>
+                                <h3
+                                    style={{
+                                        color: 'black'
+                                    }}
+
+                                >Enter a brief description of your Map</h3>
+                            </Typography>
+                        </header>
+                    </Box>
+
                     <IconButton sx={{
                         float: 'right'
                     }}
                                 onClick={handleCloseModal}>
                         < CloseIcon/>
                     </IconButton>
+
+
                 </Grid>
-                <header className="dialog-header">
-                    <Box style={{backgroundColor:"#f1f1f1", color:"green",paddingTop:"1vh",paddingBottom:"1vh",paddingLeft:"20%"}}>
-                        <Typography style={{fontSize:"1.4rem"}}>
-                            <strong>Enter a brief description of your Map</strong>
-                        </Typography>
-                    </Box>
 
 
-                    <TextField
-                        onBlur={(e) =>{
-                            console.log(e)
-                        }}
-                            variant="filled"
-                        InputProps={{
-                            disableUnderline: true
-                        }}
-                    />
 
-                </header>
+                <TextField
+                    onBlur={(e) =>{
+                        console.log(e)
+                    }}
+                    variant="filled"
+                    InputProps={{
+                        disableUnderline: true
+                    }}
+                />
+
 
                 <Grid container spacing={2}>
 
@@ -79,7 +97,13 @@ function MapClassificationModal() {
                             Confirm
                         </Button>
                     </Grid>
+
+
+
                 </Grid>
+
+
+
             </Box>
         </Modal>
     );

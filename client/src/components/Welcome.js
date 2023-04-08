@@ -10,7 +10,7 @@ function Welcome() {
             >
                 <Typography
                     style={{ fontSize: "7rem", fontFamily: "October Tamil", color: "#0049ff", fontWeight: "bold", display: "inline" }}
-                    sx={{ paddingLeft: '30%' }}
+                    sx={{ paddingLeft: '35%' }}
                     component="span">
                     Geo
                 </Typography>
