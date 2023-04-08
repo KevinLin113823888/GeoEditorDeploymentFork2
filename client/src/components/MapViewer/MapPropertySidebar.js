@@ -29,7 +29,7 @@ function MapPropertySidebar(props) {
 
     return (
     <div >
-            <Box sx={{width:"80%",height:"100vh",maxHeight:"80%",overflowY: "scroll",}} style={{ border:"1px solid black"}}>
+            <Box sx={{width:"80%",height:"80vh",maxHeight:"80%",overflowY: "scroll",}} style={{ border:"1px solid black"}}>
                 <Box sx={{marginLeft:"3%"}}>
             <Typography
                     style={{ fontSize: "2rem", fontFamily: "October Tamil", color: "#000000", fontWeight: "bold", display: "inline" }}

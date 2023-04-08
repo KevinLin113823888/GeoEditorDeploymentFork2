@@ -2,12 +2,12 @@ import { useContext,useState } from 'react'
 import * as React from 'react';
 import GlobalStoreContext, {CurrentModal} from "../../store";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import MapEditor from "./MapEditor";
 import MapPropertySidebar from "./MapPropertySidebar";
 import {ListItem, ListItemText} from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SquareIcon from '@mui/icons-material/Square';
+
+import LegendCard from './LegendCard.js'
 function MapLegendFooter(props) {
     const { store } = useContext(GlobalStoreContext);
 
@@ -19,18 +19,29 @@ function MapLegendFooter(props) {
         {
             color:"#123453",
             legendText: "Sample two idk"
-        }
+        },
+        {
+            color:"#123456",
+            legendText: "Sample three idk"
+        },
+        {
+            color:"#123453",
+            legendText: "Sample four idk"
+        },
+        {
+            color:"#123456",
+            legendText: "Sample five idk"
+        },
+        {
+            color:"#123453",
+            legendText: "Sample six idk bruh what the hec is going on smh"
+        },
+
     ]
 
-    function handleChangeLegendColor(index) {
-        store.changeModal(CurrentModal.MAP_PICK_COLOR_WHEEL)
-        return undefined;
-    }
-
-    return (
-    <>
-
-        <Grid container spacing={2}>
+    
+    {/* <Grid container spacing={2}>
+            
             {
                 legend.map((key,index) =>
                     <ListItem
@@ -66,10 +77,27 @@ function MapLegendFooter(props) {
 
                     </ListItem>)
             }
+        </Grid> */}
+
+
+    return (
+        <Grid container rowSpacing={0} columnSpacing={2} sx={{marginLeft:"2%"}}>
+                {legend.map((legendObj, index) => (
+                    <Grid item xs={2.4} >
+                    <LegendCard
+                        key={'map-legend-' + (index)}
+                        index={index}
+                        legendObj={legendObj}
+                    />
+                    </Grid>
+                ))} 
+                
+                        
+                
+                
         </Grid>
 
-
-    </>
+    
         )
 }
 export default MapLegendFooter;
