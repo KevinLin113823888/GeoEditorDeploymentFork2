@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField';
 import Input from '@mui/material/Input';
 import Grid from '@mui/material/Grid';
 
+import CloseIcon from '@mui/icons-material/Close';
 import IconButton from "@mui/material/IconButton";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -32,8 +33,24 @@ const style = {
     pr: 3,
 };
 
+const style2 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
 function MUICommunityPreviewModal() {
     const navigate = useNavigate();
+    const [forkModal, setForkModal] = useState(false);
+    const [downloadModal, setDownloadModal] = useState(false);
+    const [reportModal, setReportModal] = useState(false);
+
 
     const { store } = useContext(GlobalStoreContext);
 
@@ -49,7 +66,7 @@ function MUICommunityPreviewModal() {
 
     }
 
-    function handleFlag(){
+    function handleReport(){
 
     }
 
@@ -69,7 +86,32 @@ function MUICommunityPreviewModal() {
 
     }
 
+    function closeForkModal(){
+        setForkModal(false)
+    }
+
+    function openForkModal(){
+        setForkModal(true)
+    }
+
+    function closeDownloadModal(){
+        setDownloadModal(false)
+    }
+
+    function openDownloadModal(){
+        setDownloadModal(true)
+    }
+    function closeReportModal(){
+        setReportModal(false)
+    }
+
+    function openReportModal(){
+        setReportModal(true)
+    }
+
     return (
+
+        <div>
         <Modal
             open={store.currentModal == "COMMUNITY_PREVIEW_MODAL"}
             // open={true}
@@ -113,15 +155,15 @@ function MUICommunityPreviewModal() {
                             </Grid>
                             <Grid item xs={2} >
                                 <Box>
-                                    <IconButton type="submit" onClick={handleFork} >
+                                    <IconButton type="submit" onClick={openForkModal} >
                                         <AltRouteIcon style={{fontSize:'2rem', fill:'black' }} />
                                     </IconButton>
                                     
-                                    <IconButton type="submit" onClick={handleDownload} >
+                                    <IconButton type="submit" onClick={openDownloadModal} >
                                         <DownloadIcon style={{ fill: "black", fontSize:'2rem' }} />
                                     </IconButton>
                                     
-                                    <IconButton type="submit" onClick={handleFlag} >
+                                    <IconButton type="submit" onClick={openReportModal} >
                                         <EmojiFlagsIcon style={{ fill: "red", fontSize:'1.7rem' }} />
                                     </IconButton>
                                 </Box>
@@ -149,6 +191,119 @@ function MUICommunityPreviewModal() {
             </Box>
 
         </Modal>
+
+        <Modal 
+                open = {forkModal}
+                onClose={closeForkModal}>
+                <Box 
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+
+                    sx={style2}>
+                    <header className="dialog-header">
+                        <Box style={{marginBottom:"10%"}}>
+                        <Typography variant="h6" component="h2" style={{fontSize:"2rem"}}>
+                            <strong>Fork map to your maps?</strong>
+                        </Typography>
+                        </Box>
+                    </header>
+                <Box>
+                    <div class="modal-footer" id="confirm-cancel-container">
+                        <input type="button" 
+                                    class="modal-confirm-button" 
+                                    onClick={() => {
+                                        handleFork();}}
+                                    value='Confirm' />
+                        <input type="button" 
+                                class="modal-cancel-button" 
+                                onClick={() => {
+                                    closeForkModal();}}
+                                    value='Cancel' />
+                    </div>
+                </Box>
+            </Box>
+            </Modal>
+            <Modal
+                open = {downloadModal}
+                onClose={closeDownloadModal}
+                >
+                <Box 
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+
+                    sx={style2}>
+                        <IconButton type="submit" onClick={closeDownloadModal} style={{position:'absolute', right:'0', top:'0'}} >
+                            <CloseIcon style={{fontSize:'2rem', fill:'black' }} />
+                        </IconButton>
+                    <header className="dialog-header">
+                        <Box style={{marginBottom:"10%"}}>
+                        <Typography variant="h6" component="h2" style={{fontSize:"2.5rem"}}>
+                            <strong>Download</strong>
+                        </Typography>
+                        
+                        </Box>
+                    </header>
+                        <input type="button" 
+                                    class="modal-confirm-button" 
+                                    // onClick={() => {
+                                    //     handleFork();}}
+                                    value='GeoJSON' />
+                        <input type="button" 
+                                    class="modal-confirm-button" 
+                                    // onClick={() => {
+                                    //     handleFork();}}
+                                    value='Shapefile/DBF zip' />
+                        <input type="button" 
+                                    class="modal-confirm-button" 
+                                    // onClick={() => {
+                                    //     handleFork();}}
+                                    value='Jpeg' />
+                </Box>
+            </Modal>
+
+            <Modal
+                open = {reportModal}
+                onClose={closeReportModal}
+                >
+                <Box 
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+
+                    sx={style2}>
+                        <IconButton type="submit" onClick={closeReportModal} style={{position:'absolute', right:'0', top:'0'}} >
+                            <CloseIcon style={{fontSize:'2rem', fill:'black' }} />
+                        </IconButton>
+                    <header className="dialog-header">
+                        <Box style={{marginBottom:"10%"}}>
+                        <Typography variant="h6" component="h2" style={{fontSize:"2.5rem"}}>
+                            <strong>Report User</strong>
+                        </Typography>
+                        
+                        </Box>
+                    </header>
+                    <Box sx={{ width: "100%", height: "100%",}}>
+                        <TextField type='text' placeholder="Please provide a reason for report..." sx={{width:'100%', height:'100%'}} 
+                            multiline
+                            rows={5}
+                            maxRows={Infinity} />
+                    </Box>
+
+                    <input type="button" 
+                                class="modal-confirm-button" 
+                                onClick={() => {
+                                    handleReport();}}
+                                value='Submit' />
+                        
+                </Box>
+            </Modal>
+
+        </div>
     );
 }
 export default MUICommunityPreviewModal;

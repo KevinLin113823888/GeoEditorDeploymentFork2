@@ -185,8 +185,10 @@ function MapViewerScreen(){
 
             <Grid item xs >
                 <Button
-                    sx={{
-                        width: "100%"
+                    style={{
+                        width: "100%",
+                        backgroundColor: "#3c7dc3",
+
                     }}
                     variant="contained"
                     onClick={Function}
@@ -228,7 +230,7 @@ function MapViewerScreen(){
             {/*<div> <input type="submit" value="submit" onClick={handleSubmit} /></div>*/}
 
             <Grid container spacing={2}>
-                <Grid item xs={4}
+                <Grid item xs={6}
                 >
 
                     <Box
@@ -246,7 +248,11 @@ function MapViewerScreen(){
 
 
                             InputProps={{
-                                style: {fontSize: 40},
+                                style: {fontSize: 40,
+                                    font: "Satisfy",
+                                    fontWeight: "bold",
+                                fontFamily: "Satisfy"
+                                },
                                 disableUnderline: true
                             }}
                             onChange={
@@ -258,7 +264,7 @@ function MapViewerScreen(){
 
                 </Grid>
 
-                <Box item xs={8} sx={{
+                <Box item xs={6} sx={{
                     paddingTop: "2%"
                 }}>
                 <Grid container spacing={2} >
@@ -266,8 +272,8 @@ function MapViewerScreen(){
                         {Buttons(handleImport, "Import")}
                         {Buttons(handleExport, "Export")}
                         {Buttons(handlePublish, "Publish")}
-                        {Buttons(handleSave, "Save")}
                         {Buttons(handleMapClassification, "Classification")}
+                        {Buttons(handleSave, "Save")}
                     </Grid>
                 </Box>
 

@@ -100,17 +100,17 @@ export default function AppBanner() {
     
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" style={{background: '#C6DCE5', margin:'0'}} elevation={0}>
+            <AppBar position="static" style={{background: '#ffffff', margin:'0'}} elevation={0}>
                 <Toolbar variant = "regular">
                 <div onClick={goHome}>   
                     <Typography
-                        style={{ fontSize: "2rem", fontFamily: "October Tamil", color: "#0049ff", fontWeight: "bold", display: "inline" }}
+                        style={{ fontSize: "2.5rem", fontFamily: "October Tamil", color: "#5282f2", fontWeight: "bold", display: "inline" }}
                         
                         component="span">
                         Geo
                     </Typography>
                     <Typography
-                        style={{ fontSize: "2rem", fontFamily: "Satisfy", color: "#009800", fontWeight: "bold", display: "inline" }}
+                        style={{ fontSize: "2.5rem", fontFamily: "Satisfy", color: "#65bc3f", fontWeight: "bold", display: "inline" }}
                         component="span">
                         Editor
                     </Typography>

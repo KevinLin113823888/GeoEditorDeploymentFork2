@@ -50,13 +50,16 @@ function ImportModal() {
                     </IconButton>
                 </Grid>
                 <header className="dialog-header">
-                    <Box style={{backgroundColor:"#f1f1f1", color:"green",paddingTop:"1vh",paddingBottom:"1vh",paddingLeft:"20%"}}>
-                        <Typography style={{fontSize:"3.4rem"}}>
+                    <Box style={{backgroundColor:"#f1f1f1", color:"green",paddingTop:"1vh",paddingBottom:"1vh"}}>
+                        <Typography style={{fontSize:"3.0rem",
+                        textAlign:"center"
+                        }}>
                             <strong>Import Map</strong>
                         </Typography>
 
 
-                        <Typography style={{fontSize:"1.0rem"}}>
+                        <Typography style={{fontSize:"1.0rem",
+                            textAlign:"center"}}>
                             <strong>Import a geoJson map or shp/dbf map file combo</strong>
                         </Typography>
 
@@ -79,6 +82,8 @@ function ImportModal() {
                         <Button
                             variant="contained"
                             onClick={Function}
+                            style={{
+                            }}
                         >
                             Confirm File Upload
                         </Button>
