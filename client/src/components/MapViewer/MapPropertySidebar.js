@@ -19,7 +19,7 @@ function MapPropertySidebar(props) {
         propertiesMap = new Map(Object.entries(mapData.features[0].properties))
 
         propertiesMap.forEach((value, key) => propertiesMapList.push(key))
-        propertiesMapList.length = 10
+        propertiesMapList.length = 20
     }
 
     // const Demo = styled('div')(({ theme }) => ({
@@ -29,7 +29,7 @@ function MapPropertySidebar(props) {
 
     return (
     <div >
-            <Box sx={{width:"80%",height:"100vh",maxHeight:"80%"}} style={{ border:"1px solid black"}}>
+            <Box sx={{width:"80%",height:"100vh",maxHeight:"80%",overflowY: "scroll",}} style={{ border:"1px solid black"}}>
                 <Box sx={{marginLeft:"3%"}}>
             <Typography
                     style={{ fontSize: "2rem", fontFamily: "October Tamil", color: "#000000", fontWeight: "bold", display: "inline" }}

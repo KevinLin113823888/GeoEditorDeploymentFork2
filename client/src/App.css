@@ -1,6 +1,9 @@
 body {
     margin: 0px
 }
+.material-icons {
+  vertical-align: -.4rem; /*Change this to adjust the icon*/
+}
 
 .modal-cancel-button {
     font-size: 1.2rem;
@@ -12,6 +15,7 @@ body {
     cursor:pointer;
     background-color: lightcoral
 }
+
 
 .modal-confirm-button{
     font-size: 1.2rem;
