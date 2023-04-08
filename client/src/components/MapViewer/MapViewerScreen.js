@@ -186,7 +186,7 @@ function MapViewerScreen(){
             <Grid item xs >
                 <Button
                     sx={{
-                        width: 150
+                        width: "100%"
                     }}
                     variant="contained"
                     onClick={Function}
