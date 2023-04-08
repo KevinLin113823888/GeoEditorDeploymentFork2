@@ -24,11 +24,12 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '85%',
-    height: '75%',
+    height: '83%',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
+    pl: 3,
+    pr: 3,
 };
 
 function MUICommunityPreviewModal() {
@@ -60,10 +61,18 @@ function MUICommunityPreviewModal() {
 
     }
 
+    function handleFollow(){
+
+    }
+
+    function handleBlock(){
+
+    }
+
     return (
         <Modal
             open={store.currentModal == "COMMUNITY_PREVIEW_MODAL"}
-            open={true}
+            // open={true}
             onClose={handleCloseModal}
         >
         <Box 
@@ -74,36 +83,67 @@ function MUICommunityPreviewModal() {
 
             sx={style}>
             <Grid container >
-                        <Grid item xs={4} >
-                            <Box sx={{ width: "100%", backgroundColor: "#ededed", height: "30vh", marginLeft: "10%"}}>
-                                
+                <Grid item xs={9} >
+                    <Box sx={{ width: "100%", backgroundColor: "red", height: "55vh", marginRight:'2.5%',}}>
+                            </Box>
+                        <Grid container style={{paddingTop:"2%"}}>
+                            <Grid item xs={10}>
+                            <Box >
+                                <Typography id="map-title" variant="h6" component="h2" style={{fontSize:"2rem"}}>
+                                    <strong>Africa</strong>
+                                </Typography>
+                            </Box>
+                            <AccountCircleIcon style={{fontSize:'1.7rem' }}  sx={{marginTop:'1%', marginRight:'1%'}} />
+                            <Typography id="owner" variant="h8" component="h4" style={{fontSize:"1.7rem", display:'inline'}} sx={{}}  >
+                                    Bob Guy1
+                            </Typography>
+                            <Box sx={{marginTop:'2%'}}>
+                                <input type="button" 
+                                        class="preview-button" 
+                                        onClick={() => {
+                                            handleFollow();}}
+                                        value='Follow' />
+                                <input type="button" 
+                                        class="preview-button" 
+                                        onClick={() => {
+                                            handleBlock();}}
+                                        style={{marginLeft:'.5%'}}
+                                        value='Block' />
+                            </Box>
+                            </Grid>
+                            <Grid item xs={2} >
+                                <Box>
+                                    <IconButton type="submit" onClick={handleFork} >
+                                        <AltRouteIcon style={{fontSize:'2rem', fill:'black' }} />
+                                    </IconButton>
+                                    
+                                    <IconButton type="submit" onClick={handleDownload} >
+                                        <DownloadIcon style={{ fill: "black", fontSize:'2rem' }} />
+                                    </IconButton>
+                                    
+                                    <IconButton type="submit" onClick={handleFlag} >
+                                        <EmojiFlagsIcon style={{ fill: "red", fontSize:'1.7rem' }} />
+                                    </IconButton>
                                 </Box>
+
+                                <Box>
+                                    <IconButton type="submit" onClick={handleLike} >
+                                        <ThumbUpIcon style={{fontSize:'2rem', fill:'black' }} />
+                                    </IconButton>
+                                    <IconButton type="submit" onClick={handleDislike} >
+                                        <ThumbDownIcon style={{fontSize:'2rem', fill:'black' }} />
+                                    </IconButton>
+                                </Box>
+
+                            </Grid>
                         </Grid>
-
-            <Grid item xs={4} >
-                <Box style={{marginBottom:"10%"}}>
-                    <Typography id="map-title" variant="h6" component="h2" style={{fontSize:"1rem"}}>
-                        <strong>Africa</strong>
-                    </Typography>
-                </Box>
-                <div>im a modal</div>
-                <Grid >
-
-                    <IconButton type="submit" onClick={handleFork} >
-                        <AltRouteIcon style={{ fill: "black" }} />
-                    </IconButton>
-                    
-                    <IconButton type="submit" onClick={handleDownload} >
-                        <DownloadIcon style={{ fill: "black" }} />
-                    </IconButton>
-                    
-                    <IconButton type="submit" onClick={handleFlag} >
-                        <EmojiFlagsIcon style={{ fill: "red" }} />
-                    </IconButton>
-
-
-            </Grid>
-                </Grid>
+                        </Grid>
+                        <Grid item xs={3} >
+                            <Box sx={{ width: "100%", backgroundColor: "#f7fafc", height: "100%", marginLeft: "2.55%",}}>
+                                <TextField type='text' placeholder="Add a comment..." sx={{width:'100%'}} />
+                            </Box>
+                        </Grid>
+            
 
             </Grid>
             </Box>

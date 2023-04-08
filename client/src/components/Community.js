@@ -107,6 +107,10 @@ function Community() {
         console.log("sorting that needs to be implemented");
     }
 
+    function openPreview(){
+        store.changeModal(CurrentModal.COMMUNITY_PREVIEW_MODAL);
+    }
+
     let mapCardsArr =[{title:"map1"},{title:"map2"},{title:"map3"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"} ];
     return (
         <div className="Community">
@@ -140,7 +144,8 @@ function Community() {
                            
                         </Grid>
                         <Grid item xs={2}>
-                            <Typography id="newmap-modal-title" variant="h6" component="h2" sx={{ marginLeft: "5%" }} style={{color: "#8c8a8a"}}>
+                            <Typography id="newmap-modal-title" variant="h6" component="h2" sx={{ marginLeft: "5%" }} style={{color: "#8c8a8a"}}
+                                onClick={openPreview}>
                                 Community
                             </Typography>
                         </Grid>
