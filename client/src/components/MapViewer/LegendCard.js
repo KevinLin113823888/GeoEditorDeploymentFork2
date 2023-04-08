@@ -30,7 +30,7 @@ function LegendCard(props) {
                 handleChangeLegendColor()
             }}
                 sx={{
-                    color:legendObj.color
+                    color:colorString
                 }}
             />
       

@@ -29,11 +29,11 @@ function MapLegendFooter(props) {
             legendText: "Sample four idk"
         },
         {
-            color:"#123456",
+            color:"#000000",
             legendText: "Sample five idk"
         },
         {
-            color:"#123453",
+            color:"#ffffff",
             legendText: "Sample six idk bruh what the hec is going on smh"
         },
 

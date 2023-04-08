@@ -7,6 +7,9 @@ body {
 .material-icons-community {
   vertical-align: -.3rem; /*Change this to adjust the icon*/
 }
+.textfield{
+  vertical-align: -.9rem;
+}
 
 .modal-cancel-button {
     font-size: 1.2rem;
