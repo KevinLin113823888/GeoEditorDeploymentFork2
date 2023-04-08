@@ -6,11 +6,17 @@ import Button from '@mui/material/Button';
 function Welcome() {
     return (
         <div className="Welcome">
+            
             <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
             >
+                <Box
+                >
                 <Typography
                     style={{ fontSize: "7rem", fontFamily: "October Tamil", color: "#0049ff", fontWeight: "bold", display: "inline" }}
-                    sx={{ paddingLeft: '30%' }}
                     component="span">
                     Geo
                 </Typography>
@@ -19,13 +25,7 @@ function Welcome() {
                     component="span">
                     Editor
                 </Typography>
-            </Box>
-            <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-            >
+                </Box>
                 <Box
                     style={{ fontSize: "2rem", fontFamily: "Satisfy", color: "#000000", fontWeight: "bold" }}
                     >

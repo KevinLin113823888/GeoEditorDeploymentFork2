@@ -165,8 +165,9 @@ function YourMap() {
 
                         </Grid>
                         <Grid item  xs={1.4} >
-                            <Box sx={{ width: "100%", backgroundColor: "#ededed", height: "30vh", marginLeft: "10%","&:hover": { backgroundColor: "grey",}}} onClick={openCreateModal} >
-                                <ControlPointIcon style={{ fill: "black", fontSize: "5rem", marginLeft: "17%", marginTop: "35%" }} />
+                            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" 
+                            sx={{ width: "100%", backgroundColor: "#ededed", height: "30vh", marginLeft: "10%","&:hover": { backgroundColor: "grey",}}} onClick={openCreateModal} >
+                                <ControlPointIcon style={{ fill: "black", fontSize: "5rem" }} />
                             </Box>
                         </Grid>
                         

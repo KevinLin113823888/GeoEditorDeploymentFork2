@@ -32,13 +32,13 @@ function MapPropertySidebar(props) {
             <Box sx={{width:"80%",height:"100vh",maxHeight:"80%"}} style={{ border:"1px solid black"}}>
                 <Box sx={{marginLeft:"3%"}}>
             <Typography
-                    style={{ fontSize: "1.8rem", fontFamily: "October Tamil", color: "#000000", fontWeight: "bold", display: "inline" }}
+                    style={{ fontSize: "2rem", fontFamily: "October Tamil", color: "#000000", fontWeight: "bold", display: "inline" }}
                    
                     component="span">
                     Properties
                 </Typography>
                 <IconButton >
-                        < AddIcon style={{fill:"#000000"}}/>
+                        < AddIcon style={{fill:"#000000",fontSize:"2rem"}}/>
                 </IconButton>
             {propertiesMapList.map((propertyObj, index) => (
                     <PropertyCard

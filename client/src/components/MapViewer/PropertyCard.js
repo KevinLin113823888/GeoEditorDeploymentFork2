@@ -18,10 +18,11 @@ function PropertyCard(props) {
     let cardClass = "comment-card";
     let cardElement = <div></div>
     
-    cardElement=<Box>
+    cardElement=<Box style={{fontSize:"1.3rem"}}>
         {propertyObj}: {propertyMap.get(propertyObj)}
-        <Box>
-        <BorderColorIcon sx={{"&:hover": {fill: "rgba(255,240,10,0.8)"}}}/> <DeleteIcon sx={{"&:hover": {fill: "rgba(255,240,10,0.8)"}}}/>
+        <Box >
+        <BorderColorIcon sx={{"&:hover": {fill: "rgba(255,240,10,0.8)"}} } style={{fontSize:"1.6rem"}}/> <DeleteIcon sx={{"&:hover": {fill: "rgba(255,240,10,0.8)"}}}
+        style={{fontSize:"1.6rem"}}/>
         </Box>
         
     </Box>
