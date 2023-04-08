@@ -4,6 +4,9 @@ body {
 .material-icons {
   vertical-align: -.4rem; /*Change this to adjust the icon*/
 }
+.material-icons-community {
+  vertical-align: -.3rem; /*Change this to adjust the icon*/
+}
 
 .modal-cancel-button {
     font-size: 1.2rem;

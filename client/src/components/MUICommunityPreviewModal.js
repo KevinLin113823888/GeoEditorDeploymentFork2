@@ -146,7 +146,7 @@ function MUICommunityPreviewModal() {
                                             <strong>Africa</strong>
                                         </Typography>
                                     </Box>
-                                    <AccountCircleIcon style={{ fontSize: '1.7rem' }} sx={{ marginTop: '1%', marginRight: '1%' }} />
+                                    <AccountCircleIcon className="material-icons-community" style={{ fontSize: '1.7rem' }} sx={{ marginTop: '1%', marginRight: '1%' }} />
                                     <Typography id="owner" variant="h8" component="h4" style={{ fontSize: "1.7rem", display: 'inline' }} sx={{}}  >
                                         Bob Guy1
                                     </Typography>

@@ -33,7 +33,7 @@ function MapPropertySidebar(props) {
                 <Box sx={{marginLeft:"3%"}}>
             <Typography
                     style={{ fontSize: "2rem", fontFamily: "October Tamil", color: "#000000", fontWeight: "bold", display: "inline" }}
-                   
+                    className="material-icons" 
                     component="span">
                     Properties
                 </Typography>
