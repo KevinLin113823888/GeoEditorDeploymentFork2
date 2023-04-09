@@ -222,11 +222,21 @@ function MUICommunityPreviewModal() {
                                         <IconButton type="submit" disabled= {disable} onClick={handleLike} >
                                             <ThumbUpIcon style={{ fontSize: '2rem', fill: fillColor1 }} />
                                         </IconButton>
+                                        <Typography className="material-icons-community" style={{ color:fillColor1,fontSize: '2rem',fontWeight:"bold"}} sx={{display:"inline"}}>
+                                        5
+                                        </Typography>
                                         <IconButton type="submit" disabled= {disable} onClick={handleDislike} >
                                             <ThumbDownIcon style={{ fontSize: '2rem', fill: fillColor1 }} />
                                         </IconButton>
+                                        <Typography className="material-icons-community" style={{ color:fillColor1,fontSize: '2rem',fontWeight:"bold"}} sx={{display:"inline"}}>
+                                        5
+                                        </Typography>
                                     </Box>
-
+                                    <Grid container >
+                                    <Box style={{backgroundColor:"white"}} sx={{height:'.5rem',width:"48%",border:".1rem solid black"}} ></Box>
+                                    <Box style={{backgroundColor:"black"}} sx={{height:'.5rem',width:"48%",border:".1rem solid black"}} ></Box>
+                                   
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
