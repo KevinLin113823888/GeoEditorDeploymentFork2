@@ -60,7 +60,7 @@ function MapMergeChangeRegionNameModal() {
                     alignItems="center" style={{backgroundColor:"#f1f1f1", color:"#000000"}}>
 
                     <Typography style={{fontSize:"2rem"}} sx={{marginBottom:"5%"}}>
-                        <strong>Enter Merged Region Name</strong>
+                        <strong>Enter New Region Name</strong>
                     </Typography>
                     <TextField type="text" id="outlined-basic"  variant="outlined" onChange={
                         handleUpdateSearch} height="2.2vw" placeholder="Enter Name" style={{background:"#ffffff",width:"50%"}}

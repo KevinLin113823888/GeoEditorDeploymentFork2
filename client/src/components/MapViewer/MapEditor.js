@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import { MapContainer, TileLayer, useMap, GeoJSON, LayerGroup, FeatureGroup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 // import { topojson } from 'topojson';
@@ -6,10 +6,13 @@ import * as turf from '@turf/turf'
 import GeomanJsWrapper from "./GeomanJsWrapper";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
+import { CurrentModal, GlobalStoreContext } from "../../store/index"
 
 function MapEditor(props) {
     const [isPopup, setPopup] = useState(false);
     const [update,setUpdate] = useState(1);
+
+    const { store } = useContext(GlobalStoreContext);
 
     const regionsSelectedRef = useRef([])
     let regionsClicked =[];
@@ -19,19 +22,22 @@ function MapEditor(props) {
     console.log(currentRegion.current);
     console.log(props.file)
     const nameChange = (event) => {
-        let layer = event.target;
-        console.log(layer.feature.properties.name);
-        let newName = prompt("Input new region name:", layer.feature.properties.name);
-        if(!newName){
-            return;
-        }
-        props.changeName(layer.feature.properties.name, newName);
-        layer.bindPopup(newName)
-        layer.bindTooltip(layer.feature.properties.name,
-            {permanent: true, direction:"center",className: "label"}
-        ).openTooltip();
-        //setUpdate(update+1);
-        setUpdate(update => update + 1);
+
+        store.changeModal(CurrentModal.MAP_MERGE_REGION_NAME)
+
+        // let layer = event.target;
+        // console.log(layer.feature.properties.name);
+        // let newName = prompt("Input new region name:", layer.feature.properties.name);
+        // if(!newName){
+        //     return;
+        // }
+        // props.changeName(layer.feature.properties.name, newName);
+        // layer.bindPopup(newName)
+        // layer.bindTooltip(layer.feature.properties.name,
+        //     {permanent: true, direction:"center",className: "label"}
+        // ).openTooltip();
+        // //setUpdate(update+1);
+        // setUpdate(update => update + 1);
     }
     const convertToCoords = (latlng)=>{
 
