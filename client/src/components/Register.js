@@ -46,6 +46,7 @@ function Register() {
           console.log("REGISTERED, going to your maps");
           navigate('/map');
           store.changeScreen("yourmap")
+          store.setGuest("false")
         }
       })
     

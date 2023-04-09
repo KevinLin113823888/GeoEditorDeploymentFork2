@@ -53,7 +53,7 @@ export default function AppBanner() {
     }
     const handleSignOut=()=>{
         handleMenuClose();
-        store.changeScreen("home");
+        store.changeScreen("home")
     }
     const goHome = () => {
         store.changeScreen("home");
@@ -86,10 +86,6 @@ export default function AppBanner() {
 
     let editToolbar = "";
     let menu = introMenu;
-
-
-
-
     function getAccountMenu() {
         if(store.currentScreen!=="home"){
         return (<Grid container justifyContent="flex-end" style={{ gap: 10 }}>

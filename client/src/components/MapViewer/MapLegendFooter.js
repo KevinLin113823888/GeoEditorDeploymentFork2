@@ -33,8 +33,23 @@ function MapLegendFooter(props) {
             legendText: "Sample five idk"
         },
         {
-            color:"#ffffff",
-            legendText: "Sample six idk bruh what the hec is going on smh"
+            color:"red",
+            legendText: "100 million - 200 million"
+        },
+        ,
+        {
+            color:"green",
+            legendText: "300 million - 400 million"
+        },
+        ,
+        {
+            color:"blue",
+            legendText: "500 million - 600 million"
+        },
+        ,
+        {
+            color:"purple",
+            legendText: "700 million - 800 million"
         },
 
     ]

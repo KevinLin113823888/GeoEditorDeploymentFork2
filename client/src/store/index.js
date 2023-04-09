@@ -120,6 +120,17 @@ function GlobalStoreContextProvider(props) {
                     userMapCards: payload,
                 });
             }
+            case GlobalStoreActionType.SET_GUEST_MODE: {
+                return setStore({
+                    currentModal : CurrentModal.NONE,
+                    currentMap:  store.currentMap,
+                    currentMapData : store.currentMapData, //the current map data we are editing
+                    currentScreen: store.currentScreen ,
+                    guestMode: payload,
+                    adminMode: store.adminMode,
+                    userMapCards: store.userMapCards,
+                });
+            }
             default:
                 return store;
         }
@@ -166,6 +177,13 @@ function GlobalStoreContextProvider(props) {
         storeReducer({
             type: GlobalStoreActionType.CHANGE_SCREEN,
             payload: screen
+        }
+        );
+    }
+    store.setGuest= function(guest){
+        storeReducer({
+            type: GlobalStoreActionType.SET_GUEST_MODE,
+            payload: guest
         }
         );
     }

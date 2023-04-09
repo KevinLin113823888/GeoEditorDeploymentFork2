@@ -36,16 +36,14 @@ function MapColorwheelModal() {
     function handleCloseModal(event) {
         store.changeModal("NONE");
     }
+    function handleColorChange(){
+        store.changeModal("NONE");
+    }
 
     const [color, setColor] = useState("#aabbcc");
-
-
-    return (
-        <Modal open={store.currentModal === CurrentModal.MAP_PICK_COLOR_WHEEL}
-               onClick={handleCloseModal}
-        >
-            <Box sx={style}
+{/* <Box sx={style}
                  onClick={e => e.stopPropagation()}
+                 
             >
                 <Grid item xs >
                     <IconButton sx={{
@@ -83,7 +81,42 @@ function MapColorwheelModal() {
 
 
 
-            </Box>
+            </Box> */}
+
+    return (
+        <Modal open={store.currentModal === CurrentModal.MAP_PICK_COLOR_WHEEL}
+               onClick={handleCloseModal}
+        >
+             <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+
+                    sx={style}
+                    onClick={e => e.stopPropagation()}>
+                    <IconButton type="submit" onClick={handleCloseModal} style={{ position: 'absolute', right: '0', top: '0' }} >
+                        <CloseIcon style={{ fontSize: '2rem', fill: 'black' }} />
+                    </IconButton>
+                    <header className="dialog-header">
+                        <Box style={{ marginBottom: "4%" }}>
+                            <Typography variant="h6" component="h2" style={{ fontSize: "2.5rem" }}>
+                                <strong>Choose a New Color</strong>
+                            </Typography>
+
+                        </Box>
+                    </header>
+                    <HexColorPicker color={color} onChange={setColor} />
+                    
+                    <input type="button"
+                        class="modal-confirm-button"
+                        onClick={() => {
+                            handleColorChange();
+                        }}
+                        value='Submit' />
+
+                </Box>
+            
         </Modal>
     );
 }
