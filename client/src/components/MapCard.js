@@ -6,6 +6,7 @@ import FileCopyIcon from '@mui/icons-material/FileCopy';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom'
+import background from "./cardPic.png";
 
 function MapCard(props) {
     const navigate = useNavigate();
@@ -62,8 +63,12 @@ function MapCard(props) {
     let cardElement = 
     <Box sx={{"&:hover": {backgroundColor: "rgba(255,240,10,0.8)",}}}>
         <Box sx={{ marginLeft: "10%",width:"100%"}}>
-            <Box onClick = {handleClick} sx={{ width: "100%", backgroundColor: "lightgreen", height: "20vh"}}/>
-            <Box sx={{ width: "100%", backgroundColor: "#ededed", height: "10vh"}}>
+            <Box onClick = {handleClick} sx={{ width: "100%",
+                backgroundImage:`url(${background})`,
+                height: "20vh"}}/>
+            <Box sx={{ width: "100%",
+                backgroundColor: "lightGreen",
+                height: "10vh"}}>
                 <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"> 
                 <Box style={{fontWeight: "medium"}}>{map.title}</Box>
                 <Box sx={{marginTop:"3%",}}>
@@ -79,8 +84,12 @@ function MapCard(props) {
         cardElement=
         <Box sx={{"&:hover": {backgroundColor: "rgba(255,240,10,0.8)",}}}>
         <Box sx={{ marginLeft: "10%",width:"100%"}}>
-            <Box onClick = {handleClickCommunity} sx={{ width: "100%", backgroundColor: "lightgreen", height: "20vh"}}/>
-            <Box sx={{ width: "100%", backgroundColor: "#ededed", height: "10vh"}}>
+            <Box onClick = {handleClickCommunity} sx={{ width: "100%",
+                backgroundImage:`url(${background})`,
+                height: "20vh"}}/>
+            <Box sx={{ width: "100%",
+                backgroundColor: "lightGreen",
+                height: "10vh"}}>
                 <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"> 
                 <Box style={{fontWeight: "medium"}}>{map.title}</Box>
                 

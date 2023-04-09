@@ -17,7 +17,7 @@ function MapEditor(props) {
 
     const currentRegion = useRef("");
     console.log(currentRegion.current);
-
+    console.log(props.file)
     const nameChange = (event) => {
         let layer = event.target;
         console.log(layer.feature.properties.name);
@@ -233,12 +233,16 @@ function MapEditor(props) {
     };
 
     return (
+        <div>
+            {props.file.features ?
+                <div>
+                    {/*<button*/}
+                    {/*    onClick={handleMerge*/}
+                    {/*    }>*/}
+                    {/*    merge your last 2 clicked regions*/}
+                    {/*</button>*/}
                     <MapContainer
-                        style={{
-                            // display: "flex",
-                            height: "65vh",
-
-                        }} zoom={2} center={[20, 100]}
+                        style={{ height: "80vh" }} zoom={2} center={[20, 100]}
                         editable={true}
                     >
                         <GeomanJsWrapper
@@ -248,16 +252,11 @@ function MapEditor(props) {
 
                         <FeatureGroup>
 
-                            {(props.file!== undefined)?
-                                <GeoJSON
-                                    key={update}
-                                    data={props.file.features}
-                                    onEachFeature={onEachCountry}
-                                />
-                                : <></>
-                            }
-
-
+                            <GeoJSON
+                                key={update}
+                                data={props.file.features}
+                                onEachFeature={onEachCountry}
+                            />
 
                         </FeatureGroup>
 
@@ -271,6 +270,13 @@ function MapEditor(props) {
                             <TileLayer url="http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png" />
                         </LayerGroup>
                     </MapContainer>
+
+
+                </div>
+                :
+                <></>
+            }
+        </div>
     )
 }
 
