@@ -1,14 +1,16 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState, useContext} from "react";
 import { useLeafletContext } from "@react-leaflet/core";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import './geomanButton.css';
+import { CurrentModal, GlobalStoreContext } from '../../store/index'
 
 function GeomanJsWrapper(props) {
     //with this we can actually customize all of the buttons
     //we can also add a custom merge button as well.
     const context = useLeafletContext();
     const isInitialRender = useRef(true);// in react, when refs are changed component dont re-render
+    const { store } = useContext(GlobalStoreContext);
 
     useEffect( () => {
         if(isInitialRender.current) {// skip initial execution of useEffect
@@ -24,7 +26,8 @@ function GeomanJsWrapper(props) {
             {
                 text: 'merge selected region',
                 onClick: () => {
-                    props.merge()
+                    console.log("merging button confirmation")
+                    store.changeModal(CurrentModal.MAP_MERGE_REGION_NAME)
                 },
             },
         ]
@@ -35,9 +38,10 @@ function GeomanJsWrapper(props) {
             "editVertex", "moveRegion", "splitRegion", "deleteRegion", "undo", "redo"
         ]
         const actionsList = [
+            mergeButtonAction
 
         ]
-        let onClickFunction = [
+        const onClickFunction = [
 
         ]
 
@@ -45,6 +49,9 @@ function GeomanJsWrapper(props) {
             let name = customButtonNameList[index]
             let action = actionsList[index]
             let onClickHandler = onClickFunction[index]
+            onClickHandler = () => {
+                //do nothing
+            }
 
             map.pm.Toolbar.createCustomControl({
                 className:name,
