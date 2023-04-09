@@ -19,93 +19,71 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 500,
-    bgcolor: '#f1f1f1',
-    border: '.16vw solid #000',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
     boxShadow: 24,
-    p: 2,
+    p: 4,
 };
 
 function MapClassificationModal() {
     const { store } = useContext(GlobalStoreContext);
 
-    function handleDeleteUser(event) {
+    function handleClassification() {
         store.changeModal("NONE");
     }
-    function handleCloseModal(event) {
+    function handleCloseModal() {
         store.changeModal("NONE");
     }
 
     return (
-        <Modal open={store.currentModal === CurrentModal.MAP_CLASSIFICATION}
-               onClick={handleCloseModal}
+        <Modal
+            open={store.currentModal == "MAP_CLASSIFICATION"}
+            onClick={handleCloseModal}
         >
+          
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
 
-            <Box sx={style}
-                 onClick={e => e.stopPropagation()}>
-
-
-
-
-
-                <Grid container spacing={2}>
-                    <Box style={{backgroundColor:"#f1f1f1", color:"black",paddingTop:"1vh",paddingBottom:"1vh",paddingLeft:"5%"}}>
-                        <header className="dialog-header">
-
-                            <Typography style={{
-                                fontSize:"1.4rem",
-                            }}>
-                                <h3
-                                    style={{
-                                        color: 'black'
-                                    }}
-
-                                >Enter a brief description of your Map</h3>
+                    sx={style}
+                    onClick={e => e.stopPropagation()}>
+                    <IconButton type="submit" onClick={handleCloseModal} style={{ position: 'absolute', right: '0', top: '0' }} >
+                        <CloseIcon style={{ fontSize: '2rem', fill: 'black' }} />
+                    </IconButton>
+                    <header className="dialog-header">
+                        <Box style={{ marginBottom: "1%" }}>
+                            <Typography variant="h6" component="h2" style={{ fontSize: "2.5rem" }}>
+                                <strong>Enter Map Classification</strong>
                             </Typography>
-                        </header>
+
+                        </Box>
+                    </header>
+                    <Box style={{ marginBottom: "3%", }}>
+                            <Typography variant="h2" component="h2" style={{ fontSize: "1rem" }}>
+                                <strong>Enter a short description of your map to help users find it!</strong>
+                            </Typography>
+
+                        </Box>
+                    <Box sx={{ width: "100%", height: "100%", }}>
+                        <TextField type='text' placeholder="Provide a classification for your map..." sx={{ width: '100%', height: '100%' }}
+                            multiline
+                            rows={7}
+                            maxRows={Infinity}
+                            display="inline" />
                     </Box>
 
-                    <IconButton sx={{
-                        float: 'right'
-                    }}
-                                onClick={handleCloseModal}>
-                        < CloseIcon/>
-                    </IconButton>
+                    <input type="button"
+                        class="modal-confirm-button"
+                        onClick={() => {
+                            handleClassification();
+                        }}
+                        value='Submit' />
 
+                </Box>
+            </Modal>
 
-                </Grid>
-
-
-
-                <TextField
-                    onBlur={(e) =>{
-                        console.log(e)
-                    }}
-                    variant="filled"
-                    InputProps={{
-                        disableUnderline: true
-                    }}
-                />
-
-
-                <Grid container spacing={2}>
-
-                    <Grid item xs >
-                        <Button
-                            variant="contained"
-                            onClick={Function}
-                        >
-                            Confirm
-                        </Button>
-                    </Grid>
-
-
-
-                </Grid>
-
-
-
-            </Box>
-        </Modal>
     );
 }
 export default MapClassificationModal;

@@ -17,11 +17,11 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 500,
-    bgcolor: '#f1f1f1',
-    border: '.16vw solid #000',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
     boxShadow: 24,
-    p: 2,
+    p: 4,
 };
 
 function ExportModal() {
@@ -38,62 +38,42 @@ function ExportModal() {
         <Modal open={store.currentModal === CurrentModal.MAP_EXPORT}
                onClick={handleCloseModal}
         >
-            <Box sx={style}
-                 onClick={e => e.stopPropagation()}
-            >
-                <Grid item xs >
-                    <IconButton sx={{
-                                    float: 'right'
-                                }}
-                                onClick={handleCloseModal}>
-                        < CloseIcon/>
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    onClick={e => e.stopPropagation()}
+
+                    sx={style}>
+                    <IconButton type="submit" onClick={handleCloseModal} style={{ position: 'absolute', right: '0', top: '0' }} >
+                        <CloseIcon style={{ fontSize: '2rem', fill: 'black' }} />
                     </IconButton>
-                </Grid>
-                <header className="dialog-header">
-                    <Box style={{backgroundColor:"#f1f1f1", color:"green",paddingTop:"1vh",paddingBottom:"1vh",paddingLeft:"20%"}}>
-                        <Typography style={{fontSize:"1.4rem"}}>
-                            <strong>Select Export File Format</strong>
-                        </Typography>
-                    </Box>
-                </header>
+                    <header className="dialog-header">
+                        <Box style={{ marginBottom: "10%" }}>
+                            <Typography variant="h6" component="h2" style={{ fontSize: "2.5rem" }}>
+                                <strong>Export Map</strong>
+                            </Typography>
 
-                <Grid container spacing={2}>
-                        <Grid item xs >
-                            <Button
-                                variant="contained"
-                                onClick={Function}
-                            >
-                                GEOJSON
-                            </Button>
-                        </Grid>
-
-
-                    <Grid item xs >
-                        <Button
-                            variant="contained"
-                            onClick={Function}
-                        >
-                            SHP/DBF
-                        </Button>
-                    </Grid>
-
-                    <Grid item xs >
-                        <Button
-                            variant="contained"
-                            onClick={Function}
-                        >
-                            JPEG
-                        </Button>
-                    </Grid>
-
-
-
-                </Grid>
-
-
-
-            </Box>
-        </Modal>
+                        </Box>
+                    </header>
+                    <input type="button"
+                        class="modal-confirm-button"
+                        // onClick={() => {
+                        //     handleFork();}}
+                        value='GeoJSON' />
+                    <input type="button"
+                        class="modal-confirm-button"
+                        // onClick={() => {
+                        //     handleFork();}}
+                        value='Shapefile/DBF zip' />
+                    <input type="button"
+                        class="modal-confirm-button"
+                        // onClick={() => {
+                        //     handleFork();}}
+                        value='Jpeg' />
+                </Box>
+            </Modal>
     );
 }
 export default ExportModal;

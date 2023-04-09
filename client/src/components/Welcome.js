@@ -1,9 +1,18 @@
-import { React } from "react";
+import { React,useContext } from "react";
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button';
+import GlobalStoreContext from '../store';
 function Welcome() {
+
+    const { store } = useContext(GlobalStoreContext);
+    function handleLogin(){
+
+    }
+    function handleGuest(){
+        store.changeScreen("community")
+    }
     return (
         <div className="Welcome">
             
@@ -37,7 +46,7 @@ function Welcome() {
                 <Button component={Link} to="/register" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
                     Register
                 </Button>
-                <Button component={Link} to="/" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
+                <Button component={Link} onclick={handleGuest} to="/community" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
                     Continue as Guest
                 </Button>
             </Box>

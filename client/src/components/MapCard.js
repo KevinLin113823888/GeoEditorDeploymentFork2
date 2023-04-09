@@ -39,6 +39,12 @@ function MapCard(props) {
         // GO TO MAP EDITOR SCREEN
         navigate("/map/" + id);
     }
+    function handleClickCommunity(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        store.changeModal("COMMUNITY_PREVIEW_MODAL");
+        
+    }
     function handleDuplicateMap(event) {
         console.log("duplicating map of ", id);
         event.stopPropagation();
@@ -72,7 +78,7 @@ function MapCard(props) {
         cardElement=
         <Box sx={{"&:hover": {backgroundColor: "rgba(255,240,10,0.8)",}}}>
         <Box sx={{ marginLeft: "10%",width:"100%"}}>
-            <Box onClick = {handleClick} sx={{ width: "100%", backgroundColor: "lightgreen", height: "20vh"}}/>
+            <Box onClick = {handleClickCommunity} sx={{ width: "100%", backgroundColor: "lightgreen", height: "20vh"}}/>
             <Box sx={{ width: "100%", backgroundColor: "#ededed", height: "10vh"}}>
                 <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"> 
                 <Box style={{fontWeight: "medium"}}>{map.title}</Box>

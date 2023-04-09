@@ -38,6 +38,47 @@ function ImportModal() {
         <Modal open={store.currentModal === CurrentModal.MAP_IMPORT}
                onClick={handleCloseModal}
         >
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    onClick={e => e.stopPropagation()}
+
+                    sx={style}>
+                    <IconButton type="submit" onClick={handleCloseModal} style={{ position: 'absolute', right: '0', top: '0' }} >
+                        <CloseIcon style={{ fontSize: '2rem', fill: 'black' }} />
+                    </IconButton>
+                    <header className="dialog-header">
+                        <Box style={{ marginBottom: "5%" }}>
+                            <Typography variant="h6" component="h2" style={{ fontSize: "2.5rem" }}>
+                                <strong>Import Map</strong>
+                            </Typography>
+
+                        </Box>
+                    </header>
+                    <Typography style={{fontSize:"1.0rem",
+                            textAlign:"center"}}>
+                            <strong>Import a geoJson map or shp/dbf map file combo</strong>
+                        </Typography>
+                    <input type="button"
+                        class="modal-confirm-button"
+                        // onClick={() => {
+                        //     handleFork();}}
+                        value='Browse' />
+                        <Box sx={{marginBottom:"5%"}}>
+                    <input type="button"
+                        class="modal-confirm-button"
+                        // onClick={() => {
+                        //     handleFork();}}
+                        value='Confirm File Upload' />
+                        </Box>
+                </Box>
+            </Modal>
+        /*
+        <Modal open={store.currentModal === CurrentModal.MAP_IMPORT}
+               onClick={handleCloseModal}
+        >
             <Box sx={style}
                  onClick={e => e.stopPropagation()}
             >
@@ -50,7 +91,7 @@ function ImportModal() {
                     </IconButton>
                 </Grid>
                 <header className="dialog-header">
-                    <Box style={{backgroundColor:"#f1f1f1", color:"green",paddingTop:"1vh",paddingBottom:"1vh"}}>
+                    <Box style={{backgroundColor:"#f1f1f1", color:"black",paddingTop:"1vh",paddingBottom:"1vh"}}>
                         <Typography style={{fontSize:"3.0rem",
                         textAlign:"center"
                         }}>
@@ -96,7 +137,7 @@ function ImportModal() {
 
 
             </Box>
-        </Modal>
+        </Modal>*/
     );
 }
 export default ImportModal;
