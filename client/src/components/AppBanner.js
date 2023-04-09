@@ -31,7 +31,7 @@ export default function AppBanner() {
         store.changeScreen("community")
     };
     const handleSetScreenYourMap = () => {
-        store.changeScreen("yourmaps")
+        store.changeScreen("yourmap")
     };
 
     const handleMenuClose = () => {
@@ -53,10 +53,10 @@ export default function AppBanner() {
     }
     const handleSignOut=()=>{
         handleMenuClose();
-        store.changeScreen("home")
+        store.setHome()
     }
     const goHome = () => {
-        store.changeScreen("home");
+        store.setHome()
         navigate("/");
     }
 
@@ -87,7 +87,7 @@ export default function AppBanner() {
     let editToolbar = "";
     let menu = introMenu;
     function getAccountMenu() {
-        if(store.currentScreen!=="home"){
+        if(store.currentScreen!=="home" && store.guestMode==false){
         return (<Grid container justifyContent="flex-end" style={{ gap: 10 }}>
             <IconButton
                 onClick={handleSetScreenYourMap}

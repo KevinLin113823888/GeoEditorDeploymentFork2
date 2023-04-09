@@ -123,6 +123,15 @@ function MUICommunityPreviewModal() {
     {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude7"},
     {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude8"},
     ]
+
+    let disable = false;
+    let fillColor1="black"
+    let fillColor2="red"
+    if(store.guestMode==true){
+        disable=true;
+        fillColor1 = "grey"
+        fillColor2 = "grey"
+    }
     return (
 
         <div>
@@ -196,25 +205,25 @@ function MUICommunityPreviewModal() {
                                 </Grid>
                                 <Grid item xs={2} >
                                     <Box>
-                                        <IconButton type="submit" onClick={openForkModal} >
-                                            <AltRouteIcon style={{ fontSize: '2rem', fill: 'black' }} />
+                                        <IconButton type="submit" disabled= {disable} onClick={openForkModal} >
+                                            <AltRouteIcon style={{ fontSize: '2rem', fill: fillColor1 }} />
                                         </IconButton>
 
-                                        <IconButton type="submit" onClick={openDownloadModal} >
-                                            <DownloadIcon style={{ fill: "black", fontSize: '2rem' }} />
+                                        <IconButton type="submit" disabled= {disable} onClick={openDownloadModal} >
+                                            <DownloadIcon style={{ fill: fillColor1, fontSize: '2rem' }} />
                                         </IconButton>
 
-                                        <IconButton type="submit" onClick={openReportModal} >
-                                            <EmojiFlagsIcon style={{ fill: "red", fontSize: '1.7rem' }} />
+                                        <IconButton type="submit" disabled= {disable} onClick={openReportModal} >
+                                            <EmojiFlagsIcon style={{ fill: fillColor2, fontSize: '1.7rem' }} />
                                         </IconButton>
                                     </Box>
 
                                     <Box>
-                                        <IconButton type="submit" onClick={handleLike} >
-                                            <ThumbUpIcon style={{ fontSize: '2rem', fill: 'black' }} />
+                                        <IconButton type="submit" disabled= {disable} onClick={handleLike} >
+                                            <ThumbUpIcon style={{ fontSize: '2rem', fill: fillColor1 }} />
                                         </IconButton>
-                                        <IconButton type="submit" onClick={handleDislike} >
-                                            <ThumbDownIcon style={{ fontSize: '2rem', fill: 'black' }} />
+                                        <IconButton type="submit" disabled= {disable} onClick={handleDislike} >
+                                            <ThumbDownIcon style={{ fontSize: '2rem', fill: fillColor1 }} />
                                         </IconButton>
                                     </Box>
 

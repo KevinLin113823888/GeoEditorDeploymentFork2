@@ -8,8 +8,8 @@ function Welcome() {
 
     const { store } = useContext(GlobalStoreContext);
     function handleGuest(){
-        store.changeScreen("community");
-        store.setGuest("true")
+        //store.changeScreen("community");
+        store.setGuest(true,"community")
     }
     return (
         <div className="Welcome">

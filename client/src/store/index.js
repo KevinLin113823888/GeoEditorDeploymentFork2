@@ -14,7 +14,8 @@ export const GlobalStoreActionType = {
     CHANGE_SCREEN:"CHANGE_SCREEN",
     SET_GUEST_MODE:"SET_GUEST_MODE",
     SET_ADMIN_MODE:"SET_ADMIN_MODE",
-    UPDATE_USER_MAP_CARDS:"UPDATE_USER_MAP_CARDS"
+    UPDATE_USER_MAP_CARDS:"UPDATE_USER_MAP_CARDS",
+    SET_HOME: "SET_HOME",
 }
 
 export const CurrentModal = {
@@ -125,8 +126,19 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.NONE,
                     currentMap:  store.currentMap,
                     currentMapData : store.currentMapData, //the current map data we are editing
-                    currentScreen: store.currentScreen ,
-                    guestMode: payload,
+                    currentScreen: payload.screen ,
+                    guestMode: payload.guest,
+                    adminMode: store.adminMode,
+                    userMapCards: store.userMapCards,
+                });
+            }
+            case GlobalStoreActionType.SET_HOME: {
+                return setStore({
+                    currentModal: CurrentModal.NONE,
+                    currentMap: store.currentMap,
+                    currentMapData : store.currentMapData, //the current map data we are editing
+                    currentScreen: "home" ,
+                    guestMode: false,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
                 });
@@ -180,10 +192,20 @@ function GlobalStoreContextProvider(props) {
         }
         );
     }
-    store.setGuest= function(guest){
+    store.setGuest= function(guest,screen){
         storeReducer({
             type: GlobalStoreActionType.SET_GUEST_MODE,
-            payload: guest
+            payload: {guest:guest,
+                      screen:screen
+                    }
+        }
+        );
+    }
+    store.setHome=function(){
+        storeReducer({
+            type: GlobalStoreActionType.SET_HOME,
+            payload: {
+                    }
         }
         );
     }
