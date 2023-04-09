@@ -59,6 +59,13 @@ body {
   cursor:pointer;
   background-color: lightgrey
 }
+.preview-button:hover {
+  background-color: rgb(102, 101, 101);
+}
+.preview-button:disabled{
+  pointer-events: none;
+}
+
 #delete-account-confirm-button{
     background-color: red; 
 }

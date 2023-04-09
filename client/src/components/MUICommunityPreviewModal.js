@@ -193,6 +193,7 @@ function MUICommunityPreviewModal() {
                                             onClick={() => {
                                                 handleFollow();
                                             }}
+                                            disabled= {disable}
                                             value='Follow' />
                                         <input type="button"
                                             class="preview-button"
@@ -200,6 +201,7 @@ function MUICommunityPreviewModal() {
                                                 handleBlock();
                                             }}
                                             style={{ marginLeft: '.5%' }}
+                                            disabled= {disable}
                                             value='Block' />
                                     </Box>
                                 </Grid>
