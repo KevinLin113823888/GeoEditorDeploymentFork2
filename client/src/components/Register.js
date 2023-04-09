@@ -1,4 +1,4 @@
-import {React, useState} from "react";
+import {React, useState,useContext} from "react";
 import {  useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,12 +8,14 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import { GlobalStoreContext } from '../store'
 function Register() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { store } = useContext(GlobalStoreContext);
 
   function handleSubmit (event) {
     event.preventDefault();
@@ -43,6 +45,7 @@ function Register() {
         if (res.status === 200) {
           console.log("REGISTERED, going to your maps");
           navigate('/map');
+          store.changeScreen("yourmap")
         }
       })
     

@@ -37,6 +37,7 @@ function MapCard(props) {
         event.stopPropagation();
         event.preventDefault();
         // GO TO MAP EDITOR SCREEN
+        store.changeScreen("mapEditor")
         navigate("/map/" + id);
     }
     function handleClickCommunity(event) {

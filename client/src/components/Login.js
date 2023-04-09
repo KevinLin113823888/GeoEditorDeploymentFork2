@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,9 +8,11 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import { GlobalStoreContext } from '../store'
 
 function Login() {
   const navigate = useNavigate();
+  const { store } = useContext(GlobalStoreContext);
 
 
   function handleSubmit(event) {
@@ -35,6 +37,7 @@ function Login() {
           if (res.status === 200) {
             console.log("LOGGED IN, going to your maps");
             navigate('/map');
+            store.changeScreen("yourmap")
           }
         })
         .catch(err => console.log(err));

@@ -7,11 +7,8 @@ import GlobalStoreContext from '../store';
 function Welcome() {
 
     const { store } = useContext(GlobalStoreContext);
-    function handleLogin(){
-
-    }
     function handleGuest(){
-        store.changeScreen("community")
+        store.changeScreen("community");
     }
     return (
         <div className="Welcome">
@@ -40,13 +37,13 @@ function Welcome() {
                     >
                     Create, share, and explore community maps with an easy to use map editor
                 </Box>
-                <Button component={Link} to="/login" variant="contained" color="primary" sx={{ marginTop: '5%' }}>
+                <Button component={Link}to="/login" variant="contained" color="primary" sx={{ marginTop: '5%' }}>
                     Login
                 </Button>
                 <Button component={Link} to="/register" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
                     Register
                 </Button>
-                <Button component={Link} onclick={handleGuest} to="/community" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
+                <Button component={Link} onClick={handleGuest} to="/community" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
                     Continue as Guest
                 </Button>
             </Box>
