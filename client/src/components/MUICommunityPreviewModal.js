@@ -20,6 +20,9 @@ import DownloadIcon from '@mui/icons-material/Download';
 import AltRouteIcon from '@mui/icons-material/AltRoute';
 
 import CommentCard from './CommentCard.js'
+import MapEditor from "./MapViewer/MapEditor";
+import GeomanJsWrapper from "./MapViewer/GeomanJsWrapper";
+import {FeatureGroup, GeoJSON, LayerGroup, MapContainer, TileLayer} from "react-leaflet";
 
 const style = {
     position: 'absolute',
@@ -124,7 +127,7 @@ function MUICommunityPreviewModal() {
 
         <div>
             <Modal
-                open={store.currentModal == "COMMUNITY_PREVIEW_MODAL"}
+                open={store.currentModal === "COMMUNITY_PREVIEW_MODAL"}
                 // open={true}
                 onClose={handleCloseModal}
             >
@@ -137,8 +140,33 @@ function MUICommunityPreviewModal() {
                     sx={style}>
                     <Grid container >
                         <Grid item xs={9} >
-                            <Box sx={{ width: "100%", backgroundColor: "red", height: "55vh", marginRight: '2.5%', }}>
-                            </Box>
+                            {/*<Box sx={{ width: "100%", backgroundColor: "red", marginRight: '2.5%', }}>*/}
+                                <MapContainer
+                                    style={{
+                                        height: "50vh",
+                                    }} zoom={2} center={[20, 100]}
+                                    editable={false}
+                                >
+                                    <FeatureGroup>
+                                        {/*{(props.file!== undefined)?*/}
+                                        {/*    <GeoJSON*/}
+                                        {/*        key={update}*/}
+                                        {/*        data={props.file.features}*/}
+                                        {/*    />*/}
+                                        {/*    : <></>*/}
+                                        {/*}*/}
+                                    </FeatureGroup>
+                                    <TileLayer url="xxx" />
+                                    <LayerGroup>
+                                        <TileLayer
+                                            attribution='&amp;copy <update href="http://osm.org/copyright">OpenStreetMap</update> contributors'
+                                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                        />
+                                        <TileLayer url="http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png" />
+                                    </LayerGroup>
+                                </MapContainer>
+
+                            {/*</Box>*/}
                             <Grid container style={{ paddingTop: "2%" }}>
                                 <Grid item xs={10}>
                                     <Box >

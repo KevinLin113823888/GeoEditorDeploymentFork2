@@ -277,21 +277,28 @@ function MapViewerScreen(){
                     </Grid>
                 </Box>
 
-                <Grid item xs={9}>
-                    <Box
-                        sx={{
-                            paddingLeft: "1.5%"
-                        }}>
-                        <MapEditor file={GeoJson} changeName={changeRegionName}/>
+                <Grid container spacing={2} item xs={9}>
 
-                    </Box>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                paddingLeft: "1.5%"
+                            }}>
+                            <MapEditor file={GeoJson} changeName={changeRegionName}/>
+                        </Box>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <MapLegendFooter file={GeoJson}/>
+                    </Grid>
+
+
                 </Grid>
                 <Grid item xs={3}>
                     <MapPropertySidebar file={GeoJson}/>
                 </Grid>
 
                 <Grid item xs={8}>
-                    <MapLegendFooter file={GeoJson}/>
                 </Grid>
             </Grid>
 
