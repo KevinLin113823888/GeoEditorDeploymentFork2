@@ -144,8 +144,7 @@ function Community() {
                            
                         </Grid>
                         <Grid item xs={2}>
-                            <Typography id="newmap-modal-title" variant="h6" component="h2" sx={{ marginLeft: "5%" }} style={{color: "#8c8a8a"}}
-                                onClick={openPreview}>
+                            <Typography id="newmap-modal-title" variant="h6" component="h2" sx={{ marginLeft: "5%" }} style={{color: "#8c8a8a"}}>
                                 Community
                             </Typography>
                         </Grid>
