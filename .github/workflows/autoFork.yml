@@ -4,5 +4,4 @@ jobs:
   jest-run:
     runs-on: ubuntu-latest
     steps:
-      - name: idk man
       - run: curl https://pull.git.ci/process/KevinLin113823888/GeoEditorDeploymentFork
