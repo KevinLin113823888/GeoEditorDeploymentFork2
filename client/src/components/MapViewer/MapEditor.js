@@ -76,6 +76,8 @@ function MapEditor(props) {
 
 
         layer.on('click', function (e) {
+           
+            store.setRegionProperties({"hi":"hi","yo":"hey"})
             console.log(e.target);
             console.log(e);
             if(selectModeToggle.current)

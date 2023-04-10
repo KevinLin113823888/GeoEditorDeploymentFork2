@@ -16,6 +16,7 @@ export const GlobalStoreActionType = {
     SET_ADMIN_MODE:"SET_ADMIN_MODE",
     UPDATE_USER_MAP_CARDS:"UPDATE_USER_MAP_CARDS",
     SET_HOME: "SET_HOME",
+    SET_REGION_PROPERTIES:"SET_REGION_PROPERTIES"
 }
 
 export const CurrentModal = {
@@ -46,6 +47,7 @@ function GlobalStoreContextProvider(props) {
         guestMode: false,
         adminMode: false,
         userMapCards: [{}],
+        currentRegionProp:{}
     });
     
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
@@ -64,6 +66,7 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
+                    currentRegionProp: store.currentRegionProp
                 });
             }
             case GlobalStoreActionType.CHANGE_SCREEN: {
@@ -75,6 +78,7 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
+                    currentRegionProp: {}
                 });
             }
             case GlobalStoreActionType.NEW_MAP_NAME: {
@@ -86,6 +90,7 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
+                    currentRegionProp: store.currentRegionProp
                 });
             }
             case GlobalStoreActionType.SET_CURRENT_MAP: {
@@ -97,6 +102,7 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
+                    currentRegionProp: store.currentRegionProp
                 });
             }
             case GlobalStoreActionType.UPDATE_CURRENT_MAPDATA: {
@@ -108,6 +114,7 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
+                    currentRegionProp: store.currentRegionProp
                 });
             }
             case GlobalStoreActionType.UPDATE_USER_MAP_CARDS: {
@@ -119,6 +126,7 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: payload,
+                    currentRegionProp: store.currentRegionProp
                 });
             }
             case GlobalStoreActionType.SET_GUEST_MODE: {
@@ -130,6 +138,7 @@ function GlobalStoreContextProvider(props) {
                     guestMode: payload.guest,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
+                    currentRegionProp: {}
                 });
             }
             case GlobalStoreActionType.SET_HOME: {
@@ -141,6 +150,19 @@ function GlobalStoreContextProvider(props) {
                     guestMode: false,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
+                    currentRegionProp: {}
+                });
+            }
+            case GlobalStoreActionType.SET_REGION_PROPERTIES: {
+                return setStore({
+                    currentModal : CurrentModal.NONE,
+                    currentMap:  store.currentMap,
+                    currentMapData : store.currentMapData, //the current map data we are editing
+                    currentScreen: store.currentScreen ,
+                    guestMode: store.guestMode,
+                    adminMode: store.adminMode,
+                    userMapCards: store.userMapCards,
+                    currentRegionProp: payload
                 });
             }
             default:
@@ -206,6 +228,13 @@ function GlobalStoreContextProvider(props) {
             type: GlobalStoreActionType.SET_HOME,
             payload: {
                     }
+        }
+        );
+    }
+    store.setRegionProperties=function(properties){
+        storeReducer({
+            type: GlobalStoreActionType.SET_REGION_PROPERTIES,
+            payload: properties
         }
         );
     }

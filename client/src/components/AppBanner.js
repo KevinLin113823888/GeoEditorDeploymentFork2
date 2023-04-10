@@ -75,13 +75,14 @@ export default function AppBanner() {
         }}
         open={isMenuOpen}
         onClose={handleMenuClose}
+        sx={{p:2}}
     >
 
-        <MenuItem onClick={handleMenuClose}><Link to='/map'>View My Maps</Link></MenuItem>
-        <MenuItem onClick={handleMenuClose}><Link to='/forgotUsername/'>Change Username</Link></MenuItem>
-        <MenuItem onClick={handleMenuCloseGuest}><Link to='/forgotPassword/'>Change Password</Link></MenuItem>
-        <MenuItem onClick={handleDeleteAccount}><Link to='#'>Delete Account</Link></MenuItem>
-        <MenuItem onClick={handleSignOut}><Link to='/'>Sign Out</Link></MenuItem>
+        <MenuItem onClick={handleMenuClose} sx={{p:1}}><Link to='/map' style={{color:"black"}}   >View My Maps</Link></MenuItem>
+        <MenuItem onClick={handleMenuClose} sx={{p:1}}><Link to='/forgotUsername/' style={{color:"black"}}>Change Username</Link></MenuItem>
+        <MenuItem onClick={handleMenuCloseGuest} sx={{p:1}}><Link to='/forgotPassword/' style={{color:"black"}}>Change Password</Link></MenuItem>
+        <MenuItem onClick={handleDeleteAccount} sx={{p:1}}><Link to='#'style={{color:"black"}}>Delete Account</Link></MenuItem>
+        <MenuItem onClick={handleSignOut} sx={{p:1}}><Link to='/' style={{color:"black"}}>Sign Out</Link></MenuItem>
     </Menu>
 
     let editToolbar = "";
