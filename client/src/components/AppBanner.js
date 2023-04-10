@@ -46,8 +46,8 @@ export default function AppBanner() {
     }
 
     const handleLogout = () => {
+        navigate("/");
         handleMenuClose();
-
     }
     const handleHome = () => {
     }
