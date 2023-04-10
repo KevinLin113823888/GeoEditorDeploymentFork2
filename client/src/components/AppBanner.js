@@ -33,6 +33,10 @@ export default function AppBanner() {
     const handleSetScreenYourMap = () => {
         store.changeScreen("yourmap")
     };
+    const handleSetScreenYourMapClose = () => {
+        setAnchorEl(null);
+        store.changeScreen("yourmap")
+    };
 
     const handleMenuClose = () => {
         setAnchorEl(null);
@@ -78,7 +82,7 @@ export default function AppBanner() {
         sx={{p:2}}
     >
 
-        <MenuItem onClick={handleMenuClose} sx={{p:1}}><Link to='/map' style={{color:"black"}}   >View My Maps</Link></MenuItem>
+        <MenuItem onClick={handleSetScreenYourMapClose} sx={{p:1}}><Link to='/map' style={{color:"black"}}   >View My Maps</Link></MenuItem>
         <MenuItem onClick={handleMenuClose} sx={{p:1}}><Link to='/forgotUsername/' style={{color:"black"}}>Change Username</Link></MenuItem>
         <MenuItem onClick={handleMenuCloseGuest} sx={{p:1}}><Link to='/forgotPassword/' style={{color:"black"}}>Change Password</Link></MenuItem>
         <MenuItem onClick={handleDeleteAccount} sx={{p:1}}><Link to='#'style={{color:"black"}}>Delete Account</Link></MenuItem>
