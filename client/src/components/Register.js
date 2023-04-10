@@ -27,7 +27,9 @@ function Register() {
       const email = formData.get('email');
       const password = formData.get('password');
       const verifypassword = formData.get('passwordVerify');
-      fetch("http://localhost:9000/" + 'user/register', {
+      const server =       process.env.REACT_APP_API_SERVER
+
+      fetch(server+ 'user/register', {
         method: "POST",
         credentials: 'include',
         headers: {

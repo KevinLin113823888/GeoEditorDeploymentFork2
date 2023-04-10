@@ -10,7 +10,7 @@ var communityRouter = require('./routes/communityRoute');
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000','https://bejewelled-rugelach-940512.netlify.app'],
     credentials: true
 }));
 app.use(express.json());

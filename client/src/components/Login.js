@@ -20,8 +20,12 @@ function Login() {
     const formData = new FormData(event.currentTarget);
     const username = formData.get('userName');
     const password = formData.get('password');
-    if (username !== "" & password !== "") {
-      fetch("http://localhost:9000/" + 'user/login', {
+
+      const server =       process.env.REACT_APP_API_SERVER
+
+
+      if (username !== "" & password !== "") {
+      fetch(server + 'user/login', {
         method: "POST",
         credentials: 'include',
         headers: {
