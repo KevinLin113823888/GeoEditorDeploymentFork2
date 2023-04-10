@@ -28,7 +28,7 @@ function MapPropertySidebar(props) {
     let propertiesSideBar = <div></div>
     if (Object.keys(store.currentRegionProp).length > 0) {
         propertiesSideBar = 
-            <Box sx={{ width: "80%", height: "80vh", maxHeight: "80%", overflowY: "scroll", }} style={{ border: "1px solid black" }}>
+            <Box sx={{ width: "93%", height: "80vh", maxHeight: "80%", overflowY: "scroll", }} style={{ border: "1px solid black" }}>
                 <Box sx={{ marginLeft: "3%" }}>
                     <Typography
                         style={{ fontSize: "2rem", fontFamily: "October Tamil", color: "#000000", fontWeight: "bold", display: "inline" }}
