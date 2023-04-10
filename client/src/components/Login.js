@@ -25,7 +25,7 @@ function Login() {
 
 
       if (username !== "" & password !== "") {
-      fetch(server + 'user/login', {
+      fetch(process.env.REACT_APP_API_SERVER + 'user/login', {
         method: "POST",
         credentials: 'include',
         headers: {

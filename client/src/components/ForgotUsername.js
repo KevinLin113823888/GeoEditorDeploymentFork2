@@ -12,7 +12,7 @@ function ForgotUsername() {
 
   function postReq() {
     if (email !== "") {
-      fetch("http://localhost:9000/" + 'user/forgotUsername', {
+      fetch(process.env.REACT_APP_API_SERVER + 'user/forgotUsername', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
