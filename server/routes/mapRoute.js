@@ -9,5 +9,6 @@ router.get('/createMap', MapController.createMap);
 router.post('/duplicateMapById', MapController.duplicateMapById);
 router.post('/changeMapNameById', MapController.changeMapNameById);
 router.post('/publishMapById', MapController.publishMapById);
+router.post('/mapClassificationById', MapController.mapClassificationById);
 
 module.exports = router
