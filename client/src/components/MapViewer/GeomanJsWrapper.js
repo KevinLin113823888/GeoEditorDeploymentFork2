@@ -44,7 +44,7 @@ function GeomanJsWrapper(props) {
         const onClickFunction = [
 
         ]
-
+        
         for(let index in customButtonNameList){
             let name = customButtonNameList[index]
             let action = actionsList[index]
@@ -80,7 +80,7 @@ function GeomanJsWrapper(props) {
                 removalMode:false,
                 cutPolygon:false,
                 dragMode:false,
-                editMode:false
+                editMode:true
             });
             L.pm.setGlobalOptions({
                 continueDrawing: true,
