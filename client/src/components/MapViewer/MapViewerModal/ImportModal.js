@@ -24,7 +24,7 @@ const style = {
     p: 2,
 };
 
-function ImportModal() {
+function ImportModal(props) {
     const { store } = useContext(GlobalStoreContext);
 
     function handleDeleteUser(event) {
@@ -61,18 +61,66 @@ function ImportModal() {
                             textAlign:"center"}}>
                             <strong>Import a geoJson map or shp/dbf map file combo</strong>
                         </Typography>
-                    <input type="button"
-                        class="modal-confirm-button"
-                        // onClick={() => {
-                        //     handleFork();}}
-                        value='Browse' />
-                        <Box sx={{marginBottom:"5%"}}>
-                    <input type="button"
-                        class="modal-confirm-button"
-                        // onClick={() => {
-                        //     handleFork();}}
-                        value='Confirm File Upload' />
-                        </Box>
+
+
+                        <Button
+                            sx={{marginTop:'3%',
+                                marginBottom: '3%'}}
+                            variant="contained"
+                            component="label"
+                            >
+                            Upload GeoJSON
+                            <input
+                                type="file"
+                                hidden
+                                accept=".json" onChange={props.handleGeoJson}
+                            />
+                        </Button>
+                
+                        <Grid container 
+                                    // display="flex"
+                                    // // flexDirection="column"
+                                    // justifyContent="center"
+                                    // alignItems="center" 
+                                    >
+                            <Grid item xs={6}
+                                display="flex"
+                                justifyContent="Right"
+                                sx={{paddingRight:'2%'}}
+                            >
+                            <Button
+                                // sx={{marginLeft:'3%'}}
+                                variant="contained"
+                                component="label"
+                                >
+                                Upload .shp file
+                                <input
+                                    type="file"
+                                    hidden
+                                    accept=".shp" onChange={e=>{props.handleShpDbfFile(e,"shp")}}
+                                />
+                            </Button>
+                            </Grid>
+                            <Grid item xs={6} 
+                            display="flex"
+                            justifyContent="Left"
+                            sx={{paddingLeft:'2%'}}
+
+                            >
+                            <Button
+                                // sx={{marginRight:'3%'}}
+                                variant="contained"
+                                component="label"
+                                >
+                                Upload .dbf file
+                                <input
+                                    type="file"
+                                    hidden
+                                    accept=".dbf" onChange={e=>{props.handleShpDbfFile(e,"dbf")}}
+                                />
+                            </Button>
+                            </Grid>
+                        </Grid>
                 </Box>
             </Modal>
         /*

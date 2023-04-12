@@ -25,6 +25,12 @@ function MapEditor(props) {
 
     const currentRegion = useRef("");
     //const context = useLeafletContext();
+    console.log(props.file);
+    // useEffect(() =>{
+    //     console.log("changed");
+    //     setUpdate(update => update+1);
+    // },[]);
+
     function handleCompress(){
 
         const map = new Map();
@@ -638,7 +644,7 @@ function MapEditor(props) {
 
     return (
         <div>
-           
+            
             <button
                         onClick={handleCompress
                         }>

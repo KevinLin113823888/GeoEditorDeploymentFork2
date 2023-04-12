@@ -29,7 +29,7 @@ function Community() {
     const { store } = useContext(GlobalStoreContext);
 
     useEffect(() => {
-        fetch("http://localhost:9000/" + 'community/getCommunity', {
+        fetch(process.env.REACT_APP_API_URL + 'community/getCommunity', {
             method: "GET",
             credentials: 'include',
             headers: {

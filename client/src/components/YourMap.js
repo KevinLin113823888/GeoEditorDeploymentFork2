@@ -42,7 +42,7 @@ function YourMap() {
     }, []);
 
     function onLoad() {
-        fetch("http://localhost:9000/" + 'user/loggedIn', {
+        fetch(process.env.REACT_APP_API_URL + 'user/loggedIn', {
             method: "GET",
             credentials: 'include',
             headers: {
