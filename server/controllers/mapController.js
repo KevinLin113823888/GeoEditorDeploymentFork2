@@ -65,24 +65,29 @@ class mapController {
     }
 
     static async duplicateMapById(req, res) {
-        var { id } = req.body;
+        var { id, newName } = req.body;
 
-        var currentMapCard = MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
+        var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
 
-        var currentMap = Map.findOne({ _id: currentMapCard._id });
+        var currentMap = await Map.findOne({ _id: currentMapCard.map });
         
-        var currentMapData = MapData.findOne({ _id: currentMap._id });
+        // var currentMapData = await MapData.findOne({ _id: currentMap.mapData });
 
-        currentMapCard._id = new mongoose.Types.ObjectId();
-        currentMap._id = new mongoose.Types.ObjectId();
-        currentMapData._id = new mongoose.Types.ObjectId();
+        let mapObjId = new mongoose.Types.ObjectId();
+        let mapCardObjId = new mongoose.Types.ObjectId();
 
-        currentMapCard.map = currentMap._id;
-        currentMap.mapData = currentMapData._id;
+        let mapObj = currentMap.toObject();
+        mapObj._id = mapObjId;
+        mapObj.title = newName;
+        const mapClone = new Map(mapObj);
+        await mapClone.save();
 
-        MapCard.insert(currentMapCard);
-        Map.insert(currentMap);
-        MapData.insert(currentMapData);
+        let mapCardObj = currentMapCard.toObject();
+        delete mapCardObj._id;
+        mapCardObj.map = mapCardObjId;
+        mapCardObj.title = newName;
+        const mapCardClone = new MapCard(mapCardObj);
+        await mapCardClone.save();
 
         return res.status(400).json({status: 'OK'});
     }
