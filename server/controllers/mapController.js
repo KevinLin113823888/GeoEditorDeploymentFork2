@@ -11,9 +11,11 @@ class mapController {
             var { title } = req.body;
             let session = req.cookies.values;
             var owner = await User.findOne({username: session.username});
+
             var newMap = new Map({
                 title: title,
-                owner: owner._id
+                owner: owner._id,
+                published: false
             });
             
             await newMap.save();
@@ -31,7 +33,7 @@ class mapController {
             
             owner.ownedMapCards.push(newMapCard._id);
 
-            await owner.save()
+            await owner.save();
             console.log(newMap._id.toString());
             return res.status(200).json({status: 'OK', title: title, mapId: newMap._id.toString()});
         }
@@ -43,7 +45,7 @@ class mapController {
     static async getMapById(req, res) {
         var { id } = req.body;
 
-        var currentMap = Map.findOne({ _id: mongoose.Types.ObjectId(id) });
+        var currentMap = Map.findOne({ _id: newmongoose.Types.ObjectId(id) });
         var currentMapData = MapData.findOne({ _id: currentMap.mapData });
 
         return res.status(400).json({status: 'OK', title: currentMap.title});
@@ -65,15 +67,15 @@ class mapController {
     static async duplicateMapById(req, res) {
         var { id } = req.body;
 
-        var currentMapCard = MapCard.findOne({ _id: mongoose.Types.ObjectId(id) });
+        var currentMapCard = MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
 
         var currentMap = Map.findOne({ _id: currentMapCard._id });
         
         var currentMapData = MapData.findOne({ _id: currentMap._id });
 
-        currentMapCard._id = mongoose.Types.ObjectId();
-        currentMap._id = mongoose.Types.ObjectId();
-        currentMapData._id = mongoose.Types.ObjectId();
+        currentMapCard._id = new mongoose.Types.ObjectId();
+        currentMap._id = new mongoose.Types.ObjectId();
+        currentMapData._id = new mongoose.Types.ObjectId();
 
         currentMapCard.map = currentMap._id;
         currentMap.mapData = currentMapData._id;
@@ -87,9 +89,28 @@ class mapController {
 
     static async changeMapNameById(req, res) {
         var { id, newName } = req.body;
-        var currentMapCard = await MapCard.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, { title: newName });
-        Map.Update({ _id: currentMapCard.map }, { title: newName });
-        
+        var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { title: newName });
+        // var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id)})
+        await currentMapCard.save();
+        console.log("current map card", currentMapCard.title);
+        var updatedMap = await Map.findOneAndUpdate({ _id: currentMapCard.map }, { title: newName });
+        await updatedMap.save();
+
+        return res.status(400).json({status: 'OK'});
+    }
+
+    static async publishMapById(req, res) {
+        var { id } = req.body;
+        console.log("id to find", id);
+        var currentMap = await Map.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { published: true });
+        await currentMap.save();
+        console.log("current map", currentMap.title);
+        var newCommunityPreview = new CommunityPreview({
+            mapData: currentMap.mapData
+        });
+
+        await newCommunityPreview.save();
+
         return res.status(400).json({status: 'OK'});
     }
 }

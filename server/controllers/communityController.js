@@ -8,8 +8,9 @@ const CommunityPreview = require('../models/communityPreviewModel')
 class communityController {
     static async getCommunity(req, res) {
         let session = req.cookies.values;
-        // var communityMaps = await CommunityPreview.find().limit(50);
-        // get first like 20 - 30 community previews to showcase
+        var communityMaps = await CommunityPreview.find().limit(50);
+        console.log("community maps", communityMaps);
+
         return res.status(200).json({status: "OK"});
     }
 

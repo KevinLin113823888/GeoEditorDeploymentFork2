@@ -4,7 +4,7 @@ const router = express.Router()
 const CommunityController = require('../controllers/communityController')
 
 router.get('/getCommunity', CommunityController.getCommunity);
-router.get('/getCommunityPreviewById', CommunityController.getCommunityPreviewById);
-router.post('/forkCommunityMap', CommunityController.forkCommunityMap);
+// router.get('/getCommunityPreviewById', CommunityController.getCommunityPreviewById);
+// router.post('/forkCommunityMap', CommunityController.forkCommunityMap);
 
 module.exports = router
