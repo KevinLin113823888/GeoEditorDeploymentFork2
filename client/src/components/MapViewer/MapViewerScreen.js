@@ -21,7 +21,6 @@ import Box from "@mui/material/Box";
 function MapViewerScreen(){
 
     const [fileExist, setFileExist] = useState(false);
-    const [keyid, setKeyid] = useState(0)
     const [GeoJson, setGeoJson] = useState({});
     const [state, setState] = useState(true);
     const [data, setData] = useState([]);
@@ -35,131 +34,6 @@ function MapViewerScreen(){
     let shpfile = null;
     let dbffile = null;
 
-    // useEffect(() => {
-    //     upload();
-    //     console.log("map id", id);
-
-    //     if (id !== undefined) {
-    //         fetch(process.env.REACT_APP_API_URL + 'user/loggedIn', {
-    //             method: "GET",
-    //             credentials: 'include',
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify({ id: id }),
-    //             })
-    //             .then((res) => res.json())
-    //             .then((data) => {
-    //                 console.log("map data", data);
-    //             })
-    //             .catch(err => console.log(err)
-    //         );
-    //     }
-    // },[])
-
-
-    // const readShapefile = (e) => {
-    //     count = 0;
-    //     //can only upload shp file but not zip file for now
-    //     let res = [];
-    //     let empty = {}
-    //     empty.type = "FeatureCollection"
-    //     empty.features = res
-    //     shapefile
-    //         .open(
-    //             e,
-    //             null
-    //         ).then(function (e){
-    //         e.read().then(
-    //             function next(result){
-    //                 if(result.value)
-    //                 {
-    //                     result.value.properties.name = names[count];
-    //                     count++;
-    //                     // console.log(result.value);
-    //                     empty.features.push(result.value)
-    //                 }
-    //                 if(!result.done){
-    //                     e.read().then(next)
-    //                 }
-    //                 else{
-    //                     setGeoJson(empty)
-    //                     setFileExist(true);
-    //                 }   
-    //             })
-    //     })
-    // }
-
-    // const readShapefile2 = (e) => {
-    //     count = 0;
-    //     //can only upload shp file but not zip file for now
-
-    //     shapefile
-    //         .openDbf(
-    //             e,
-    //             //"https://cdn.rawgit.com/mbostock/shapefile/master/test/points.shp",
-    //             null
-    //         ).then(function (e){
-    //         e.read().then(
-    //             function next(result){
-    //                 // console.log(result)
-    //                 if(result.value)
-    //                 {
-    //                     if(result.value.NAME_3)
-    //                         names[count]=result.value.NAME_3;
-    //                     else if(result.value.NAME_2)
-    //                         names[count]=result.value.NAME_2;
-    //                     else if(result.value.NAME_1)
-    //                         names[count]=result.value.NAME_1;
-    //                     else if(result.value.NAME_0)
-    //                         names[count]=result.value.NAME_0;
-    //                     count++;
-    //                 }
-    //                 if(!result.done){
-    //                     e.read().then(next)
-    //                 }
-    //                 else{
-    //                     console.log("done with name")
-    //                     console.log(names);
-    //                 }
-    //             })
-    //     })
-    // }
-
-    // const handleSubmit = (e) => {
-    //     {
-    //         if (shpfile != null && dbffile != null){
-    //             const reader = new FileReader();
-    //             setGeoJson({});
-    //             reader.readAsArrayBuffer(shpfile);
-    //             reader.onload = async e => {
-    //                 await readShapefile(reader.result)
-    //             }
-    //             // console.log("shp file read");
-    //         }
-    //     }
-    // }
-
-    // const handleSelectFile = (e) => {
-    //     {
-    //         shpfile = e.target.files[0];
-
-    //         // console.log("shp file read");
-    //     }
-    // }
-    // const handleSelectFile2 = (e) => {
-    //     {
-    //         dbffile = e.target.files[0];
-    //         //this is for shapefile
-    //         const reader = new FileReader();
-
-    //         reader.readAsArrayBuffer(e.target.files[0]);
-    //         reader.onload = async e => {
-    //             await readShapefile2(reader.result)
-    //         }
-    //         // console.log("dbf file read");
-    //     }
-    // }
 
     const handleSubmit = () => {
         setGeoJson({});
@@ -187,7 +61,6 @@ function MapViewerScreen(){
                     }
                     else{
                         setGeoJson(geoJson)
-                        setKeyid(keyid => keyid+1)
                         setFileExist(true);
                     }
                 })
@@ -268,7 +141,24 @@ function MapViewerScreen(){
     const handleImport = () => {store.changeModal(CurrentModal.MAP_IMPORT)}
     const handleExport = () => {store.changeModal(CurrentModal.MAP_EXPORT)}
     const handleSave = () =>   {}
-    const handlePublish = () => {}
+    const handlePublish = () => {
+        fetch(process.env.REACT_APP_API_URL + 'map/publishMapById', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: id
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+           console.log(data)
+        })
+        .catch(err => console.log(err));
+
+    }
     const handleMapClassification = () => {store.changeModal(CurrentModal.MAP_CLASSIFICATION)}
 
 
@@ -352,7 +242,7 @@ function MapViewerScreen(){
                             sx={{
                                 paddingLeft: "1.5%"
                             }}>
-                            <MapEditor file={GeoJson} changeName={changeRegionName} key={keyid}/>
+                            <MapEditor file={GeoJson} changeName={changeRegionName} />
                         </Box>
                     </Grid>
 
