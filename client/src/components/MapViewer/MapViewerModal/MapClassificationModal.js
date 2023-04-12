@@ -62,12 +62,13 @@ function MapClassificationModal() {
                     </header>
                     <Box style={{ marginBottom: "3%", }}>
                             <Typography variant="h2" component="h2" style={{ fontSize: "1rem" }}>
-                                <strong>Enter a short description of your map to help users find it!</strong>
+                                <strong>Please provide a comma separated sentence for a list of classifications of your map to help users find it!
+                                      (ex: [North America, US] will give the tags US and North America)</strong>
                             </Typography>
 
                         </Box>
                     <Box sx={{ width: "100%", height: "100%", }}>
-                        <TextField type='text' placeholder="Provide a classification for your map..." sx={{ width: '100%', height: '100%' }}
+                        <TextField type='text' placeholder="Enter your classifications" sx={{ width: '100%', height: '100%' }}
                             multiline
                             rows={7}
                             maxRows={Infinity}

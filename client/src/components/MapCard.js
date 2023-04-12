@@ -51,6 +51,9 @@ function MapCard(props) {
         console.log("duplicating map of ", id);
         event.stopPropagation();
         event.preventDefault();
+        store.changeModal("COPY_MAP");
+
+        // store.changeModal("NEW_MAP_NAME");
         
     }
     function handleEditMap(event) {
