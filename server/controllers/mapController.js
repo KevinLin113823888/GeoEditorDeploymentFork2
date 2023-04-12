@@ -90,9 +90,7 @@ class mapController {
     static async changeMapNameById(req, res) {
         var { id, newName } = req.body;
         var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { title: newName });
-        // var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id)})
         await currentMapCard.save();
-        console.log("current map card", currentMapCard.title);
         var updatedMap = await Map.findOneAndUpdate({ _id: currentMapCard.map }, { title: newName });
         await updatedMap.save();
 
@@ -101,16 +99,13 @@ class mapController {
 
     static async publishMapById(req, res) {
         var { id } = req.body;
-        console.log("id to find", id);
-        var currentMap = await Map.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { published: true });
+        var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
+        var currentMap = await Map.findOneAndUpdate({ _id: currentMapCard.map }, { published: true });
         await currentMap.save();
-        console.log("current map", currentMap.title);
         var newCommunityPreview = new CommunityPreview({
             mapData: currentMap.mapData
         });
-
         await newCommunityPreview.save();
-
         return res.status(400).json({status: 'OK'});
     }
 }
