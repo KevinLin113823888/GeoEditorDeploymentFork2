@@ -35,7 +35,7 @@ function CreateNewMapModal() {
     function createNewMap() {
         console.log(newMapName)
         if (newMapName !== "") {
-            fetch(process.env.REACT_APP_API_SERVER + 'map/createMap', {
+            fetch(process.env.REACT_APP_API_URL + 'map/createMap', {
                 method: "POST",
                 credentials: 'include',
                 headers: {

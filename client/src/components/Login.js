@@ -21,11 +21,11 @@ function Login() {
     const username = formData.get('userName');
     const password = formData.get('password');
 
-      const server =       process.env.REACT_APP_API_SERVER
+      const server =       process.env.REACT_APP_API_URL
 
 
       if (username !== "" & password !== "") {
-      fetch(process.env.REACT_APP_API_SERVER + 'user/login', {
+      fetch(process.env.REACT_APP_API_URL + 'user/login', {
         method: "POST",
         credentials: 'include',
         headers: {

@@ -27,7 +27,7 @@ function Register() {
       const email = formData.get('email');
       const password = formData.get('password');
       const verifypassword = formData.get('passwordVerify');
-      const server =       process.env.REACT_APP_API_SERVER
+      const server =       process.env.REACT_APP_API_URL
 
       fetch(server+ 'user/register', {
         method: "POST",

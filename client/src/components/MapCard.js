@@ -17,7 +17,7 @@ function MapCard(props) {
         console.log("removing map of ", id);
         event.stopPropagation();
         // store.showRemoveMapModal(index, map);
-        fetch(process.env.REACT_APP_API_SERVER + 'map/deleteMapById', {
+        fetch(process.env.REACT_APP_API_URL + 'map/deleteMapById', {
             method: "POST",
             credentials: 'include',
             headers: {

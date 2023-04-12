@@ -219,15 +219,15 @@ function MapViewerScreen(){
             <MapColorwheelModal/>
             <MapMergeChangeRegionNameModal/>
 
-            {/*<div>*/}
-            {/*    Shapefile:*/}
-            {/*    <input type="file" accept="geo.json" onChange={handleSelectFile}/>*/}
-            {/*</div>*/}
-            {/*<div>*/}
-            {/*    Dbf:*/}
-            {/*    <input type="file" accept="geo.json" onChange={handleSelectFile2}/>*/}
-            {/*</div>*/}
-            {/*<div> <input type="submit" value="submit" onClick={handleSubmit} /></div>*/}
+            <div>
+               Shapefile:
+               <input type="file" accept="geo.json" onChange={handleSelectFile}/>
+            </div>
+            <div>
+               Dbf:
+               <input type="file" accept="geo.json" onChange={handleSelectFile2}/>
+            </div>
+            <div> <input type="submit" value="submit" onClick={handleSubmit} /></div>
 
             <Grid container spacing={2}>
                 <Grid item xs={6}

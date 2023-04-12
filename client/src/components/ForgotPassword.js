@@ -17,7 +17,7 @@ function ForgotPassword() {
 
     function postReqSendPasswordRecoveryCode() {
         if (email !== "") {
-            fetch(process.env.REACT_APP_API_SERVER + 'user/sendPasswordRecoveryCode', {
+            fetch(process.env.REACT_APP_API_URL + 'user/sendPasswordRecoveryCode', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -34,7 +34,7 @@ function ForgotPassword() {
 
     function putReqChangePassword() {
         if (email !== "") {
-            fetch(process.env.REACT_APP_API_SERVER + 'user/changePassword', {
+            fetch(process.env.REACT_APP_API_URL + 'user/changePassword', {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
