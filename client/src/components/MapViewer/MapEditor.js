@@ -435,7 +435,7 @@ function MapEditor(props) {
                 <GeomanJsWrapper
                         merge={handleMerge}
                         toggleSelectMode={toggleSelectMode}
-                        compress={handleCompress}
+                        compress={props.handleCompress}
                     />
 
                     <FeatureGroup>

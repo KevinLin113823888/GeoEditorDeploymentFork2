@@ -466,7 +466,7 @@ function MapViewerScreen(){
                             sx={{
                                 paddingLeft: "1.5%"
                             }}>
-                            <MapEditor file={GeoJson} changeName={changeRegionName} key={keyid}/>
+                            <MapEditor file={GeoJson} changeName={changeRegionName} key={keyid} handleCompress={handleCompress} />
                         </Box>
                     </Grid>
 
