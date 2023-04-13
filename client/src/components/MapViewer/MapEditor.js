@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,useContext } from 'react';
 import { MapContainer, TileLayer, useMap, GeoJSON, LayerGroup, FeatureGroup, useMapEvents, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -13,11 +13,13 @@ import { empty } from "leaflet/src/dom/DomUtil";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import L from "leaflet";
+import { CurrentModal, GlobalStoreContext } from "../../store/index"
 
 function MapEditor(props) {
   
     const [isPopup, setPopup] = useState(false);
     const [update, setUpdate] = useState(1);
+    const { store } = useContext(GlobalStoreContext);
 
     const regionsSelectedRef = useRef([])
     let regionsClicked = [];
@@ -260,6 +262,7 @@ function MapEditor(props) {
 
 
         layer.on('click', function (e) {
+            store.setRegionProperties({"hi":"hi","yo":"hey"})
             console.log(e.target.feature);
             if (selectModeToggle.current) {
 
