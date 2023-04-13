@@ -401,7 +401,25 @@ function MapViewerScreen(){
     }
     const handleMapClassification = () => {store.changeModal(CurrentModal.MAP_CLASSIFICATION)}
 
+    function handleChangeMapName(e){
+        fetch(process.env.REACT_APP_API_URL + 'map/changeMapNameById', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: id,
+                newName: e.target.value
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+           console.log(data)
+        })
+        .catch(err => console.log(err));
 
+    }
 
 
     return (
@@ -444,10 +462,11 @@ function MapViewerScreen(){
                                 },
                                 disableUnderline: true
                             }}
-                            onChange={
-                                (event)=>{
-                                    console.log("searching...", event.target.value);
-                                    setMapChange(event.target.value)}}
+                            // onChange={
+                            //     (event)=>{
+                            //         console.log("searching...", event.target.value);
+                            //         setMapChange(event.target.value)}}
+                            onBlur={(event) => handleChangeMapName(event)}
                             fullWidth  />
                     </Box>
 

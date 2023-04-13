@@ -87,6 +87,7 @@ class mapController {
 
     static async changeMapNameById(req, res) {
         var { id, newName } = req.body;
+        console.log(id, newName)
 
         var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { title: newName });
         await currentMapCard.save();
