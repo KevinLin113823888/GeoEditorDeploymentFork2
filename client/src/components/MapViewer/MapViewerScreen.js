@@ -26,6 +26,7 @@ function MapViewerScreen(){
     const [data, setData] = useState([]);
     const [mapName,setMapChange] = useState("Untitled");
     const [keyid, setKeyid] = useState(0)
+    // const [compressCount, setCompressCount] = useState(6);
 
     const { store } = useContext(GlobalStoreContext);
     const { id } = useParams();
@@ -122,6 +123,7 @@ function MapViewerScreen(){
                 if(dbffile && shpfile){
                     console.log("done")
                     store.changeModal("NONE");
+                    // setCompressCount(6);
                     handleSubmit()
                 }
             }
@@ -137,9 +139,14 @@ function MapViewerScreen(){
         }
         setFileExist(true);
         store.changeModal("NONE");
+        // setCompressCount(6);
     }
 
     function handleCompress(){
+        // if(compressCount ==0){
+        //     return;
+        // }
+        // setCompressCount(compressCount-1);
         const tempGeoJson = GeoJson;
         const map = new Map();
         let removePattern = "Even"
@@ -304,13 +311,13 @@ function MapViewerScreen(){
                                 if (removePattern === "Even" && subInd % 2 === 0) {
                                     map3.set(coordinate.toString(), true);
                                     if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last"){
-                                        if(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length>3)
+                                        if(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length>5)
                                             tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1][ind2]=[]
                                     }
                                 } else if (removePattern === "Odd" && subInd % 2 !== 0) {
                                     map3.set(coordinate.toString(), true);
                                     if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last"){
-                                        if(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length>3)
+                                        if(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length>5)
                                             tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1][ind2]=[]
                                     }
                                 }

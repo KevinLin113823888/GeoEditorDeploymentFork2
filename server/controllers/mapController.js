@@ -10,31 +10,25 @@ class mapController {
         try{
             var { title } = req.body;
             let session = req.cookies.values;
-            var owner = await User.findOne({username: session.username});
 
+            var owner = await User.findOne({username: session.username});
             var newMap = new Map({
                 title: title,
                 owner: owner._id,
                 published: false
             });
-            
-            await newMap.save();
+            await newMap.save();      
 
-            console.log(title);
-            
             var newMapCard = new MapCard({
                 title: title,
                 map: newMap._id
             })
-            
             await newMapCard.save();
-            
-            owner.ownedMaps.push(newMap._id);
-            
-            owner.ownedMapCards.push(newMapCard._id);
 
+            owner.ownedMaps.push(newMap._id);
+            owner.ownedMapCards.push(newMapCard._id);
             await owner.save();
-            console.log(newMap._id.toString());
+            
             return res.status(200).json({status: 'OK', title: title, mapId: newMap._id.toString()});
         }
         catch(e){
@@ -42,15 +36,17 @@ class mapController {
         }
     }
 
+    // not tested yet
     static async getMapById(req, res) {
         var { id } = req.body;
 
-        var currentMap = Map.findOne({ _id: newmongoose.Types.ObjectId(id) });
+        var currentMap = Map.findOne({ _id: new mongoose.Types.ObjectId(id) });
         var currentMapData = MapData.findOne({ _id: currentMap.mapData });
 
         return res.status(400).json({status: 'OK', title: currentMap.title});
     }
 
+    // not tested yet
     static async deleteMapById(req, res) {
         var { id } = req.body;
 
@@ -58,7 +54,6 @@ class mapController {
         var mapCard = MapCard.findOneAndDelete({ _id: id });
         var map = Map.findOneAndDelete({ _id: mapCard._id });
         var mapData = MapData.findOneAndDelete({ _id: map._id });
-
         User.findOneAndUpdate({_id: id}, { $pull: {ownedMapCards: mapCards._id, ownedMaps: map._id} });
 
         return res.status(400).json({status: 'OK'});
@@ -68,9 +63,7 @@ class mapController {
         var { id, newName } = req.body;
 
         var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
-
         var currentMap = await Map.findOne({ _id: currentMapCard.map });
-        
         // var currentMapData = await MapData.findOne({ _id: currentMap.mapData });
 
         let mapObjId = new mongoose.Types.ObjectId();
@@ -94,6 +87,7 @@ class mapController {
 
     static async changeMapNameById(req, res) {
         var { id, newName } = req.body;
+
         var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { title: newName });
         await currentMapCard.save();
         var updatedMap = await Map.findOneAndUpdate({ _id: currentMapCard.map }, { title: newName });
@@ -104,6 +98,7 @@ class mapController {
 
     static async publishMapById(req, res) {
         var { id } = req.body;
+
         var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
         var currentMap = await Map.findOneAndUpdate({ _id: currentMapCard.map }, { published: true });
         await currentMap.save();
@@ -111,6 +106,17 @@ class mapController {
             mapData: currentMap.mapData
         });
         await newCommunityPreview.save();
+
+        return res.status(400).json({status: 'OK'});
+    }
+
+    static async mapClassificationById(req, res) {
+        var { id, classifications } = req.body;
+
+        let listOfClass = classifications.split(", ");
+        var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { classification: listOfClass });
+        await currentMapCard.save();
+
         return res.status(400).json({status: 'OK'});
     }
 }

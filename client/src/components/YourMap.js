@@ -21,6 +21,7 @@ import MapCard from './MapCard.js'
 
 
 import MUIDeleteAccModal from './MUIDeleteAccModal'
+import MUICopyMapModal from './MUICopyMapModal'
 import CreateNewMapModal from './CreateNewMapModal'
 import { CurrentModal, GlobalStoreContext } from '../store'
 
@@ -131,6 +132,7 @@ function YourMap() {
             <MUIDeleteAccModal />
             <CreateNewMapModal/>
             <MUIChangeMapNameModal/>
+            <MUICopyMapModal/>
             <div id="borderchange">
                 <Box sx={{ marginTop: "1%" }}>
                     <Grid container rowSpacing={2} columnSpacing={4}>
