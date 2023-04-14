@@ -171,7 +171,7 @@ function MapViewerScreen(){
                     ind1 = -1;
                     
                         coordinates.forEach((coordinate, subInd) => {
-                            ind2++;
+                            ind1++;
                                 if (!map.has(coordinate.toString())) {
                                     map.set(coordinate.toString(), {position:"middle",featureInd:featureInd2});
                                     if(prevMatchIndex==subInd-1){

@@ -74,6 +74,208 @@ function MapEditor(props) {
         }
     }
    
+    function handleAddVertex(e) {
+        console.log(e)
+        
+        let indexPath = e.indexPath;
+        let ind0 = indexPath[0]
+        let ind1 = indexPath[1]
+        let featureName = e.target.feature.properties.name
+        let ind2 = -1;
+        if (indexPath.length > 2) {
+            ind2 = indexPath[2]
+        }
+        let addedLatlng = []
+        let addedLatlngObj = e.latlng
+        addedLatlng.push(e.latlng.lng)
+        addedLatlng.push(e.latlng.lat)
+        let coord1NextToLatlng = []
+        let coord2NextToLatlng = []
+        console.log(addedLatlng)
+        props.file.features.forEach((feature, ind) => {
+            if (feature.properties.name == featureName) {
+                if (feature.geometry.type === "Polygon") {
+                    coord1NextToLatlng = props.file.features[ind].geometry.coordinates[ind0][ind1+1]
+                    coord2NextToLatlng = props.file.features[ind].geometry.coordinates[ind0][ind1-1]
+                    props.file.features[ind].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
+                } else if (feature.geometry.type === "MultiPolygon") {
+                    coord1NextToLatlng = props.file.features[ind].geometry.coordinates[ind0][ind1][ind2+1]
+                    coord2NextToLatlng = props.file.features[ind].geometry.coordinates[ind0][ind1][ind2-1]
+                    props.file.features[ind].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
+                }
+            }
+        })
+        console.log(coord1NextToLatlng)
+        console.log(coord2NextToLatlng)
+        let featureInd2=-1
+        let prevCoord=[]
+        
+        try {
+        props.file.features.forEach(feature => {
+            let foundOneCoord=false
+            featureInd2++
+            // Check if the feature is a polygon or a multipolygon
+            if(feature.properties.name!==featureName){
+            if (feature.geometry.type === 'Polygon') {
+                // Loop through each coordinate in the polygon
+                ind0 = -1
+                ind1 = -1
+                ind2 = -1
+                feature.geometry.coordinates.forEach(coordinates => {
+                    ind0++;
+                    ind1 = -1;
+                    coordinates.forEach(coordinate => {
+                        ind1++;
+                            
+                        if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1] &&foundOneCoord==true){
+                            
+                            props.file.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
+                           
+                            throw new Error("Break the loop.")
+                        }else if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1]){
+                            foundOneCoord=true
+                            
+                            
+                        }
+                        if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1] &&foundOneCoord==true){
+                            
+                            props.file.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
+                            
+                            throw new Error("Break the loop.")
+                            
+                        }else if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1]){
+                            foundOneCoord=true
+                           
+                        }
+                        prevCoord[0]= coordinate[0]
+                        prevCoord[1]= coordinate[1]
+
+                       
+                       
+                    });
+                });
+            } else if (feature.geometry.type === 'MultiPolygon') {
+                // Loop through each polygon in the multipolygon
+                ind0 = -1
+                ind1 = -1
+                ind2 = -1
+                feature.geometry.coordinates.forEach(polygon => {
+                    ind0++;
+                    ind1 = -1;
+                    ind2 = -1;
+                    // Loop through each coordinate in the polygon
+
+                    polygon.forEach(coordinates => {
+                        ind1++;
+                        ind2 = -1;
+
+                        coordinates.forEach(coordinate => {
+                            ind2++;
+                            
+                            if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1] &&foundOneCoord==true){
+                                props.file.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
+                                throw new Error("Break the loop.")
+                            }else if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1]){
+                                foundOneCoord=true
+                                
+                            }
+                            if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1] &&foundOneCoord==true){
+                                props.file.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
+                                throw new Error("Break the loop.")
+                            }else if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1]){
+                                foundOneCoord=true
+                               
+                            }
+                                               
+                        });
+                        
+                    });
+                });
+            }
+        }        
+        });
+    }catch(error){
+
+    }
+    
+        setUpdate(update => update + 1);
+
+    }
+    function handleRemoveVertex(e) {
+        
+        let indexPath = e.indexPath;
+        let ind0 = indexPath[0]
+        let ind1 = indexPath[1]
+        let featureName = e.target.feature.properties.name
+        let ind2 = -1;
+        if (indexPath.length > 2) {
+            ind2 = indexPath[2]
+        }
+        console.log(indexPath)
+        let removedLatlng=[]
+        props.file.features.forEach((feature, ind) => {
+            if (feature.properties.name == featureName) {
+                if (feature.geometry.type === "Polygon") {
+                    removedLatlng = props.file.features[ind].geometry.coordinates[ind0][ind1]
+                    props.file.features[ind].geometry.coordinates[ind0].splice(ind1, 1)
+                } else if (feature.geometry.type === "MultiPolygon") {
+                    console.log(ind)
+                    removedLatlng = props.file.features[ind].geometry.coordinates[ind0][ind1][ind2]
+                    props.file.features[ind].geometry.coordinates[ind0][ind1].splice(ind2, 1)
+                }
+            }
+        })
+        let featureInd2=-1
+        props.file.features.forEach(feature => {
+            featureInd2++
+            // Check if the feature is a polygon or a multipolygon
+
+            if (feature.geometry.type === 'Polygon') {
+                // Loop through each coordinate in the polygon
+                ind0 = -1
+                ind1 = -1
+                ind2 = -1
+                feature.geometry.coordinates.forEach(coordinates => {
+                    ind0++;
+                    ind1 = -1;
+                    coordinates.forEach(coordinate => {
+                        ind1++;
+                        if(coordinate[0]==removedLatlng[0] &&coordinate[1]==removedLatlng[1] ){
+                            props.file.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 1)
+                        }
+                       
+                    });
+                });
+            } else if (feature.geometry.type === 'MultiPolygon') {
+                // Loop through each polygon in the multipolygon
+                ind0 = -1
+                ind1 = -1
+                ind2 = -1
+                feature.geometry.coordinates.forEach(polygon => {
+                    ind0++;
+                    ind1 = -1;
+                    ind2 = -1;
+                    // Loop through each coordinate in the polygon
+
+                    polygon.forEach(coordinates => {
+                        ind1++;
+                        ind2 = -1;
+
+                        coordinates.forEach(coordinate => {
+                            ind2++;
+
+                            if(coordinate[0]==removedLatlng[0] &&coordinate[1]==removedLatlng[1] ){
+                                props.file.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 1)
+                            }                            
+                        });
+                    });
+                });
+            }
+            
+        });
+        setUpdate(update => update + 1);
+
+    }
 
     const handleMarkerDragEnd = (e) => {
         
@@ -324,9 +526,11 @@ function MapEditor(props) {
         });
         layer.on('pm:vertexremoved', e => {
             console.log("vertexremoved")
+            handleRemoveVertex(e)
         });
         layer.on('pm:vertexadded', e => {
             console.log("pm:vertexadded")
+            handleAddVertex(e)
         });
         layer.on('pm:edit', e => {
             console.log("pm:edit")
