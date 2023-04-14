@@ -465,7 +465,12 @@ function MapEditor(props) {
 
         layer.on('click', function (e) {
             store.setRegionProperties({"hi":"hi","yo":"hey"})
-            console.log(e.target.feature);
+            let featureName = e.target.feature.properties.name;
+            props.file.features.forEach((feature, index) => {
+                if (feature.properties.name === featureName) {
+                    store.setCurrentFeatureIndex(index);
+                }
+            });
             if (selectModeToggle.current) {
 
                 let regions = regionsSelectedRef.current

@@ -16,7 +16,8 @@ export const GlobalStoreActionType = {
     SET_ADMIN_MODE:"SET_ADMIN_MODE",
     UPDATE_USER_MAP_CARDS:"UPDATE_USER_MAP_CARDS",
     SET_HOME: "SET_HOME",
-    SET_REGION_PROPERTIES:"SET_REGION_PROPERTIES"
+    SET_REGION_PROPERTIES:"SET_REGION_PROPERTIES",
+    UPDATE_FEATURE_INDEX:"UPDATE_FEATURE_INDEX"
 }
 
 export const CurrentModal = {
@@ -48,7 +49,8 @@ function GlobalStoreContextProvider(props) {
         guestMode: false,
         adminMode: false,
         userMapCards: [{}],
-        currentRegionProp:{}
+        currentRegionProp:{}, 
+        currentFeatureIndex:0
     });
     
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
@@ -67,7 +69,8 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp
+                    currentRegionProp: store.currentRegionProp, 
+                    currentFeatureIndex: store.currentFeatureIndex
                 });
             }
             case GlobalStoreActionType.CHANGE_SCREEN: {
@@ -79,7 +82,8 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
-                    currentRegionProp: {}
+                    currentRegionProp: {}, 
+                    currentFeatureIndex: store.currentFeatureIndex
                 });
             }
             case GlobalStoreActionType.NEW_MAP_NAME: {
@@ -91,7 +95,8 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp
+                    currentRegionProp: store.currentRegionProp, 
+                    currentFeatureIndex: store.currentFeatureIndex
                 });
             }
             case GlobalStoreActionType.SET_CURRENT_MAP: {
@@ -103,7 +108,8 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp
+                    currentRegionProp: store.currentRegionProp, 
+                    currentFeatureIndex: store.currentFeatureIndex
                 });
             }
             case GlobalStoreActionType.UPDATE_CURRENT_MAPDATA: {
@@ -115,7 +121,8 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp
+                    currentRegionProp: store.currentRegionProp, 
+                    currentFeatureIndex: store.currentFeatureIndex
                 });
             }
             case GlobalStoreActionType.UPDATE_USER_MAP_CARDS: {
@@ -127,7 +134,8 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: payload,
-                    currentRegionProp: store.currentRegionProp
+                    currentRegionProp: store.currentRegionProp, 
+                    currentFeatureIndex: store.currentFeatureIndex
                 });
             }
             case GlobalStoreActionType.SET_GUEST_MODE: {
@@ -139,7 +147,8 @@ function GlobalStoreContextProvider(props) {
                     guestMode: payload.guest,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
-                    currentRegionProp: {}
+                    currentRegionProp: {}, 
+                    currentFeatureIndex: store.currentFeatureIndex
                 });
             }
             case GlobalStoreActionType.SET_HOME: {
@@ -151,7 +160,8 @@ function GlobalStoreContextProvider(props) {
                     guestMode: false,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
-                    currentRegionProp: {}
+                    currentRegionProp: {}, 
+                    currentFeatureIndex: store.currentFeatureIndex
                 });
             }
             case GlobalStoreActionType.SET_REGION_PROPERTIES: {
@@ -163,7 +173,21 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
-                    currentRegionProp: payload
+                    currentRegionProp: payload, 
+                    currentFeatureIndex: store.currentFeatureIndex
+                });
+            }
+            case GlobalStoreActionType.UPDATE_FEATURE_INDEX: {
+                return setStore({
+                    currentModal : CurrentModal.NONE,
+                    currentMap:  store.currentMap,
+                    currentMapData : store.currentMapData, //the current map data we are editing
+                    currentScreen: store.currentScreen ,
+                    guestMode: store.guestMode,
+                    adminMode: store.adminMode,
+                    userMapCards: store.userMapCards,
+                    currentRegionProp: store.currentRegionProp, 
+                    currentFeatureIndex: payload
                 });
             }
             default:
@@ -236,6 +260,13 @@ function GlobalStoreContextProvider(props) {
         storeReducer({
             type: GlobalStoreActionType.SET_REGION_PROPERTIES,
             payload: properties
+        }
+        );
+    }
+    store.setCurrentFeatureIndex=function(index){
+        storeReducer({
+            type: GlobalStoreActionType.UPDATE_FEATURE_INDEX,
+            payload: index
         }
         );
     }

@@ -16,8 +16,8 @@ function MapPropertySidebar(props) {
     let propertiesMap = {}
     let propertiesMapList = []
     if (mapData.features !== undefined) {
-        propertiesMap = new Map(Object.entries(mapData.features[0].properties))
-
+        propertiesMap = new Map(Object.entries(mapData.features[store.currentFeatureIndex].properties))
+        console.log("store", mapData.features[store.currentFeatureIndex].properties);
         propertiesMap.forEach((value, key) => propertiesMapList.push(key))
         propertiesMapList.length = 20
     }
@@ -26,7 +26,7 @@ function MapPropertySidebar(props) {
     //     // backgroundColor: theme.palette.background.paper,
     // }));
     let propertiesSideBar = <div></div>
-    if (Object.keys(store.currentRegionProp).length > 0) {
+    if (store.currentFeatureIndex > 0) {
         propertiesSideBar = 
             <Box sx={{ width: "93%", height: "80vh", maxHeight: "80%", overflowY: "scroll", }} style={{ border: "1px solid black" }}>
                 <Box sx={{ marginLeft: "3%" }}>
