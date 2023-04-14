@@ -7,33 +7,35 @@ const CommunityPreview = require('../models/communityPreviewModel')
 
 class mapController {
     static async createMap(req, res) {
-        try{
-            var { title } = req.body;
-            let session = req.cookies.values;
+        // try{
+        var { title } = req.body;
+        console.log("creating map", title);
+        let session = req.cookies.values;
 
-            var owner = await User.findOne({username: session.username});
-            var newMap = new Map({
-                title: title,
-                owner: owner._id,
-                published: false
-            });
-            await newMap.save();      
+        var owner = await User.findOne({username: session.username});
+        console.log("owner", owner.name);
+        var newMap = new Map({
+            title: title,
+            owner: owner._id,
+            published: false
+        });
+        await newMap.save();      
 
-            var newMapCard = new MapCard({
-                title: title,
-                map: newMap._id
-            })
-            await newMapCard.save();
+        var newMapCard = new MapCard({
+            title: title,
+            map: newMap._id
+        })
+        await newMapCard.save();
 
-            owner.ownedMaps.push(newMap._id);
-            owner.ownedMapCards.push(newMapCard._id);
-            await owner.save();
-            
-            return res.status(200).json({status: 'OK', title: title, mapId: newMap._id.toString()});
-        }
-        catch(e){
-            return res.status(400).json({error: true, message: e.toString() });
-        }
+        owner.ownedMaps.push(newMap._id);
+        owner.ownedMapCards.push(newMapCard._id);
+        await owner.save();
+        
+        return res.status(200).json({status: 'OK', title: title, mapId: newMap._id.toString()});
+        // }
+        // catch(e){
+        //     return res.status(400).json({error: true, message: e.toString() });
+        // }
     }
 
     // not tested yet
@@ -119,6 +121,12 @@ class mapController {
         await currentMapCard.save();
 
         return res.status(400).json({status: 'OK'});
+    }
+
+    static async saveMapById(req, res) {
+        var { id, map } = req.body;
+
+        
     }
 }
 

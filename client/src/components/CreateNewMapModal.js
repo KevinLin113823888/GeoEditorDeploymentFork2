@@ -45,19 +45,19 @@ function CreateNewMapModal() {
                     title: newMapName
                 }),
             })
-                .then((res) => {
-                    if (res.status === 200) {
-                        console.log("new map created");
-                    }
-                    else {
-                        throw new Error('map not created');
-                    }
-                    return res.json();
-                }).then((data) => {
-                    console.log(data);
-                    navigate('/map/' + data.mapId, { state: { mapId: data.mapId } });
-                })
-                .catch(err => console.log(err));
+            .then((res) => {
+                if (res.status === 200) {
+                    console.log("new map created");
+                }
+                else {
+                    throw new Error('map not created');
+                }
+                return res.json();
+            }).then((data) => {
+                console.log("data in response", data);
+                navigate('/map/' + data.mapId, { state: { mapId: data.mapId } });
+            })
+            .catch(err => console.log(err));
         }
     }
 
@@ -88,15 +88,15 @@ function CreateNewMapModal() {
                 </header>
                     <TextField placeholder="Map name" onChange={changeMapName} />
                     <Box>
-                    <div class="modal-footer" id="confirm-cancel-container">
+                    <div className="modal-footer" id="confirm-cancel-container">
                         <input type="button" 
                                     id="createmap-confirm-button" 
-                                    class="modal-confirm-button" 
+                                    className="modal-confirm-button" 
                                     onClick={() => {
                                         createNewMap();}}
                                     value='Confirm' />
                         <input type="button" 
-                                class="modal-cancel-button" 
+                                className="modal-cancel-button" 
                                 onClick={() => {
                                     handleCloseModal();}}
                                     value='Cancel' />
