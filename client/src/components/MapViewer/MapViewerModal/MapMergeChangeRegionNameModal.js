@@ -37,10 +37,10 @@ function MapMergeChangeRegionNameModal(props) {
 
     }
     function handleCloseModal(event) {
+        props.handleCancelMergeSelection()
         store.changeModal("NONE");
     }
     function handleUpdateSearch(event) {
-
         setMergeRegionName(event.target.value);
     }
 

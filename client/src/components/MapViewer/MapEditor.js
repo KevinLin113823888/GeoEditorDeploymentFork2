@@ -625,10 +625,20 @@ function MapEditor(props) {
         //setUpdate(update+1) //absolutely crazy code but we need this to update the map
         setUpdate(update => update + 1);
     }
+    const handleCancelMergeSelection = () => {
+        let regionsSelected = regionsSelectedRef.current
+        regionsSelectedRef.current = [] //empty everything
+        setUpdate(update => update + 1);
+
+
+    }
     return (
         <div>
             <MapColorwheelModal/>
-            <MapMergeChangeRegionNameModal handleMerge={handleMerge}/>
+            <MapMergeChangeRegionNameModal
+                handleMerge={handleMerge}
+                handleCancelMergeSelection = {handleCancelMergeSelection}
+            />
 
             {props.file.features ?
                 <div>
@@ -649,7 +659,6 @@ function MapEditor(props) {
                     <TileLayer url="http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png" />
                 </LayerGroup>
                 <GeomanJsWrapper
-                    handleMerge={handleMerge}
                         toggleSelectMode={toggleSelectMode}
                         compress={props.handleCompress}
                     />
