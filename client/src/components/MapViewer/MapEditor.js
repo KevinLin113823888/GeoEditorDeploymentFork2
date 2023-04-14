@@ -432,7 +432,6 @@ function MapEditor(props) {
     };
 
     const onEachCountry = (feature, layer) => {
-        const countryName = "";
         if (update == 1) {
             if (feature.properties.NAME_3) {
                 feature.properties.name = feature.properties.NAME_3;
@@ -447,6 +446,7 @@ function MapEditor(props) {
                 feature.properties.name = feature.properties.NAME_0;
             }
         }
+        const countryName = feature.properties.name;
 
 
 
@@ -454,7 +454,8 @@ function MapEditor(props) {
             { permanent: true, direction: "center", className: "label" }
         ).openTooltip();
 
-        let propString = ""
+        console.log(countryName)
+        let propString = countryName
         let propObj = feature.properties;
         // for(const property in propObj){
         //     console.log(`${property}: ${propObj[property]}`);
