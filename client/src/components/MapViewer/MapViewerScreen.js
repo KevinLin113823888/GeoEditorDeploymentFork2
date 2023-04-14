@@ -18,6 +18,8 @@ import MapLegendFooter from "./MapLegendFooter";
 import {useParams} from 'react-router-dom';
 import Box from "@mui/material/Box";
 
+// const {convert} = require('geojson2shp')
+
 function MapViewerScreen(){
 
     const [fileExist, setFileExist] = useState(false);
@@ -421,6 +423,30 @@ function MapViewerScreen(){
 
     }
 
+    function handleExportGeoJson(event) {
+        store.changeModal("NONE");
+        var json = JSON.stringify(GeoJson);
+
+        var a = document.createElement("a")
+        a.href = URL.createObjectURL(
+            new Blob([json], {type:"application/json"})
+        )
+        a.download = "geoJson.geo.json"
+        a.click()
+    }
+
+    async function handleExportShpDbf(event) {
+        store.changeModal("NONE");
+        // const options = {
+        //     layer: 'my-layer',
+        //     targetCrs: 2154
+        // }
+        // await convert(GeoJson, './download/shp.zip')
+        // var a = document.createElement("a")
+        // a.href = URL.createObjectURL('./download/shp.zip')
+        // a.download = "shapefile.zip"
+        // a.click()
+    }
 
     return (
         <div className="App">
@@ -430,7 +456,10 @@ function MapViewerScreen(){
                 handleShpDbfFile={handleShpDbfFile}
                 handleSubmit={handleSubmit}
                 />
-            <ExportModal/>
+            <ExportModal
+                handleExportGeoJson={handleExportGeoJson}
+                handleExportShpDbf={handleExportShpDbf}
+            />
             <MapClassificationModal/>
             <MapColorwheelModal/>
             <MapMergeChangeRegionNameModal/>

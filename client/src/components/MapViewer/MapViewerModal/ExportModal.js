@@ -24,12 +24,9 @@ const style = {
     p: 4,
 };
 
-function ExportModal() {
+function ExportModal(props) {
     const { store } = useContext(GlobalStoreContext);
 
-    function handleDeleteUser(event) {
-        store.changeModal("NONE");
-    }
     function handleCloseModal(event) {
         store.changeModal("NONE");
     }
@@ -59,13 +56,11 @@ function ExportModal() {
                     </header>
                     <input type="button"
                         class="modal-confirm-button"
-                        // onClick={() => {
-                        //     handleFork();}}
+                        onClick={props.handleExportGeoJson}
                         value='GeoJSON' />
                     <input type="button"
                         class="modal-confirm-button"
-                        // onClick={() => {
-                        //     handleFork();}}
+                        onClick={props.handleExportShpDbf}
                         value='Shapefile/DBF zip' />
                     <input type="button"
                         class="modal-confirm-button"
