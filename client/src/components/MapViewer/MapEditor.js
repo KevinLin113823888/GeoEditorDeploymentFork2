@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef,useContext } from 'react';
 import { MapContainer, TileLayer, useMap, GeoJSON, LayerGroup, FeatureGroup, useMapEvents, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-
+import MapColorwheelModal from "./MapViewerModal/MapColorwheelModal";
+import MapMergeChangeRegionNameModal from "./MapViewerModal/MapMergeChangeRegionNameModal";
 import { GeomanControls } from 'react-leaflet-geoman-v2';
 // import { topojson } from 'topojson';
 import { topology } from 'topojson-server';
@@ -561,14 +562,37 @@ function MapEditor(props) {
     }
 
 
-    const handleMerge = (e) => {
+    let toggleSelectMode = () => {
+
+        if (currentRegion.current !== "") {
+            currentRegion.current.setStyle({
+                fillColor: "#3388ff",
+                fillOpacity: 0.4,
+            });
+        }
+        selectModeToggle.current = !selectModeToggle.current
+        if (selectModeToggle.current === false) {
+
+            for (let i = 0; i < regionsClicked.length; i++) {
+                regionsClicked[i].target.setStyle({
+                    fillColor: "#3388ff",
+                    fillOpacity: 0.4,
+                });
+            }
+            regionsClicked = []
+        }
+    };
+
+
+
+    const handleMerge = (newName) => {
         let regionsSelected = regionsSelectedRef.current
 
         if (regionsSelected.length < 2) {
             alert("please select 2 regions first");
             return;
         }
-        let newName = prompt("enter new region name:");
+        // let newName = prompt("enter new region name:");
         if (newName == null) {
             return;
         }
@@ -601,31 +625,11 @@ function MapEditor(props) {
         //setUpdate(update+1) //absolutely crazy code but we need this to update the map
         setUpdate(update => update + 1);
     }
-
-    let toggleSelectMode = () => {
-
-        if (currentRegion.current !== "") {
-            currentRegion.current.setStyle({
-                fillColor: "#3388ff",
-                fillOpacity: 0.4,
-            });
-        }
-        selectModeToggle.current = !selectModeToggle.current
-        if (selectModeToggle.current === false) {
-
-            for (let i = 0; i < regionsClicked.length; i++) {
-                regionsClicked[i].target.setStyle({
-                    fillColor: "#3388ff",
-                    fillOpacity: 0.4,
-                });
-            }
-            regionsClicked = []
-        }
-    };
-
     return (
         <div>
-     
+            <MapColorwheelModal/>
+            <MapMergeChangeRegionNameModal handleMerge={handleMerge}/>
+
             {props.file.features ?
                 <div>
                     
@@ -645,7 +649,7 @@ function MapEditor(props) {
                     <TileLayer url="http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png" />
                 </LayerGroup>
                 <GeomanJsWrapper
-                        merge={handleMerge}
+                    handleMerge={handleMerge}
                         toggleSelectMode={toggleSelectMode}
                         compress={props.handleCompress}
                     />

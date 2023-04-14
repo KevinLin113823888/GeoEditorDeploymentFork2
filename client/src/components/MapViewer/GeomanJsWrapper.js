@@ -32,6 +32,12 @@ function GeomanJsWrapper(props) {
             },
         ]
 
+        const mergeButtonClick = () => {
+            console.log("merge button toggle clicked")
+            //on click we toggle to enable the selection of regions
+            props.toggleSelectMode()
+        }
+
         const customButtonNameList = [
             "merge", "addRegion", "addLegend", "changeBackgroundColor", "changeRegionColor",
             "changeBorderColor", "addText",
@@ -42,16 +48,16 @@ function GeomanJsWrapper(props) {
 
         ]
         const onClickFunction = [
-
+            mergeButtonClick
         ]
         
         for(let index in customButtonNameList){
             let name = customButtonNameList[index]
             let action = actionsList[index]
             let onClickHandler = onClickFunction[index]
-            onClickHandler = () => {
+            // onClickHandler = () => {
                 //do nothing
-            }
+            // }
 
             map.pm.Toolbar.createCustomControl({
                 className:name,

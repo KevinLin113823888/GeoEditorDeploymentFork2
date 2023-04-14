@@ -18,8 +18,6 @@ import MapLegendFooter from "./MapLegendFooter";
 import {useParams} from 'react-router-dom';
 import Box from "@mui/material/Box";
 
-// const {convert} = require('geojson2shp')
-
 function MapViewerScreen(){
 
     const [fileExist, setFileExist] = useState(false);
@@ -38,6 +36,11 @@ function MapViewerScreen(){
     let shpfile = null;
     let dbffile = null;
 
+
+
+    useEffect(() => {
+        naGeo();
+    },[])
 
     const handleSubmit = () => {
         setGeoJson({});
@@ -144,6 +147,14 @@ function MapViewerScreen(){
         // setCompressCount(6);
     }
 
+    const naGeo = () => {
+        // console.log("upload the stuff")
+        // console.log(na)
+        setGeoJson(na);
+        setFileExist(true);
+    }
+
+
     function handleCompress(){
         // if(compressCount ==0){
         //     return;
@@ -157,7 +168,7 @@ function MapViewerScreen(){
         let ind1 = -1
         let ind2 = -1
         let featuresCopy=tempGeoJson.features
-        
+
         featuresCopy.forEach(feature => {
             let prevMatchIndex = -1
             let prevMatch = ""
@@ -171,40 +182,40 @@ function MapViewerScreen(){
                 feature.geometry.coordinates.forEach(coordinates => {
                     ind0++;
                     ind1 = -1;
-                    
-                        coordinates.forEach((coordinate, subInd) => {
-                            ind1++;
-                                if (!map.has(coordinate.toString())) {
-                                    map.set(coordinate.toString(), {position:"middle",featureInd:featureInd2});
-                                    if(prevMatchIndex==subInd-1){
-                                        
-                                        
-                                        if(map.has(prevMatch)){
-                                        let foundfeatureInd=map.get(prevMatch).featureInd;
-                                        map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
-                                    
-                                        
-                                        }
-                                    }
-                                }else{
-                                    let foundfeatureInd=map.get(coordinate.toString()).featureInd;
-                                    
-                                    if(!map2.has(foundfeatureInd.toString())){
-                                        map.set(coordinate.toString(), {position:"first",featureInd:foundfeatureInd});
-                                        map2.set(foundfeatureInd.toString(),1);
-                                        
-                                    }
-                                    if(prevFeatureInd !==foundfeatureInd){
-                                        map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
-                                        
-                                    }
-                                    
-                                    prevMatch= coordinate.toString()
-                                    prevMatchIndex = subInd
-                                    prevFeatureInd = foundfeatureInd    
+
+                    coordinates.forEach((coordinate, subInd) => {
+                        ind1++;
+                        if (!map.has(coordinate.toString())) {
+                            map.set(coordinate.toString(), {position:"middle",featureInd:featureInd2});
+                            if(prevMatchIndex==subInd-1){
+
+
+                                if(map.has(prevMatch)){
+                                    let foundfeatureInd=map.get(prevMatch).featureInd;
+                                    map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
+
+
                                 }
-                        });
-                    
+                            }
+                        }else{
+                            let foundfeatureInd=map.get(coordinate.toString()).featureInd;
+
+                            if(!map2.has(foundfeatureInd.toString())){
+                                map.set(coordinate.toString(), {position:"first",featureInd:foundfeatureInd});
+                                map2.set(foundfeatureInd.toString(),1);
+
+                            }
+                            if(prevFeatureInd !==foundfeatureInd){
+                                map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
+
+                            }
+
+                            prevMatch= coordinate.toString()
+                            prevMatchIndex = subInd
+                            prevFeatureInd = foundfeatureInd
+                        }
+                    });
+
                 });
             } else if (feature.geometry.type === 'MultiPolygon') {
                 ind0 = -1
@@ -217,40 +228,40 @@ function MapViewerScreen(){
                     polygon.forEach(coordinates => {
                         ind1++;
                         ind2 = -1;
-                        
-                            coordinates.forEach((coordinate, subInd) => {
-                                ind2++;
-                                if (!map.has(coordinate.toString())) {
-                                    map.set(coordinate.toString(), {position:"middle",featureInd:featureInd2});
-                                    if(prevMatchIndex==subInd-1){
-                                        
-                                        
-                                        if(map.has(prevMatch)){
+
+                        coordinates.forEach((coordinate, subInd) => {
+                            ind2++;
+                            if (!map.has(coordinate.toString())) {
+                                map.set(coordinate.toString(), {position:"middle",featureInd:featureInd2});
+                                if(prevMatchIndex==subInd-1){
+
+
+                                    if(map.has(prevMatch)){
                                         let foundfeatureInd=map.get(prevMatch).featureInd;
                                         map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
-                                        }
                                     }
-                                }else{
-                                    let foundfeatureInd=map.get(coordinate.toString()).featureInd;
-                                    
-                                    if(!map2.has(foundfeatureInd.toString())){
-                                        map.set(coordinate.toString(), {position:"first",featureInd:foundfeatureInd});
-                                        map2.set(foundfeatureInd.toString(),1);   
-                                    }
-                                    if(prevFeatureInd !==foundfeatureInd){
-                                        map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
-                                       
-                                    }
-                                    
-                                    prevFeatureInd = foundfeatureInd  
-                                    prevMatch= coordinate.toString()
-                                    prevMatchIndex = subInd
                                 }
-                            });
+                            }else{
+                                let foundfeatureInd=map.get(coordinate.toString()).featureInd;
+
+                                if(!map2.has(foundfeatureInd.toString())){
+                                    map.set(coordinate.toString(), {position:"first",featureInd:foundfeatureInd});
+                                    map2.set(foundfeatureInd.toString(),1);
+                                }
+                                if(prevFeatureInd !==foundfeatureInd){
+                                    map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
+
+                                }
+
+                                prevFeatureInd = foundfeatureInd
+                                prevMatch= coordinate.toString()
+                                prevMatchIndex = subInd
+                            }
+                        });
                     });
                 });
             }
-    
+
         });
         featureInd2 = -1
         const map3 = new Map();
@@ -263,31 +274,31 @@ function MapViewerScreen(){
                 feature.geometry.coordinates.forEach(coordinates => {
                     ind0++;
                     ind1 = -1;
-                    
-                        coordinates.forEach((coordinate, subInd) => {
-                            ind1++;
-                            
-                            if (map3.has(coordinate.toString())) {
-                                
-                                if (subInd % 2 === 0) {
-                                    removePattern = "Even"
-                                } else {
-                                    removePattern = "Odd"
-                                    
-                                }
+
+                    coordinates.forEach((coordinate, subInd) => {
+                        ind1++;
+
+                        if (map3.has(coordinate.toString())) {
+
+                            if (subInd % 2 === 0) {
+                                removePattern = "Even"
+                            } else {
+                                removePattern = "Odd"
+
                             }
-                            
-                            if (removePattern === "Even" && subInd % 2 === 0) {
-                                if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last")
-                                    tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1]=[]
-                                map3.set(coordinate.toString(), true);
-                            } else if (removePattern === "Odd" && subInd % 2 !== 0) {
-                                if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last")
-                                    tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1]=[]
-                                map3.set(coordinate.toString(), true);
-                            }
-                        });
-                    
+                        }
+
+                        if (removePattern === "Even" && subInd % 2 === 0) {
+                            if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last")
+                                tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1]=[]
+                            map3.set(coordinate.toString(), true);
+                        } else if (removePattern === "Odd" && subInd % 2 !== 0) {
+                            if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last")
+                                tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1]=[]
+                            map3.set(coordinate.toString(), true);
+                        }
+                    });
+
                 });
             } else if (feature.geometry.type === 'MultiPolygon') {
                 ind0 = -1
@@ -300,37 +311,37 @@ function MapViewerScreen(){
                     polygon.forEach(coordinates => {
                         ind1++;
                         ind2 = -1;
-                        
-                            coordinates.forEach((coordinate, subInd) => {
-                                ind2++;
-                                if (map3.has(coordinate.toString())) {
-                                    if (subInd % 2 === 0) {
-                                        removePattern = "Even"
-                                    } else {
-                                        removePattern = "Odd"
-                                    }
+
+                        coordinates.forEach((coordinate, subInd) => {
+                            ind2++;
+                            if (map3.has(coordinate.toString())) {
+                                if (subInd % 2 === 0) {
+                                    removePattern = "Even"
+                                } else {
+                                    removePattern = "Odd"
                                 }
-                                if (removePattern === "Even" && subInd % 2 === 0) {
-                                    map3.set(coordinate.toString(), true);
-                                    if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last"){
-                                        if(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length>5)
-                                            tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1][ind2]=[]
-                                    }
-                                } else if (removePattern === "Odd" && subInd % 2 !== 0) {
-                                    map3.set(coordinate.toString(), true);
-                                    if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last"){
-                                        if(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length>5)
-                                            tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1][ind2]=[]
-                                    }
+                            }
+                            if (removePattern === "Even" && subInd % 2 === 0) {
+                                map3.set(coordinate.toString(), true);
+                                if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last"){
+                                    if(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length>5)
+                                        tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1][ind2]=[]
                                 }
-                            });
-                        
+                            } else if (removePattern === "Odd" && subInd % 2 !== 0) {
+                                map3.set(coordinate.toString(), true);
+                                if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last"){
+                                    if(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length>5)
+                                        tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1][ind2]=[]
+                                }
+                            }
+                        });
+
                     });
                 });
             }
-    
+
         });
-    
+
         featureInd2 =-1
         ind0 = -1
         ind1 = -1
@@ -344,12 +355,12 @@ function MapViewerScreen(){
                 feature.geometry.coordinates.forEach(coordinates => {
                     ind0++;
                     ind1 = -1;
-                    
+
                     tempGeoJson.features[featureInd2].geometry.coordinates[ind0]=coordinates.filter(a=>a.length!==0)
-        
-                    //tempGeoJson.features[featureInd2].geometry.coordinates=tempGeoJson.features[featureInd2].geometry.coordinates.filter(a=>a.length!==1)  
-                    
-                    
+
+                    //tempGeoJson.features[featureInd2].geometry.coordinates=tempGeoJson.features[featureInd2].geometry.coordinates.filter(a=>a.length!==1)
+
+
                 });
             } else if (feature.geometry.type === 'MultiPolygon') {
                 ind0 = -1
@@ -362,20 +373,20 @@ function MapViewerScreen(){
                     polygon.forEach(coordinates => {
                         ind1++;
                         ind2 = -1;
-                       
-                            tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1]=coordinates.filter(a=>a.length!==0) 
-                            console.log(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length)
-                            console.log(tempGeoJson.features[featureInd2].geometry.coordinates)
-                            //console.log(tempGeoJson.features[featureInd2].geometry.coordinates[ind0]=tempGeoJson.features[featureInd2].geometry.coordinates[ind0].filter(a=>a.length<1))
-                            //console.log(tempGeoJson.features[featureInd2].geometry.coordinates=tempGeoJson.features[featureInd2].geometry.coordinates .filter(a=>a.length<1))
-                            //tempGeoJson.features[featureInd2].geometry.coordinates[ind0]=polygon.filter(a=>a.length!==1)     
-                        
+
+                        tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1]=coordinates.filter(a=>a.length!==0)
+                        console.log(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length)
+                        console.log(tempGeoJson.features[featureInd2].geometry.coordinates)
+                        //console.log(tempGeoJson.features[featureInd2].geometry.coordinates[ind0]=tempGeoJson.features[featureInd2].geometry.coordinates[ind0].filter(a=>a.length<1))
+                        //console.log(tempGeoJson.features[featureInd2].geometry.coordinates=tempGeoJson.features[featureInd2].geometry.coordinates .filter(a=>a.length<1))
+                        //tempGeoJson.features[featureInd2].geometry.coordinates[ind0]=polygon.filter(a=>a.length!==1)
+
                     });
                 });
             }
-    
+
         });
-    
+
         setGeoJson(tempGeoJson);
         setKeyid(keyid => keyid+1)
     }
@@ -394,11 +405,11 @@ function MapViewerScreen(){
                 id: id
             }),
         })
-        .then((res) => res.json())
-        .then((data) => {
-           console.log(data)
-        })
-        .catch(err => console.log(err));
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+            })
+            .catch(err => console.log(err));
 
     }
     const handleMapClassification = () => {store.changeModal(CurrentModal.MAP_CLASSIFICATION)}
@@ -415,38 +426,14 @@ function MapViewerScreen(){
                 newName: e.target.value
             }),
         })
-        .then((res) => res.json())
-        .then((data) => {
-           console.log(data)
-        })
-        .catch(err => console.log(err));
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+            })
+            .catch(err => console.log(err));
 
     }
 
-    function handleExportGeoJson(event) {
-        store.changeModal("NONE");
-        var json = JSON.stringify(GeoJson);
-
-        var a = document.createElement("a")
-        a.href = URL.createObjectURL(
-            new Blob([json], {type:"application/json"})
-        )
-        a.download = "geoJson.geo.json"
-        a.click()
-    }
-
-    async function handleExportShpDbf(event) {
-        store.changeModal("NONE");
-        // const options = {
-        //     layer: 'my-layer',
-        //     targetCrs: 2154
-        // }
-        // await convert(GeoJson, './download/shp.zip')
-        // var a = document.createElement("a")
-        // a.href = URL.createObjectURL('./download/shp.zip')
-        // a.download = "shapefile.zip"
-        // a.click()
-    }
 
     return (
         <div className="App">
@@ -455,11 +442,8 @@ function MapViewerScreen(){
                 handleGeoJson={handleGeoJson}
                 handleShpDbfFile={handleShpDbfFile}
                 handleSubmit={handleSubmit}
-                />
-            <ExportModal
-                handleExportGeoJson={handleExportGeoJson}
-                handleExportShpDbf={handleExportShpDbf}
             />
+            <ExportModal/>
             <MapClassificationModal/>
             <MapColorwheelModal/>
             <MapMergeChangeRegionNameModal/>
@@ -487,7 +471,7 @@ function MapViewerScreen(){
                                 style: {fontSize: 40,
                                     font: "Satisfy",
                                     fontWeight: "bold",
-                                fontFamily: "Satisfy"
+                                    fontFamily: "Satisfy"
                                 },
                                 disableUnderline: true
                             }}
@@ -504,7 +488,7 @@ function MapViewerScreen(){
                 <Box item xs={6} sx={{
                     paddingTop: "2%"
                 }}>
-                <Grid container spacing={2} >
+                    <Grid container spacing={2} >
                         {Buttons(handleCompress, "Compress")}
                         {Buttons(handleImport, "Import")}
                         {Buttons(handleExport, "Export")}

@@ -24,13 +24,14 @@ const style = {
     p: 4,
 };
 
-function MapMergeChangeRegionNameModal() {
+function MapMergeChangeRegionNameModal(props) {
     const { store } = useContext(GlobalStoreContext);
-    const [search, setSearch] = useState("");
+    const [mergeRegionName, setMergeRegionName] = useState("");
 
     function handleChangeMapName(event) {
-        store.changeModal("NONE");
 
+        store.changeModal("NONE");
+        props.handleMerge(mergeRegionName)
         //Deletes the map from the database
         //store.deleteMap();
 
@@ -40,7 +41,7 @@ function MapMergeChangeRegionNameModal() {
     }
     function handleUpdateSearch(event) {
 
-        setSearch(event.target.value);
+        setMergeRegionName(event.target.value);
     }
 
     return (
