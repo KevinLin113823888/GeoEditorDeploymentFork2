@@ -14,10 +14,13 @@ function PropertyCard(props) {
 
     const {index,propertyKey,propertyValue} = props;
 
-    const [gpropertyValue,spropertyValue] = useState(propertyValue);
+    const [gpropertyValue,spropertyValue] = useState(props.propertyValue);
 
-
+    useEffect (()=> {
+        spropertyValue(props.propertyValue)
+    },[props.propertyValue])
     function handleChange(event){
+        spropertyValue(event.target.value)
         setChange(event.target.value)
     }
     function handleClick(){
@@ -42,13 +45,13 @@ function PropertyCard(props) {
                   <BorderColorIcon />
         </IconButton>
     </div>
-    
+
     cardElement=<Box style={{fontSize:"1.3rem"}}>
-        <Typography className="textfield" display="inline">{propertyKey}  </Typography>
+        <Typography className="textfield" display="inline">{propertyValue}  </Typography>
 
     <TextField
         name="email"
-        value={propertyValue}
+        value={gpropertyValue}
         margin="normal"
         onChange={handleChange}
         disabled={editMode}

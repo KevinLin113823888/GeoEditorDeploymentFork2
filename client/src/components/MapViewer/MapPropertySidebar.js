@@ -18,6 +18,8 @@ function MapPropertySidebar(props) {
     const [propertiesMap, setPropertiesMap] = useState(new Map());
     const [propertiesMapList,setPropertiesMapList] = useState([]);
 
+    // function setPropertiesValue
+
     useEffect(() =>{
         console.log(store.currentFeatureIndex)
         console.log("changed");
@@ -61,6 +63,7 @@ function MapPropertySidebar(props) {
                             index={index}
                             propertyValue={propertiesMap.get(propertyKey)}
                             propertyKey={propertyKey}
+                            propertyMap = {propertiesMap}
                             propertiesMapList={propertiesMapList}
                         />
                     ))}
