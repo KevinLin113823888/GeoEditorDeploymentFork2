@@ -10,6 +10,7 @@ router.post('/duplicateMapById', MapController.duplicateMapById);
 router.post('/changeMapNameById', MapController.changeMapNameById);
 router.post('/publishMapById', MapController.publishMapById);
 router.post('/mapClassificationById', MapController.mapClassificationById);
+router.post('/importMapFileById', MapController.importMapFileById);
 router.post('/saveMapById', MapController.saveMapById);
 
 module.exports = router

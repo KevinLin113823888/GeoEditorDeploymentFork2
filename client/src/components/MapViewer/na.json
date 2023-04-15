@@ -324,7 +324,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -713,7 +715,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -998,7 +1002,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -1263,7 +1269,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -1584,7 +1592,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -1845,7 +1855,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -2194,7 +2206,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -2603,7 +2617,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -4610,7 +4626,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -8085,7 +8103,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -8946,7 +8966,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -9207,7 +9229,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -9596,7 +9620,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -10305,7 +10331,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -10580,7 +10608,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -10793,7 +10823,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -11010,7 +11042,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         },
         {
             "type": "Feature",
@@ -11235,7 +11269,9 @@
                         ]
                     ]
                 ]
-            }
+            }, 
+            "borderColor": "blue",
+            "subRegionColor": "red"
         }
     ]
 }

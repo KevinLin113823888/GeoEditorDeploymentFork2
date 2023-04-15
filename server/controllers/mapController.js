@@ -45,7 +45,7 @@ class mapController {
         var currentMap = Map.findOne({ _id: new mongoose.Types.ObjectId(id) });
         var currentMapData = MapData.findOne({ _id: currentMap.mapData });
 
-        return res.status(400).json({status: 'OK', title: currentMap.title});
+        return res.status(200).json({status: 'OK', title: currentMap.title});
     }
 
     // not tested yet
@@ -58,7 +58,7 @@ class mapController {
         var mapData = MapData.findOneAndDelete({ _id: map._id });
         User.findOneAndUpdate({_id: id}, { $pull: {ownedMapCards: mapCards._id, ownedMaps: map._id} });
 
-        return res.status(400).json({status: 'OK'});
+        return res.status(200).json({status: 'OK'});
     }
 
     static async duplicateMapById(req, res) {
@@ -84,7 +84,7 @@ class mapController {
         const mapCardClone = new MapCard(mapCardObj);
         await mapCardClone.save();
 
-        return res.status(400).json({status: 'OK'});
+        return res.status(200).json({status: 'OK'});
     }
 
     static async changeMapNameById(req, res) {
@@ -96,7 +96,7 @@ class mapController {
         var updatedMap = await Map.findOneAndUpdate({ _id: currentMapCard.map }, { title: newName });
         await updatedMap.save();
 
-        return res.status(400).json({status: 'OK'});
+        return res.status(200).json({status: 'OK'});
     }
 
     static async publishMapById(req, res) {
@@ -110,7 +110,7 @@ class mapController {
         });
         await newCommunityPreview.save();
 
-        return res.status(400).json({status: 'OK'});
+        return res.status(200).json({status: 'OK'});
     }
 
     static async mapClassificationById(req, res) {
@@ -120,13 +120,27 @@ class mapController {
         var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { classification: listOfClass });
         await currentMapCard.save();
 
-        return res.status(400).json({status: 'OK'});
+        return res.status(200).json({status: 'OK'});
+    }
+
+    static async importMapFileById(req, res) {
+        var { id, geoJSONFile } = req.body;
+
+        console.log("geojson type", geoJSONFile.type);
+        console.log("feature 1", geoJSONFile.features[0].type);
+        // var currentMapCard = await MapCard.findOne({ _id: id });
+        
+        var newMapData = new MapData({
+            type: JSON.stringify(geoJSONFile.type),
+            features: JSON.stringify(geoJSONFile.features)
+        })
+        await newMapData.save(); 
+
+        return res.status(200).json({status: 'OK'});
     }
 
     static async saveMapById(req, res) {
         var { id, map } = req.body;
-
-        
     }
 }
 

@@ -41,6 +41,27 @@ function MapViewerScreen(){
     useEffect(() => {
         naGeo();
     },[])
+    const sendImportReq = (geoJson) => {
+        console.log("GEOJSON FILE UPLOADED", geoJson);
+        fetch(process.env.REACT_APP_API_URL + 'map/importMapFileById', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              id: id,
+              geoJSONFile: geoJson
+            }),
+        })
+        .then((res) => {
+            res.json();
+            if (res.status === 200) {
+            console.log("LOGGED IN, going to your maps");
+            }
+        })
+        .catch(err => console.log(err));
+    }
 
     const handleSubmit = () => {
         setGeoJson({});
@@ -68,6 +89,7 @@ function MapViewerScreen(){
                     }
                     else{
                         setGeoJson(geoJson)
+                        sendImportReq(geoJson);
                         setFileExist(true);
                         setKeyid(keyid => keyid+1)
                     }
@@ -141,6 +163,7 @@ function MapViewerScreen(){
         reader.readAsText(e.target.files[0]);
         reader.onload = e => {
             setGeoJson(JSON.parse(e.target.result));
+            sendImportReq(JSON.parse(e.target.result));
         }
         setFileExist(true);
         store.changeModal("NONE");

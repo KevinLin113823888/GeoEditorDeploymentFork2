@@ -16,21 +16,21 @@ const mapDataSchema = new Schema(
                 type: String,
                 coordinates:{ type:Mixed, default:[]}
             }]},
-            borderColor: String,
-            subRegionColor: String
+            // borderColor: String,
+            // subRegionColor: String
         }], required: false },
-        mapProperties: { type: Object, required: true },
-        graphicalData:{type:{
-            backgroundColor:String,
-            textOverlay:{type:[{
-                overlayText:String,
-                coordinates:{type: Mixed,default:[]}
-            }]},
-            legend:{type:[{
-                color: String,
-                legendText: String
-            }]}
-        }, required: false }
+        // mapProperties: { type: Object, required: true },
+        // graphicalData:{type:{
+        //     backgroundColor:String,
+        //     textOverlay:{type:[{
+        //         overlayText:String,
+        //         coordinates:{type: Mixed,default:[]}
+        //     }]},
+        //     legend:{type:[{
+        //         color: String,
+        //         legendText: String
+        //     }]}
+        // }, required: false }
     },
     { timestamps: true },
 )
