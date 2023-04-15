@@ -11,8 +11,11 @@ function PropertyCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [change,setChange]=useState("");
     const [editMode,setEditMode]=useState(true);
-    
-    const {index,propertyObj,propertyMap} = props;
+
+    const {index,propertyKey,propertyValue} = props;
+
+    const [gpropertyValue,spropertyValue] = useState(propertyValue);
+
 
     function handleChange(event){
         setChange(event.target.value)
@@ -41,24 +44,24 @@ function PropertyCard(props) {
     </div>
     
     cardElement=<Box style={{fontSize:"1.3rem"}}>
-        <Typography className="textfield" display="inline">{propertyObj}: </Typography> <TextField
-          name="email"
-          defaultValue={propertyMap.get(propertyObj)}
-          margin="normal"
-          onChange={handleChange}
-          disabled={editMode}
-          display="inline"
-          size="small"
-          style={{}}
-          variant="standard"
-          sx={{maxWidth:"11rem","& .MuiInputBase-input.Mui-disabled": {
-            WebkitTextFillColor: "#000000",disableUnderline: true
-          },}}
-          onKeyPress={handleKeyPress}
+        <Typography className="textfield" display="inline">{propertyKey}  </Typography>
+
+    <TextField
+        name="email"
+        value={propertyValue}
+        margin="normal"
+        onChange={handleChange}
+        disabled={editMode}
+        display="inline"
+        size="small"
+        style={{}}
+        variant="standard"
+        sx={{maxWidth:"11rem","& .MuiInputBase-input.Mui-disabled": {
+                WebkitTextFillColor: "#000000",disableUnderline: true
+            },}}
+        onKeyPress={handleKeyPress}
         //   InputProps={{ disableUnderline: true }}
-        
-               
-        />
+    />
         <Box >
         <BorderColorIcon onClick={handleClick} sx={{"&:hover": {fill: "rgba(255,240,10,0.8)"}} } style={{fontSize:"1.6rem"}}/> <DeleteIcon onClick={handleDelete} sx={{"&:hover": {fill: "rgba(255,240,10,0.8)"}}}
         style={{fontSize:"1.6rem"}}/>

@@ -1,5 +1,6 @@
 
-import { React, useContext } from "react";
+import React, { useState, useEffect, useRef,useContext } from 'react';
+
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -13,18 +14,33 @@ function MapPropertySidebar(props) {
 
     const { store } = useContext(GlobalStoreContext);
     let mapData = props.file
-    let propertiesMap = {}
-    let propertiesMapList = []
-    if (mapData.features !== undefined) {
-        propertiesMap = new Map(Object.entries(mapData.features[store.currentFeatureIndex].properties))
-        console.log("store", mapData.features[store.currentFeatureIndex].properties);
-        propertiesMap.forEach((value, key) => propertiesMapList.push(key))
-        propertiesMapList.length = 20
-    }
 
-    // const Demo = styled('div')(({ theme }) => ({
-    //     // backgroundColor: theme.palette.background.paper,
-    // }));
+    const [propertiesMap, setPropertiesMap] = useState(new Map());
+    const [propertiesMapList,setPropertiesMapList] = useState([]);
+
+    useEffect(() =>{
+        console.log(store.currentFeatureIndex)
+        console.log("changed");
+        console.log(Object.keys(mapData).length)
+
+        if(Object.keys(mapData).length===0)
+        {
+            // console.log("nothing in here")
+            // setPropertiesMap(new Map([[1 , 2], [2 ,3 ] ,[4, 5]]));
+            return
+        }
+
+        setPropertiesMap(new Map(Object.entries(mapData.features[store.currentFeatureIndex].properties)))
+        let tempArr = []
+
+
+        propertiesMap.forEach((value, key) => tempArr.push(key))
+        setPropertiesMapList(tempArr)
+        // propertiesMapList.length = 20
+
+    },[store.currentFeatureIndex,mapData]);
+
+
     let propertiesSideBar = <div></div>
     if (store.currentFeatureIndex > 0) {
         propertiesSideBar = 
@@ -39,12 +55,13 @@ function MapPropertySidebar(props) {
                     <IconButton >
                         < AddIcon style={{ fill: "#000000", fontSize: "2rem" }} />
                     </IconButton>
-                    {propertiesMapList.map((propertyObj, index) => (
+                    {propertiesMapList.map((propertyKey, index) => (
                         <PropertyCard
                             key={'map-property-' + (index)}
                             index={index}
-                            propertyObj={propertyObj}
-                            propertyMap={propertiesMap}
+                            propertyValue={propertiesMap.get(propertyKey)}
+                            propertyKey={propertyKey}
+                            propertiesMapList={propertiesMapList}
                         />
                     ))}
                 </Box>
