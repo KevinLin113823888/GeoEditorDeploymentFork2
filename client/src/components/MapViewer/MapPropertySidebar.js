@@ -33,11 +33,12 @@ function MapPropertySidebar() { //should not use props
             store: store,
             type: "add",
             mapDataFeatureIndex: store.currentFeatureIndex,
+            setPropertyObj: setPropertyObj,
         }
         let transaction = new EditPropertiesTPS(mappedData);
         store.jstps.addTransaction(transaction)
-
     }
+
     let propertiesSideBar = <div></div>
     if (store.currentFeatureIndex > 0) {
         propertiesSideBar = 
@@ -63,7 +64,8 @@ function MapPropertySidebar() { //should not use props
                                 propertyValue={value}
                                 propertyKey={key}
                                 p = {propertyObj}
-                                sp = {setPropertyObj}
+                                setPropertyObj = {setPropertyObj}
+                                // delete = {handleDelete}
                             />)
                     )}
 

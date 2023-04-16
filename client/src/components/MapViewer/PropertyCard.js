@@ -31,11 +31,14 @@ function PropertyCard(props) {
             newPropertyValue: event.target.value,
             propertyKey: propertyKey,
             mapDataFeatureIndex: mapDataFeatureIndex,
+            setPropertyObj: props.setPropertyObj
         }
 
         let transaction = new EditPropertiesTPS(mappedData);
         store.jstps.addTransaction(transaction)
         setPropertyValue(event.target.value)
+
+
     }
 
     function handleClick(){
@@ -51,10 +54,13 @@ function PropertyCard(props) {
             oldPropertyValue: getPropertyValue,
             propertyKey: propertyKey,
             mapDataFeatureIndex: mapDataFeatureIndex,
+            setPropertyObj: props.setPropertyObj
         }
         let transaction = new EditPropertiesTPS(mappedData);
         // props.sp(this.store.currentMapData.features[mapDataFeatureIndex].properties)
         store.jstps.addTransaction(transaction)
+
+
 
     }
     
