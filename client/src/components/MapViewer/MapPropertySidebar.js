@@ -10,10 +10,10 @@ import IconButton from "@mui/material/IconButton";
 import AddIcon from '@mui/icons-material/Add';
 import GlobalStoreContext from "../../store";
 
-function MapPropertySidebar(props) {
+function MapPropertySidebar() { //should not use props
 
     const { store } = useContext(GlobalStoreContext);
-    let mapData = props.file
+    let mapData = store.currentMapData
 
     const [propertiesMap, setPropertiesMap] = useState(new Map());
     const [propertiesMapList,setPropertiesMapList] = useState([]);
@@ -59,12 +59,11 @@ function MapPropertySidebar(props) {
                     </IconButton>
                     {propertiesMapList.map((propertyKey, index) => (
                         <PropertyCard
-                            key={'map-property-' + (index)}
+                            // key={'map-property-' + (index)}
+                            mapDataFeatureIndex={store.currentFeatureIndex}
                             index={index}
                             propertyValue={propertiesMap.get(propertyKey)}
                             propertyKey={propertyKey}
-                            propertyMap = {propertiesMap}
-                            propertiesMapList={propertiesMapList}
                         />
                     ))}
                 </Box>

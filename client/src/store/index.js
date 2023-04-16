@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 
 import api from './store-request-api'
-
+import jsTPS from '../common/jsTPS'
 // THIS IS THE CONTEXT WE'LL USE TO SHARE OUR STORE
 export const GlobalStoreContext = createContext({});
 
@@ -52,12 +52,13 @@ function GlobalStoreContextProvider(props) {
         guestMode: false,
         adminMode: false,
         userMapCards: [{}],
-        currentRegionProp:{}, 
+        currentRegionProp:{},
         currentFeatureIndex:0,
         zoomLevel:2,
-        centerCoords:[20,100]
+        centerCoords:[20,100],
+        jstps:  new jsTPS()
     });
-    
+
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
     // const { auth } = useContext(AuthContext);
 
@@ -67,185 +68,114 @@ function GlobalStoreContextProvider(props) {
             // LIST UPDATE OF ITS NAME
             case GlobalStoreActionType.CHANGE_MODAL: {
                 return setStore({
+                    ...store,
                     currentModal : payload,
-                    currentMap: store.currentMap,
-                    currentMapData : store.currentMapData, //the current map data we are editing
-                    currentScreen: store.currentScreen ,
-                    guestMode: store.guestMode,
-                    adminMode: store.adminMode,
-                    userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp, 
-                    currentFeatureIndex: 0,
-                    zoomLevel:store.zoomLevel,
-                    centerCoords:store.centerCoords
-                    
                 });
             }
             case GlobalStoreActionType.CHANGE_SCREEN: {
                 return setStore({
+                    ...store,
+
                     currentModal: CurrentModal.NONE,
-                    currentMap: store.currentMap,
-                    currentMapData : store.currentMapData, //the current map data we are editing
                     currentScreen: payload ,
-                    guestMode: store.guestMode,
-                    adminMode: store.adminMode,
-                    userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp, 
                     currentFeatureIndex: 0,
-                    zoomLevel:store.zoomLevel,
-                    centerCoords:store.centerCoords
                 });
             }
             case GlobalStoreActionType.NEW_MAP_NAME: {
                 return setStore({
+                    ...store,
+
                     currentModal: CurrentModal.NONE,
                     currentMap: payload,
-                    currentMapData : store.currentMapData, //the current map data we are editing
-                    currentScreen: store.currentScreen ,
-                    guestMode: store.guestMode,
-                    adminMode: store.adminMode,
-                    userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp, 
                     currentFeatureIndex: 0,
-                    zoomLevel:store.zoomLevel,
-                    centerCoords:store.centerCoords
                 });
             }
             case GlobalStoreActionType.SET_CURRENT_MAP: {
                 return setStore({
+                    ...store,
                     currentModal : CurrentModal.NONE,
                     currentMap:  payload,
-                    currentMapData : store.currentMapData, //the current map data we are editing
-                    currentScreen: store.currentScreen ,
-                    guestMode: store.guestMode,
-                    adminMode: store.adminMode,
-                    userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp, 
                     currentFeatureIndex: 0,
-                    zoomLevel:store.zoomLevel,
-                    centerCoords:store.centerCoords
+
                 });
             }
             case GlobalStoreActionType.UPDATE_CURRENT_MAPDATA: {
                 return setStore({
+                    ...store,
+
                     currentModal : CurrentModal.NONE,
-                    currentMap:  payload,
-                    currentMapData : store.currentMapData, //the current map data we are editing
-                    currentScreen: store.currentScreen ,
-                    guestMode: store.guestMode,
-                    adminMode: store.adminMode,
-                    userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp, 
-                    currentFeatureIndex: store.currentFeatureIndex,
-                    zoomLevel:store.zoomLevel,
-                    centerCoords:store.centerCoords
+                    currentMapData:  payload,
+
                 });
             }
             case GlobalStoreActionType.UPDATE_USER_MAP_CARDS: {
                 return setStore({
+                    ...store,
+
                     currentModal : CurrentModal.NONE,
                     currentMap:  payload,
-                    currentMapData : store.currentMapData, //the current map data we are editing
-                    currentScreen: store.currentScreen ,
-                    guestMode: store.guestMode,
-                    adminMode: store.adminMode,
                     userMapCards: payload,
-                    currentRegionProp: store.currentRegionProp, 
-                    currentFeatureIndex: store.currentFeatureIndex,
-                    zoomLevel:store.zoomLevel,
-                    centerCoords:store.centerCoords
+
                 });
             }
             case GlobalStoreActionType.SET_GUEST_MODE: {
                 return setStore({
+                    ...store,
+
                     currentModal : CurrentModal.NONE,
-                    currentMap:  store.currentMap,
-                    currentMapData : store.currentMapData, //the current map data we are editing
                     currentScreen: payload.screen ,
                     guestMode: payload.guest,
-                    adminMode: store.adminMode,
-                    userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp, 
-                    currentFeatureIndex: store.currentFeatureIndex,
-                    zoomLevel:store.zoomLevel,
-                    centerCoords:store.centerCoords
+
                 });
             }
             case GlobalStoreActionType.SET_HOME: {
                 return setStore({
+                    ...store,
+
                     currentModal: CurrentModal.NONE,
-                    currentMap: store.currentMap,
-                    currentMapData : store.currentMapData, //the current map data we are editing
                     currentScreen: "home" ,
                     guestMode: false,
-                    adminMode: store.adminMode,
-                    userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp, 
-                    currentFeatureIndex: store.currentFeatureIndex,
-                    zoomLevel:store.zoomLevel,
-                    centerCoords:store.centerCoords
+
                 });
             }
             case GlobalStoreActionType.SET_REGION_PROPERTIES: {
                 return setStore({
+                    ...store,
                     currentModal : CurrentModal.NONE,
-                    currentMap:  store.currentMap,
-                    currentMapData : store.currentMapData, //the current map data we are editing
-                    currentScreen: store.currentScreen ,
-                    guestMode: store.guestMode,
-                    adminMode: store.adminMode,
-                    userMapCards: store.userMapCards,
-                    currentRegionProp: payload, 
-                    currentFeatureIndex: store.currentFeatureIndex,
-                    zoomLevel:store.zoomLevel,
-                    centerCoords:store.centerCoords
+                    currentRegionProp: payload,
+
                 });
             }
             case GlobalStoreActionType.UPDATE_FEATURE_INDEX: {
                 return setStore({
+                    ...store,
                     currentModal : CurrentModal.NONE,
-                    currentMap:  store.currentMap,
-                    currentMapData : store.currentMapData, //the current map data we are editing
-                    currentScreen: store.currentScreen ,
-                    guestMode: store.guestMode,
-                    adminMode: store.adminMode,
-                    userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp, 
                     currentFeatureIndex: payload,
-                    zoomLevel:store.zoomLevel,
-                    centerCoords:store.centerCoords
+
 
                 });
             }
             case GlobalStoreActionType.SET_ZOOM: {
                 return setStore({
+                    ...store,
                     currentModal : CurrentModal.NONE,
-                    currentMap:  store.currentMap,
-                    currentMapData : store.currentMapData, //the current map data we are editing
-                    currentScreen: store.currentScreen ,
-                    guestMode: store.guestMode,
-                    adminMode: store.adminMode,
-                    userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp, 
-                    currentFeatureIndex: store.currentFeatureIndex,
                     zoomLevel:payload.zoom,
                     centerCoords:payload.center
-
                 });
             }
             case GlobalStoreActionType.SET_ADD_REGION: {
                 return setStore({
-                    currentModal : payload.modal,
-                    currentMap:  store.currentMap,
-                    currentMapData : store.currentMapData, //the current map data we are editing
-                    currentScreen: store.currentScreen ,
+                    currentModal: payload.modal,
+                    currentMap: store.currentMap,
+                    currentMapData: store.currentMapData, //the current map data we are editing
+                    currentScreen: store.currentScreen,
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp, 
+                    currentRegionProp: store.currentRegionProp,
                     currentFeatureIndex: store.currentFeatureIndex,
-                    zoomLevel:payload.zoom,
-                    centerCoords:payload.center
+                    zoomLevel: payload.zoom,
+                    centerCoords: payload.center
 
                 });
             }
@@ -254,102 +184,111 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-     // THIS FUNCTION CREATES A NEW LIST
+    // THIS FUNCTION CREATES A NEW LIST
     store.createMap = function (mapTitle,mapCardData,mapData) {
         async function asyncCreateMap(mapTitle,mapCardData,mapData){
-       
-        const response = await api.createMap(mapTitle,mapCardData,mapData);
-        
-        if (response.status === 201) {
-            
-            let newMap = response.data.map;
-        
-            storeReducer({
-                type: GlobalStoreActionType.SET_CURRENT_MAP,
-                payload: newMap
-            }
-            );
 
-        
-            //history.push("/playlist/" + newList._id);
+            const response = await api.createMap(mapTitle,mapCardData,mapData);
+
+            if (response.status === 201) {
+
+                let newMap = response.data.map;
+
+                storeReducer({
+                        type: GlobalStoreActionType.SET_CURRENT_MAP,
+                        payload: newMap
+                    }
+                );
+
+
+                //history.push("/playlist/" + newList._id);
+            }
+            else {
+                console.log("API FAILED TO CREATE A NEW LIST");
+            }
         }
-        else {
-            console.log("API FAILED TO CREATE A NEW LIST");
-        }
-      }
-      asyncCreateMap(mapTitle);
+        asyncCreateMap(mapTitle);
     }
-    
+
     store.getUserMapCards = function (){
 
     }
 
     store.changeModal= function(modal){
         storeReducer({
-            type: GlobalStoreActionType.CHANGE_MODAL,
-            payload: modal
-        }
+                type: GlobalStoreActionType.CHANGE_MODAL,
+                payload: modal
+            }
+        );
+    }
+    store.setCurrentMapData= function(geoJsonMap){
+        console.log("reducer called with")
+        console.log(geoJsonMap)
+        storeReducer({
+                type: GlobalStoreActionType.UPDATE_CURRENT_MAPDATA,
+                payload: geoJsonMap
+            }
         );
     }
     store.changeScreen= function(screen){
         storeReducer({
-            type: GlobalStoreActionType.CHANGE_SCREEN,
-            payload: screen
-        }
+                type: GlobalStoreActionType.CHANGE_SCREEN,
+                payload: screen
+            }
         );
     }
     store.setGuest= function(guest,screen){
         storeReducer({
-            type: GlobalStoreActionType.SET_GUEST_MODE,
-            payload: {guest:guest,
-                      screen:screen
-                    }
-        }
+                type: GlobalStoreActionType.SET_GUEST_MODE,
+                payload: {guest:guest,
+                    screen:screen
+                }
+            }
         );
     }
     store.setHome=function(){
         storeReducer({
-            type: GlobalStoreActionType.SET_HOME,
-            payload: {
-                    }
-        }
+                type: GlobalStoreActionType.SET_HOME,
+                payload: {
+                }
+            }
         );
     }
     store.setRegionProperties=function(properties){
         storeReducer({
-            type: GlobalStoreActionType.SET_REGION_PROPERTIES,
-            payload: properties
-        }
+                type: GlobalStoreActionType.SET_REGION_PROPERTIES,
+                payload: properties
+            }
         );
     }
     store.setCurrentFeatureIndex=function(index){
         storeReducer({
-            type: GlobalStoreActionType.UPDATE_FEATURE_INDEX,
-            payload: index
-        }
+                type: GlobalStoreActionType.UPDATE_FEATURE_INDEX,
+                payload: index
+            }
         );
     }
     store.setZoomLevel=function(zoom,center){
         storeReducer({
-            type: GlobalStoreActionType.SET_ZOOM,
-            payload: {
-                zoom:zoom,
-                center:center
+                type: GlobalStoreActionType.SET_ZOOM,
+                payload: {
+                    zoom:zoom,
+                    center:center
+                }
             }
-        }
         );
     }
-    store.setAddRegion=function(zoom,center,modal){
-        storeReducer({
-            type: GlobalStoreActionType.SET_ADD_REGION,
-            payload: {
-                zoom:zoom,
-                center:center,
-                modal:modal
-            }
+        store.setAddRegion=function(zoom,center,modal){
+            storeReducer({
+                    type: GlobalStoreActionType.SET_ADD_REGION,
+                    payload: {
+                        zoom:zoom,
+                        center:center,
+                        modal:modal
+                    }
+                }
+            );
         }
-        );
-    }
 
     return (
         <GlobalStoreContext.Provider value={{

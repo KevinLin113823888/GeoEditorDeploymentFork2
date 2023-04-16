@@ -22,7 +22,6 @@ import Box from "@mui/material/Box";
 function MapViewerScreen(){
 
     const [fileExist, setFileExist] = useState(false);
-    const [GeoJson, setGeoJson] = useState({});
     const [state, setState] = useState(true);
     const [data, setData] = useState([]);
     const [mapName,setMapChange] = useState("Untitled");
@@ -30,6 +29,7 @@ function MapViewerScreen(){
     // const [compressCount, setCompressCount] = useState(6);
 
     const { store } = useContext(GlobalStoreContext);
+    const [GeoJson, setGeoJson] = [store.currentMapData,store.setCurrentMapData]
     const { id } = useParams();
 
     const names = [];
@@ -40,7 +40,13 @@ function MapViewerScreen(){
 
 
     useEffect(() => {
-        naGeo();
+        console.log("inital?")
+            // setGeoJson(na);
+
+        console.log("after")
+        console.log(GeoJson)
+            setFileExist(true);
+
     },[])
     const sendImportReq = (geoJson) => {
         console.log("GEOJSON FILE UPLOADED", geoJson);
@@ -171,12 +177,7 @@ function MapViewerScreen(){
         // setCompressCount(6);
     }
 
-    const naGeo = () => {
-        // console.log("upload the stuff")
-        // console.log(na)
-        setGeoJson(na);
-        setFileExist(true);
-    }
+
 
 
     function handleCompress(){
@@ -410,7 +411,7 @@ function MapViewerScreen(){
             }
 
         });
-        
+
         setGeoJson(tempGeoJson);
         setKeyid(keyid => keyid+1)
     }
@@ -438,7 +439,7 @@ function MapViewerScreen(){
     }
     const handleMapClassification = () => {store.changeModal(CurrentModal.MAP_CLASSIFICATION)}
     function handleUpdate(){
-       
+
             setKeyid(keyid => keyid+1)
     }
     function handleChangeMapName(e){
@@ -533,18 +534,18 @@ function MapViewerScreen(){
                             sx={{
                                 paddingLeft: "1.5%"
                             }}>
-                            <MapEditor file={GeoJson} changeName={changeRegionName} key={keyid} handleCompress={handleCompress} updateViewer={handleUpdate} />
+                            <MapEditor  changeName={changeRegionName} key={keyid} handleCompress={handleCompress} updateViewer={handleUpdate} />
                         </Box>
                     </Grid>
 
                     <Grid item xs={12}>
-                        <MapLegendFooter file={GeoJson}/>
+                        <MapLegendFooter />
                     </Grid>
 
 
                 </Grid>
                 <Grid item xs={2.5}>
-                    <MapPropertySidebar file={GeoJson}/>
+                    <MapPropertySidebar />
                 </Grid>
 
                 <Grid item xs={8}>

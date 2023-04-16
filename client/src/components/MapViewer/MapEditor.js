@@ -28,8 +28,10 @@ function MapEditor(props) {
     const selectModeToggle = useRef(false)
 
     const currentRegion = useRef("");
+
+    const geoJsonMapData = store.currentMapData;
     //const context = useLeafletContext();
-    console.log(props.file);
+    console.log(geoJsonMapData);
     // useEffect(() =>{
     //     console.log("changed");
     //     setUpdate(update => update+1);
@@ -68,11 +70,11 @@ function MapEditor(props) {
     }
     function updateLatlngDrag(featureInd2,ind0,ind1,ind2,newlatlng){
         if(ind2==-1){
-            props.file.features[featureInd2].geometry.coordinates[ind0][ind1][0]=newlatlng[0]
-            props.file.features[featureInd2].geometry.coordinates[ind0][ind1][1]=newlatlng[1]
+            geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1][0]=newlatlng[0]
+            geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1][1]=newlatlng[1]
         }else{
-            props.file.features[featureInd2].geometry.coordinates[ind0][ind1][ind2][0]=newlatlng[0]
-            props.file.features[featureInd2].geometry.coordinates[ind0][ind1][ind2][1]=newlatlng[1]
+            geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1][ind2][0]=newlatlng[0]
+            geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1][ind2][1]=newlatlng[1]
         }
     }
    
@@ -94,16 +96,16 @@ function MapEditor(props) {
         let coord1NextToLatlng = []
         let coord2NextToLatlng = []
         console.log(addedLatlng)
-        props.file.features.forEach((feature, ind) => {
+        geoJsonMapData.features.forEach((feature, ind) => {
             if (feature.properties.name == featureName) {
                 if (feature.geometry.type === "Polygon") {
-                    coord1NextToLatlng = props.file.features[ind].geometry.coordinates[ind0][ind1+1]
-                    coord2NextToLatlng = props.file.features[ind].geometry.coordinates[ind0][ind1-1]
-                    props.file.features[ind].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
+                    coord1NextToLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1+1]
+                    coord2NextToLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1-1]
+                    geoJsonMapData.features[ind].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
                 } else if (feature.geometry.type === "MultiPolygon") {
-                    coord1NextToLatlng = props.file.features[ind].geometry.coordinates[ind0][ind1][ind2+1]
-                    coord2NextToLatlng = props.file.features[ind].geometry.coordinates[ind0][ind1][ind2-1]
-                    props.file.features[ind].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
+                    coord1NextToLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1][ind2+1]
+                    coord2NextToLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1][ind2-1]
+                    geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
                 }
             }
         })
@@ -113,7 +115,7 @@ function MapEditor(props) {
         let prevCoord=[]
         
         try {
-        props.file.features.forEach(feature => {
+        geoJsonMapData.features.forEach(feature => {
             let foundOneCoord=false
             featureInd2++
             // Check if the feature is a polygon or a multipolygon
@@ -131,7 +133,7 @@ function MapEditor(props) {
                             
                         if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1] &&foundOneCoord==true){
                             
-                            props.file.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
+                            geoJsonMapData.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
                            
                             throw new Error("Break the loop.")
                         }else if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1]){
@@ -141,7 +143,7 @@ function MapEditor(props) {
                         }
                         if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1] &&foundOneCoord==true){
                             
-                            props.file.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
+                            geoJsonMapData.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
                             
                             throw new Error("Break the loop.")
                             
@@ -175,14 +177,14 @@ function MapEditor(props) {
                             ind2++;
                             
                             if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1] &&foundOneCoord==true){
-                                props.file.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
+                                geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
                                 throw new Error("Break the loop.")
                             }else if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1]){
                                 foundOneCoord=true
                                 
                             }
                             if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1] &&foundOneCoord==true){
-                                props.file.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
+                                geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
                                 throw new Error("Break the loop.")
                             }else if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1]){
                                 foundOneCoord=true
@@ -215,20 +217,20 @@ function MapEditor(props) {
         }
         console.log(indexPath)
         let removedLatlng=[]
-        props.file.features.forEach((feature, ind) => {
+        geoJsonMapData.features.forEach((feature, ind) => {
             if (feature.properties.name == featureName) {
                 if (feature.geometry.type === "Polygon") {
-                    removedLatlng = props.file.features[ind].geometry.coordinates[ind0][ind1]
-                    props.file.features[ind].geometry.coordinates[ind0].splice(ind1, 1)
+                    removedLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1]
+                    geoJsonMapData.features[ind].geometry.coordinates[ind0].splice(ind1, 1)
                 } else if (feature.geometry.type === "MultiPolygon") {
                     console.log(ind)
-                    removedLatlng = props.file.features[ind].geometry.coordinates[ind0][ind1][ind2]
-                    props.file.features[ind].geometry.coordinates[ind0][ind1].splice(ind2, 1)
+                    removedLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1][ind2]
+                    geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1].splice(ind2, 1)
                 }
             }
         })
         let featureInd2=-1
-        props.file.features.forEach(feature => {
+        geoJsonMapData.features.forEach(feature => {
             featureInd2++
             // Check if the feature is a polygon or a multipolygon
 
@@ -243,7 +245,7 @@ function MapEditor(props) {
                     coordinates.forEach(coordinate => {
                         ind1++;
                         if(coordinate[0]==removedLatlng[0] &&coordinate[1]==removedLatlng[1] ){
-                            props.file.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 1)
+                            geoJsonMapData.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 1)
                         }
                        
                     });
@@ -267,7 +269,7 @@ function MapEditor(props) {
                             ind2++;
 
                             if(coordinate[0]==removedLatlng[0] &&coordinate[1]==removedLatlng[1] ){
-                                props.file.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 1)
+                                geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 1)
                             }                            
                         });
                     });
@@ -294,7 +296,7 @@ function MapEditor(props) {
         let latlng = [];
 
         let featureInd = -1
-        let currentFeatures = props.file.features;
+        let currentFeatures = geoJsonMapData.features;
         if (indexPath.length == 3) {
             index2 = indexPath[2]
 
@@ -415,11 +417,11 @@ function MapEditor(props) {
    
         
         if(index2==-1){
-            props.file.features[featureInd].geometry.coordinates[index0][index1][0]=newlatlng[0]
-            props.file.features[featureInd].geometry.coordinates[index0][index1][1]=newlatlng[1]
+            geoJsonMapData.features[featureInd].geometry.coordinates[index0][index1][0]=newlatlng[0]
+            geoJsonMapData.features[featureInd].geometry.coordinates[index0][index1][1]=newlatlng[1]
         }else{
-            props.file.features[featureInd].geometry.coordinates[index0][index1][index2][0]=newlatlng[0]
-            props.file.features[featureInd].geometry.coordinates[index0][index1][index2][1]=newlatlng[1]
+            geoJsonMapData.features[featureInd].geometry.coordinates[index0][index1][index2][0]=newlatlng[0]
+            geoJsonMapData.features[featureInd].geometry.coordinates[index0][index1][index2][1]=newlatlng[1]
         }
         setUpdate(update => update + 1);
     };
@@ -469,7 +471,7 @@ function MapEditor(props) {
         layer.on('click', function (e) {
             store.setRegionProperties({"hi":"hi","yo":"hey"})
             let featureName = e.target.feature.properties.name;
-            props.file.features.forEach((feature, index) => {
+            geoJsonMapData.features.forEach((feature, index) => {
                 if (feature.properties.name === featureName) {
                     store.setCurrentFeatureIndex(index);
                 }
@@ -601,7 +603,7 @@ function MapEditor(props) {
             return;
         }
 
-        let allRegionArray = props.file.features
+        let allRegionArray = geoJsonMapData.features
         let emptyPoly = turf.multiPolygon([])
 
         for (let i = 0; i < regionsSelected.length; i++) {
@@ -623,7 +625,7 @@ function MapEditor(props) {
         emptyPoly.properties = regionsSelected[0].properties;
         emptyPoly.properties.name = newName;
 
-        props.file.features = [...allRegionArray, emptyPoly] // add to the props.file.feature
+        geoJsonMapData.features = [...allRegionArray, emptyPoly] // add to the geoJsonMapData.feature
 
         regionsSelectedRef.current = [] //empty everything
         //setUpdate(update+1) //absolutely crazy code but we need this to update the map
@@ -637,7 +639,7 @@ function MapEditor(props) {
 
     }
     const handleAddRegion=(name)=>{
-        props.file.features[props.file.features.length-1].properties.name = name
+        geoJsonMapData.features[geoJsonMapData.features.length-1].properties.name = name
         setUpdate(update=>update+1)
     }
 
@@ -653,7 +655,7 @@ function MapEditor(props) {
             />
             
 
-            {props.file.features ?
+            {geoJsonMapData.features ?
                 <div>
                     
                     
@@ -674,7 +676,7 @@ function MapEditor(props) {
                 <GeomanJsWrapper
                         toggleSelectMode={toggleSelectMode}
                         compress={props.handleCompress}
-                        file = {props.file}
+                        file = {geoJsonMapData}
                         updateEditor = {handleUpdate}
                         updateViewer = {props.updateViewer}
                     />
@@ -683,7 +685,7 @@ function MapEditor(props) {
 
                         <GeoJSON
                             key={update}
-                            data={props.file.features}
+                            data={geoJsonMapData.features}
                             onEachFeature={onEachCountry}
                         />
 
