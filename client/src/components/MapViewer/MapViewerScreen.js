@@ -11,6 +11,7 @@ import ExportModal from "./MapViewerModal/ExportModal";
 import MapClassificationModal from "./MapViewerModal/MapClassificationModal";
 import MapColorwheelModal from "./MapViewerModal/MapColorwheelModal";
 import MapMergeChangeRegionNameModal from "./MapViewerModal/MapMergeChangeRegionNameModal";
+import MapAddRegionModal from "./MapViewerModal/MapAddRegionModal";
 import {FormControl, InputAdornment} from "@mui/material";
 import {Input} from "@mui/icons-material";
 import ImportModal from "./MapViewerModal/ImportModal";
@@ -436,7 +437,10 @@ function MapViewerScreen(){
 
     }
     const handleMapClassification = () => {store.changeModal(CurrentModal.MAP_CLASSIFICATION)}
-
+    function handleUpdate(){
+       
+            setKeyid(keyid => keyid+1)
+    }
     function handleChangeMapName(e){
         fetch(process.env.REACT_APP_API_URL + 'map/changeMapNameById', {
             method: "POST",
@@ -470,6 +474,7 @@ function MapViewerScreen(){
             <MapClassificationModal/>
             <MapColorwheelModal/>
             <MapMergeChangeRegionNameModal/>
+            <MapAddRegionModal/>
 
 
             <Grid container spacing={2}>
@@ -528,7 +533,7 @@ function MapViewerScreen(){
                             sx={{
                                 paddingLeft: "1.5%"
                             }}>
-                            <MapEditor file={GeoJson} changeName={changeRegionName} key={keyid} handleCompress={handleCompress} />
+                            <MapEditor file={GeoJson} changeName={changeRegionName} key={keyid} handleCompress={handleCompress} updateViewer={handleUpdate} />
                         </Box>
                     </Grid>
 

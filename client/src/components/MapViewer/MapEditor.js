@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, useMap, GeoJSON, LayerGroup, FeatureGroup, use
 import 'leaflet/dist/leaflet.css';
 import MapColorwheelModal from "./MapViewerModal/MapColorwheelModal";
 import MapMergeChangeRegionNameModal from "./MapViewerModal/MapMergeChangeRegionNameModal";
+import MapAddRegionModal from "./MapViewerModal/MapAddRegionModal";
 import { GeomanControls } from 'react-leaflet-geoman-v2';
 // import { topojson } from 'topojson';
 import { topology } from 'topojson-server';
@@ -454,7 +455,7 @@ function MapEditor(props) {
             { permanent: true, direction: "center", className: "label" }
         ).openTooltip();
 
-        console.log(countryName)
+        
         let propString = countryName
         let propObj = feature.properties;
         // for(const property in propObj){
@@ -583,7 +584,9 @@ function MapEditor(props) {
             regionsClicked = []
         }
     };
-
+    function handleUpdate(){
+        setUpdate(update=>update+1)
+    }
 
 
     const handleMerge = (newName) => {
@@ -633,6 +636,11 @@ function MapEditor(props) {
 
 
     }
+    const handleAddRegion=(name)=>{
+        props.file.features[props.file.features.length-1].properties.name = name
+        setUpdate(update=>update+1)
+    }
+
     return (
         <div>
             <MapColorwheelModal/>
@@ -640,13 +648,17 @@ function MapEditor(props) {
                 handleMerge={handleMerge}
                 handleCancelMergeSelection = {handleCancelMergeSelection}
             />
+            <MapAddRegionModal
+                handleAddRegion={handleAddRegion}
+            />
+            
 
             {props.file.features ?
                 <div>
                     
                     
                     <MapContainer
-                style={{ height: "80vh" }}sx={{marginTop:"30vh"}} zoom={2} center={[20, 100]}
+                style={{ height: "80vh" }}sx={{marginTop:"30vh"}} zoom={store.zoomLevel} center={store.centerCoords}
                 editable={true}
             >
                 
@@ -662,6 +674,9 @@ function MapEditor(props) {
                 <GeomanJsWrapper
                         toggleSelectMode={toggleSelectMode}
                         compress={props.handleCompress}
+                        file = {props.file}
+                        updateEditor = {handleUpdate}
+                        updateViewer = {props.updateViewer}
                     />
 
                     <FeatureGroup>

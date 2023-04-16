@@ -11,6 +11,26 @@ function GeomanJsWrapper(props) {
     const context = useLeafletContext();
     const isInitialRender = useRef(true);// in react, when refs are changed component dont re-render
     const { store } = useContext(GlobalStoreContext);
+    const [update, setUpdate] = useState(1);
+    const [added, setAdded] = useState(false);
+    
+    const [newPolygonFeature, setNewPolygonFeature]= useState(
+        {
+          "type": "Feature",
+          "properties": {
+            "name": "My Polygon"
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[]
+              
+            ]
+          }
+        }
+      )
+    // useEffect (()=> {
+    //     setUpdate(update=>update+1)
+    // },[props.file])
 
     useEffect( () => {
         if(isInitialRender.current) {// skip initial execution of useEffect
@@ -20,7 +40,43 @@ function GeomanJsWrapper(props) {
         const L = context.layerContainer || context.map;
         const map = L.pm.map
         const leafletContainer = L
-
+        map.on('pm:drawstart', ({ workingLayer }) => {
+            
+            
+            workingLayer.on('pm:vertexadded', (e) => {
+                let newCoords=[]
+                newCoords[0]=e.latlng.lng
+                newCoords[1]=e.latlng.lat
+                let newRegion= newPolygonFeature
+                newRegion.geometry.coordinates[0].push(newCoords)
+                setNewPolygonFeature(newRegion)
+                //store.setRegionProperties(newRegion)
+                //setNewPolygonFeature(newPolygonFeature.geometry.coordinates[0].push(newCoords))
+              //console.log(newPolygonFeature)
+              
+            });
+          });
+          map.on('pm:drawend', (e) => {
+            let sameFirstandLastCoords = newPolygonFeature
+            let firstCoord = newPolygonFeature.geometry.coordinates[0][0];
+            sameFirstandLastCoords.geometry.coordinates[0].push(firstCoord)
+            props.file.features.push(sameFirstandLastCoords)
+            //store.changeModal(CurrentModal.MAP_ADD_REGION_NAME)
+            //console.log(props.file.features)
+           
+            
+            // setUpdate(update=>update+1)
+            props.updateViewer()
+            props.updateEditor()
+            let centerArr =[]
+            let center = map.getCenter()
+            centerArr[0]=center.lat
+            centerArr[1]=center.lng
+            store.setZoomLevel(map.getZoom(),centerArr)
+            });
+    if (leafletContainer ){
+        console.log("ADDING")
+        setAdded(true);
         const mergeButtonAction = [
             'merge',
             {
@@ -50,7 +106,7 @@ function GeomanJsWrapper(props) {
         const onClickFunction = [
             mergeButtonClick
         ]
-        
+       
         for(let index in customButtonNameList){
             let name = customButtonNameList[index]
             let action = actionsList[index]
@@ -78,7 +134,7 @@ function GeomanJsWrapper(props) {
                 drawText: false,
                 drawPolyline: false,
                 drawRectangle: false,
-                drawPolygon: false,
+                drawPolygon: true,
                 drawCircle: false,
                 drawCircleMarker:false,
 
@@ -95,6 +151,9 @@ function GeomanJsWrapper(props) {
                 removeVertexOn: "contextmenu" //right click on verticies to remove
             });
             console.log("mount ")
+         
+            
+        }
 
     }, [context]);
 };

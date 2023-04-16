@@ -17,7 +17,8 @@ export const GlobalStoreActionType = {
     UPDATE_USER_MAP_CARDS:"UPDATE_USER_MAP_CARDS",
     SET_HOME: "SET_HOME",
     SET_REGION_PROPERTIES:"SET_REGION_PROPERTIES",
-    UPDATE_FEATURE_INDEX:"UPDATE_FEATURE_INDEX"
+    UPDATE_FEATURE_INDEX:"UPDATE_FEATURE_INDEX",
+    SET_ZOOM: "SET_ZOOM"
 }
 
 export const CurrentModal = {
@@ -29,6 +30,7 @@ export const CurrentModal = {
     COMMUNITY_PREVIEW_REPORT: "COMMUNITY_PREVIEW_REPORT",
     COMMUNITY_PREVIEW_BAN: "COMMUNITY_PREVIEW_BAN",
     MAP_MERGE_REGION_NAME: "MAP_MERGE_REGION_NAME",
+    MAP_ADD_REGION_NAME: "MAP_ADD_REGION_NAME",
     MAP_PICK_COLOR_WHEEL: "MAP_PICK_COLOR_WHEEL",
     MAP_EXPORT: "MAP_EXPORT",
     MAP_IMPORT: "MAP_IMPORT",
@@ -50,7 +52,9 @@ function GlobalStoreContextProvider(props) {
         adminMode: false,
         userMapCards: [{}],
         currentRegionProp:{}, 
-        currentFeatureIndex:0
+        currentFeatureIndex:0,
+        zoomLevel:2,
+        centerCoords:[20,100]
     });
     
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
@@ -70,7 +74,10 @@ function GlobalStoreContextProvider(props) {
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
                     currentRegionProp: store.currentRegionProp, 
-                    currentFeatureIndex: store.currentFeatureIndex
+                    currentFeatureIndex: 0,
+                    zoomLevel:store.zoomLevel,
+                    centerCoords:store.centerCoords
+                    
                 });
             }
             case GlobalStoreActionType.CHANGE_SCREEN: {
@@ -82,8 +89,10 @@ function GlobalStoreContextProvider(props) {
                     guestMode: store.guestMode,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
-                    currentRegionProp: {}, 
-                    currentFeatureIndex: store.currentFeatureIndex
+                    currentRegionProp: store.currentRegionProp, 
+                    currentFeatureIndex: 0,
+                    zoomLevel:store.zoomLevel,
+                    centerCoords:store.centerCoords
                 });
             }
             case GlobalStoreActionType.NEW_MAP_NAME: {
@@ -96,7 +105,9 @@ function GlobalStoreContextProvider(props) {
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
                     currentRegionProp: store.currentRegionProp, 
-                    currentFeatureIndex: store.currentFeatureIndex
+                    currentFeatureIndex: 0,
+                    zoomLevel:store.zoomLevel,
+                    centerCoords:store.centerCoords
                 });
             }
             case GlobalStoreActionType.SET_CURRENT_MAP: {
@@ -109,7 +120,9 @@ function GlobalStoreContextProvider(props) {
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
                     currentRegionProp: store.currentRegionProp, 
-                    currentFeatureIndex: store.currentFeatureIndex
+                    currentFeatureIndex: 0,
+                    zoomLevel:store.zoomLevel,
+                    centerCoords:store.centerCoords
                 });
             }
             case GlobalStoreActionType.UPDATE_CURRENT_MAPDATA: {
@@ -122,7 +135,9 @@ function GlobalStoreContextProvider(props) {
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
                     currentRegionProp: store.currentRegionProp, 
-                    currentFeatureIndex: store.currentFeatureIndex
+                    currentFeatureIndex: store.currentFeatureIndex,
+                    zoomLevel:store.zoomLevel,
+                    centerCoords:store.centerCoords
                 });
             }
             case GlobalStoreActionType.UPDATE_USER_MAP_CARDS: {
@@ -135,7 +150,9 @@ function GlobalStoreContextProvider(props) {
                     adminMode: store.adminMode,
                     userMapCards: payload,
                     currentRegionProp: store.currentRegionProp, 
-                    currentFeatureIndex: store.currentFeatureIndex
+                    currentFeatureIndex: store.currentFeatureIndex,
+                    zoomLevel:store.zoomLevel,
+                    centerCoords:store.centerCoords
                 });
             }
             case GlobalStoreActionType.SET_GUEST_MODE: {
@@ -147,8 +164,10 @@ function GlobalStoreContextProvider(props) {
                     guestMode: payload.guest,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
-                    currentRegionProp: {}, 
-                    currentFeatureIndex: store.currentFeatureIndex
+                    currentRegionProp: store.currentRegionProp, 
+                    currentFeatureIndex: store.currentFeatureIndex,
+                    zoomLevel:store.zoomLevel,
+                    centerCoords:store.centerCoords
                 });
             }
             case GlobalStoreActionType.SET_HOME: {
@@ -160,8 +179,10 @@ function GlobalStoreContextProvider(props) {
                     guestMode: false,
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
-                    currentRegionProp: {}, 
-                    currentFeatureIndex: store.currentFeatureIndex
+                    currentRegionProp: store.currentRegionProp, 
+                    currentFeatureIndex: store.currentFeatureIndex,
+                    zoomLevel:store.zoomLevel,
+                    centerCoords:store.centerCoords
                 });
             }
             case GlobalStoreActionType.SET_REGION_PROPERTIES: {
@@ -174,7 +195,9 @@ function GlobalStoreContextProvider(props) {
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
                     currentRegionProp: payload, 
-                    currentFeatureIndex: store.currentFeatureIndex
+                    currentFeatureIndex: store.currentFeatureIndex,
+                    zoomLevel:store.zoomLevel,
+                    centerCoords:store.centerCoords
                 });
             }
             case GlobalStoreActionType.UPDATE_FEATURE_INDEX: {
@@ -187,7 +210,26 @@ function GlobalStoreContextProvider(props) {
                     adminMode: store.adminMode,
                     userMapCards: store.userMapCards,
                     currentRegionProp: store.currentRegionProp, 
-                    currentFeatureIndex: payload
+                    currentFeatureIndex: payload,
+                    zoomLevel:store.zoomLevel,
+                    centerCoords:store.centerCoords
+
+                });
+            }
+            case GlobalStoreActionType.SET_ZOOM: {
+                return setStore({
+                    currentModal : CurrentModal.MAP_ADD_REGION_NAME,
+                    currentMap:  store.currentMap,
+                    currentMapData : store.currentMapData, //the current map data we are editing
+                    currentScreen: store.currentScreen ,
+                    guestMode: store.guestMode,
+                    adminMode: store.adminMode,
+                    userMapCards: store.userMapCards,
+                    currentRegionProp: store.currentRegionProp, 
+                    currentFeatureIndex: store.currentFeatureIndex,
+                    zoomLevel:payload.zoom,
+                    centerCoords:payload.center
+
                 });
             }
             default:
@@ -267,6 +309,16 @@ function GlobalStoreContextProvider(props) {
         storeReducer({
             type: GlobalStoreActionType.UPDATE_FEATURE_INDEX,
             payload: index
+        }
+        );
+    }
+    store.setZoomLevel=function(zoom,center){
+        storeReducer({
+            type: GlobalStoreActionType.SET_ZOOM,
+            payload: {
+                zoom:zoom,
+                center:center
+            }
         }
         );
     }
