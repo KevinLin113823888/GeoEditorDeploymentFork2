@@ -410,7 +410,7 @@ function MapViewerScreen(){
             }
 
         });
-
+        
         setGeoJson(tempGeoJson);
         setKeyid(keyid => keyid+1)
     }

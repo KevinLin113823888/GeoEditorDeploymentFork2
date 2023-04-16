@@ -18,7 +18,8 @@ export const GlobalStoreActionType = {
     SET_HOME: "SET_HOME",
     SET_REGION_PROPERTIES:"SET_REGION_PROPERTIES",
     UPDATE_FEATURE_INDEX:"UPDATE_FEATURE_INDEX",
-    SET_ZOOM: "SET_ZOOM"
+    SET_ZOOM: "SET_ZOOM",
+    SET_ADD_REGION: "SET_ADD_REGION"
 }
 
 export const CurrentModal = {
@@ -218,7 +219,23 @@ function GlobalStoreContextProvider(props) {
             }
             case GlobalStoreActionType.SET_ZOOM: {
                 return setStore({
-                    currentModal : CurrentModal.MAP_ADD_REGION_NAME,
+                    currentModal : CurrentModal.NONE,
+                    currentMap:  store.currentMap,
+                    currentMapData : store.currentMapData, //the current map data we are editing
+                    currentScreen: store.currentScreen ,
+                    guestMode: store.guestMode,
+                    adminMode: store.adminMode,
+                    userMapCards: store.userMapCards,
+                    currentRegionProp: store.currentRegionProp, 
+                    currentFeatureIndex: store.currentFeatureIndex,
+                    zoomLevel:payload.zoom,
+                    centerCoords:payload.center
+
+                });
+            }
+            case GlobalStoreActionType.SET_ADD_REGION: {
+                return setStore({
+                    currentModal : payload.modal,
                     currentMap:  store.currentMap,
                     currentMapData : store.currentMapData, //the current map data we are editing
                     currentScreen: store.currentScreen ,
@@ -318,6 +335,17 @@ function GlobalStoreContextProvider(props) {
             payload: {
                 zoom:zoom,
                 center:center
+            }
+        }
+        );
+    }
+    store.setAddRegion=function(zoom,center,modal){
+        storeReducer({
+            type: GlobalStoreActionType.SET_ADD_REGION,
+            payload: {
+                zoom:zoom,
+                center:center,
+                modal:modal
             }
         }
         );
