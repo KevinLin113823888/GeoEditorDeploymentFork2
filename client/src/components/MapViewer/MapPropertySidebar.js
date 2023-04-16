@@ -9,40 +9,35 @@ import PropertyCard from './PropertyCard.js'
 import IconButton from "@mui/material/IconButton";
 import AddIcon from '@mui/icons-material/Add';
 import GlobalStoreContext from "../../store";
+import EditPropertiesTPS from "../../transactions/EditPropertiesTPS"
 
 function MapPropertySidebar() { //should not use props
 
     const { store } = useContext(GlobalStoreContext);
-    let mapData = store.currentMapData
 
-    const [propertiesMap, setPropertiesMap] = useState(new Map());
-    const [propertiesMapList,setPropertiesMapList] = useState([]);
-
-    // function setPropertiesValue
+    const [propertyObj, setPropertyObj] = useState({})
 
     useEffect(() =>{
         console.log(store.currentFeatureIndex)
         console.log("changed");
-        console.log(Object.keys(mapData).length)
-
-        if(Object.keys(mapData).length===0)
-        {
-            // console.log("nothing in here")
-            // setPropertiesMap(new Map([[1 , 2], [2 ,3 ] ,[4, 5]]));
+        if(Object.keys(store.currentMapData).length===0)
             return
+        setPropertyObj(store.currentMapData.features[store.currentFeatureIndex].properties)
+
+    },[store.currentFeatureIndex]);
+
+
+    const handleAddProperty = () => {
+        console.log("asd")
+        let mappedData = {
+            store: store,
+            type: "add",
+            mapDataFeatureIndex: store.currentFeatureIndex,
         }
+        let transaction = new EditPropertiesTPS(mappedData);
+        store.jstps.addTransaction(transaction)
 
-        setPropertiesMap(new Map(Object.entries(mapData.features[store.currentFeatureIndex].properties)))
-        let tempArr = []
-
-
-        propertiesMap.forEach((value, key) => tempArr.push(key))
-        setPropertiesMapList(tempArr)
-        // propertiesMapList.length = 20
-
-    },[store.currentFeatureIndex,mapData]);
-
-
+    }
     let propertiesSideBar = <div></div>
     if (store.currentFeatureIndex > 0) {
         propertiesSideBar = 
@@ -54,18 +49,24 @@ function MapPropertySidebar() { //should not use props
                         component="span">
                         Properties
                     </Typography>
-                    <IconButton >
-                        < AddIcon style={{ fill: "#000000", fontSize: "2rem" }} />
-                    </IconButton>
-                    {propertiesMapList.map((propertyKey, index) => (
-                        <PropertyCard
-                            // key={'map-property-' + (index)}
-                            mapDataFeatureIndex={store.currentFeatureIndex}
-                            index={index}
-                            propertyValue={propertiesMap.get(propertyKey)}
-                            propertyKey={propertyKey}
+                    <IconButton
+                        onClick = {handleAddProperty}
+                    >
+                        < AddIcon style={{ fill: "#000000", fontSize: "2rem" }}
+
                         />
-                    ))}
+                    </IconButton>
+                    {
+                        Object.entries(propertyObj).map(([key, value]) =>
+                            (<PropertyCard
+                                mapDataFeatureIndex={store.currentFeatureIndex}
+                                propertyValue={value}
+                                propertyKey={key}
+                                p = {propertyObj}
+                                sp = {setPropertyObj}
+                            />)
+                    )}
+
                 </Box>
 
             </Box>

@@ -17,10 +17,10 @@ function PropertyCard(props) {
 
     const [getPropertyValue,setPropertyValue] = useState(propertyValue);
 
-    // const [storedPropertyValue,setStoredPropertyValue] = useState(getPropertyValue);
 
     useEffect (()=> {
-        setPropertyValue(props.propertyValue)
+        console.log("use effect is called")
+        setPropertyValue(propertyValue)
     },[propertyValue,mapDataFeatureIndex])
 
     function handleChange(event){
@@ -40,14 +40,22 @@ function PropertyCard(props) {
 
     function handleClick(){
         console.log(propertyKey)
-        console.log()
-
         setEditMode(!editMode);
-
-        
     }
+
     function handleDelete(){
-        store.jstps.undoTransaction();
+
+        let mappedData = {
+            store: store,
+            type: "delete",
+            oldPropertyValue: getPropertyValue,
+            propertyKey: propertyKey,
+            mapDataFeatureIndex: mapDataFeatureIndex,
+        }
+        let transaction = new EditPropertiesTPS(mappedData);
+        // props.sp(this.store.currentMapData.features[mapDataFeatureIndex].properties)
+        store.jstps.addTransaction(transaction)
+
     }
     
     function handleKeyPress(event) {

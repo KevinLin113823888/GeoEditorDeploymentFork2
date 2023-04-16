@@ -22,6 +22,12 @@ export default class EditPropertiesTPS extends jsTPS_Transaction {
         if(this.type==="edit"){
                 this.editingMap.properties[this.propertyKey] = this.newPropertyValue
         }
+        else if(this.type==="delete"){
+            delete this.editingMap.properties[this.propertyKey]
+        }
+        else if(this.type==="add"){
+            this.editingMap.properties["untitled property"]= "untitled"
+        }
     }
 
     undoTransaction() {
@@ -29,5 +35,12 @@ export default class EditPropertiesTPS extends jsTPS_Transaction {
         if(this.type==="edit"){
             this.editingMap.properties[this.propertyKey] = this.oldPropertyValue
         }
+        else if(this.type==="delete"){
+            this.editingMap.properties[this.propertyKey]= this.oldPropertyValue
+        }
+        else if(this.type==="add"){
+            delete this.editingMap.properties["untitled property"]
+        }
+
     }
 }
