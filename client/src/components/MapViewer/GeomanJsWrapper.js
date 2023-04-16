@@ -86,7 +86,7 @@ function GeomanJsWrapper(props) {
         console.log("ADDING")
         setAdded(true);
         const mergeButtonAction = [
-            'merge',
+            'cancel',
             {
                 text: 'merge selected region',
                 onClick: () => {
@@ -102,7 +102,18 @@ function GeomanJsWrapper(props) {
             props.toggleSelectMode()
         }
 
+        const extendedMenuActionCancel = [
+            'cancel',
+        ]
 
+
+        const undoButtonClick = () =>{
+            store.jstps.undoTransaction()
+        }
+
+        const redoButtonClick = () =>{
+            store.jstps.doTransaction()
+        }
         //each of the right geoman buttons, [their names, extra menu after click, function on initial click]
         const customButtonCollection = [
             ["merge", mergeButtonAction,                mergeButtonClick ],
@@ -114,10 +125,10 @@ function GeomanJsWrapper(props) {
             ["addText", mergeButtonAction,              mergeButtonClick ],
             ["editVertex", mergeButtonAction,           mergeButtonClick ],
             ["moveRegion", mergeButtonAction,           mergeButtonClick ],
-            ["splitRegion", mergeButtonAction,          mergeButtonClick ],
-            ["deleteRegion", mergeButtonAction,         mergeButtonClick ],
-            ["undo", mergeButtonAction,                 mergeButtonClick ],
-            ["redo", mergeButtonAction,                 mergeButtonClick ],
+            ["splitRegion", extendedMenuActionCancel,          mergeButtonClick ],
+            ["deleteRegion", extendedMenuActionCancel,         mergeButtonClick ],
+            ["undo", null,                 undoButtonClick ],
+            ["redo", null,                 redoButtonClick ],
         ]
        
         for(let index in customButtonCollection){

@@ -5,24 +5,29 @@ import jsTPS_Transaction from "../common/jsTPS"
  */
 export default class EditPropertiesTPS extends jsTPS_Transaction {
 
-    constructor(initStore, type, newPropertyValue,mapDataFeatureIndex) {
+    constructor(mappedData) {
         super();
-        this.store = initStore;
-        this.type = type
-        // this.index = initIndex;
-        // this.song = initSong;
+        this.mappedData = mappedData
+        this.store = this.mappedData.store
+        this.type = this.mappedData.type
+        this.oldPropertyValue = this.mappedData.oldPropertyValue
+        this.newPropertyValue = this.mappedData.newPropertyValue
+        this.propertyKey = this.mappedData.propertyKey
+        this.mapDataFeatureIndex = this.mappedData.mapDataFeatureIndex
+        this.editingMap =  this.mappedData.store.currentMapData.features[this.mapDataFeatureIndex]
     }
 
     doTransaction() {
         console.log('redo is called')
         if(this.type==="edit"){
-            // this.store.currentMapData
+                this.editingMap.properties[this.propertyKey] = this.newPropertyValue
         }
-        // this.store.createSong(this.index, this.song);
     }
 
     undoTransaction() {
         console.log("undo called")
-        // this.store.removeSong(this.index);
+        if(this.type==="edit"){
+            this.editingMap.properties[this.propertyKey] = this.oldPropertyValue
+        }
     }
 }

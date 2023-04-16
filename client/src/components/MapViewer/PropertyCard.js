@@ -15,20 +15,32 @@ function PropertyCard(props) {
 
     const {mapDataFeatureIndex,propertyKey,propertyValue} = props;
 
-    const [getPropertyValue,setPropertyValue] = useState(props.propertyValue);
+    const [getPropertyValue,setPropertyValue] = useState(propertyValue);
+
+    // const [storedPropertyValue,setStoredPropertyValue] = useState(getPropertyValue);
 
     useEffect (()=> {
         setPropertyValue(props.propertyValue)
-    },[props.propertyValue])
+    },[propertyValue,mapDataFeatureIndex])
 
     function handleChange(event){
+        let mappedData = {
+            store: store,
+            type: "edit",
+            oldPropertyValue: getPropertyValue,
+            newPropertyValue: event.target.value,
+            propertyKey: propertyKey,
+            mapDataFeatureIndex: mapDataFeatureIndex,
+        }
+
+        let transaction = new EditPropertiesTPS(mappedData);
+        store.jstps.addTransaction(transaction)
         setPropertyValue(event.target.value)
     }
 
     function handleClick(){
-
-        let transaction = new EditPropertiesTPS(store,"edit",propertyValue,mapDataFeatureIndex);
-        store.jstps.addTransaction(transaction)
+        console.log(propertyKey)
+        console.log()
 
         setEditMode(!editMode);
 
@@ -48,7 +60,7 @@ function PropertyCard(props) {
     return (
         <Box style={{fontSize:"1.3rem"}}>
 
-            <Typography className="textfield" display="inline">{propertyValue}  </Typography>
+            <Typography className="textfield" display="inline">{propertyKey}  </Typography>
 
             <TextField
                 name="email"
