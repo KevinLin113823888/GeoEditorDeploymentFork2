@@ -102,26 +102,26 @@ function GeomanJsWrapper(props) {
             props.toggleSelectMode()
         }
 
-        const customButtonNameList = [
-            "merge", "addRegion", "addLegend", "changeBackgroundColor", "changeRegionColor",
-            "changeBorderColor", "addText",
-            "editVertex", "moveRegion", "splitRegion", "deleteRegion", "undo", "redo"
-        ]
-        const actionsList = [
-            mergeButtonAction
 
-        ]
-        const onClickFunction = [
-            mergeButtonClick
+        //each of the right geoman buttons, [their names, extra menu after click, function on initial click]
+        const customButtonCollection = [
+            ["merge", mergeButtonAction,                mergeButtonClick ],
+            ["addRegion", mergeButtonAction,            mergeButtonClick ],
+            ["addLegend", mergeButtonAction,            mergeButtonClick ],
+            ["changeBackgroundColor", mergeButtonAction,mergeButtonClick ],
+            ["changeRegionColor", mergeButtonAction,    mergeButtonClick ],
+            ["changeBorderColor", mergeButtonAction,    mergeButtonClick ],
+            ["addText", mergeButtonAction,              mergeButtonClick ],
+            ["editVertex", mergeButtonAction,           mergeButtonClick ],
+            ["moveRegion", mergeButtonAction,           mergeButtonClick ],
+            ["splitRegion", mergeButtonAction,          mergeButtonClick ],
+            ["deleteRegion", mergeButtonAction,         mergeButtonClick ],
+            ["undo", mergeButtonAction,                 mergeButtonClick ],
+            ["redo", mergeButtonAction,                 mergeButtonClick ],
         ]
        
-        for(let index in customButtonNameList){
-            let name = customButtonNameList[index]
-            let action = actionsList[index]
-            let onClickHandler = onClickFunction[index]
-            // onClickHandler = () => {
-                //do nothing
-            // }
+        for(let index in customButtonCollection){
+            const [name,action,onClickHandler] = customButtonCollection[index]
 
             map.pm.Toolbar.createCustomControl({
                 className:name,

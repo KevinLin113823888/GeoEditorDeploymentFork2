@@ -41,7 +41,8 @@ function MapViewerScreen(){
 
     useEffect(() => {
         console.log("inital?")
-            // setGeoJson(na);
+        if(GeoJson!== {})
+            setGeoJson(na);
 
         console.log("after")
         console.log(GeoJson)
