@@ -218,7 +218,7 @@ function GlobalStoreContextProvider(props) {
             }
             case GlobalStoreActionType.SET_ZOOM: {
                 return setStore({
-                    currentModal : CurrentModal.MAP_ADD_REGION_NAME,
+                    currentModal : CurrentModal.NONE,
                     currentMap:  store.currentMap,
                     currentMapData : store.currentMapData, //the current map data we are editing
                     currentScreen: store.currentScreen ,

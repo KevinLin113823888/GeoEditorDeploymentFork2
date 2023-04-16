@@ -40,6 +40,13 @@ function GeomanJsWrapper(props) {
         const L = context.layerContainer || context.map;
         const map = L.pm.map
         const leafletContainer = L
+        map.on('zoomend', function() {
+            let centerArr =[]
+            let center = map.getCenter()
+            centerArr[0]=center.lat
+            centerArr[1]=center.lng
+            store.setZoomLevel(map.getZoom(),centerArr)
+        });
         map.on('pm:drawstart', ({ workingLayer }) => {
             
             
@@ -68,11 +75,7 @@ function GeomanJsWrapper(props) {
             // setUpdate(update=>update+1)
             props.updateViewer()
             props.updateEditor()
-            let centerArr =[]
-            let center = map.getCenter()
-            centerArr[0]=center.lat
-            centerArr[1]=center.lng
-            store.setZoomLevel(map.getZoom(),centerArr)
+            store.changeModal("MAP_ADD_REGION_NAME")
             });
     if (leafletContainer ){
         console.log("ADDING")
