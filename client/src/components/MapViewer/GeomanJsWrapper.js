@@ -70,12 +70,17 @@ function GeomanJsWrapper(props) {
             props.file.features.push(sameFirstandLastCoords)
             //store.changeModal(CurrentModal.MAP_ADD_REGION_NAME)
             //console.log(props.file.features)
-           
+            let centerArr =[]
+            let center = map.getCenter()
+            centerArr[0]=center.lat
+            centerArr[1]=center.lng
+            
             
             // setUpdate(update=>update+1)
             props.updateViewer()
             props.updateEditor()
-            store.changeModal("MAP_ADD_REGION_NAME")
+            store.setAddRegion(map.getZoom(),centerArr,"MAP_ADD_REGION_NAME")
+            //store.changeModal("MAP_ADD_REGION_NAME")
             });
     if (leafletContainer ){
         console.log("ADDING")
