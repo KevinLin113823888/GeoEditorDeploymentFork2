@@ -38,6 +38,11 @@ function MapViewerScreen(){
     let dbffile = null;
 
     // useEffect(() => {
+    //     setGeoJson(na)
+    // },[])
+
+
+    // useEffect(() => {
     //     fetch(process.env.REACT_APP_API_URL + 'map/getMapById', {
     //         method: "post",
     //         credentials: 'include',
@@ -488,8 +493,15 @@ function MapViewerScreen(){
         store.changeModal("NONE");  
     }
 
+    const handleKeyPress = (e) => {
+        console.log(e)
+        if(e.key === 'z' && e.ctrlKey)
+            store.jstps.undoTransaction()
+        else if (e.key === 'y' && e.ctrlKey)
+            store.jstps.doTransaction()
+    }
     return (
-        <div className="App">
+        <div className="App" onKeyPress={handleKeyPress}>
 
             <ImportModal
                 handleGeoJson={handleGeoJson}
@@ -548,6 +560,10 @@ function MapViewerScreen(){
                         {Buttons(handlePublish, "Publish")}
                         {Buttons(handleMapClassification, "Classification")}
                         {Buttons(handleSave, "Save")}
+                        {Buttons(() => {
+                            setGeoJson(na)
+                        }, "Demo")}
+
                     </Grid>
                 </Box>
                 <Grid container spacing={2} item xs={9.5}>
