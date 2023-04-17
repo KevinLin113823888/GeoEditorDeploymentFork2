@@ -35,13 +35,14 @@ function Welcome() {
                 </Box>
                 <Box
                     style={{ fontSize: "2rem", fontFamily: "Satisfy", color: "#000000", fontWeight: "bold" }}
-                    >
-                    Create, share, and explore community maps with an easy to use map editor
+                >
+                    
+                    <div data-cy="message">Create, share, and explore community maps with an easy to use map editor</div>
                 </Box>
-                <Button component={Link}to="/login" variant="contained" color="primary" sx={{ marginTop: '5%' }}>
+                <Button data-cy="login-link" component={Link}to="/login" variant="contained" color="primary" sx={{ marginTop: '5%' }}>
                     Login
                 </Button>
-                <Button component={Link} to="/register" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
+                <Button data-cy="register-link" component={Link} to="/register" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
                     Register
                 </Button>
                 <Button component={Link} onClick={handleGuest} to="/community" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
