@@ -71,6 +71,8 @@ function PropertyCard(props) {
     }
 
     const handlePropertyValueBlur = () => {
+        if(getPropertyValue ===propertyKey )
+            return
         let mappedData = {
             store: store,
             type: "edit",
@@ -85,6 +87,8 @@ function PropertyCard(props) {
     }
 
     const handlePropertyKeyBlur = () => {
+        if(propertyKey === getPropertyKey)
+            return //dont do anything if same
         console.log("i guess this is key blur somehow")
         let mappedData = {
             store: store,
