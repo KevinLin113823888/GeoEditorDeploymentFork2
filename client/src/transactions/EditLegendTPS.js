@@ -56,17 +56,22 @@ export default class EditLegendTPS extends jsTPS_Transaction {
         }
         else if (this.type === "edit"){
             console.log("called to edit right here")
-            mapObj.graphicalData.legend[this.oldIndex] = this.newText
+            mapObj.graphicalData.legend[this.oldIndex].legendText = this.newText
         }
         else if (this.type === "delete"){
             console.log("called to delete right here")
 
             let legendObj  = mapObj.graphicalData.legend[this.oldIndex]
 
+            this.oldColor = legendObj.color
+            this.oldText = legendObj.oldText
+
             mapObj.graphicalData.legend.splice(this.oldIndex,1)
         }
         else if (this.type === "color"){
             console.log("called to color right here")
+            mapObj.graphicalData.legend[this.oldIndex].color = this.newColor
+
         }
         this.refreshState(mapObj)
     }
@@ -77,13 +82,16 @@ export default class EditLegendTPS extends jsTPS_Transaction {
         mapObj.graphicalData.legend.splice(this.oldIndex,1)
         }
     else if (this.type === "edit"){
-        mapObj.graphicalData.legend[this.oldIndex] = this.oldText
+        mapObj.graphicalData.legend[this.oldIndex].legendText  = this.oldText
     }
     else if (this.type === "delete"){
         mapObj.graphicalData.legend.splice(this.oldIndex,0,{
             color: this.oldColor,
             legendText: this.oldText,
         })
+    }
+    else if (this.type === "color"){
+        mapObj.graphicalData.legend[this.oldIndex].color = this.oldColor
     }
     this.refreshState(mapObj)
     }

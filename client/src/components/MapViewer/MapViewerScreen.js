@@ -37,9 +37,9 @@ function MapViewerScreen(){
     let shpfile = null;
     let dbffile = null;
 
-    // useEffect(() => {
-    //     setGeoJson(na)
-    // },[])
+    useEffect(() => {
+        setGeoJson(na)
+    },[])
 
 
     // useEffect(() => {

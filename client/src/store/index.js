@@ -57,7 +57,7 @@ function GlobalStoreContextProvider(props) {
         zoomLevel:2,
         centerCoords:[20,100],
         jstps:  new jsTPS(),
-        // colorwheelHandler: "nothing",
+        colorwheelHandler: null, //this is what function to call after submitting color modal
     });
 
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE

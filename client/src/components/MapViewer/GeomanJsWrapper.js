@@ -109,11 +109,13 @@ function GeomanJsWrapper(props) {
 
 
         const undoButtonClick = () =>{
-            store.jstps.undoTransaction()
+            if(store.jstps.hasTransactionToUndo())
+                store.jstps.undoTransaction()
         }
 
         const redoButtonClick = () =>{
-            store.jstps.doTransaction()
+            if(store.jstps.hasTransactionToRedo())
+                store.jstps.doTransaction()
         }
 
         const handleAddLegend = () => {
