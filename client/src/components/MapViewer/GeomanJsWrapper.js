@@ -4,13 +4,13 @@ import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import './geomanButton.css';
 import { CurrentModal, GlobalStoreContext } from '../../store/index'
-
+import EditLegendTPS from '../../transactions/EditLegendTPS'
 function GeomanJsWrapper(props) {
     //with this we can actually customize all of the buttons
     //we can also add a custom merge button as well.
     const context = useLeafletContext();
     const isInitialRender = useRef(true);// in react, when refs are changed component dont re-render
-    const { store } = useContext(GlobalStoreContext);
+    const { store,setStore } = useContext(GlobalStoreContext);
     const [update, setUpdate] = useState(1);
     const [added, setAdded] = useState(false);
     
@@ -115,11 +115,25 @@ function GeomanJsWrapper(props) {
         const redoButtonClick = () =>{
             store.jstps.doTransaction()
         }
+
+        const handleAddLegend = () => {
+            let mappedData = {
+                store: store,
+                type: "add",
+                state: null,
+                setStore: setStore,
+            }
+            store.jstps.addTransaction(new EditLegendTPS(mappedData))
+        }
+
+
         //each of the right geoman buttons, [their names, extra menu after click, function on initial click]
+       //null means no popup actions
         const customButtonCollection = [
             ["merge", mergeButtonAction,                mergeButtonClick ],
-            ["addRegion", mergeButtonAction,            mergeButtonClick ],
-            ["addLegend", mergeButtonAction,            mergeButtonClick ],
+            //TODO: jstps for this one
+            // ["addRegion", mergeButtonAction,            mergeButtonClick ], //i think this one is already done i guess
+            ["addLegend", null, handleAddLegend ],
             ["changeBackgroundColor", mergeButtonAction,mergeButtonClick ],
             ["changeRegionColor", mergeButtonAction,    mergeButtonClick ],
             ["changeBorderColor", mergeButtonAction,    mergeButtonClick ],

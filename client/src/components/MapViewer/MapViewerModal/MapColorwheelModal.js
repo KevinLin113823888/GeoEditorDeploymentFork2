@@ -38,51 +38,12 @@ function MapColorwheelModal() {
     }
     function handleColorChange(){
         store.changeModal("NONE");
+        console.log(color)
+        console.log(store)
+        store.colorwheelHandler(color)
     }
 
     const [color, setColor] = useState("#aabbcc");
-{/* <Box sx={style}
-                 onClick={e => e.stopPropagation()}
-                 
-            >
-                <Grid item xs >
-                    <IconButton sx={{
-                        float: 'right'
-                    }}
-                                onClick={handleCloseModal}>
-                        < CloseIcon/>
-                    </IconButton>
-                </Grid>
-                <header className="dialog-header">
-                    <Box style={{backgroundColor:"#f1f1f1", color:"green",paddingTop:"1vh",paddingBottom:"1vh",paddingLeft:"20%"}}>
-                        <Typography style={{fontSize:"1.4rem"}}>
-                            <strong>Choose a new Color</strong>
-                        </Typography>
-                    </Box>
-                </header>
-
-                <Grid container spacing={2}>
-
-
-                    <Grid item xs >
-                        <HexColorPicker color={color} onChange={setColor} />;
-
-                        <Button
-                            variant="contained"
-                            onClick={Function}
-                        >
-                            Confirm
-                        </Button>
-                    </Grid>
-
-
-
-                </Grid>
-
-
-
-            </Box> */}
-
     return (
         <Modal open={store.currentModal === CurrentModal.MAP_PICK_COLOR_WHEEL}
                onClick={handleCloseModal}
@@ -110,9 +71,7 @@ function MapColorwheelModal() {
                     
                     <input type="button"
                         class="modal-confirm-button"
-                        onClick={() => {
-                            handleColorChange();
-                        }}
+                        onClick={handleColorChange}
                         value='Submit' />
 
                 </Box>

@@ -56,7 +56,8 @@ function GlobalStoreContextProvider(props) {
         currentFeatureIndex:0,
         zoomLevel:2,
         centerCoords:[20,100],
-        jstps:  new jsTPS()
+        jstps:  new jsTPS(),
+        // colorwheelHandler: "nothing",
     });
 
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
@@ -288,7 +289,7 @@ function GlobalStoreContextProvider(props) {
 
     return (
         <GlobalStoreContext.Provider value={{
-            store
+            store,setStore
         }}>
             {props.children}
         </GlobalStoreContext.Provider>
