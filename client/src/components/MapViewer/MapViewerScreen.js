@@ -462,6 +462,22 @@ function MapViewerScreen(){
             .catch(err => console.log(err));
 
     }
+    function handleExportGeoJson(event) {
+        store.changeModal("NONE");
+        var json = JSON.stringify(GeoJson);
+
+        var a = document.createElement("a")
+        a.href = URL.createObjectURL(
+            new Blob([json], {type:"application/json"})
+        )
+        a.download = "geoJson.geo.json"
+        a.click()
+    }
+
+    async function handleExportShpDbf(event) {
+        store.changeModal("NONE");
+        
+    }
 
 
     return (
@@ -472,7 +488,10 @@ function MapViewerScreen(){
                 handleShpDbfFile={handleShpDbfFile}
                 handleSubmit={handleSubmit}
             />
-            <ExportModal/>
+            <ExportModal
+                handleExportGeoJson={handleExportGeoJson}
+                handleExportShpDbf={handleExportShpDbf}
+            />
             <MapClassificationModal/>
             <MapColorwheelModal/>
             <MapMergeChangeRegionNameModal/>
