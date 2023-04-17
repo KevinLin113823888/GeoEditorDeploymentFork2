@@ -206,6 +206,10 @@ function GlobalStoreContextProvider(props) {
 
     }
 
+    // store.getCurrentMapId = function (){
+
+    // }
+
     store.changeModal= function(modal){
         storeReducer({
                 type: GlobalStoreActionType.CHANGE_MODAL,
@@ -270,17 +274,17 @@ function GlobalStoreContextProvider(props) {
             }
         );
     }
-        store.setAddRegion=function(zoom,center,modal){
-            storeReducer({
-                    type: GlobalStoreActionType.SET_ADD_REGION,
-                    payload: {
-                        zoom:zoom,
-                        center:center,
-                        modal:modal
-                    }
+    store.setAddRegion=function(zoom,center,modal){
+        storeReducer({
+                type: GlobalStoreActionType.SET_ADD_REGION,
+                payload: {
+                    zoom:zoom,
+                    center:center,
+                    modal:modal
                 }
-            );
-        }
+            }
+        );
+    }
 
     return (
         <GlobalStoreContext.Provider value={{

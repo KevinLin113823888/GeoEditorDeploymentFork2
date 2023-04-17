@@ -37,18 +37,25 @@ function MapViewerScreen(){
     let shpfile = null;
     let dbffile = null;
 
-
-
     // useEffect(() => {
-    //     console.log("inital?")
-    //     if(GeoJson!== {})
-    //         setGeoJson(na);
-
-    //     console.log("after")
-    //     console.log(GeoJson)
-    //         setFileExist(true);
-
+    //     fetch(process.env.REACT_APP_API_URL + 'map/getMapById', {
+    //         method: "post",
+    //         credentials: 'include',
+    //         headers: {
+    //           "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //           id: id
+    //         }),
+    //     })
+    //     .then((res) => res.json())
+    //     .then((data) => {
+    //         console.log("new name", data);
+    //         setMapChange(data.title);
+    //     })
+    //     .catch(err => console.log(err));
     // },[])
+
     const sendImportReq = (geoJson) => {
         console.log("GEOJSON FILE UPLOADED", geoJson);
         fetch(process.env.REACT_APP_API_URL + 'map/importMapFileById', {
@@ -177,9 +184,6 @@ function MapViewerScreen(){
         // store.changeModal("NONE");
         // setCompressCount(6);
     }
-
-
-
 
     function handleCompress(){
         // if(compressCount ==0){
@@ -419,7 +423,9 @@ function MapViewerScreen(){
 
     const handleImport = () => {store.changeModal(CurrentModal.MAP_IMPORT)}
     const handleExport = () => {store.changeModal(CurrentModal.MAP_EXPORT)}
+
     const handleSave = () =>   {}
+
     const handlePublish = () => {
         fetch(process.env.REACT_APP_API_URL + 'map/publishMapById', {
             method: "POST",
@@ -431,18 +437,21 @@ function MapViewerScreen(){
                 id: id
             }),
         })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data)
-            })
-            .catch(err => console.log(err));
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data)
+        })
+        .catch(err => console.log(err));
 
     }
+
     const handleMapClassification = () => {store.changeModal(CurrentModal.MAP_CLASSIFICATION)}
+
     function handleUpdate(){
 
             setKeyid(keyid => keyid+1)
     }
+
     function handleChangeMapName(e){
         fetch(process.env.REACT_APP_API_URL + 'map/changeMapNameById', {
             method: "POST",
@@ -455,13 +464,14 @@ function MapViewerScreen(){
                 newName: e.target.value
             }),
         })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data)
-            })
-            .catch(err => console.log(err));
-
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("data of new name", data);
+            setMapChange(data.name);
+        })
+        .catch(err => console.log(err));
     }
+
     function handleExportGeoJson(event) {
         store.changeModal("NONE");
         var json = JSON.stringify(GeoJson);
@@ -475,10 +485,8 @@ function MapViewerScreen(){
     }
 
     async function handleExportShpDbf(event) {
-        store.changeModal("NONE");
-        
+        store.changeModal("NONE");  
     }
-
 
     return (
         <div className="App">
@@ -499,9 +507,7 @@ function MapViewerScreen(){
 
 
             <Grid container spacing={2}>
-                <Grid item xs={6}
-                >
-
+                <Grid item xs={6}>
                     <Box
                         sx={{
                             paddingLeft: "2%",
@@ -531,9 +537,7 @@ function MapViewerScreen(){
                             onBlur={(event) => handleChangeMapName(event)}
                             fullWidth  />
                     </Box>
-
                 </Grid>
-
                 <Box item xs={6} sx={{
                     paddingTop: "2%"
                 }}>
@@ -546,9 +550,7 @@ function MapViewerScreen(){
                         {Buttons(handleSave, "Save")}
                     </Grid>
                 </Box>
-
                 <Grid container spacing={2} item xs={9.5}>
-
                     <Grid item xs={12}>
                         <Box
                             sx={{
@@ -557,28 +559,18 @@ function MapViewerScreen(){
                             <MapEditor  changeName={changeRegionName} key={keyid} handleCompress={handleCompress} updateViewer={handleUpdate} />
                         </Box>
                     </Grid>
-
                     <Grid item xs={12}>
                         <MapLegendFooter />
                     </Grid>
-
-
                 </Grid>
                 <Grid item xs={2.5}>
                     <MapPropertySidebar />
                 </Grid>
-
                 <Grid item xs={8}>
                 </Grid>
             </Grid>
-
-
             <Grid container spacing={2}>
-
             </Grid>
-
-
-
         </div>
     );
 }

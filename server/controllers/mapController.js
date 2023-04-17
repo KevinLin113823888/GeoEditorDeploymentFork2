@@ -42,8 +42,9 @@ class mapController {
     static async getMapById(req, res) {
         var { id } = req.body;
 
-        var currentMap = Map.findOne({ _id: new mongoose.Types.ObjectId(id) });
-        var currentMapData = MapData.findOne({ _id: currentMap.mapData });
+        var currentMap = await Map.findOne({ _id: new mongoose.Types.ObjectId(id) });
+        console.log("Currentmap", currentMap.title);
+        // var currentMapData = MapData.findOne({ _id: currentMap.mapData });
 
         return res.status(200).json({status: 'OK', title: currentMap.title});
     }
@@ -91,12 +92,12 @@ class mapController {
         var { id, newName } = req.body;
         console.log(id, newName)
 
-        var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { title: newName });
-        await currentMapCard.save();
-        var updatedMap = await Map.findOneAndUpdate({ _id: currentMapCard.map }, { title: newName });
+        var updatedMap = await Map.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { title: newName });
         await updatedMap.save();
+        var currentMapCard = await MapCard.findOneAndUpdate({ map: new mongoose.Types.ObjectId(updatedMap._id) }, { title: newName });
+        await currentMapCard.save();
 
-        return res.status(200).json({status: 'OK'});
+        return res.status(200).json({status: 'OK', name: newName});
     }
 
     static async publishMapById(req, res) {
@@ -119,6 +120,8 @@ class mapController {
         let listOfClass = classifications.split(", ");
         var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { classification: listOfClass });
         await currentMapCard.save();
+
+        console.log("classifications", currentMapCard.classification);
 
         return res.status(200).json({status: 'OK'});
     }

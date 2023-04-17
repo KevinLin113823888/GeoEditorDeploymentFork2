@@ -21,10 +21,7 @@ function Login() {
     const username = formData.get('userName');
     const password = formData.get('password');
 
-      const server =       process.env.REACT_APP_API_URL
-
-
-      if (username !== "" & password !== "") {
+    if (username !== "" & password !== "") {
       fetch(process.env.REACT_APP_API_URL + 'user/login', {
         method: "POST",
         credentials: 'include',
@@ -36,23 +33,19 @@ function Login() {
           password: password
         }),
       })
-        .then((res) => {
-          res.json();
-          if (res.status === 200) {
-            console.log("LOGGED IN, going to your maps");
-            navigate('/map');
-            store.changeScreen("yourmap")
-          }
-        })
-        .catch(err => console.log(err));
+      .then((res) => {
+        res.json();
+        if (res.status === 200) {
+          console.log("LOGGED IN, going to your maps");
+          navigate('/map');
+          store.changeScreen("yourmap")
+        }
+      })
+      .catch(err => console.log(err));
     }
   }
 
-
-
-
   return (
-
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
@@ -103,29 +96,23 @@ function Login() {
             Login
           </Button>
           <Grid container>
-                            <Grid item xs>
-                                <Link  data-cy="forgotpassword-link"  variant="body2"
-                                  onClick={() => {
-                                        navigate('/forgetPassword');}}
-                                >
-                                    Forgot Password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link data-cy="forgotusername-link" onClick={() => {
-                                        navigate('/forgetUsername');}}  variant="body2">
-                                    {"Forgot Username?"}
-                                </Link>
-                            </Grid>
-                        </Grid>
+            <Grid item xs>
+                <Link  data-cy="forgotpassword-link"  variant="body2"
+                  onClick={() => {navigate('/forgetPassword');}}
+                >
+                  {"Forgot Password?"}
+                </Link>
+            </Grid>
+            <Grid item>
+                <Link data-cy="forgotusername-link" onClick={() => {
+                        navigate('/forgetUsername');}}  variant="body2">
+                    {"Forgot Username?"}
+                </Link>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
-
-
     </Container>
-
-
-
   );
 }
 
