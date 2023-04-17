@@ -17,6 +17,7 @@ export default class EditPropertiesTPS extends jsTPS_Transaction {
         this.mapDataFeatureIndex = this.mappedData.mapDataFeatureIndex
         this.editingMap =  this.mappedData.store.currentMapData.features[this.mapDataFeatureIndex]
 
+        this.oldPropertyKeyIndex = -1;
         console.log(mappedData)
         this.state = mappedData.setPropertyObj
         console.log("as", this.state)
@@ -29,11 +30,26 @@ export default class EditPropertiesTPS extends jsTPS_Transaction {
                 this.editingMap.properties[this.propertyKey] = this.newPropertyValue
         }
         else if(this.type==="delete"){
-            // also the delete gets sent to the back
-            delete this.editingMap.properties[this.propertyKey]
+
+            // get the index of where the property is from.
+            let propsObj = this.editingMap.properties
+            let keyValues = Object.entries(propsObj); //convert object to keyValues ["key1", "value1"] ["key2", "value2"]
+
+            let objKeys = Object.keys(propsObj)
+            this.oldPropertyKeyIndex=objKeys.indexOf(this.propertyKey)
+
+            console.log(keyValues)
+            console.log(this.oldPropertyKeyIndex)
+            keyValues.splice(this.oldPropertyKeyIndex,1); // insert key value at the index you want like 1.
+            this.editingMap.properties =   Object.fromEntries(keyValues)
         }
         else if(this.type==="add"){
-            this.editingMap.properties["untitled property"]= "untitled"
+            let propsObj = this.editingMap.properties
+            let keyValues = Object.entries(propsObj); //convert object to keyValues ["key1", "value1"] ["key2", "value2"]
+            keyValues.splice(0,0, ["newKey","newValue"]); // insert key value at the index you want like 1.
+            this.editingMap.properties =   Object.fromEntries(keyValues)
+            this.oldPropertyKeyIndex = 0;
+
         }
 
         //this is our bandaid fix to the state problem,
@@ -49,10 +65,17 @@ export default class EditPropertiesTPS extends jsTPS_Transaction {
             this.editingMap.properties[this.propertyKey] = this.oldPropertyValue
         }
         else if(this.type==="delete"){
-            this.editingMap.properties[this.propertyKey]= this.oldPropertyValue
+            let propsObj = this.editingMap.properties
+            let keyValues = Object.entries(propsObj); //convert object to keyValues ["key1", "value1"] ["key2", "value2"]
+            keyValues.splice(this.oldPropertyKeyIndex,0, [this.propertyKey,this.oldPropertyValue]); // insert key value at the index you want like 1.
+            this.editingMap.properties =   Object.fromEntries(keyValues)
         }
         else if(this.type==="add"){
-            delete this.editingMap.properties["untitled property"]
+
+            let propsObj = this.editingMap.properties
+            let keyValues = Object.entries(propsObj); //convert object to keyValues ["key1", "value1"] ["key2", "value2"]
+            keyValues.splice(this.oldPropertyKeyIndex,1); // insert key value at the index you want like 1.
+            this.editingMap.properties =   Object.fromEntries(keyValues)
         }
         this.state({...this.store.currentMapData.features[this.store.currentFeatureIndex].properties})
 

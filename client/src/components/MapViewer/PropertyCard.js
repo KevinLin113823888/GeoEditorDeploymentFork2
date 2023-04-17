@@ -21,7 +21,7 @@ function PropertyCard(props) {
     useEffect (()=> {
         console.log("use effect is called")
         setPropertyValue(propertyValue)
-    },[propertyValue,mapDataFeatureIndex])
+    },[propertyValue])
 
     function handleChange(event){
         let mappedData = {
@@ -37,8 +37,6 @@ function PropertyCard(props) {
         let transaction = new EditPropertiesTPS(mappedData);
         store.jstps.addTransaction(transaction)
         setPropertyValue(event.target.value)
-
-
     }
 
     function handleClick(){
