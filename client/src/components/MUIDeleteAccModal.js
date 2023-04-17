@@ -1,4 +1,5 @@
 import { useContext,useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import GlobalStoreContext from '../store';
 import * as React from 'react';
 import Box from '@mui/material/Box';
@@ -20,22 +21,37 @@ const style = {
 
 function MUIDeleteAccModal() {
     const { store } = useContext(GlobalStoreContext);
-    const [search, setSearch] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     function handleDeleteUser(event) {
         store.changeModal("NONE");
-        //Checks the password entered is correct
-        //store.checkPassword(search);
-        //Deletes the user from the database
-        //store.deleteUser();
+        fetch(process.env.REACT_APP_API_URL + 'user/deleteUser', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                password: password
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+           console.log(data)
+           store.setHome()
+           navigate("/");
+        })
+        .catch(err => console.log(err));
+
         
     }
     function handleCloseModal(event) {
         store.changeModal("NONE");
     }
-    function handleUpdateSearch(event) {
+    function handleSetPassword(event) {
 
-        setSearch(event.target.value);
+        setPassword(event.target.value);
     }
    
     return (
@@ -67,7 +83,7 @@ function MUIDeleteAccModal() {
    
    
     <TextField type="text" id="outlined-basic"  variant="outlined" onChange={ 
-                    handleUpdateSearch} height="2.2vw" placeholder="Enter Password" style={{marginTop:"10%",background:"#ffffff",width:"90%"}} 
+                    handleSetPassword} height="2.2vw" placeholder="Enter Password" style={{marginTop:"10%",background:"#ffffff",width:"90%"}} 
                     inputProps={{
                         style: {
                           fontSize:"1rem",

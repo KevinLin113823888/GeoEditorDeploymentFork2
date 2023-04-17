@@ -145,7 +145,7 @@ function ForgotPassword() {
                   paddingTop= '3%'
                 >
                 <Button variant="contained" color="primary" sx={{ marginTop: '2%' }} onClick={putReqChangePassword}>
-                    Sent Password recovery code
+                    Confirm
                 </Button>
                 </Box>
 

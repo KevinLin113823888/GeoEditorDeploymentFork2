@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 // const nodemailer = require("nodemailer");
 const userInfoSchema = require("../models/userInfoModel");
+const Map = require('../models/mapModel')
+const MapCard = require('../models/mapCardModel')
+const MapData = require('../models/mapDataModel')
 
 class userController {
     static async getLoggedIn(req, res) {
@@ -149,6 +152,29 @@ class userController {
             return res.status(200).json({status: 'OK'});
         }catch(e){
             return res.status(400).json({ error: true, message: e.toString()});
+        }
+    }
+
+    static async deleteUser(req, res) {
+        try{
+            var { password } = req.body;
+            let session = req.cookies.values;
+            var user = await userInfoSchema.findOne({username: session.username});
+            // user.ownedMaps.array.forEach(i => {
+            // });
+            var isMatch = await bcrypt.compare(password, user.password);
+            if(!isMatch)
+                throw new Error("Invalid password")
+                
+            await Map.deleteMany({_id:{$in:user.ownedMaps}})
+            await MapCard.deleteMany({_id:{$in:user.ownedMapCards}})
+            await userInfoSchema.deleteOne({_id: user._id})
+
+            return res.status(200).clearCookie("values").json({status: 'OK'});
+
+        }
+        catch(e){
+            return res.status(400).json({error: true, message: e.toString()});
         }
     }
 
