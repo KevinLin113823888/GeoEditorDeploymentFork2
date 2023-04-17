@@ -75,7 +75,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CHANGE_SCREEN: {
                 return setStore({
                     ...store,
-
+                    currentMapData : {},
                     currentModal: CurrentModal.NONE,
                     currentScreen: payload ,
                     currentFeatureIndex: 0,
@@ -84,7 +84,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.NEW_MAP_NAME: {
                 return setStore({
                     ...store,
-
+                    
                     currentModal: CurrentModal.NONE,
                     currentMap: payload,
                     currentFeatureIndex: 0,
@@ -121,7 +121,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.SET_GUEST_MODE: {
                 return setStore({
                     ...store,
-
+                    currentMapData : {},
                     currentModal : CurrentModal.NONE,
                     currentScreen: payload.screen ,
                     guestMode: payload.guest,
@@ -131,7 +131,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.SET_HOME: {
                 return setStore({
                     ...store,
-
+                    currentMapData : {},
                     currentModal: CurrentModal.NONE,
                     currentScreen: "home" ,
                     guestMode: false,
