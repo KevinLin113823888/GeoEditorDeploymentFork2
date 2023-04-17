@@ -129,7 +129,7 @@ export default function AppBanner() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" style={{ background: "#C6DCE5", margin: '0' }} elevation={0}>
                 <Toolbar variant="regular">
-                    <div onClick={goHome}>
+                    <div onClick={goHome} data-cy="home-link" >
                         <Typography
                             style={{ fontSize: "2.5rem", fontFamily: "October Tamil", color: "#5282f2", fontWeight: "bold", display: "inline" }}
 

@@ -101,12 +101,12 @@ function Register() {
     >
 
         <Typography component="h3" variant="h5">
-            Sign up
+            <div data-cy="register">Sign up</div>
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2, fontSize:"1vw" }}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <TextField
+                    <TextField data-cy="username-input"
                         required
                         fullWidth
                         name="userName"
@@ -117,7 +117,7 @@ function Register() {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <TextField
+                    <TextField data-cy="email-input"
                         required
                         fullWidth
                         id="email"
@@ -127,7 +127,7 @@ function Register() {
                     />
                 </Grid>
                 <Grid item xs={12} >
-                    <TextField
+                    <TextField data-cy="name-input"
                         autoComplete="fname"
                         name="firstName"
                         required
@@ -139,7 +139,7 @@ function Register() {
                 </Grid>
                 
                 <Grid item xs={12}>
-                    <TextField
+                    <TextField data-cy="password-input"
                         required
                         fullWidth
                         name="password"
@@ -150,7 +150,7 @@ function Register() {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <TextField
+                    <TextField data-cy="passwordverify-input"
                         required
                         fullWidth
                         name="passwordVerify"
@@ -161,7 +161,7 @@ function Register() {
                     />
                 </Grid>
             </Grid>
-            <Button
+            <Button data-cy="submit-button"
                 type="submit"
                 fullWidth
                 variant="contained"
