@@ -52,6 +52,7 @@ function YourMap() {
         })
             .then((res) => res.json())
             .then((data) => {
+                console.log(data);
                 setUsername(data.username);
                 if (data.ownedMapCards === undefined) {
                     setMapCards([]);
