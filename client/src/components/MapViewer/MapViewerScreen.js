@@ -39,16 +39,16 @@ function MapViewerScreen(){
 
 
 
-    useEffect(() => {
-        console.log("inital?")
-        if(GeoJson!== {})
-            setGeoJson(na);
+    // useEffect(() => {
+    //     console.log("inital?")
+    //     if(GeoJson!== {})
+    //         setGeoJson(na);
 
-        console.log("after")
-        console.log(GeoJson)
-            setFileExist(true);
+    //     console.log("after")
+    //     console.log(GeoJson)
+    //         setFileExist(true);
 
-    },[])
+    // },[])
     const sendImportReq = (geoJson) => {
         console.log("GEOJSON FILE UPLOADED", geoJson);
         fetch(process.env.REACT_APP_API_URL + 'map/importMapFileById', {
@@ -174,7 +174,7 @@ function MapViewerScreen(){
             sendImportReq(JSON.parse(e.target.result));
         }
         setFileExist(true);
-        store.changeModal("NONE");
+        // store.changeModal("NONE");
         // setCompressCount(6);
     }
 

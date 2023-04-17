@@ -65,13 +65,13 @@ function Login() {
         }}
       >
 
-        <Typography component="h3" variant="h5">
+        <Typography data-cy="login" component="h3" variant="h5">
           Login
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2, fontSize: "1vw"}}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <TextField
+              <TextField data-cy="username-input"
                 required
                 fullWidth
                 name="userName"
@@ -82,7 +82,7 @@ function Login() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+              <TextField data-cy="password-input"
                 required
                 fullWidth
                 name="password"
@@ -94,6 +94,7 @@ function Login() {
             </Grid>
           </Grid>
           <Button
+            data-cy="submit-button"
             type="submit"
             fullWidth
             variant="contained"
@@ -103,12 +104,16 @@ function Login() {
           </Button>
           <Grid container>
                             <Grid item xs>
-                                <Link href="/forgotPassword/" variant="body2">
+                                <Link  data-cy="forgotpassword-link"  variant="body2"
+                                  onClick={() => {
+                                        navigate('/forgetPassword');}}
+                                >
                                     Forgot Password?
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="/forgotUsername/" variant="body2">
+                                <Link data-cy="forgotusername-link" onClick={() => {
+                                        navigate('/forgetUsername');}}  variant="body2">
                                     {"Forgot Username?"}
                                 </Link>
                             </Grid>
