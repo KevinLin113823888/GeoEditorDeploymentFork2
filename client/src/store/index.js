@@ -165,18 +165,10 @@ function GlobalStoreContextProvider(props) {
             }
             case GlobalStoreActionType.SET_ADD_REGION: {
                 return setStore({
+                    ...store,
                     currentModal: payload.modal,
-                    currentMap: store.currentMap,
-                    currentMapData: store.currentMapData, //the current map data we are editing
-                    currentScreen: store.currentScreen,
-                    guestMode: store.guestMode,
-                    adminMode: store.adminMode,
-                    userMapCards: store.userMapCards,
-                    currentRegionProp: store.currentRegionProp,
-                    currentFeatureIndex: store.currentFeatureIndex,
                     zoomLevel: payload.zoom,
                     centerCoords: payload.center
-
                 });
             }
             default:
