@@ -27,25 +27,25 @@ const style = {
 
 function MapClassificationModal(props) {
     const { store } = useContext(GlobalStoreContext);
-
+    const [classif, saveClassif] = useState('')
     function handleClassification(e) {
         store.changeModal("NONE");
-        // fetch(process.env.REACT_APP_API_URL + 'map/mapClassificationById', {
-        //     method: "post",
-        //     credentials: 'include',
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify({
-        //         id: id, 
-        //         classifications: e.target.value
-        //     }),
-        // })
-        // .then((res) => res.json())
-        // .then((data) => {
-        //     console.log("new name", data);
-        // })
-        // .catch(err => console.log(err));
+        fetch(process.env.REACT_APP_API_URL + 'map/mapClassificationById', {
+            method: "post",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: props.id, 
+                classifications: classif,
+            })
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("new name", data);
+        })
+        .catch(err => console.log(err));
     }
     function handleCloseModal() {
         store.changeModal("NONE");
@@ -83,7 +83,7 @@ function MapClassificationModal(props) {
 
                     </Box>
                 <Box sx={{ width: "100%", height: "100%", }}>
-                    <TextField type='text' placeholder="Enter your classifications" sx={{ width: '100%', height: '100%' }}
+                    <TextField type='text' placeholder="Enter your classifications" onChange={(e) => {saveClassif(e.target.value)}}sx={{ width: '100%', height: '100%' }}
                         multiline
                         rows={7}
                         maxRows={Infinity}

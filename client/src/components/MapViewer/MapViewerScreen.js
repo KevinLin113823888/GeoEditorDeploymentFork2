@@ -500,7 +500,7 @@ function MapViewerScreen(){
                 handleExportGeoJson={handleExportGeoJson}
                 handleExportShpDbf={handleExportShpDbf}
             />
-            <MapClassificationModal/>
+            <MapClassificationModal id={id}/>
             <MapColorwheelModal/>
             <MapMergeChangeRegionNameModal/>
             <MapAddRegionModal/>
