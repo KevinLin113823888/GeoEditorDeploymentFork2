@@ -102,8 +102,8 @@ class mapController {
     static async publishMapById(req, res) {
         var { id } = req.body;
 
-        var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
-        var currentMap = await Map.findOneAndUpdate({ _id: currentMapCard.map }, { published: true });
+        // var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
+        var currentMap = await Map.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { published: true });
         await currentMap.save();
         var newCommunityPreview = new CommunityPreview({
             mapData: currentMap.mapData
