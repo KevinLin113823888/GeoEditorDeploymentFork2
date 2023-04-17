@@ -20,13 +20,17 @@ export default class EditPropertiesTPS extends jsTPS_Transaction {
         this.oldPropertyKeyIndex = -1;
         console.log(mappedData)
         this.state = mappedData.setPropertyObj
-        console.log("as", this.state)
+
+
+        this.oldKey = mappedData.oldKey
+                console.log("as", this.state)
 
     }
 
     doTransaction() {
         console.log('redo is called')
         if(this.type==="edit"){
+                this.oldPropertyValue = this.editingMap.properties[this.propertyKey]
                 this.editingMap.properties[this.propertyKey] = this.newPropertyValue
         }
         else if(this.type==="delete"){
@@ -49,7 +53,27 @@ export default class EditPropertiesTPS extends jsTPS_Transaction {
             keyValues.splice(0,0, ["newKey","newValue"]); // insert key value at the index you want like 1.
             this.editingMap.properties =   Object.fromEntries(keyValues)
             this.oldPropertyKeyIndex = 0;
+        }
 
+        else if (this.type === "keyEdit"){
+
+            let propObj = this.editingMap.properties
+            const newpropkey = this.propertyKey
+            const oldpropkey = this.oldKey
+
+            let newWordsObject = {};
+
+            Object.keys(propObj).forEach(key => {
+                if (key === oldpropkey) {
+                    let newPair = { [newpropkey]: propObj[oldpropkey] };
+                    newWordsObject = { ...newWordsObject, ...newPair }
+                }
+                else {
+                    newWordsObject = { ...newWordsObject, [key]: propObj[key] }
+                }
+            });
+
+            this.editingMap.properties = newWordsObject
         }
 
         //this is our bandaid fix to the state problem,
@@ -76,6 +100,25 @@ export default class EditPropertiesTPS extends jsTPS_Transaction {
             let keyValues = Object.entries(propsObj); //convert object to keyValues ["key1", "value1"] ["key2", "value2"]
             keyValues.splice(this.oldPropertyKeyIndex,1); // insert key value at the index you want like 1.
             this.editingMap.properties =   Object.fromEntries(keyValues)
+        }
+        else if (this.type === "keyEdit"){
+            let propObj = this.editingMap.properties
+            const  oldpropkey= this.propertyKey
+            const   newpropkey = this.oldKey
+
+            let newWordsObject = {};
+
+            Object.keys(propObj).forEach(key => {
+                if (key === oldpropkey) {
+                    let newPair = { [newpropkey]: propObj[oldpropkey] };
+                    newWordsObject = { ...newWordsObject, ...newPair }
+                }
+                else {
+                    newWordsObject = { ...newWordsObject, [key]: propObj[key] }
+                }
+            });
+
+            this.editingMap.properties = newWordsObject
         }
         this.state({...this.store.currentMapData.features[this.store.currentFeatureIndex].properties})
 
