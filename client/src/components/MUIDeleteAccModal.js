@@ -82,7 +82,7 @@ function MUIDeleteAccModal() {
     </Typography>
    
    
-    <TextField type="text" id="outlined-basic"  variant="outlined" onChange={ 
+    <TextField type="password" id="outlined-basic"  variant="outlined" onChange={ 
                     handleSetPassword} height="2.2vw" placeholder="Enter Password" style={{marginTop:"10%",background:"#ffffff",width:"90%"}} 
                     inputProps={{
                         style: {
