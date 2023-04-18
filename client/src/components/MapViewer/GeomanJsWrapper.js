@@ -68,11 +68,16 @@ function GeomanJsWrapper(props) {
                 input.addEventListener('blur', function (event) {
                     // Replace the input element with the new tooltip content
                     toolTip.setContent(input.value);
+                    
                 });
                 input.addEventListener('keydown', function(event) {
+                    try{
                     if (event.key === 'Enter') {
                       // Update the tooltip content with the new value of the input element
                       toolTip.setContent(input.value);
+                    }}
+                    catch(e){
+                        
                     }
                   });
                 toolTip._container.innerHTML = '';
@@ -208,7 +213,12 @@ function GeomanJsWrapper(props) {
                         input.addEventListener('keydown', function(event) {
                             if (event.key === 'Enter') {
                               // Update the tooltip content with the new value of the input element
+                              try{
                               toolTip.setContent(input.value);
+                              }
+                              catch(e){
+                                
+                              }
                             }
                           });
                         toolTip._container.innerHTML = '';
