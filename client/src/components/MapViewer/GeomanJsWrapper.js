@@ -55,7 +55,8 @@ function GeomanJsWrapper(props) {
             toolTip.addTo(map)
 
             var el = toolTip.getElement();
-            el.addEventListener('dblclick', function () {
+            el.addEventListener('dblclick', function (e) {
+                e.stopPropagation();
                 var input = document.createElement('input');
                 input.type = 'text';
                 input.value = toolTip._content;
@@ -74,6 +75,7 @@ function GeomanJsWrapper(props) {
                 input.focus();
             });
             el.addEventListener('contextmenu',function(event){
+                event.stopPropagation();
                 event.preventDefault();
                 toolTip.removeEventListener("blur")
                 toolTip.removeEventListener("dblclick")
@@ -172,7 +174,8 @@ function GeomanJsWrapper(props) {
                     toolTip.addTo(map)
 
                     var el = toolTip.getElement();
-                    el.addEventListener('dblclick', function () {
+                    el.addEventListener('dblclick', function (e) {
+                        e.stopPropagation();
                         var input = document.createElement('input');
                         input.type = 'text';
                         input.value = toolTip._content;
