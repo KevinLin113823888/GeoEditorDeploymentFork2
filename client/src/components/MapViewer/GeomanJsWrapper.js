@@ -16,6 +16,9 @@ function GeomanJsWrapper(props) {
     const { store, setStore } = useContext(GlobalStoreContext);
     const [update, setUpdate] = useState(1);
     const [added, setAdded] = useState(false);
+
+    const isAddTextActive = useRef(false);
+
     let textOverlay = [{overlayText:"HELLOTHERER",coords:{lat:20,lng:100}},{overlayText:"YOLO DUED",coords:{lat:30,lng:80}}]
 
     const [newPolygonFeature, setNewPolygonFeature] = useState(
@@ -144,17 +147,17 @@ function GeomanJsWrapper(props) {
                     },
                 },
             ]
-            const addTextButtonAction = [
-                {
-                    text: 'cancel',
-                    onClick: () => {
-
-                        map.off("click")
-                        
-                    },
-                }
-
-            ]
+            // const addTextButtonAction = [
+            //     'cancel',
+            //     {
+            //         // onClick: () => {
+            //         //
+            //         //     map.off("click")
+            //         //
+            //         // },
+            //     }
+            //
+            // ]
 
             const mergeButtonClick = () => {
                 console.log("merge button toggle clicked")
@@ -162,8 +165,16 @@ function GeomanJsWrapper(props) {
                 props.toggleSelectMode()
             }
 
-            const addTextButtonClick = () => {
+
+            const addTextButtonClick = (event) => {
                 console.log("BUTTON")
+                if(event===undefined || isAddTextActive.current ){
+                    isAddTextActive.current = false
+                    map.off("click")
+                    return
+                }
+                    isAddTextActive.current = true
+
                 map.on("click", function (e) {
                     var toolTip = L.tooltip({
                         permanent: true,
@@ -222,7 +233,13 @@ function GeomanJsWrapper(props) {
                     store.jstps.doTransaction()
             }
 
-            const handleAddLegend = () => {
+            const handleAddLegend = (event) => {
+                console.log("undo")
+                console.log(event)
+                if(event===undefined){ //this is when click away happens
+                    return
+                }
+
                 let mappedData = {
                     store: store,
                     type: "add",
@@ -243,7 +260,7 @@ function GeomanJsWrapper(props) {
                 ["changeBackgroundColor", mergeButtonAction, mergeButtonClick],
                 ["changeRegionColor", mergeButtonAction, mergeButtonClick],
                 ["changeBorderColor", mergeButtonAction, mergeButtonClick],
-                ["addText", addTextButtonAction, addTextButtonClick],
+                ["addText", extendedMenuActionCancel, addTextButtonClick],
                 ["editVertex", mergeButtonAction, mergeButtonClick],
                 ["moveRegion", mergeButtonAction, mergeButtonClick],
                 ["splitRegion", extendedMenuActionCancel, mergeButtonClick],
@@ -261,7 +278,7 @@ function GeomanJsWrapper(props) {
                     title: name,
                     block: 'edit',
                     actions: action,
-                    onClick: () => { onClickHandler() }
+                    onClick: onClickHandler
                 });
             }
 
