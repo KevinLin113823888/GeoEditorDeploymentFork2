@@ -40,6 +40,8 @@ function GeomanJsWrapper(props) {
     // },[props.file])
 
     useEffect(() => {
+        // Create a marker with a tooltip
+
         
         if (isInitialRender.current) {// skip initial execution of useEffect
             isInitialRender.current = false;// set it to false so subsequent changes of dependency arr will make useEffect to execute
@@ -48,7 +50,7 @@ function GeomanJsWrapper(props) {
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
         const leafletContainer = LL
-
+        
         textOverlay.map(function(val){
             var toolTip = L.tooltip({
                 permanent: true,
@@ -84,8 +86,18 @@ function GeomanJsWrapper(props) {
                 toolTip.removeEventListener("dblclick")
                 map.removeLayer(toolTip)
             })
+            //var draggable = new L.Draggable(el);
             var draggable = new L.Draggable(el);
             draggable.enable();
+            
+            draggable.on("drag",function(e){
+                var tooltipOffset = L.point(toolTip.options.offset);
+                var tooltipOrigin = L.point(toolTip._container.getBoundingClientRect().width / 2, toolTip._container.getBoundingClientRect().height);
+                var layerPoint = e.target._newPos.add(tooltipOrigin).subtract(tooltipOffset);
+                var latlng = map.layerPointToLatLng(layerPoint);
+                toolTip.setLatLng(latlng)                
+                
+            })
             // Add event listeners to the tooltip for drag events
             el.style.pointerEvents = 'auto';
         })
@@ -132,7 +144,6 @@ function GeomanJsWrapper(props) {
             }
 
         });
-
 
         if (leafletContainer) {
             console.log("ADDING")
@@ -214,6 +225,14 @@ function GeomanJsWrapper(props) {
                     draggable.enable();
                     // Add event listeners to the tooltip for drag events
                     el.style.pointerEvents = 'auto';
+                    draggable.on("drag",function(e){
+                        var tooltipOffset = L.point(toolTip.options.offset);
+                        var tooltipOrigin = L.point(toolTip._container.getBoundingClientRect().width / 2, toolTip._container.getBoundingClientRect().height);
+                        var layerPoint = e.target._newPos.add(tooltipOrigin).subtract(tooltipOffset);
+                        var latlng = map.layerPointToLatLng(layerPoint);
+                        toolTip.setLatLng(latlng)                
+                        
+                    })
                     
                 })
             }
