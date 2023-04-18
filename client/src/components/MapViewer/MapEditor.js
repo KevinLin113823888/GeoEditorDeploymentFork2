@@ -16,6 +16,7 @@ import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import L from "leaflet";
 import { CurrentModal, GlobalStoreContext } from "../../store/index"
+import './mapEditor.css';
 
 function MapEditor(props) {
   
@@ -47,7 +48,7 @@ function MapEditor(props) {
         props.changeName(layer.feature.properties.name, newName);
         layer.bindPopup(newName)
         layer.bindTooltip(layer.feature.properties.name,
-            { permanent: true, direction: "center", className: "label" }
+            { permanent: true, direction: 'center' }
         ).openTooltip();
         //setUpdate(update+1);
         setUpdate(update => update + 1);
@@ -454,17 +455,31 @@ function MapEditor(props) {
 
 
         layer.bindTooltip(layer.feature.properties.name,
-            { permanent: true, direction: "center", className: "label" }
-        ).openTooltip();
+            { permanent: true, direction: 'center'}
+        ).openTooltip()
 
         
+
+//     // create popup contents
+    // var customPopup = "<b>My office</b><br/><img src='http://netdna.webdesignerdepot.com/uploads/2014/05/workspace_06_previo.jpg' alt='maptime logo gif' width='150px'/>";
+
+    // // specify popup options 
+    var customOptions =
+    {
+    'maxWidth': '400',
+    'width': '200',
+    'className' : 'popupCustom'
+    }    
+
+
+
         let propString = countryName
         let propObj = feature.properties;
         // for(const property in propObj){
         //     console.log(`${property}: ${propObj[property]}`);
         //     propString += `${property}: ${propObj[property]}` +"<br>"
         // }
-        layer.bindPopup(propString, {});
+        layer.bindPopup(propString);
         layer.options.fillOpacity = 0.4;
 
 
@@ -555,14 +570,7 @@ function MapEditor(props) {
             console.log("pm:markerdragend")
             handleMarkerDragEnd(e);
         });
-        layer.on('pm:markerclick', e => {
-            console.log("pm:markerclick")
-        });
-        layer.on('pm:markerdragend', e => {
-            //    console.log(e)
-            //     //When done dragging an edit, it updates the geojson
-
-        });
+       
     }
 
 
@@ -645,6 +653,7 @@ function MapEditor(props) {
 
     return (
         <div>
+            <p ondblclick="this.contentEditable=true;this.className='inEdit';" onblur="this.contentEditable=false;this.className='';" contenteditable="false" class="">This paragraph uses some simple script to be editable. Double-click the text to begin editing.</p>
             <MapColorwheelModal/>
             <MapMergeChangeRegionNameModal
                 handleMerge={handleMerge}

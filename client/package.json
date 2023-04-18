@@ -15,6 +15,7 @@
     "bootstrap": "^5.2.3",
     "geojson2shp": "^0.5.0",
     "leaflet": "^1.9.3",
+    "leaflet-tooltip": "^1.0.4",
     "mapbox-gl-draw-pinning-mode": "^0.1.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
