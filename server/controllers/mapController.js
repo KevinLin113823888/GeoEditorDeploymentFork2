@@ -43,11 +43,11 @@ class mapController {
         try {
             var { id } = req.body;
 
-            var currentMap = await Map.findOne({ _id: new mongoose.Types.ObjectId(id) });
-            console.log("Currentmap", currentMap.title);
+            var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
+            console.log("Currentmap", currentMapCard.title);
             // var currentMapData = MapData.findOne({ _id: currentMap.mapData });
 
-            return res.status(200).json({status: 'OK', title: currentMap.title});
+            return res.status(200).json({status: 'OK', title: currentMapCard.title});
         }
         catch(e){
             console.log(e.toString())

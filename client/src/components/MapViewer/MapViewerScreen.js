@@ -19,6 +19,10 @@ import MapLegendFooter from "./MapLegendFooter";
 import {useParams} from 'react-router-dom';
 import Box from "@mui/material/Box";
 
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import * as topoServer from 'topojson-server';
 import * as topoClient from 'topojson-client';
 import * as topoSimplify from 'topojson-simplify';
@@ -47,24 +51,25 @@ function MapViewerScreen(){
     },[])
 
 
-    // useEffect(() => {
-    //     fetch(process.env.REACT_APP_API_URL + 'map/getMapById', {
-    //         method: "post",
-    //         credentials: 'include',
-    //         headers: {
-    //           "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify({
-    //           id: id
-    //         }),
-    //     })
-    //     .then((res) => res.json())
-    //     .then((data) => {
-    //         console.log("new name", data);
-    //         setMapChange(data.title);
-    //     })
-    //     .catch(err => console.log(err));
-    // },[])
+    useEffect(() => {
+        console.log("ID of map", id);
+        fetch(process.env.REACT_APP_API_URL + 'map/getMapById', {
+            method: "post",
+            credentials: 'include',
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              id: id
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("new name", data);
+            setMapChange(data.title);
+        })
+        .catch(err => console.log(err));
+    },[])
 
     const sendImportReq = (geoJson) => {
         console.log("GEOJSON FILE UPLOADED", geoJson);
@@ -562,7 +567,15 @@ function MapViewerScreen(){
                             paddingLeft: "2%",
                             paddingTop: "1%",
                             maxWidth: '100%'}}>
-                        <TextField
+
+            <InputGroup className="mb-3">
+                <input type="text" className="form-control" 
+                id="validationCustom01" value={mapName}
+                       required />
+
+            </InputGroup>
+
+                        {/* <TextField
                             sx={{
                                 fontSize: 100
                             }}
@@ -584,7 +597,7 @@ function MapViewerScreen(){
                             //         console.log("searching...", event.target.value);
                             //         setMapChange(event.target.value)}}
                             onBlur={(event) => handleChangeMapName(event)}
-                            fullWidth  />
+                            fullWidth  /> */}
                     </Box>
                 </Grid>
                 <Box item xs={6} sx={{
