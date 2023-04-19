@@ -42,6 +42,19 @@ function GeomanJsWrapper(props) {
         }
     )
 
+    const handleToolTipEdit = (toolTip,type) => {
+        const LL = context.layerContainer || context.map;
+        const map = LL.pm.map
+        var el = toolTip.getElement();
+
+        el.addEventListener('contextmenu',function(event){
+            event.stopPropagation();
+            event.preventDefault();
+            toolTip.removeEventListener("blur")
+            toolTip.removeEventListener("dblclick")
+            map.removeLayer(toolTip)
+        })
+    }
     useEffect (()=>{
 
         let graphData = store.currentMapData.graphicalData
@@ -59,10 +72,13 @@ function GeomanJsWrapper(props) {
     //lets make is so that this is stateful, and that this can be called more than once.
     useEffect (()=>{
 
-        // console.log("use effect refresh geomn for the @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
 
+        //this is the part that removes all existing tooltips
+        map.eachLayer(function (layer) {
+            if (layer.options.pane === "tooltipPane") layer.removeFrom(map);
+        });
 
         if(textBoxList===undefined){
             return
@@ -100,13 +116,7 @@ function GeomanJsWrapper(props) {
                 toolTip._container.appendChild(input);
                 input.focus();
             });
-            el.addEventListener('contextmenu',function(event){
-                event.stopPropagation();
-                event.preventDefault();
-                toolTip.removeEventListener("blur")
-                toolTip.removeEventListener("dblclick")
-                map.removeLayer(toolTip)
-            })
+
             //var draggable = new L.Draggable(el);
             var draggable = new L.Draggable(el);
             draggable.enable();
@@ -225,6 +235,7 @@ function GeomanJsWrapper(props) {
                         type: "add",
                         textBoxCoord: e.latlng,
                         state:setTextBoxList,
+                        handleMapTextEdit: handleToolTipEdit,
                     }
                     store.jstps.addTransaction(new TextboxTPS(mappedData))
                 })
