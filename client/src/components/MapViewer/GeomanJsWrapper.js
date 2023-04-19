@@ -125,15 +125,16 @@ function GeomanJsWrapper(props) {
     },[textBoxList])
 
     useEffect(() => {
-
-        if (isInitialRender.current) {// skip initial execution of useEffect
-            isInitialRender.current = false;// set it to false so subsequent changes of dependency arr will make useEffect to execute
+        if (isInitialRender.current === false ) {// skip all future renders.
             return;
         }
+        isInitialRender.current = false;// set it to false so subsequent changes of dependency arr will make useEffect to execute
+        //only allow the first render
+
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
         const leafletContainer = LL
-        
+
 
         map.on('zoomend', function () {
             let centerArr = []
@@ -207,7 +208,7 @@ function GeomanJsWrapper(props) {
                     map.off("click")
                     return
                 }
-                    isAddTextActive.current = true
+                isAddTextActive.current = true
 
                 map.on("click", function (e) {
                     // var toolTip = L.tooltip({
