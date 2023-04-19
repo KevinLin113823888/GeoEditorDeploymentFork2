@@ -5,6 +5,8 @@ import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import './geomanButton.css';
 import { CurrentModal, GlobalStoreContext } from '../../store/index'
 import EditLegendTPS from '../../transactions/EditLegendTPS'
+import TextboxTPS from '../../transactions/TextboxTPS'
+
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { CircleMarker } from 'react-leaflet';
@@ -19,8 +21,12 @@ function GeomanJsWrapper(props) {
 
     const isAddTextActive = useRef(false);
 
-    let textOverlay = [{overlayText:"HELLOTHERER",coords:{lat:20,lng:100}},{overlayText:"YOLO DUED",coords:{lat:30,lng:80}}]
 
+
+    // let textBox = [{overlayText:"HELLOTHERER",coords:{lat:20,lng:100}},{overlayText:"YOLO DUED",coords:{lat:30,lng:80}}]
+
+    const [textBoxList,setTextBoxList] = useState([])
+    // const textBoxListRef = useRef([])
     const [newPolygonFeature, setNewPolygonFeature] = useState(
         {
             "type": "Feature",
@@ -35,23 +41,33 @@ function GeomanJsWrapper(props) {
             }
         }
     )
-    // useEffect (()=> {
-    //     setUpdate(update=>update+1)
-    // },[props.file])
 
-    useEffect(() => {
-        // Create a marker with a tooltip
+    useEffect (()=>{
 
-        
-        if (isInitialRender.current) {// skip initial execution of useEffect
-            isInitialRender.current = false;// set it to false so subsequent changes of dependency arr will make useEffect to execute
-            return;
+        let graphData = store.currentMapData.graphicalData
+        if(graphData === undefined ){
+            console.log("well its undefined")
+            return
         }
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@ geoman textbox updated")
+        console.log(store.currentMapData.graphicalData.textBoxList)
+        setTextBoxList( store.currentMapData.graphicalData.textBoxList)
+
+    },[store.currentMapData.graphicalData])
+
+
+    //lets make is so that this is stateful, and that this can be called more than once.
+    useEffect (()=>{
+
+        // console.log("use effect refresh geomn for the @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
-        const leafletContainer = LL
-        
-        textOverlay.map(function(val){
+
+
+        if(textBoxList===undefined){
+            return
+        }
+        textBoxList.map(function(val){
             var toolTip = L.tooltip({
                 permanent: true,
                 direction:"none",
@@ -68,18 +84,18 @@ function GeomanJsWrapper(props) {
                 input.addEventListener('blur', function (event) {
                     // Replace the input element with the new tooltip content
                     toolTip.setContent(input.value);
-                    
+
                 });
                 input.addEventListener('keydown', function(event) {
                     try{
-                    if (event.key === 'Enter') {
-                      // Update the tooltip content with the new value of the input element
-                      toolTip.setContent(input.value);
-                    }}
+                        if (event.key === 'Enter') {
+                            // Update the tooltip content with the new value of the input element
+                            toolTip.setContent(input.value);
+                        }}
                     catch(e){
-                        
+
                     }
-                  });
+                });
                 toolTip._container.innerHTML = '';
                 toolTip._container.appendChild(input);
                 input.focus();
@@ -94,18 +110,31 @@ function GeomanJsWrapper(props) {
             //var draggable = new L.Draggable(el);
             var draggable = new L.Draggable(el);
             draggable.enable();
-            
+
             draggable.on("drag",function(e){
                 var tooltipOffset = L.point(toolTip.options.offset);
                 var tooltipOrigin = L.point(toolTip._container.getBoundingClientRect().width / 2, toolTip._container.getBoundingClientRect().height);
                 var layerPoint = e.target._newPos.add(tooltipOrigin).subtract(tooltipOffset);
                 var latlng = map.layerPointToLatLng(layerPoint);
-                toolTip.setLatLng(latlng)                
-                
+                toolTip.setLatLng(latlng)
+
             })
             // Add event listeners to the tooltip for drag events
             el.style.pointerEvents = 'auto';
         })
+    },[textBoxList])
+
+    useEffect(() => {
+
+        if (isInitialRender.current) {// skip initial execution of useEffect
+            isInitialRender.current = false;// set it to false so subsequent changes of dependency arr will make useEffect to execute
+            return;
+        }
+        const LL = context.layerContainer || context.map;
+        const map = LL.pm.map
+        const leafletContainer = LL
+        
+
         map.on('zoomend', function () {
             let centerArr = []
             let center = map.getCenter()
@@ -163,17 +192,6 @@ function GeomanJsWrapper(props) {
                     },
                 },
             ]
-            // const addTextButtonAction = [
-            //     'cancel',
-            //     {
-            //         // onClick: () => {
-            //         //
-            //         //     map.off("click")
-            //         //
-            //         // },
-            //     }
-            //
-            // ]
 
             const mergeButtonClick = () => {
                 console.log("merge button toggle clicked")
@@ -192,58 +210,22 @@ function GeomanJsWrapper(props) {
                     isAddTextActive.current = true
 
                 map.on("click", function (e) {
-                    var toolTip = L.tooltip({
-                        permanent: true,
-                        direction:"none",
-                        className:"leaflet-tooltip",
-                        tooltipAnchor: [0, 0] 
-                    }).setContent("This is a tooltip!").setLatLng(e.latlng)
-                    toolTip.addTo(map)
+                    // var toolTip = L.tooltip({
+                    //     permanent: true,
+                    //     direction:"none",
+                    //     className:"leaflet-tooltip",
+                    //     tooltipAnchor: [0, 0]
+                    // }).setContent("This is a tooltip!").setLatLng(e.latlng)
+                    // toolTip.addTo(map)
 
-                    var el = toolTip.getElement();
-                    el.addEventListener('dblclick', function (e) {
-                        e.stopPropagation();
-                        var input = document.createElement('input');
-                        input.type = 'text';
-                        input.value = toolTip._content;
-                        input.addEventListener('blur', function (event) {
-                            // Replace the input element with the new tooltip content
-                            toolTip.setContent(input.value);
-                        });
-                        input.addEventListener('keydown', function(event) {
-                            if (event.key === 'Enter') {
-                              // Update the tooltip content with the new value of the input element
-                              try{
-                              toolTip.setContent(input.value);
-                              }
-                              catch(e){
-                                
-                              }
-                            }
-                          });
-                        toolTip._container.innerHTML = '';
-                        toolTip._container.appendChild(input);
-                        input.focus();
-                    });
-                    el.addEventListener('contextmenu',function(event){
-                        event.preventDefault();
-                        toolTip.removeEventListener("blur")
-                        toolTip.removeEventListener("dblclick")
-                        map.removeLayer(toolTip)
-                    })
-                    var draggable = new L.Draggable(el);
-                    draggable.enable();
-                    // Add event listeners to the tooltip for drag events
-                    el.style.pointerEvents = 'auto';
-                    draggable.on("drag",function(e){
-                        var tooltipOffset = L.point(toolTip.options.offset);
-                        var tooltipOrigin = L.point(toolTip._container.getBoundingClientRect().width / 2, toolTip._container.getBoundingClientRect().height);
-                        var layerPoint = e.target._newPos.add(tooltipOrigin).subtract(tooltipOffset);
-                        var latlng = map.layerPointToLatLng(layerPoint);
-                        toolTip.setLatLng(latlng)                
-                        
-                    })
-                    
+                    let mappedData = {
+                        store: store,
+                        setStore: setStore,
+                        type: "add",
+                        textBoxCoord: e.latlng,
+                        state:setTextBoxList,
+                    }
+                    store.jstps.addTransaction(new TextboxTPS(mappedData))
                 })
             }
 
