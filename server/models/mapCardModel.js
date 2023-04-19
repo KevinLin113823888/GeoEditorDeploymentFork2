@@ -11,6 +11,8 @@ const mapCardSchema = new Schema(
         mapImages:{type: String,required: false},
         classification:{type:[String],required:false},
         lastModifiedDate:{type:Date, required:false},
+        published: {type: Boolean, required: false},
+        publishDate:{type: Date,required:false},
         map:{type: ObjectId,required:true},
         communityPreview:{type: ObjectId,required:false}
     },

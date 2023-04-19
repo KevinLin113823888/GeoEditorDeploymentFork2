@@ -55,7 +55,7 @@ function CreateNewMapModal() {
                 return res.json();
             }).then((data) => {
                 console.log("data in response", data);
-                navigate('/map/' + data.mapId, { state: { mapId: data.mapId } });
+                navigate('/map/' + data.mapCardId, { state: { mapId: data.mapCardId } });
             })
             .catch(err => console.log(err));
         }

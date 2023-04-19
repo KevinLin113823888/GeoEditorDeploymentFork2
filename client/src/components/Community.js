@@ -27,6 +27,8 @@ function Community() {
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
     const { store } = useContext(GlobalStoreContext);
+    const [mapCards, setMapCards] = useState([]);
+
 
     useEffect(() => {
         fetch(process.env.REACT_APP_API_URL + 'community/getCommunity', {
@@ -39,6 +41,12 @@ function Community() {
         .then((res) => res.json())
         .then((data) => {
            console.log(data)
+           if (data.mapcards === undefined) {
+                setMapCards([]);
+            } else {
+                setMapCards(data.mapcards);
+                console.log(mapCards);
+            }
         })
         .catch(err => console.log(err));
     }, []);
@@ -111,7 +119,6 @@ function Community() {
         store.changeModal(CurrentModal.COMMUNITY_PREVIEW_MODAL);
     }
 
-    let mapCardsArr =[{title:"map1"},{title:"map2"},{title:"map3"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"} ];
     return (
         <div className="Community">
             <MUIDeleteAccModal/>
@@ -154,14 +161,12 @@ function Community() {
                         
                         
                         { 
-                            mapCardsArr.map((map, index) => (
-                                <Grid item xs={1.4} key = {index} >
+                            mapCards.map((map) => (
+                                <Grid item xs={1.4} key = {map.id} >
                                 <MapCard
-                                    id = {"map-card"+ (index)}
-                                    key = {"map-card"+ (index)}
-                                    index={index}
+                                    id = {map.id}
+                                    key = {map.id}
                                     title={map.title}
-                                    
                                 />
                                 </Grid>
                             ))

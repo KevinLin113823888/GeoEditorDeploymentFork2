@@ -31,7 +31,7 @@ class mapController {
         owner.ownedMapCards.push(newMapCard._id);
         await owner.save();
         
-        return res.status(200).json({status: 'OK', title: title, mapId: newMap._id.toString()});
+        return res.status(200).json({status: 'OK', title: title, mapCardId: newMapCard._id.toString()});
         // }
         // catch(e){
         //     return res.status(400).json({error: true, message: e.toString() });
@@ -102,9 +102,9 @@ class mapController {
 
     static async publishMapById(req, res) {
         var { id } = req.body;
-
+        console.log("publish map", id)
         // var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
-        var currentMap = await Map.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { published: true });
+        var currentMap = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { published: true });
         await currentMap.save();
         var newCommunityPreview = new CommunityPreview({
             mapData: currentMap.mapData

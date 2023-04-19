@@ -8,10 +8,10 @@ const CommunityPreview = require('../models/communityPreviewModel')
 class communityController {
     static async getCommunity(req, res) {
         let session = req.cookies.values;
-        var communityMaps = await CommunityPreview.find().limit(50);
-        console.log("community maps", communityMaps);
+        var mapCards = await MapCard.find({published:true}); //.limit(50)
+        console.log("community maps", mapCards);
 
-        return res.status(200).json({status: "OK"});
+        return res.status(200).json({status: "OK", mapcards: mapCards});
     }
 
     static async getCommunityPreviewById(req, res) {

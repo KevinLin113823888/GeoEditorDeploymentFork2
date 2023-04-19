@@ -31,7 +31,7 @@ import MUIChangeMapNameModal from './MUIChangeMapNameModal'
 function YourMap() {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
-    const [mapCards, setMapCards] = useState([])
+    const [mapCards, setMapCards] = useState([]);
     const [search, setSearch] = useState("");
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
@@ -55,12 +55,9 @@ function YourMap() {
                 console.log(data);
                 setUsername(data.username);
                 if (data.mapcards === undefined) {
-                    console.log("1")
                     setMapCards([]);
                 } else {
-                    console.log("2")
                     setMapCards(data.mapcards);
-                    console.log(mapCards);
                 }
             })
             .catch(err => console.log(err));
