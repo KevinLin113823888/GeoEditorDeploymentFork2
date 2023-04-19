@@ -8,13 +8,15 @@ const ObjectId = Schema.Types.ObjectId
 const mapCardSchema = new Schema(
     {
         title: { type: String, required: true, unique: true },
+        owner: {type: ObjectId, required: true},
         mapImages:{type: String,required: false},
-        classification:{type:[String],required:false},
-        lastModifiedDate:{type:Date, required:false},
+        classification:{type: [String],required: false},
+        lastModifiedDate:{type: Date, required: false},
         published: {type: Boolean, required: false},
-        publishDate:{type: Date,required:false},
-        map:{type: ObjectId,required:true},
-        communityPreview:{type: ObjectId,required:false}
+        publishDate:{type: Date,required: false},
+        // map:{type: ObjectId,required: true},
+        mapData:{type: ObjectId,required: false},
+        communityPreview:{type: ObjectId,required: false}
     },
     { timestamps: true },
 )

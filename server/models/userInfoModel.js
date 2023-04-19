@@ -26,10 +26,10 @@ const userInfoSchema = new Schema({
   passwordRecoveryCode: {
     type: String,
   },
-  ownedMaps: {
-    type: [Schema.Types.ObjectId], 
-    required: true
-  }, 
+  // ownedMaps: {
+  //   type: [Schema.Types.ObjectId], 
+  //   required: true
+  // }, 
   ownedMapCards: {
     type: [Schema.Types.ObjectId],
     required: true

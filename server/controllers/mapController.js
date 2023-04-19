@@ -7,27 +7,28 @@ const CommunityPreview = require('../models/communityPreviewModel')
 
 class mapController {
     static async createMap(req, res) {
-        try{
+        try {
             var { title } = req.body;
             console.log("creating map", title);
             let session = req.cookies.values;
 
             var owner = await User.findOne({username: session.username});
             console.log("owner", owner.name);
-            var newMap = new Map({
-                title: title,
-                owner: owner._id,
-                published: false
-            });
-            await newMap.save();      
+            
+            var newMapData = new MapData({
+                type: " ", 
+                feature: []
+            })
+            await newMapData.save();
 
             var newMapCard = new MapCard({
                 title: title,
-                map: newMap._id
+                owner: owner._id,
+                published: false, 
+                mapData: newMapData._id
             })
             await newMapCard.save();
 
-            owner.ownedMaps.push(newMap._id);
             owner.ownedMapCards.push(newMapCard._id);
             await owner.save();
             
@@ -38,16 +39,16 @@ class mapController {
         }
     }
 
-    // not tested yet
     static async getMapById(req, res) {
         try {
             var { id } = req.body;
 
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
-            console.log("Currentmap", currentMapCard.title);
-            // var currentMapData = MapData.findOne({ _id: currentMap.mapData });
+            var currentMapData = await MapData.findOne({ _id: currentMapCard.mapData });
 
-            return res.status(200).json({status: 'OK', title: currentMapCard.title});
+            console.log("features of the map", currentMapData.feature, currentMapData.type);
+
+            return res.status(200).json({status: 'OK', title: currentMapCard.title, type: currentMapData.type, feature: JSON.stringify(currentMapData.feature) });
         }
         catch(e){
             console.log(e.toString())
@@ -62,9 +63,7 @@ class mapController {
 
             var id = mongoose.Types.ObjectId(id);
             var mapCard = MapCard.findOneAndDelete({ _id: id });
-            var map = Map.findOneAndDelete({ _id: mapCard._id });
-            var mapData = MapData.findOneAndDelete({ _id: map._id });
-            User.findOneAndUpdate({_id: id}, { $pull: {ownedMapCards: mapCards._id, ownedMaps: map._id} });
+            User.findOneAndUpdate({_id: id}, { $pull: {ownedMapCards: mapCard._id} });
 
             return res.status(200).json({status: 'OK'});
         }
@@ -73,23 +72,14 @@ class mapController {
             return res.status(400).json({error: true, message: e.toString() });
         }
     }
-
+    
+    // duplicate map still no work, need to also add mapdata
     static async duplicateMapById(req, res) {
         try {
             var { id, newName } = req.body;
 
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
-            var currentMap = await Map.findOne({ _id: currentMapCard.map });
-            // var currentMapData = await MapData.findOne({ _id: currentMap.mapData });
-
-            let mapObjId = new mongoose.Types.ObjectId();
             let mapCardObjId = new mongoose.Types.ObjectId();
-
-            let mapObj = currentMap.toObject();
-            mapObj._id = mapObjId;
-            mapObj.title = newName;
-            const mapClone = new Map(mapObj);
-            await mapClone.save();
 
             let mapCardObj = currentMapCard.toObject();
             delete mapCardObj._id;
@@ -109,11 +99,8 @@ class mapController {
     static async changeMapNameById(req, res) {
         try {
             var { id, newName } = req.body;
-            console.log(id, newName)
 
-            var updatedMap = await Map.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { title: newName });
-            await updatedMap.save();
-            var currentMapCard = await MapCard.findOneAndUpdate({ map: new mongoose.Types.ObjectId(updatedMap._id) }, { title: newName });
+            var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { title: newName });
             await currentMapCard.save();
 
             return res.status(200).json({status: 'OK', name: newName});
@@ -127,12 +114,9 @@ class mapController {
     static async publishMapById(req, res) {
         try {
             var { id } = req.body;
-            console.log("publish map", id)
-            // var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
-            var currentMap = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { published: true });
-            await currentMap.save();
+            var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { published: true });
             var newCommunityPreview = new CommunityPreview({
-                mapData: currentMap.mapData
+                mapData: currentMapCard.mapData
             });
             await newCommunityPreview.save();
 
@@ -164,13 +148,14 @@ class mapController {
         try {
             var { id, geoJSONFile } = req.body;
 
-            // var currentMapCard = await MapCard.findOne({ _id: id });
-            console.log(geoJSONFile);
-            var newMapData = new MapData({
-                type: geoJSONFile.type,
-                feature: geoJSONFile.features,
-            })
-            await newMapData.save(); 
+            var currentMapCard = await MapCard.findOne({ _id: id });
+            var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: geoJSONFile.type, feature: geoJSONFile.features })
+            // var newMapData = new MapData({
+            //     type: geoJSONFile.type,
+            //     feature: geoJSONFile.features,
+            // })
+            // await newMapData.save(); 
+            await currentMapData.save()
 
             return res.status(200).json({status: 'OK'});
         }
