@@ -19,6 +19,11 @@ import MapLegendFooter from "./MapLegendFooter";
 import {useParams} from 'react-router-dom';
 import Box from "@mui/material/Box";
 
+import * as topoServer from 'topojson-server';
+import * as topoClient from 'topojson-client';
+import * as topoSimplify from 'topojson-simplify';
+
+
 function MapViewerScreen(){
 
     const [fileExist, setFileExist] = useState(false);
@@ -26,7 +31,7 @@ function MapViewerScreen(){
     const [data, setData] = useState([]);
     const [mapName,setMapChange] = useState("Untitled");
     const [keyid, setKeyid] = useState(0)
-    // const [compressCount, setCompressCount] = useState(6);
+    // const [compressCount, setCompressCount] = useState(0.005);
 
     const { store } = useContext(GlobalStoreContext);
     const [GeoJson, setGeoJson] = [store.currentMapData,store.setCurrentMapData]
@@ -108,8 +113,18 @@ function MapViewerScreen(){
                         e.read().then(next)
                     }
                     else{
-                        setGeoJson(geoJson)
-                        sendImportReq(geoJson);
+
+                        var temp = geoJson;
+
+                        var topo = topoServer.topology({foo: temp});
+                        topo = topoSimplify.presimplify(topo);
+                        
+                        topo = topoSimplify.simplify(topo, 0.005);
+                        
+                        temp = topoClient.feature(topo, topo.objects.foo);
+
+                        setGeoJson(temp)
+                        sendImportReq(temp);
                         setFileExist(true);
                         setKeyid(keyid => keyid+1)
                     }
@@ -182,8 +197,18 @@ function MapViewerScreen(){
         setGeoJson({});
         reader.readAsText(e.target.files[0]);
         reader.onload = e => {
-            setGeoJson(JSON.parse(e.target.result));
-            sendImportReq(JSON.parse(e.target.result));
+            var temp = JSON.parse(e.target.result);
+
+            var topo = topoServer.topology({foo: temp});
+            topo = topoSimplify.presimplify(topo);
+            
+            topo = topoSimplify.simplify(topo, 0.005);
+            console.log(topo)
+            
+            temp = topoClient.feature(topo, topo.objects.foo);
+
+            setGeoJson(temp);
+            sendImportReq(temp);
         }
         setFileExist(true);
         // store.changeModal("NONE");
@@ -196,233 +221,245 @@ function MapViewerScreen(){
         // }
         // setCompressCount(compressCount-1);
         const tempGeoJson = GeoJson;
-        const map = new Map();
-        let removePattern = "Even"
-        let featureInd2 =-1
-        let ind0 = -1
-        let ind1 = -1
-        let ind2 = -1
-        let featuresCopy=tempGeoJson.features
+        // const map = new Map();
+        // let removePattern = "Even"
+        // let featureInd2 =-1
+        // let ind0 = -1
+        // let ind1 = -1
+        // let ind2 = -1
+        // let featuresCopy=tempGeoJson.features
 
-        featuresCopy.forEach(feature => {
-            let prevMatchIndex = -1
-            let prevMatch = ""
-            let prevFeatureInd=-1
-            const map2 = new Map();
-            featureInd2++
-            if (feature.geometry.type === 'Polygon') {
-                ind0 = -1
-                ind1 = -1
-                ind2 = -1
-                feature.geometry.coordinates.forEach(coordinates => {
-                    ind0++;
-                    ind1 = -1;
+        // featuresCopy.forEach(feature => {
+        //     let prevMatchIndex = -1
+        //     let prevMatch = ""
+        //     let prevFeatureInd=-1
+        //     const map2 = new Map();
+        //     featureInd2++
+        //     if (feature.geometry.type === 'Polygon') {
+        //         ind0 = -1
+        //         ind1 = -1
+        //         ind2 = -1
+        //         feature.geometry.coordinates.forEach(coordinates => {
+        //             ind0++;
+        //             ind1 = -1;
 
-                    coordinates.forEach((coordinate, subInd) => {
-                        ind1++;
-                        if (!map.has(coordinate.toString())) {
-                            map.set(coordinate.toString(), {position:"middle",featureInd:featureInd2});
-                            if(prevMatchIndex==subInd-1){
-
-
-                                if(map.has(prevMatch)){
-                                    let foundfeatureInd=map.get(prevMatch).featureInd;
-                                    map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
+        //             coordinates.forEach((coordinate, subInd) => {
+        //                 ind1++;
+        //                 if (!map.has(coordinate.toString())) {
+        //                     map.set(coordinate.toString(), {position:"middle",featureInd:featureInd2});
+        //                     if(prevMatchIndex==subInd-1){
 
 
-                                }
-                            }
-                        }else{
-                            let foundfeatureInd=map.get(coordinate.toString()).featureInd;
-
-                            if(!map2.has(foundfeatureInd.toString())){
-                                map.set(coordinate.toString(), {position:"first",featureInd:foundfeatureInd});
-                                map2.set(foundfeatureInd.toString(),1);
-
-                            }
-                            if(prevFeatureInd !==foundfeatureInd){
-                                map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
-
-                            }
-
-                            prevMatch= coordinate.toString()
-                            prevMatchIndex = subInd
-                            prevFeatureInd = foundfeatureInd
-                        }
-                    });
-
-                });
-            } else if (feature.geometry.type === 'MultiPolygon') {
-                ind0 = -1
-                ind1 = -1
-                ind2 = -1
-                feature.geometry.coordinates.forEach(polygon => {
-                    ind0++;
-                    ind1 = -1;
-                    ind2 = -1;
-                    polygon.forEach(coordinates => {
-                        ind1++;
-                        ind2 = -1;
-
-                        coordinates.forEach((coordinate, subInd) => {
-                            ind2++;
-                            if (!map.has(coordinate.toString())) {
-                                map.set(coordinate.toString(), {position:"middle",featureInd:featureInd2});
-                                if(prevMatchIndex==subInd-1){
+        //                         if(map.has(prevMatch)){
+        //                             let foundfeatureInd=map.get(prevMatch).featureInd;
+        //                             map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
 
 
-                                    if(map.has(prevMatch)){
-                                        let foundfeatureInd=map.get(prevMatch).featureInd;
-                                        map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
-                                    }
-                                }
-                            }else{
-                                let foundfeatureInd=map.get(coordinate.toString()).featureInd;
+        //                         }
+        //                     }
+        //                 }else{
+        //                     let foundfeatureInd=map.get(coordinate.toString()).featureInd;
 
-                                if(!map2.has(foundfeatureInd.toString())){
-                                    map.set(coordinate.toString(), {position:"first",featureInd:foundfeatureInd});
-                                    map2.set(foundfeatureInd.toString(),1);
-                                }
-                                if(prevFeatureInd !==foundfeatureInd){
-                                    map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
+        //                     if(!map2.has(foundfeatureInd.toString())){
+        //                         map.set(coordinate.toString(), {position:"first",featureInd:foundfeatureInd});
+        //                         map2.set(foundfeatureInd.toString(),1);
 
-                                }
+        //                     }
+        //                     if(prevFeatureInd !==foundfeatureInd){
+        //                         map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
 
-                                prevFeatureInd = foundfeatureInd
-                                prevMatch= coordinate.toString()
-                                prevMatchIndex = subInd
-                            }
-                        });
-                    });
-                });
-            }
+        //                     }
 
-        });
-        featureInd2 = -1
-        const map3 = new Map();
-        featuresCopy.forEach(feature => {
-            featureInd2++
-            if (feature.geometry.type === 'Polygon') {
-                ind0 = -1
-                ind1 = -1
-                ind2 = -1
-                feature.geometry.coordinates.forEach(coordinates => {
-                    ind0++;
-                    ind1 = -1;
+        //                     prevMatch= coordinate.toString()
+        //                     prevMatchIndex = subInd
+        //                     prevFeatureInd = foundfeatureInd
+        //                 }
+        //             });
 
-                    coordinates.forEach((coordinate, subInd) => {
-                        ind1++;
+        //         });
+        //     } else if (feature.geometry.type === 'MultiPolygon') {
+        //         ind0 = -1
+        //         ind1 = -1
+        //         ind2 = -1
+        //         feature.geometry.coordinates.forEach(polygon => {
+        //             ind0++;
+        //             ind1 = -1;
+        //             ind2 = -1;
+        //             polygon.forEach(coordinates => {
+        //                 ind1++;
+        //                 ind2 = -1;
 
-                        if (map3.has(coordinate.toString())) {
-
-                            if (subInd % 2 === 0) {
-                                removePattern = "Even"
-                            } else {
-                                removePattern = "Odd"
-
-                            }
-                        }
-
-                        if (removePattern === "Even" && subInd % 2 === 0) {
-                            if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last")
-                                tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1]=[]
-                            map3.set(coordinate.toString(), true);
-                        } else if (removePattern === "Odd" && subInd % 2 !== 0) {
-                            if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last")
-                                tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1]=[]
-                            map3.set(coordinate.toString(), true);
-                        }
-                    });
-
-                });
-            } else if (feature.geometry.type === 'MultiPolygon') {
-                ind0 = -1
-                ind1 = -1
-                ind2 = -1
-                feature.geometry.coordinates.forEach(polygon => {
-                    ind0++;
-                    ind1 = -1;
-                    ind2 = -1;
-                    polygon.forEach(coordinates => {
-                        ind1++;
-                        ind2 = -1;
-
-                        coordinates.forEach((coordinate, subInd) => {
-                            ind2++;
-                            if (map3.has(coordinate.toString())) {
-                                if (subInd % 2 === 0) {
-                                    removePattern = "Even"
-                                } else {
-                                    removePattern = "Odd"
-                                }
-                            }
-                            if (removePattern === "Even" && subInd % 2 === 0) {
-                                map3.set(coordinate.toString(), true);
-                                if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last"){
-                                    if(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length>5)
-                                        tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1][ind2]=[]
-                                }
-                            } else if (removePattern === "Odd" && subInd % 2 !== 0) {
-                                map3.set(coordinate.toString(), true);
-                                if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last"){
-                                    if(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length>5)
-                                        tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1][ind2]=[]
-                                }
-                            }
-                        });
-
-                    });
-                });
-            }
-
-        });
-
-        featureInd2 =-1
-        ind0 = -1
-        ind1 = -1
-        ind2 = -1
-        featuresCopy.forEach(feature => {
-            featureInd2++
-            if (feature.geometry.type === 'Polygon') {
-                ind0 = -1
-                ind1 = -1
-                ind2 = -1
-                feature.geometry.coordinates.forEach(coordinates => {
-                    ind0++;
-                    ind1 = -1;
-
-                    tempGeoJson.features[featureInd2].geometry.coordinates[ind0]=coordinates.filter(a=>a.length!==0)
-
-                    //tempGeoJson.features[featureInd2].geometry.coordinates=tempGeoJson.features[featureInd2].geometry.coordinates.filter(a=>a.length!==1)
+        //                 coordinates.forEach((coordinate, subInd) => {
+        //                     ind2++;
+        //                     if (!map.has(coordinate.toString())) {
+        //                         map.set(coordinate.toString(), {position:"middle",featureInd:featureInd2});
+        //                         if(prevMatchIndex==subInd-1){
 
 
-                });
-            } else if (feature.geometry.type === 'MultiPolygon') {
-                ind0 = -1
-                ind1 = -1
-                ind2 = -1
-                feature.geometry.coordinates.forEach(polygon => {
-                    ind0++;
-                    ind1 = -1;
-                    ind2 = -1;
-                    polygon.forEach(coordinates => {
-                        ind1++;
-                        ind2 = -1;
+        //                             if(map.has(prevMatch)){
+        //                                 let foundfeatureInd=map.get(prevMatch).featureInd;
+        //                                 map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
+        //                             }
+        //                         }
+        //                     }else{
+        //                         let foundfeatureInd=map.get(coordinate.toString()).featureInd;
 
-                        tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1]=coordinates.filter(a=>a.length!==0)
-                        console.log(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length)
-                        console.log(tempGeoJson.features[featureInd2].geometry.coordinates)
-                        //console.log(tempGeoJson.features[featureInd2].geometry.coordinates[ind0]=tempGeoJson.features[featureInd2].geometry.coordinates[ind0].filter(a=>a.length<1))
-                        //console.log(tempGeoJson.features[featureInd2].geometry.coordinates=tempGeoJson.features[featureInd2].geometry.coordinates .filter(a=>a.length<1))
-                        //tempGeoJson.features[featureInd2].geometry.coordinates[ind0]=polygon.filter(a=>a.length!==1)
+        //                         if(!map2.has(foundfeatureInd.toString())){
+        //                             map.set(coordinate.toString(), {position:"first",featureInd:foundfeatureInd});
+        //                             map2.set(foundfeatureInd.toString(),1);
+        //                         }
+        //                         if(prevFeatureInd !==foundfeatureInd){
+        //                             map.set(prevMatch, {position:"last",featureInd:foundfeatureInd});
 
-                    });
-                });
-            }
+        //                         }
 
-        });
+        //                         prevFeatureInd = foundfeatureInd
+        //                         prevMatch= coordinate.toString()
+        //                         prevMatchIndex = subInd
+        //                     }
+        //                 });
+        //             });
+        //         });
+        //     }
 
-        setGeoJson(tempGeoJson);
+        // });
+        // featureInd2 = -1
+        // const map3 = new Map();
+        // featuresCopy.forEach(feature => {
+        //     featureInd2++
+        //     if (feature.geometry.type === 'Polygon') {
+        //         ind0 = -1
+        //         ind1 = -1
+        //         ind2 = -1
+        //         feature.geometry.coordinates.forEach(coordinates => {
+        //             ind0++;
+        //             ind1 = -1;
+
+        //             coordinates.forEach((coordinate, subInd) => {
+        //                 ind1++;
+
+        //                 if (map3.has(coordinate.toString())) {
+
+        //                     if (subInd % 2 === 0) {
+        //                         removePattern = "Even"
+        //                     } else {
+        //                         removePattern = "Odd"
+
+        //                     }
+        //                 }
+
+        //                 if (removePattern === "Even" && subInd % 2 === 0) {
+        //                     if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last")
+        //                         tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1]=[]
+        //                     map3.set(coordinate.toString(), true);
+        //                 } else if (removePattern === "Odd" && subInd % 2 !== 0) {
+        //                     if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last")
+        //                         tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1]=[]
+        //                     map3.set(coordinate.toString(), true);
+        //                 }
+        //             });
+
+        //         });
+        //     } else if (feature.geometry.type === 'MultiPolygon') {
+        //         ind0 = -1
+        //         ind1 = -1
+        //         ind2 = -1
+        //         feature.geometry.coordinates.forEach(polygon => {
+        //             ind0++;
+        //             ind1 = -1;
+        //             ind2 = -1;
+        //             polygon.forEach(coordinates => {
+        //                 ind1++;
+        //                 ind2 = -1;
+
+        //                 coordinates.forEach((coordinate, subInd) => {
+        //                     ind2++;
+        //                     if (map3.has(coordinate.toString())) {
+        //                         if (subInd % 2 === 0) {
+        //                             removePattern = "Even"
+        //                         } else {
+        //                             removePattern = "Odd"
+        //                         }
+        //                     }
+        //                     if (removePattern === "Even" && subInd % 2 === 0) {
+        //                         map3.set(coordinate.toString(), true);
+        //                         if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last"){
+        //                             if(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length>5)
+        //                                 tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1][ind2]=[]
+        //                         }
+        //                     } else if (removePattern === "Odd" && subInd % 2 !== 0) {
+        //                         map3.set(coordinate.toString(), true);
+        //                         if(map.get(coordinate.toString()).position !=="first" && map.get(coordinate.toString()).position !=="last"){
+        //                             if(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length>5)
+        //                                 tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1][ind2]=[]
+        //                         }
+        //                     }
+        //                 });
+
+        //             });
+        //         });
+        //     }
+
+        // });
+
+        // featureInd2 =-1
+        // ind0 = -1
+        // ind1 = -1
+        // ind2 = -1
+        // featuresCopy.forEach(feature => {
+        //     featureInd2++
+        //     if (feature.geometry.type === 'Polygon') {
+        //         ind0 = -1
+        //         ind1 = -1
+        //         ind2 = -1
+        //         feature.geometry.coordinates.forEach(coordinates => {
+        //             ind0++;
+        //             ind1 = -1;
+
+        //             tempGeoJson.features[featureInd2].geometry.coordinates[ind0]=coordinates.filter(a=>a.length!==0)
+
+        //             //tempGeoJson.features[featureInd2].geometry.coordinates=tempGeoJson.features[featureInd2].geometry.coordinates.filter(a=>a.length!==1)
+
+
+        //         });
+        //     } else if (feature.geometry.type === 'MultiPolygon') {
+        //         ind0 = -1
+        //         ind1 = -1
+        //         ind2 = -1
+        //         feature.geometry.coordinates.forEach(polygon => {
+        //             ind0++;
+        //             ind1 = -1;
+        //             ind2 = -1;
+        //             polygon.forEach(coordinates => {
+        //                 ind1++;
+        //                 ind2 = -1;
+
+        //                 tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1]=coordinates.filter(a=>a.length!==0)
+        //                 console.log(tempGeoJson.features[featureInd2].geometry.coordinates[ind0][ind1].length)
+        //                 console.log(tempGeoJson.features[featureInd2].geometry.coordinates)
+        //                 //console.log(tempGeoJson.features[featureInd2].geometry.coordinates[ind0]=tempGeoJson.features[featureInd2].geometry.coordinates[ind0].filter(a=>a.length<1))
+        //                 //console.log(tempGeoJson.features[featureInd2].geometry.coordinates=tempGeoJson.features[featureInd2].geometry.coordinates .filter(a=>a.length<1))
+        //                 //tempGeoJson.features[featureInd2].geometry.coordinates[ind0]=polygon.filter(a=>a.length!==1)
+
+        //             });
+        //         });
+        //     }
+
+        // });
+
+
+
+        var temp = tempGeoJson;
+
+        var topo = topoServer.topology({foo: temp});
+        topo = topoSimplify.presimplify(topo);
+        
+        topo = topoSimplify.simplify(topo, 0.05);
+        console.log(topo)
+        
+        temp = topoClient.feature(topo, topo.objects.foo);
+
+        setGeoJson(temp);
         setKeyid(keyid => keyid+1)
     }
 

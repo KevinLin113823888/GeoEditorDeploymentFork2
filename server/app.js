@@ -8,7 +8,7 @@ app.use(cors({
     origin: ['http://localhost:3000','https://bejewelled-rugelach-940512.netlify.app'],
     credentials: true
 }));
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: '100mb' }));
 // app.use(express.urlencoded({ limit: '50mb' }));
 
 app.use(cookieParser());
