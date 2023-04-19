@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+var GeoJSON = require('mongoose-geojson-schema');
 const Schema = mongoose.Schema
 const Mixed = Schema.Types.Mixed;
 const ObjectId = Schema.Types.ObjectId
@@ -9,20 +10,13 @@ const ObjectId = Schema.Types.ObjectId
 const mapDataSchema = new Schema(
     {
         type: { type: String, required: true },
-        features: { type: [{
-            type: String,
-            properties: Object,
-            geometry: { type:[{
-                type: String,
-                coordinates:{ type:Mixed, default:[]}
-            }]},
-            // borderColor: String,
-            // subRegionColor: String
-        }], required: false },
-        // mapProperties: { type: Object, required: true },
+        feature: { type: [
+            Schema.Types.Feature
+        ], required: true},
+        // mapProperties: { type: Object, required: false },
         // graphicalData:{type:{
         //     backgroundColor:String,
-        //     textOverlay:{type:[{
+        //     textBoxList:{type:[{
         //         overlayText:String,
         //         coordinates:{type: Mixed,default:[]}
         //     }]},
