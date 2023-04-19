@@ -14,7 +14,18 @@ class userController {
             var user = await userInfoSchema.findOne({username: session.username});
             console.log("owned map cards of ", session.username, session.ownedMapCards);
 
-            return res.status(200).json({status: 'OK', username: session.username, mapcards: user.ownedMapCards});
+            var mapcard_list = [];
+            // user.ownedMapCards.forEach(e => {
+            //     var card = await MapCard.findOne({_id: e});
+            //     mapcard_list.push({title: card.title, id: e})
+            // });
+
+            for(let i = 0; i<user.ownedMapCards.length; i++){
+                var card = await MapCard.findOne({_id: user.ownedMapCards[i]});
+                mapcard_list.push({title: card.title, id: card._id})
+            }
+
+            return res.status(200).json({status: 'OK', username: session.username, mapcards: mapcard_list});
         }
         catch(e){
             console.log(e.toString())

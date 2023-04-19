@@ -11,7 +11,7 @@ import background from "./cardPic.png";
 function MapCard(props) {
     const navigate = useNavigate();
     const { store } = useContext(GlobalStoreContext);
-    const { id, map, index } = props;
+    const { id, title} = props;
 
     function handleRemoveMap(event) {
         console.log("removing map of ", id);
@@ -73,7 +73,7 @@ function MapCard(props) {
                 backgroundColor: "lightGreen",
                 height: "10vh"}}>
                 <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"> 
-                <Box style={{fontWeight: "500"}}>{map.title}</Box>
+                <Box style={{fontWeight: "500"}}>{title}</Box>
                 <Box sx={{marginTop:"3%",}}>
                     <FileCopyIcon onClick = {handleDuplicateMap} sx={{"&:hover": { fill: "yellow"}}}/>
                     <BorderColorIcon onClick = {handleEditMap} sx={{"&:hover": { fill: "yellow"}}}/>
@@ -94,7 +94,7 @@ function MapCard(props) {
                 backgroundColor: "lightGreen",
                 height: "10vh"}}>
                 <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"> 
-                <Box style={{fontWeight: "500"}}>{map.title}</Box>
+                <Box style={{fontWeight: "500"}}>{title}</Box>
                 
                 </Box>
             </Box>

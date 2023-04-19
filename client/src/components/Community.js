@@ -160,7 +160,7 @@ function Community() {
                                     id = {"map-card"+ (index)}
                                     key = {"map-card"+ (index)}
                                     index={index}
-                                    map={map}
+                                    title={map.title}
                                     
                                 />
                                 </Grid>

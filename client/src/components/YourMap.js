@@ -54,10 +54,13 @@ function YourMap() {
             .then((data) => {
                 console.log(data);
                 setUsername(data.username);
-                if (data.ownedMapCards === undefined) {
+                if (data.mapcards === undefined) {
+                    console.log("1")
                     setMapCards([]);
                 } else {
-                    setMapCards(data.ownedMapCards);
+                    console.log("2")
+                    setMapCards(data.mapcards);
+                    console.log(mapCards);
                 }
             })
             .catch(err => console.log(err));
@@ -127,7 +130,6 @@ function YourMap() {
         console.log("sorting that needs to be implemented");
     }
 
-    let mapCardsArr =[{title:"map1"},{title:"map2"},{title:"map3"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"},{title:"map4"} ];
     return (
         <div className="YourMap">
             <MUIDeleteAccModal />
@@ -175,13 +177,12 @@ function YourMap() {
                         </Grid>
                         
                         { 
-                            mapCardsArr.map((map, index) => (
-                                <Grid item xs={1.4} key = {index} >
+                            mapCards.map((map) => (
+                                <Grid item xs={1.4} key = {map.id} >
                                 <MapCard
-                                    id = {"map-card"+ (index)}
-                                    key = {"map-card"+ (index)}
-                                    index={index}
-                                    map={map}
+                                    id = {map.id}
+                                    key = {map.id}
+                                    title={map.title}
                                     
                                 />
                                 </Grid>
