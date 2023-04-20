@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef,useContext } from 'react';
 import { MapContainer, TileLayer, useMap, GeoJSON, LayerGroup, FeatureGroup, useMapEvents, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import MapColorwheelModal from "./MapViewerModal/MapColorwheelModal";
+import SubregionColorModal from "./MapViewerModal/SubregionColorModal";
 import MapMergeChangeRegionNameModal from "./MapViewerModal/MapMergeChangeRegionNameModal";
 import MapAddRegionModal from "./MapViewerModal/MapAddRegionModal";
 import { GeomanControls } from 'react-leaflet-geoman-v2';
@@ -25,6 +26,7 @@ function MapEditor(props) {
     const { store } = useContext(GlobalStoreContext);
 
     const regionsSelectedRef = useRef([])
+    const regionsSelectedRef2 = useRef([])
     let regionsClicked = [];
     const selectModeToggle = useRef(false)
 
@@ -451,9 +453,14 @@ function MapEditor(props) {
             }
         }
         const countryName = feature.properties.name;
-
-
-
+        console.log(feature)
+        console.log(feature.subRegionColor)
+       layer.setStyle({
+        // color: "blue",
+        fillColor: feature.subRegionColor,
+        fillOpacity: 0.7,
+        color: "pink"
+    });
         layer.bindTooltip(layer.feature.properties.name,
             { permanent: true, direction: 'center'}
         ).openTooltip()
@@ -639,6 +646,27 @@ function MapEditor(props) {
         //setUpdate(update+1) //absolutely crazy code but we need this to update the map
         setUpdate(update => update + 1);
     }
+
+    const handleChangeRegionColor = (color) => {
+
+        let regionsSelected = regionsSelectedRef.current
+        console.log(regionsSelected.length)
+        for (let i = 0; i < regionsSelected.length; i++) {
+            regionsSelected[i].subRegionColor = color
+            for(let j=0;j<geoJsonMapData.features.length;j++){
+                if(geoJsonMapData.features[j].properties.name == regionsSelected[i].properties.name ){
+                    geoJsonMapData.features[j] = regionsSelected[i];
+                }
+            }
+
+        }
+        console.log(geoJsonMapData)
+        
+
+        setUpdate(update => update + 1);
+    }
+
+
     const handleCancelMergeSelection = () => {
         let regionsSelected = regionsSelectedRef.current
         regionsSelectedRef.current = [] //empty everything
@@ -662,6 +690,7 @@ function MapEditor(props) {
             <MapAddRegionModal
                 handleAddRegion={handleAddRegion}
             />
+            <SubregionColorModal handleChangeRegionColor={handleChangeRegionColor}/>
             
 
             {geoJsonMapData.features ?

@@ -23,25 +23,22 @@ function LegendCard(props) {
     }
 
     const handleChangeColor= (color)=>{
-        let mappedData = {
-            store: store,
-            setStore: setStore,
-            type: "color",
-            oldColor: color,
-            newColor: color,
-            oldIndex: index,
-        }
-        store.jstps.addTransaction(new EditLegendTPS(mappedData))
+        // let mappedData = {
+        //     store: store,
+        //     setStore: setStore,
+        //     type: "color",
+        //     oldColor: color,
+        //     newColor: color,
+        //     oldIndex: index,
+        // }
+        // store.jstps.addTransaction(new EditLegendTPS(mappedData))
 
     }
     function handleChangeLegendColor() {
 
         store.colorwheelHandler = handleChangeColor
-        console.log("the store after ig")
-
-        console.log(store)
-
-        store.changeModal("MAP_PICK_COLOR_WHEEL")
+       
+        store.changeModal("SUBREGION_PICK_COLOR_WHEEL")
     }
 
     let colorString= legendObj.color;

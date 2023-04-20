@@ -56,14 +56,19 @@ class mapController {
         }
     }
 
-    // not tested yet
     static async deleteMapById(req, res) {
         try {
             var { id } = req.body;
 
-            var id = mongoose.Types.ObjectId(id);
-            var mapCard = MapCard.findOneAndDelete({ _id: id });
-            User.findOneAndUpdate({_id: id}, { $pull: {ownedMapCards: mapCard._id} });
+            var id = new mongoose.Types.ObjectId(id);
+            var mapCard = await MapCard.findOneAndDelete({ _id: id });
+            var user = await User.findOneAndUpdate({ _id: mapCard.owner }, { $pull: {ownedMapCards: new mongoose.Types.ObjectId(mapCard._id)} });
+            await user.save();
+            await MapData.findOneAndDelete({ _id: mapCard.mapData });
+
+            if (mapCard.published) {
+                await CommunityPreview.findOneAndDelete({ mapCard: id })
+            }
 
             return res.status(200).json({status: 'OK'});
         }
