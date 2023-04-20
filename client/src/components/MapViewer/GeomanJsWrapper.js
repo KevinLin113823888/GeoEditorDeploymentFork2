@@ -106,7 +106,6 @@ function GeomanJsWrapper(props) {
                 toolTip.removeEventListener("dblclick")
                 map.removeLayer(toolTip)
             })
-            //var draggable = new L.Draggable(el);
             var draggable = new L.Draggable(el);
             draggable.enable();
 
@@ -199,24 +198,33 @@ function GeomanJsWrapper(props) {
                     },
                 },
             ]
+            const changeBorderColorAction = [
+                'cancel',
+                {
+                    text: 'change border color',
+                    onClick: () => {
+                        store.changeModal(CurrentModal.BORDER_PICK_COLOR_WHEEL)
+                    },
+                },
+            ]
             const mergeButtonClick = () => {
                 console.log("merge button toggle clicked")
                 //on click we toggle to enable the selection of regions
                 props.toggleSelectMode()
             }
-            const regionColorButtonClick=()=>{
+            const colorButtonClick=()=>{
                 props.toggleSelectMode()
             }
 
 
             const addTextButtonClick = (event) => {
-                console.log("BUTTON")
-                if(event===undefined || isAddTextActive.current ){
-                    isAddTextActive.current = false
-                    map.off("click")
-                    return
-                }
-                    isAddTextActive.current = true
+                    console.log("BUTTON")
+                    if(event===undefined || isAddTextActive.current ){
+                        isAddTextActive.current = false
+                        map.off("click")
+                        return
+                    }
+                        isAddTextActive.current = true
 
                 map.on("click", function (e) {
                     // var toolTip = L.tooltip({
@@ -278,8 +286,8 @@ function GeomanJsWrapper(props) {
                 // ["addRegion", mergeButtonAction,            mergeButtonClick ], //i think this one is already done i guess
                 ["addLegend", null, handleAddLegend],
                 ["changeBackgroundColor", mergeButtonAction, mergeButtonClick],
-                ["changeRegionColor", changeRegionColorAction, regionColorButtonClick],
-                ["changeBorderColor", mergeButtonAction, mergeButtonClick],
+                ["changeRegionColor", changeRegionColorAction, colorButtonClick],
+                ["changeBorderColor", changeBorderColorAction,colorButtonClick],
                 ["addText", extendedMenuActionCancel, addTextButtonClick],
                 ["editVertex", mergeButtonAction, mergeButtonClick],
                 ["moveRegion", mergeButtonAction, mergeButtonClick],

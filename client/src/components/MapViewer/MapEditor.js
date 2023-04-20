@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, useMap, GeoJSON, LayerGroup, FeatureGroup, use
 import 'leaflet/dist/leaflet.css';
 import MapColorwheelModal from "./MapViewerModal/MapColorwheelModal";
 import SubregionColorModal from "./MapViewerModal/SubregionColorModal";
+import BorderColorModal from "./MapViewerModal/BorderColorModal";
 import MapMergeChangeRegionNameModal from "./MapViewerModal/MapMergeChangeRegionNameModal";
 import MapAddRegionModal from "./MapViewerModal/MapAddRegionModal";
 import { GeomanControls } from 'react-leaflet-geoman-v2';
@@ -34,7 +35,7 @@ function MapEditor(props) {
 
     const geoJsonMapData = store.currentMapData;
     //const context = useLeafletContext();
-    console.log(geoJsonMapData);
+   
     // useEffect(() =>{
     //     console.log("changed");
     //     setUpdate(update => update+1);
@@ -98,7 +99,6 @@ function MapEditor(props) {
         addedLatlng.push(e.latlng.lat)
         let coord1NextToLatlng = []
         let coord2NextToLatlng = []
-        console.log(addedLatlng)
         geoJsonMapData.features.forEach((feature, ind) => {
             if (feature.properties.name == featureName) {
                 if (feature.geometry.type === "Polygon") {
@@ -112,8 +112,7 @@ function MapEditor(props) {
                 }
             }
         })
-        console.log(coord1NextToLatlng)
-        console.log(coord2NextToLatlng)
+
         let featureInd2=-1
         let prevCoord=[]
         
@@ -218,7 +217,7 @@ function MapEditor(props) {
         if (indexPath.length > 2) {
             ind2 = indexPath[2]
         }
-        console.log(indexPath)
+
         let removedLatlng=[]
         geoJsonMapData.features.forEach((feature, ind) => {
             if (feature.properties.name == featureName) {
@@ -226,7 +225,6 @@ function MapEditor(props) {
                     removedLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1]
                     geoJsonMapData.features[ind].geometry.coordinates[ind0].splice(ind1, 1)
                 } else if (feature.geometry.type === "MultiPolygon") {
-                    console.log(ind)
                     removedLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1][ind2]
                     geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1].splice(ind2, 1)
                 }
@@ -436,6 +434,12 @@ function MapEditor(props) {
             // Do something with the removed marker
         }
     };
+    function hexToRgb(hex) {
+        const r = parseInt(hex.substring(1, 3), 16);
+        const g = parseInt(hex.substring(3, 5), 16);
+        const b = parseInt(hex.substring(5, 7), 16);
+        return `${r}, ${g}, ${b}`;
+      }
 
     const onEachCountry = (feature, layer) => {
         if (update == 1) {
@@ -453,13 +457,18 @@ function MapEditor(props) {
             }
         }
         const countryName = feature.properties.name;
-        console.log(feature)
-        console.log(feature.subRegionColor)
+    
+        if(!feature.subRegionColor){
+            feature.subRegionColor = "#3388ff"
+        }
+        if(!feature.borderColor){
+            feature.borderColor="#0328fc"
+        }
        layer.setStyle({
         // color: "blue",
         fillColor: feature.subRegionColor,
         fillOpacity: 0.7,
-        color: "pink"
+        color: feature.borderColor
     });
         layer.bindTooltip(layer.feature.properties.name,
             { permanent: true, direction: 'center'}
@@ -478,14 +487,7 @@ function MapEditor(props) {
     'className' : 'popupCustom'
     }    
 
-
-
         let propString = countryName
-        let propObj = feature.properties;
-        // for(const property in propObj){
-        //     console.log(`${property}: ${propObj[property]}`);
-        //     propString += `${property}: ${propObj[property]}` +"<br>"
-        // }
         layer.bindPopup(propString);
         layer.options.fillOpacity = 0.4;
 
@@ -499,53 +501,33 @@ function MapEditor(props) {
                 }
             });
             if (selectModeToggle.current) {
-
+                console.log("SUP",regionsClicked)
                 let regions = regionsSelectedRef.current
                 regionsClicked.push(e)
-
-
-                // for(let i=0; i<regionsClicked.length; i++){
-                //     if(e.target.feature.properties.name === regionsClicked[i].feature.properties.name){
-                //         e.target.setStyle({
-                //             // color: "blue",
-                //             fillColor: "#3388ff",
-                //             fillOpacity: 0.4,
-                //         });
-                //         regionsClicked.splice(i, 1);
-                //         regions.splice(i, 1);
-                //         return;
-                //     }
-                // }
-
+                
                 e.target.setStyle({
                     // color: "blue",
-                    fillColor: "#284dd4",
+                    fillColor: `rgba(${hexToRgb(feature.subRegionColor)}, 0.95)`,
                     fillOpacity: 0.7,
                 });
                 regions.push(e.target.feature);
-
-                // if (regionsClicked.length > 2) {
-                //     regionsClicked[0].setStyle({
-                //         // color: "blue",
-                //         fillColor: "#3388ff",
-                //         fillOpacity: 0.4,
-                //     });
-                //
-                //     regionsClicked.splice(0, 1);
-                //     regions.splice(0,1);
-                // }
             } else {
+                
+                
                 if (currentRegion.current !== "") {
+                    let color = "#3388ff"
+                   if(currentRegion.current.feature.subRegionColor){
+                    color=currentRegion.current.feature.subRegionColor
+                   }
                     currentRegion.current.setStyle({
-                        fillColor: "#3388ff",
+                        fillColor: color,
                         fillOpacity: 0.4,
                     });
                 }
 
                 currentRegion.current = e.target;
                 currentRegion.current.setStyle({
-                    // color: "blue",
-                    fillColor: "#284dd4",
+                    fillColor: `rgba(${hexToRgb(feature.subRegionColor)}, 0.95)`,
                     fillOpacity: 0.7,
                 });
             }
@@ -583,18 +565,27 @@ function MapEditor(props) {
 
     let toggleSelectMode = () => {
 
+        
         if (currentRegion.current !== "") {
+            let color = "#3388ff"
+            if(currentRegion.current.subRegionColor){
+                color = currentRegion.current.subRegionColor
+            }
             currentRegion.current.setStyle({
-                fillColor: "#3388ff",
+                fillColor: color,
                 fillOpacity: 0.4,
             });
         }
         selectModeToggle.current = !selectModeToggle.current
         if (selectModeToggle.current === false) {
-
+            
             for (let i = 0; i < regionsClicked.length; i++) {
+                let color = "#3388ff"
+                if(regionsClicked[i].subRegionColor){
+                    color =regionsClicked[i].subRegionColor
+                }
                 regionsClicked[i].target.setStyle({
-                    fillColor: "#3388ff",
+                    fillColor: color,
                     fillOpacity: 0.4,
                 });
             }
@@ -639,6 +630,8 @@ function MapEditor(props) {
 
         emptyPoly.properties = regionsSelected[0].properties;
         emptyPoly.properties.name = newName;
+        emptyPoly.subRegionColor = regionsSelected[0].subRegionColor
+        emptyPoly.borderColor = regionsSelected[0].borderColor
 
         geoJsonMapData.features = [...allRegionArray, emptyPoly] // add to the geoJsonMapData.feature
 
@@ -648,19 +641,36 @@ function MapEditor(props) {
     }
 
     const handleChangeRegionColor = (color) => {
-
+       
         let regionsSelected = regionsSelectedRef.current
-        console.log(regionsSelected.length)
         for (let i = 0; i < regionsSelected.length; i++) {
-            regionsSelected[i].subRegionColor = color
+            // regionsSelected[i].subRegionColor = color
             for(let j=0;j<geoJsonMapData.features.length;j++){
                 if(geoJsonMapData.features[j].properties.name == regionsSelected[i].properties.name ){
-                    geoJsonMapData.features[j] = regionsSelected[i];
+                    geoJsonMapData.features[j].subRegionColor = color
                 }
             }
 
         }
-        console.log(geoJsonMapData)
+       
+        
+
+        setUpdate(update => update + 1);
+    }
+    const handleChangeBorderColor = (color) => {
+
+        let regionsSelected = regionsSelectedRef.current
+
+        for (let i = 0; i < regionsSelected.length; i++) {
+            
+            for(let j=0;j<geoJsonMapData.features.length;j++){
+                if(geoJsonMapData.features[j].properties.name == regionsSelected[i].properties.name ){
+                    geoJsonMapData.features[j].borderColor = color  ;
+                 
+                }
+            }
+
+        }
         
 
         setUpdate(update => update + 1);
@@ -672,6 +682,12 @@ function MapEditor(props) {
         regionsSelectedRef.current = [] //empty everything
         setUpdate(update => update + 1);
 
+
+    }
+    const handleCancelRegionSelection = () => {
+        let regionsSelected = regionsSelectedRef.current
+        regionsSelectedRef.current = [] //empty everything
+        setUpdate(update => update + 1);
 
     }
     const handleAddRegion=(name)=>{
@@ -690,8 +706,8 @@ function MapEditor(props) {
             <MapAddRegionModal
                 handleAddRegion={handleAddRegion}
             />
-            <SubregionColorModal handleChangeRegionColor={handleChangeRegionColor}/>
-            
+            <SubregionColorModal handleChangeRegionColor={handleChangeRegionColor} handleCancelRegionSelection={handleCancelRegionSelection}/>
+            <BorderColorModal handleChangeBorderColor={handleChangeBorderColor} handleCancelRegionSelection={handleCancelRegionSelection}/>
 
             {geoJsonMapData.features ?
                 <div>

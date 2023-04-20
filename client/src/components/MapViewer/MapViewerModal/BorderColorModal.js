@@ -27,7 +27,7 @@ const style = {
     p: 2,
 };
 
-function SubregionColorModal(props) {
+function BorderColorModal(props) {
     const { store } = useContext(GlobalStoreContext);
 
     function handleDeleteUser(event) {
@@ -38,13 +38,13 @@ function SubregionColorModal(props) {
     }
  
     const [color, setColor] = useState("#aabbcc");
-    function handleColorChange2(){
+    function handleColorChange(){
          store.changeModal("NONE");
-        props.handleChangeRegionColor(color)
+        props.handleChangeBorderColor(color)
     }
 
     return (
-        <Modal open={store.currentModal === CurrentModal.SUBREGION_PICK_COLOR_WHEEL}
+        <Modal open={store.currentModal === CurrentModal.BORDER_PICK_COLOR_WHEEL}
                onClick={handleCloseModal}
         >
              <Box
@@ -70,7 +70,7 @@ function SubregionColorModal(props) {
                     
                     <input type="button"
                         class="modal-confirm-button"
-                        onClick={handleColorChange2}
+                        onClick={handleColorChange}
                         value='Submit' />
 
                 </Box>
@@ -78,4 +78,4 @@ function SubregionColorModal(props) {
         </Modal>
     );
 }
-export default SubregionColorModal;
+export default BorderColorModal;

@@ -38,8 +38,6 @@ function MapColorwheelModal() {
     }
     function handleColorChange(){
         store.changeModal("NONE");
-        console.log(color)
-        console.log(store)
         store.colorwheelHandler(color)
     }
 
