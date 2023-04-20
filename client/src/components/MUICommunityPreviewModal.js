@@ -1,6 +1,7 @@
-import { useContext, useState } from 'react'
+import { React, useState, useEffect, useContext } from "react";
+
 import { CurrentModal, GlobalStoreContext } from "../store";
-import * as React from 'react';
+// import * as React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -55,13 +56,41 @@ function MUICommunityPreviewModal() {
     const [forkModal, setForkModal] = useState(false);
     const [downloadModal, setDownloadModal] = useState(false);
     const [reportModal, setReportModal] = useState(false);
-
-
+    const [geoJson, setGeoJson] = useState(null);
+    const [title, setTitle] = useState("untitled");
     const { store } = useContext(GlobalStoreContext);
+
+    useEffect(() => {
+        if(store.currentModal == 'COMMUNITY_PREVIEW_MODAL'){
+            fetch(process.env.REACT_APP_API_URL + 'community/getCommunityPreviewById', {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: store.currentPreviewId
+                }),
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                // console.log(data)
+                let feat = JSON.parse(data.feature);
+                if(feat.length === 0){
+                    return;
+                }
+                console.log(feat)
+                setGeoJson({type: data.type, features: feat});
+                
+            })
+            .catch(err => console.log(err));
+        }
+    }, [store.currentModal]);
 
     function handleCloseModal(event) {
         store.changeModal("NONE");
     }
+
 
     function handleFork() {
 
@@ -124,6 +153,14 @@ function MUICommunityPreviewModal() {
     {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude8"},
     ]
 
+    function onEachFeature(feature, layer){
+        const featureName = feature.properties.admin;
+        console.log("why");
+        // layer.bindPopup(featureName);
+        layer.bindTooltip(featureName,
+            {permanent: true, direction: 'center'}).openTooltip();
+    }
+
     let disable = false;
     let fillColor1="black"
     let fillColor2="red"
@@ -157,13 +194,9 @@ function MUICommunityPreviewModal() {
                                     editable={false}
                                 >
                                     <FeatureGroup>
-                                        {/*{(props.file!== undefined)?*/}
-                                        {/*    <GeoJSON*/}
-                                        {/*        key={update}*/}
-                                        {/*        data={props.file.features}*/}
-                                        {/*    />*/}
-                                        {/*    : <></>*/}
-                                        {/*}*/}
+                                        {(geoJson !== null)?
+                                            <GeoJSON data={geoJson} onEachFeature={onEachFeature} />
+                                         : <></>}
                                     </FeatureGroup>
                                     <TileLayer url="xxx" />
                                     <LayerGroup>
@@ -180,7 +213,7 @@ function MUICommunityPreviewModal() {
                                 <Grid item xs={10}>
                                     <Box >
                                         <Typography id="map-title" variant="h6" component="h2" style={{ fontSize: "2rem" }}>
-                                            <strong>Africa</strong>
+                                            <strong>{title}</strong>
                                         </Typography>
                                     </Box>
                                     <AccountCircleIcon className="material-icons-community" style={{ fontSize: '1.7rem' }} sx={{ marginTop: '1%', marginRight: '1%' }} />

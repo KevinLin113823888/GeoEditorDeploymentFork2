@@ -45,6 +45,7 @@ function MapCard(props) {
         event.stopPropagation();
         event.preventDefault();
 
+        console.log(id, title);
         store.setPreviewId(id, "COMMUNITY_PREVIEW_MODAL");
         // store.changeModal("COMMUNITY_PREVIEW_MODAL");
         
