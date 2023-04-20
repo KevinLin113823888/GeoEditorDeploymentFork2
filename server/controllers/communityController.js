@@ -18,7 +18,7 @@ class communityController {
     }
 
     static async getCommunityPreviewById(req, res) {
-        // try {
+        try {
             var { id } = req.body;
 
             var currentCommunityPreview = await CommunityPreview.findOne({ mapCard: new mongoose.Types.ObjectId(id) });
@@ -34,11 +34,11 @@ class communityController {
                 dislikes: currentCommunityPreview.dislikes, 
                 reports: currentCommunityPreview.reports
             });
-        // }
-        // catch(e){
-        //     console.log(e.toString())
-        //     return res.status(400).json({error: true, message: e.toString() });
-        // }
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
     }
 
     static async forkCommunityMap(req, res) {
