@@ -57,7 +57,7 @@ class mapController {
     }
 
     static async deleteMapById(req, res) {
-        // try {
+        try {
             var { id } = req.body;
 
             var id = new mongoose.Types.ObjectId(id);
@@ -71,11 +71,11 @@ class mapController {
             }
 
             return res.status(200).json({status: 'OK'});
-        // }
-        // catch(e){
-        //     console.log(e.toString())
-        //     return res.status(400).json({error: true, message: e.toString() });
-        // }
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
     }
     
     // duplicate map still no work, need to also add mapdata
