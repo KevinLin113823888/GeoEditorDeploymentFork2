@@ -18,15 +18,31 @@ const style = {
     p: 2,
 };
 
-function MUIChangeMapNameModal() {
+function MUIChangeMapNameModal(props) {
     const { store } = useContext(GlobalStoreContext);
     const [search, setSearch] = useState("");
 
     function handleChangeMapName(event) {
         store.changeModal("NONE");
-        
-        //Deletes the map from the database
-        //store.deleteMap();
+
+        fetch(process.env.REACT_APP_API_URL + 'map/changeMapNameById', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: store.currentMapCardId,
+                newName: search
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("data of new name", data);
+            // setMapChange(data.name);
+            props.handleUpdate()
+        })
+        .catch(err => console.log(err));
         
     }
     function handleCloseModal(event) {

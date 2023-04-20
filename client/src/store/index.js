@@ -19,7 +19,9 @@ export const GlobalStoreActionType = {
     SET_REGION_PROPERTIES:"SET_REGION_PROPERTIES",
     UPDATE_FEATURE_INDEX:"UPDATE_FEATURE_INDEX",
     SET_ZOOM: "SET_ZOOM",
-    SET_ADD_REGION: "SET_ADD_REGION"
+    SET_ADD_REGION: "SET_ADD_REGION",
+    SET_PREVIEW_ID: "SET_PREVIEW_ID",
+    SET_CURRENT_MAPCARD_ID: "SET_CURRENT_MAPCARD_ID"
 }
 
 export const CurrentModal = {
@@ -58,6 +60,8 @@ function GlobalStoreContextProvider(props) {
         centerCoords:[20,100],
         jstps:  new jsTPS(),
         colorwheelHandler: null, //this is what function to call after submitting color modal
+        currentPreviewId: null,
+        currentMapCardId: null,
     });
 
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
@@ -172,6 +176,20 @@ function GlobalStoreContextProvider(props) {
                     centerCoords: payload.center
                 });
             }
+            case GlobalStoreActionType.SET_PREVIEW_ID: {
+                return setStore({
+                    ...store,
+                    currentPreviewId: payload.id,
+                    currentModal: payload.modal
+                });
+            }
+            case GlobalStoreActionType.SET_CURRENT_MAPCARD_ID: {
+                return setStore({
+                    ...store,
+                    currentMapCardId: payload.id,
+                    currentModal: payload.modal
+                });
+            }
             default:
                 return store;
         }
@@ -282,6 +300,26 @@ function GlobalStoreContextProvider(props) {
                     zoom:zoom,
                     center:center,
                     modal:modal
+                }
+            }
+        );
+    }
+    store.setPreviewId=function(id, modal){
+        storeReducer({
+                type: GlobalStoreActionType.SET_PREVIEW_ID,
+                payload: {
+                    id: id,
+                    modal: modal
+                }
+            }
+        );
+    }
+    store.setCurrentMapCardId=function(id, modal){
+        storeReducer({
+                type: GlobalStoreActionType.SET_CURRENT_MAPCARD_ID,
+                payload: {
+                    id: id,
+                    modal: modal
                 }
             }
         );
