@@ -138,10 +138,10 @@ function YourMap() {
             <div id="borderchange">
                 <Box sx={{ marginTop: "1%" }}>
                     <Grid container rowSpacing={2} columnSpacing={4}>
-                        <Grid item xs={4} >
+                        <Grid item xs={3} md={4} >
 
                         </Grid>
-                        <Grid item xs={6} >
+                        <Grid item xs={8} md={6}>
 
                             <TextField type="text" id="outlined-basic" variant="outlined" onChange={
                                 handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw" placeholder="Search" style={{ marginTop: "0.1vw", background: "#ffffff", width: "60%" }}
@@ -157,18 +157,18 @@ function YourMap() {
                                 <SortIcon style={{ fill: "black" }} />
                             </IconButton>
                         </Grid>
-                        <Grid item xs={2} >
+                        <Grid item xs={1} md={2}>
                            
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={4} md={2}>
                             <Typography id="newmap-modal-title" variant="h6" component="h2" sx={{ marginLeft: "5%" }} style={{color: "#8c8a8a"}}>
                                 My Maps
                             </Typography>
                         </Grid>
-                        <Grid item xs={10}>
+                        <Grid item xs={6} md={10}>
 
                         </Grid>
-                        <Grid item  xs={1.4} >
+                        <Grid item  xs={3.7} md={1.4}>
                             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" 
                             sx={{ width: "100%", backgroundColor: "#ededed", height: "30vh", marginLeft: "10%","&:hover": { backgroundColor: "grey",}}} onClick={openCreateModal} >
                                 <ControlPointIcon style={{ fill: "black", fontSize: "5rem" }} />
@@ -177,7 +177,7 @@ function YourMap() {
                         
                         { 
                             mapCards.map((map) => (
-                                <Grid item xs={1.4} key = {map._id} >
+                                <Grid item xs={3.7} md={1.4} key = {map._id} >
                                 <MapCard
                                     id = {map._id}
                                     key = {map._id}

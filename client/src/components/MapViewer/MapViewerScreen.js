@@ -326,7 +326,7 @@ function MapViewerScreen(){
 
 
             <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <Box
                         sx={{
                             paddingLeft: "2%",
@@ -339,33 +339,9 @@ function MapViewerScreen(){
                        required />
 
             </InputGroup>
-
-                        {/* <TextField
-                            sx={{
-                                fontSize: 100
-                            }}
-                            defaultValue={mapName}
-                            hiddenLabel
-                            variant="standard"
-
-
-                            InputProps={{
-                                style: {fontSize: 40,
-                                    font: "Satisfy",
-                                    fontWeight: "bold",
-                                    fontFamily: "Satisfy"
-                                },
-                                disableUnderline: true
-                            }}
-                            // onChange={
-                            //     (event)=>{
-                            //         console.log("searching...", event.target.value);
-                            //         setMapChange(event.target.value)}}
-                            onBlur={(event) => handleChangeMapName(event)}
-                            fullWidth  /> */}
                     </Box>
                 </Grid>
-                <Box item xs={6} sx={{
+                <Box item xs={12} md={6} sx={{
                     paddingTop: "2%"
                 }}>
                     <Grid container spacing={2} >
@@ -381,7 +357,7 @@ function MapViewerScreen(){
 
                     </Grid>
                 </Box>
-                <Grid container spacing={2} item xs={9.5}>
+                <Grid container spacing={2} item xs={11.5} md={9.5}>
                     <Grid item xs={12}>
                         <Box
                             sx={{
@@ -390,17 +366,19 @@ function MapViewerScreen(){
                             <MapEditor  changeName={changeRegionName} key={keyid} handleCompress={handleCompress} updateViewer={handleUpdate} />
                         </Box>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} md={12}>
                         <MapLegendFooter />
                     </Grid>
                 </Grid>
-                <Grid item xs={2.5}>
+                <Grid item xs={2}  sx={{ display: { xs: 'block', md: 'none' } }} >
+                
+                </Grid>
+                <Grid item xs={8} md={2.5}>
                     <MapPropertySidebar />
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={2} md={8}>
+                
                 </Grid>
-            </Grid>
-            <Grid container spacing={2}>
             </Grid>
         </div>
     );
