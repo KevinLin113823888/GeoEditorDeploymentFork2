@@ -69,7 +69,7 @@ function MapViewerScreen(){
             if(feat.length === 0){
                 return;
             }
-            setMapChange(data.title);
+            // setMapChange(data.title);
             setGeoJson({type: data.type, features: feat});
         })
         .catch(err => console.log(err));

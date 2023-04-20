@@ -43,7 +43,9 @@ function Community() {
            console.log(data)
            if (data.mapcards === undefined) {
                 setMapCards([]);
+                console.log('none')
             } else {
+                console.log(data.mapcards)
                 setMapCards(data.mapcards);
                 console.log(mapCards);
             }
@@ -162,10 +164,10 @@ function Community() {
                         
                         { 
                             mapCards.map((map) => (
-                                <Grid item xs={1.4} key = {map.id} >
+                                <Grid item xs={1.4} key = {map._id} >
                                 <MapCard
-                                    id = {map.id}
-                                    key = {map.id}
+                                    id = {map._id}
+                                    key = {map._id}
                                     title={map.title}
                                 />
                                 </Grid>
