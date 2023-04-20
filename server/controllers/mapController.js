@@ -19,6 +19,7 @@ class mapController {
                 feature: []
             })
             await newMapData.save();
+            console.log(newMapData);
 
             var newMapCard = new MapCard({
                 title: title,
@@ -55,14 +56,19 @@ class mapController {
         }
     }
 
-    // not tested yet
     static async deleteMapById(req, res) {
         try {
             var { id } = req.body;
 
-            var id = mongoose.Types.ObjectId(id);
-            var mapCard = MapCard.findOneAndDelete({ _id: id });
-            User.findOneAndUpdate({_id: id}, { $pull: {ownedMapCards: mapCard._id} });
+            var id = new mongoose.Types.ObjectId(id);
+            var mapCard = await MapCard.findOneAndDelete({ _id: id });
+            var user = await User.findOneAndUpdate({ _id: mapCard.owner }, { $pull: {ownedMapCards: new mongoose.Types.ObjectId(mapCard._id)} });
+            await user.save();
+            await MapData.findOneAndDelete({ _id: mapCard.mapData });
+
+            if (mapCard.published) {
+                await CommunityPreview.findOneAndDelete({ mapCard: id })
+            }
 
             return res.status(200).json({status: 'OK'});
         }
@@ -115,9 +121,16 @@ class mapController {
             var { id } = req.body;
             var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { published: true });
             var newCommunityPreview = new CommunityPreview({
-                mapData: currentMapCard.mapData
+                mapCard: currentMapCard._id,
+                mapData: currentMapCard.mapData,
+                comments: [], 
+                likes: [], 
+                dislikes: [], 
+                reports: []
             });
             await newCommunityPreview.save();
+
+            console.log("new community preview", newCommunityPreview);
 
             return res.status(200).json({status: 'OK'});
         }
@@ -149,11 +162,6 @@ class mapController {
 
             var currentMapCard = await MapCard.findOne({ _id: id });
             var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: geoJSONFile.type, feature: geoJSONFile.features })
-            // var newMapData = new MapData({
-            //     type: geoJSONFile.type,
-            //     feature: geoJSONFile.features,
-            // })
-            // await newMapData.save(); 
             await currentMapData.save()
 
             return res.status(200).json({status: 'OK'});
@@ -166,7 +174,7 @@ class mapController {
 
     static async saveMapById(req, res) {
         try {
-        var { id, map } = req.body;
+            var { id, map } = req.body;
         }
         catch(e){
             console.log(e.toString())

@@ -261,8 +261,7 @@ function MapViewerScreen(){
     const handleMapClassification = () => {store.changeModal(CurrentModal.MAP_CLASSIFICATION)}
 
     function handleUpdate(){
-
-            setKeyid(keyid => keyid+1)
+        setKeyid(keyid => keyid+1)
     }
 
     function handleChangeMapName(e){

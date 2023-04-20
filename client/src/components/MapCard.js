@@ -44,7 +44,9 @@ function MapCard(props) {
     function handleClickCommunity(event) {
         event.stopPropagation();
         event.preventDefault();
-        store.changeModal("COMMUNITY_PREVIEW_MODAL");
+
+        store.setPreviewId(id, "COMMUNITY_PREVIEW_MODAL");
+        // store.changeModal("COMMUNITY_PREVIEW_MODAL");
         
     }
     function handleDuplicateMap(event) {
@@ -56,10 +58,11 @@ function MapCard(props) {
         // store.changeModal("NEW_MAP_NAME");
         
     }
-    function handleEditMap(event) {
-        console.log("editing map of ", id);
+    function handleEditMapName(event) {
+        console.log("editing map name of ", id);
+        // store.changeModal("NEW_MAP_NAME");
+        store.setCurrentMapCardId(id, "NEW_MAP_NAME")
         
-        store.changeModal("NEW_MAP_NAME");
     }
     
 
@@ -76,7 +79,7 @@ function MapCard(props) {
                 <Box style={{fontWeight: "500"}}>{title}</Box>
                 <Box sx={{marginTop:"3%",}}>
                     <FileCopyIcon onClick = {handleDuplicateMap} sx={{"&:hover": { fill: "yellow"}}}/>
-                    <BorderColorIcon onClick = {handleEditMap} sx={{"&:hover": { fill: "yellow"}}}/>
+                    <BorderColorIcon onClick = {handleEditMapName} sx={{"&:hover": { fill: "yellow"}}}/>
                     <DeleteIcon onClick = {handleRemoveMap}sx={{"&:hover": { fill: "yellow"}}}/>
                 </Box>
             </Box>
