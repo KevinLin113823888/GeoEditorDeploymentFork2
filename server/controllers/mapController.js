@@ -56,21 +56,26 @@ class mapController {
         }
     }
 
-    // not tested yet
     static async deleteMapById(req, res) {
-        try {
+        // try {
             var { id } = req.body;
 
-            var id = mongoose.Types.ObjectId(id);
-            var mapCard = MapCard.findOneAndDelete({ _id: id });
-            User.findOneAndUpdate({_id: id}, { $pull: {ownedMapCards: mapCard._id} });
+            var id = new mongoose.Types.ObjectId(id);
+            var mapCard = await MapCard.findOneAndDelete({ _id: id });
+            var user = await User.findOneAndUpdate({ _id: mapCard.owner }, { $pull: {ownedMapCards: new mongoose.Types.ObjectId(mapCard._id)} });
+            await user.save();
+            await MapData.findOneAndDelete({ _id: mapCard.mapData });
+
+            if (mapCard.published) {
+                await CommunityPreview.findOneAndDelete({ mapCard: id })
+            }
 
             return res.status(200).json({status: 'OK'});
-        }
-        catch(e){
-            console.log(e.toString())
-            return res.status(400).json({error: true, message: e.toString() });
-        }
+        // }
+        // catch(e){
+        //     console.log(e.toString())
+        //     return res.status(400).json({error: true, message: e.toString() });
+        // }
     }
     
     // duplicate map still no work, need to also add mapdata
