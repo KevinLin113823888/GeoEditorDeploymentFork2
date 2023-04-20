@@ -19,6 +19,7 @@ class mapController {
                 feature: []
             })
             await newMapData.save();
+            console.log(newMapData);
 
             var newMapCard = new MapCard({
                 title: title,
@@ -115,9 +116,16 @@ class mapController {
             var { id } = req.body;
             var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { published: true });
             var newCommunityPreview = new CommunityPreview({
-                mapData: currentMapCard.mapData
+                mapCard: currentMapCard._id,
+                mapData: currentMapCard.mapData,
+                comments: [], 
+                likes: [], 
+                dislikes: [], 
+                reports: []
             });
             await newCommunityPreview.save();
+
+            console.log("new community preview", newCommunityPreview);
 
             return res.status(200).json({status: 'OK'});
         }
@@ -149,11 +157,6 @@ class mapController {
 
             var currentMapCard = await MapCard.findOne({ _id: id });
             var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: geoJSONFile.type, feature: geoJSONFile.features })
-            // var newMapData = new MapData({
-            //     type: geoJSONFile.type,
-            //     feature: geoJSONFile.features,
-            // })
-            // await newMapData.save(); 
             await currentMapData.save()
 
             return res.status(200).json({status: 'OK'});
@@ -166,7 +169,7 @@ class mapController {
 
     static async saveMapById(req, res) {
         try {
-        var { id, map } = req.body;
+            var { id, map } = req.body;
         }
         catch(e){
             console.log(e.toString())
