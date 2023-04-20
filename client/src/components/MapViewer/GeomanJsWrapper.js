@@ -42,19 +42,6 @@ function GeomanJsWrapper(props) {
         }
     )
 
-    const handleToolTipEdit = (toolTip,type) => {
-        const LL = context.layerContainer || context.map;
-        const map = LL.pm.map
-        var el = toolTip.getElement();
-
-        el.addEventListener('contextmenu',function(event){
-            event.stopPropagation();
-            event.preventDefault();
-            toolTip.removeEventListener("blur")
-            toolTip.removeEventListener("dblclick")
-            map.removeLayer(toolTip)
-        })
-    }
     useEffect (()=>{
 
         let graphData = store.currentMapData.graphicalData
@@ -62,23 +49,21 @@ function GeomanJsWrapper(props) {
             console.log("well its undefined")
             return
         }
+
+
         // console.log("@@@@@@@@@@@@@@@@@@@@@@@ geoman textbox updated")
         console.log(store.currentMapData.graphicalData.textBoxList)
         setTextBoxList( store.currentMapData.graphicalData.textBoxList)
 
-    },[store.currentMapData.graphicalData])
-
+    },[store.currentMapData.graphicalData]) 
 
     //lets make is so that this is stateful, and that this can be called more than once.
     useEffect (()=>{
 
+        // console.log("use effect refresh geomn for the @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
 
-        //this is the part that removes all existing tooltips
-        map.eachLayer(function (layer) {
-            if (layer.options.pane === "tooltipPane") layer.removeFrom(map);
-        });
 
         if(textBoxList===undefined){
             return
@@ -100,7 +85,6 @@ function GeomanJsWrapper(props) {
                 input.addEventListener('blur', function (event) {
                     // Replace the input element with the new tooltip content
                     toolTip.setContent(input.value);
-
                 });
                 input.addEventListener('keydown', function(event) {
                     try{
@@ -109,14 +93,19 @@ function GeomanJsWrapper(props) {
                             toolTip.setContent(input.value);
                         }}
                     catch(e){
-
                     }
                 });
                 toolTip._container.innerHTML = '';
                 toolTip._container.appendChild(input);
                 input.focus();
             });
-
+            el.addEventListener('contextmenu',function(event){
+                event.stopPropagation();
+                event.preventDefault();
+                toolTip.removeEventListener("blur")
+                toolTip.removeEventListener("dblclick")
+                map.removeLayer(toolTip)
+            })
             //var draggable = new L.Draggable(el);
             var draggable = new L.Draggable(el);
             draggable.enable();
@@ -135,16 +124,15 @@ function GeomanJsWrapper(props) {
     },[textBoxList])
 
     useEffect(() => {
-        if (isInitialRender.current === false ) {// skip all future renders.
+
+        if (isInitialRender.current) {// skip initial execution of useEffect
+            isInitialRender.current = false;// set it to false so subsequent changes of dependency arr will make useEffect to execute
             return;
         }
-        isInitialRender.current = false;// set it to false so subsequent changes of dependency arr will make useEffect to execute
-        //only allow the first render
-
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
         const leafletContainer = LL
-
+        
 
         map.on('zoomend', function () {
             let centerArr = []
@@ -189,7 +177,6 @@ function GeomanJsWrapper(props) {
             }
 
         });
-
         if (leafletContainer) {
             console.log("ADDING")
             setAdded(true);
@@ -203,10 +190,21 @@ function GeomanJsWrapper(props) {
                     },
                 },
             ]
-
+            const changeRegionColorAction = [
+                'cancel',
+                {
+                    text: 'change selected region color',
+                    onClick: () => {
+                        store.changeModal(CurrentModal.SUBREGION_PICK_COLOR_WHEEL)
+                    },
+                },
+            ]
             const mergeButtonClick = () => {
                 console.log("merge button toggle clicked")
                 //on click we toggle to enable the selection of regions
+                props.toggleSelectMode()
+            }
+            const regionColorButtonClick=()=>{
                 props.toggleSelectMode()
             }
 
@@ -218,7 +216,7 @@ function GeomanJsWrapper(props) {
                     map.off("click")
                     return
                 }
-                isAddTextActive.current = true
+                    isAddTextActive.current = true
 
                 map.on("click", function (e) {
                     // var toolTip = L.tooltip({
@@ -235,7 +233,6 @@ function GeomanJsWrapper(props) {
                         type: "add",
                         textBoxCoord: e.latlng,
                         state:setTextBoxList,
-                        handleMapTextEdit: handleToolTipEdit,
                     }
                     store.jstps.addTransaction(new TextboxTPS(mappedData))
                 })
@@ -281,7 +278,7 @@ function GeomanJsWrapper(props) {
                 // ["addRegion", mergeButtonAction,            mergeButtonClick ], //i think this one is already done i guess
                 ["addLegend", null, handleAddLegend],
                 ["changeBackgroundColor", mergeButtonAction, mergeButtonClick],
-                ["changeRegionColor", mergeButtonAction, mergeButtonClick],
+                ["changeRegionColor", changeRegionColorAction, regionColorButtonClick],
                 ["changeBorderColor", mergeButtonAction, mergeButtonClick],
                 ["addText", extendedMenuActionCancel, addTextButtonClick],
                 ["editVertex", mergeButtonAction, mergeButtonClick],
