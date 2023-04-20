@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 // const nodemailer = require("nodemailer");
 const userInfoSchema = require("../models/userInfoModel");
-const Map = require('../models/mapModel')
 const MapCard = require('../models/mapCardModel')
 const MapData = require('../models/mapDataModel')
 
@@ -12,13 +11,9 @@ class userController {
             let session = req.cookies.values;
 
             var user = await userInfoSchema.findOne({username: session.username});
-            console.log("owned map cards of ", session.username, session.ownedMapCards);
+            console.log("owned map cards of ", session.username, user.ownedMapCards);
 
             var mapcard_list = [];
-            // user.ownedMapCards.forEach(e => {
-            //     var card = await MapCard.findOne({_id: e});
-            //     mapcard_list.push({title: card.title, id: e})
-            // });
 
             for(let i = 0; i<user.ownedMapCards.length; i++){
                 var card = await MapCard.findOne({_id: user.ownedMapCards[i]});
@@ -171,18 +166,21 @@ class userController {
             var { password } = req.body;
             let session = req.cookies.values;
             var user = await userInfoSchema.findOne({username: session.username});
-            // user.ownedMaps.array.forEach(i => {
-            // });
+
             var isMatch = await bcrypt.compare(password, user.password);
             if(!isMatch)
                 throw new Error("Invalid password")
-                
-            await Map.deleteMany({_id:{$in:user.ownedMaps}})
-            await MapCard.deleteMany({_id:{$in:user.ownedMapCards}})
+            
+            let mapCards = await MapCard.find({_id:{$in:user.ownedMapCards}});
+
+            for (let i = 0; i < mapCards.length; i++) {
+                await MapData.deleteOne({_id: mapCards[i].mapData })
+            }
+
+            let deletedMapCards = await MapCard.deleteMany({_id:{$in:user.ownedMapCards}});
             await userInfoSchema.deleteOne({_id: user._id})
 
             return res.status(200).clearCookie("values").json({status: 'OK'});
-
         }
         catch(e){
             return res.status(400).json({error: true, message: e.toString()});

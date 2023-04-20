@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-const Map = require('../models/mapModel')
 const User = require('../models/userInfoModel');
 const MapCard = require('../models/mapCardModel')
 const MapData = require('../models/mapDataModel')
