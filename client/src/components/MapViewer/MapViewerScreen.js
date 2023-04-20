@@ -46,9 +46,9 @@ function MapViewerScreen(){
     let shpfile = null;
     let dbffile = null;
 
-    useEffect(() => {
-        setGeoJson(na)
-    },[])
+    // useEffect(() => {
+    //     setGeoJson(na)
+    // },[])
 
 
     useEffect(() => {
@@ -65,8 +65,12 @@ function MapViewerScreen(){
         })
         .then((res) => res.json())
         .then((data) => {
-            console.log("new name", data);
+            let feat = JSON.parse(data.feature);
+            if(feat.length === 0){
+                return;
+            }
             setMapChange(data.title);
+            setGeoJson({type: data.type, features: feat});
         })
         .catch(err => console.log(err));
     },[])
