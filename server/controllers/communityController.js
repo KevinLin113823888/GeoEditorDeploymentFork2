@@ -8,8 +8,7 @@ class communityController {
     static async getCommunity(req, res) {
         try {
             let session = req.cookies.values;
-            var mapCards = await MapCard.find({published:true}); //.limit(50)
-            console.log("community maps", mapCards);
+            var mapCards = await MapCard.find({published:true});
             return res.status(200).json({status: "OK", mapcards: mapCards});
         }
         catch(e){
@@ -19,24 +18,34 @@ class communityController {
     }
 
     static async getCommunityPreviewById(req, res) {
-        try {
-        var { id } = req.body;
+        // try {
+            var { id } = req.body;
 
-        var currentCommunityPreview = CommunityPreview.find({ _id: mongoose.Types.ObjectId(id) });
+            var currentCommunityPreview = await CommunityPreview.findOne({ mapCard: new mongoose.Types.ObjectId(id) });
+            console.log(currentCommunityPreview);
+            var currentCommunityData = await MapData.findOne({ _id: currentCommunityPreview.mapData });
 
-        return res.status(200).json({status: "OK", title: currentCommunityPreview.title, });
-        }
-        catch(e){
-            console.log(e.toString())
-            return res.status(400).json({error: true, message: e.toString() });
-        }
+            return res.status(200).json({
+                status: "OK", 
+                type: currentCommunityData.type, 
+                feature: JSON.stringify(currentCommunityData.feature), 
+                comments: currentCommunityPreview.comments, 
+                likes: currentCommunityPreview.likes, 
+                dislikes: currentCommunityPreview.dislikes, 
+                reports: currentCommunityPreview.reports
+            });
+        // }
+        // catch(e){
+        //     console.log(e.toString())
+        //     return res.status(400).json({error: true, message: e.toString() });
+        // }
     }
 
     static async forkCommunityMap(req, res) {
         try {
             var { id } = req.body;
 
-            var currentCommunityPreview = CommunityPreview.find({ _id: mongoose.Types.ObjectId(id) });
+            var currentCommunityPreview = CommunityPreview.find({ _id: new mongoose.Types.ObjectId(id) });
 
             res.status(200);
         }
