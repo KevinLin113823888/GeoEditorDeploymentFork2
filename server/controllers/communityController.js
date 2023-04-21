@@ -30,6 +30,7 @@ class communityController {
             return res.status(200).json({
                 status: "OK", 
                 title: currentCommunityPreview.title,
+                id: currentCommunityPreview._id,
                 ownerName: currentOwner.username,
                 type: currentCommunityData.type, 
                 feature: JSON.stringify(currentCommunityData.feature), 
@@ -83,19 +84,59 @@ class communityController {
     }
 
     static async reportCommunityMap(req, res) {
+        try {
+            var { id, reportMessage } = req.body;
 
+            var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { reports: reportMessage } });
+
+            return res.status(200).json({status: 'OK'});
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
     }
 
     static async likeCommunityMap(req, res) {
+        try {
+            var { id } = req.body;
 
+            // var currentCommunityPreview = await 
+
+
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
     }
 
     static async dislikeCommunityMap(req, res) {
+        try {
+            var { id } = req.body;
 
+            // var currentCommunityPreview = await 
+
+
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
     }
 
     static async followCommunityMap(req, res) {
+        try {
+            var { id } = req.body;
+            let session = req.cookies.values;
 
+            var currentUser = await findOneAndUpdate({ username: session.username}, { $push: { usersFollowing: id } });
+            currentUser.save();
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
     }
 
     static async blockCommunityMap(req, res) {

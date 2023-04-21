@@ -98,6 +98,7 @@ class mapController {
             mapCardObj._id = mapCardObjId;
             mapCardObj.title = newName;
             mapCardObj.mapData = mapDataObjId;
+            mapCardObj.published = false;
             var mapCardClone = new MapCard(mapCardObj);
             await mapCardClone.save();
 
@@ -142,8 +143,6 @@ class mapController {
             });
             await newCommunityPreview.save();
 
-            console.log("new community preview", newCommunityPreview);
-
             return res.status(200).json({status: 'OK'});
         }
         catch(e){
@@ -172,9 +171,9 @@ class mapController {
         try {
             var { id, geoJSONFile } = req.body;
 
-            var currentMapCard = await MapCard.findOne({ _id: id });
-            var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: geoJSONFile.type, feature: geoJSONFile.features })
-            await currentMapData.save()
+            var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
+            var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: geoJSONFile.type, feature: geoJSONFile.features });
+            await currentMapData.save();
 
             return res.status(200).json({status: 'OK'});
         }
@@ -187,6 +186,12 @@ class mapController {
     static async saveMapById(req, res) {
         try {
             var { id, map } = req.body;
+
+            var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
+            var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: map.type, feature: map.features });
+            await currentMapData.save();
+
+            return res.status(200).json({status: 'OK'});
         }
         catch(e){
             console.log(e.toString())
