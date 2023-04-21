@@ -99,6 +99,7 @@ function MUICommunityPreviewModal() {
 
 
     function handleFork() {
+        closeForkModal();
         fetch(process.env.REACT_APP_API_URL + 'community/forkCommunityMap', {
             method: "POST",
             credentials: 'include',
@@ -118,7 +119,15 @@ function MUICommunityPreviewModal() {
     }
 
     function handleDownloadGeoJson() {
+        closeDownloadModal()
+        var json = JSON.stringify(geoJson);
 
+        var a = document.createElement("a")
+        a.href = URL.createObjectURL(
+            new Blob([json], {type:"application/json"})
+        )
+        a.download = "geoJson.geo.json"
+        a.click()
     }
 
     function handleReport() {
