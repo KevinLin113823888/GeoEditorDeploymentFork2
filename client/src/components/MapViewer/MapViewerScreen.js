@@ -140,6 +140,7 @@ function MapViewerScreen(props){
                         
                         temp = topoClient.feature(topo, topo.objects.foo);
 
+                        initGeojsonGraphicalData(temp)
                         setGeoJson(temp)
                         sendImportReq(temp);
                         setFileExist(true);
@@ -224,7 +225,7 @@ function MapViewerScreen(props){
             console.log(topo)
             
             temp = topoClient.feature(topo, topo.objects.foo);
-
+            initGeojsonGraphicalData(temp)
             setGeoJson(temp);
             sendImportReq(temp);
         }
@@ -336,6 +337,12 @@ function MapViewerScreen(props){
             console.log("data of new name", data);
         })
         .catch(err => console.log(err));
+        
+    function initGeojsonGraphicalData (geoJsonObj) {
+        geoJsonObj.graphicalData ??= {}
+        geoJsonObj.graphicalData.backgroundColor ??= "#FFFFFF"
+        geoJsonObj.graphicalData.textBoxList ??= []
+        geoJsonObj.graphicalData.legend ??= []
     }
 
     return (
@@ -386,7 +393,9 @@ function MapViewerScreen(props){
                         {Buttons(handleMapClassification, "Classification")}
                         {Buttons(handleSave, "Save")}
                         {Buttons(() => {
+                            initGeojsonGraphicalData(na)
                             setGeoJson(na)
+
                         }, "Demo")}
 
                     </Grid>
