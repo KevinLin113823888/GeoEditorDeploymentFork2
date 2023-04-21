@@ -186,7 +186,6 @@ class mapController {
     static async saveMapById(req, res) {
         try {
             var { id, map } = req.body;
-
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: map.type, feature: map.features });
             await currentMapData.save();

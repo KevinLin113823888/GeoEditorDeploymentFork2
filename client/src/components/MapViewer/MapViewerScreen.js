@@ -42,9 +42,7 @@ function MapViewerScreen(props){
     const { store } = useContext(GlobalStoreContext);
     const [GeoJson, setGeoJson] = [store.currentMapData,store.setCurrentMapData]
     const { id } = useParams();
-    // if (state){
-    //     setMapChange(state.title);
-    // }
+    
     const names = [];
     let count = 0;
     let shpfile = null;
@@ -249,7 +247,24 @@ function MapViewerScreen(props){
     const handleImport = () => {store.changeModal(CurrentModal.MAP_IMPORT)}
     const handleExport = () => {store.changeModal(CurrentModal.MAP_EXPORT)}
 
-    const handleSave = () =>   {}
+    function handleSave(){
+        fetch(process.env.REACT_APP_API_URL + 'map/saveMapById', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              id: id,
+              map: GeoJson
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+        })
+        .catch(err => console.log(err));
+    }
 
     const handlePublish = () => {
         fetch(process.env.REACT_APP_API_URL + 'map/publishMapById', {
