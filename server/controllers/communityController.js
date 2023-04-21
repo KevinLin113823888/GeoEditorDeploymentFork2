@@ -47,11 +47,34 @@ class communityController {
 
     static async forkCommunityMap(req, res) {
         try {
-            var { id } = req.body;
+            var { id, newName } = req.body;
 
-            var currentCommunityPreview = CommunityPreview.find({ _id: new mongoose.Types.ObjectId(id) });
+            var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
+            var currentCommunityData = await MapData.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapData) });
+            var currentMapCard = await MapCard.findOne({ mapData: new mongoose.Types.ObjectId(currentCommunityData._id) });
+            
+            let mapCardObjId = new mongoose.Types.ObjectId();
+            let mapDataObjId = new mongoose.Types.ObjectId();
 
-            res.status(200);
+            let mapDataObj = currentCommunityData.toObject();
+            delete mapDataObj._id;
+            mapDataObj._id = mapDataObjId
+            var mapDataClone = new MapData(mapDataObj);
+            await mapDataClone.save();
+
+            let mapCardObj = currentMapCard.toObject();
+            delete mapCardObj._id;
+            mapCardObj._id = mapCardObjId;
+            mapCardObj.title = newName;
+            mapCardObj.mapData = mapDataObjId;
+            mapCardObj.published = false;
+            var mapCardClone = new MapCard(mapCardObj);
+            await mapCardClone.save();
+
+            var user = await User.findOneAndUpdate({ _id: currentMapCard.owner }, { $push: { ownedMapCards: mapCardObjId } });
+            await user.save();
+
+            return res.status(200).json({status: 'OK'});
         }
         catch(e){
             console.log(e.toString())
@@ -59,7 +82,29 @@ class communityController {
         }
     }
 
-    static as
+    static async reportCommunityMap(req, res) {
+
+    }
+
+    static async likeCommunityMap(req, res) {
+
+    }
+
+    static async dislikeCommunityMap(req, res) {
+
+    }
+
+    static async followCommunityMap(req, res) {
+
+    }
+
+    static async blockCommunityMap(req, res) {
+
+    }
+
+    static async addComment(req, res) {
+
+    }
 };
 
 module.exports = communityController;

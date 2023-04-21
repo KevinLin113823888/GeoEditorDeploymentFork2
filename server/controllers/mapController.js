@@ -101,7 +101,8 @@ class mapController {
             var mapCardClone = new MapCard(mapCardObj);
             await mapCardClone.save();
 
-            await User.update({ _id: currentMapCard.owner }, { $push: { ownedMapCards: mapCardObjId } })
+            var user = await User.findOneAndUpdate({ _id: currentMapCard.owner }, { $push: { ownedMapCards: mapCardObjId } })
+            await user.save();
 
             return res.status(200).json({status: 'OK'});
         }
