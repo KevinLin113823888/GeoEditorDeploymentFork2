@@ -8,18 +8,18 @@ class mapController {
     static async createMap(req, res) {
         try {
             var { title } = req.body;
-            console.log("creating map", title);
+            // console.log("creating map", title);
             let session = req.cookies.values;
 
             var owner = await User.findOne({username: session.username});
-            console.log("owner", owner.name);
+            // console.log("owner", owner.name);
             
             var newMapData = new MapData({
                 type: " ", 
                 feature: []
             })
             await newMapData.save();
-            console.log(newMapData);
+            // console.log(newMapData);
 
             var newMapCard = new MapCard({
                 title: title,
@@ -46,7 +46,7 @@ class mapController {
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentMapData = await MapData.findOne({ _id: currentMapCard.mapData });
 
-            console.log("features of the map", currentMapData.feature, currentMapData.type);
+            // console.log("features of the map", currentMapData.feature, currentMapData.type);
 
             return res.status(200).json({status: 'OK', title: currentMapCard.title, type: currentMapData.type, feature: JSON.stringify(currentMapData.feature) });
         }
