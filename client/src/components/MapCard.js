@@ -68,17 +68,27 @@ function MapCard(props) {
     
 
     let cardElement = 
-    <Box sx={{"&:hover": {backgroundColor: "rgba(255,240,10,0.8)",}}}>
-        <Box sx={{ marginLeft: "10%",width:"100%"}}>
+        
+        <Box sx={{ marginLeft: "10%",
+            borderRadius:'15px',
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.15)',
+            width:"100%",
+            border: '2px solid transparent',
+            '&:hover': {
+            transform: 'translateY(-4px)',
+            borderColor: '#4F46E5',
+            boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.15)',
+            border: '3px solid #34D399',
+            },}}>
             <Box onClick = {handleClick} sx={{ width: "100%",
                 backgroundImage:`url(${background})`,
-                height: "20vh"}}/>
+                height: "20vh", borderRadius:'15px 15px 0px 0px', border:"0px"}}/>
             <Box sx={{ width: "100%",
-                backgroundColor: "lightGreen",
-                height: "10vh"}}>
+                backgroundColor: "#F0F4F8",
+                height: "10vh", borderRadius:'0px 0px 15px 15px', border:"0px"}}>
                 <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"> 
-                <Box style={{fontWeight: "500"}}>{title}</Box>
-                <Box sx={{marginTop:"3%",}}>
+                <Box style={{fontWeight:"bold"}}>{title}</Box>
+                <Box sx={{marginTop:"3%"}}>
                     <FileCopyIcon onClick = {handleDuplicateMap} sx={{"&:hover": { fill: "yellow"}}}/>
                     <BorderColorIcon onClick = {handleEditMapName} sx={{"&:hover": { fill: "yellow"}}}/>
                     <DeleteIcon onClick = {handleRemoveMap}sx={{"&:hover": { fill: "yellow"}}}/>
@@ -86,24 +96,35 @@ function MapCard(props) {
             </Box>
             </Box>
         </Box>
-    </Box>
+        
+   
     if(store.currentScreen=="community"){
         cardElement=
-        <Box sx={{"&:hover": {backgroundColor: "rgba(255,240,10,0.8)",}}}>
-        <Box sx={{ marginLeft: "10%",width:"100%"}}>
+        
+        <Box sx={{ marginLeft: "10%",
+        borderRadius:'15px',
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.15)',
+        width:"100%",
+        border: '2px solid transparent',
+        '&:hover': {
+        transform: 'translateY(-4px)',
+        borderColor: '#4F46E5',
+        boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.15)',
+        border: '3px solid #34D399',
+        },}}>
             <Box onClick = {handleClickCommunity} sx={{ width: "100%",
                 backgroundImage:`url(${background})`,
-                height: "20vh"}}/>
+                height: "20vh", borderRadius:'15px 15px 0px 0px', border:"0px"}}/>
             <Box sx={{ width: "100%",
-                backgroundColor: "lightGreen",
-                height: "10vh"}}>
+                backgroundColor: "#F0F4F8",
+                height: "10vh", borderRadius:'0px 0px 15px 15px', border:"0px"}}>
                 <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"> 
-                <Box style={{fontWeight: "500"}}>{title}</Box>
+                <Box sx={{fontWeight: "bold"}}>{title}</Box>
                 
                 </Box>
             </Box>
         </Box>
-        </Box>
+       
     }
     return (
         cardElement

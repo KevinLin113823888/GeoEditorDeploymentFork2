@@ -1,7 +1,7 @@
 import { React, useState, useEffect, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 
-import TextField from '@mui/material/TextField';
+import {TextField,InputAdornment} from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from "@mui/material/IconButton";
@@ -28,6 +28,15 @@ function Community() {
     const isMenuOpen = Boolean(anchorEl);
     const { store } = useContext(GlobalStoreContext);
     const [mapCards, setMapCards] = useState([]);
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => {
+      setIsFocused(true);
+    };
+  
+    const handleBlur = () => {
+      setIsFocused(false);
+    };
 
 
     useEffect(() => {
@@ -136,15 +145,39 @@ function Community() {
                         <Grid item xs={8} md={6}>
 
                             <TextField type="text" id="outlined-basic" variant="outlined" onChange={
-                                handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw" placeholder="Search" style={{ marginTop: "0.1vw", background: "#ffffff", width: "60%" }}
+                                handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw" placeholder="Search" style={{ marginTop: "0.1vw", background: "#ffffff", width: "60%" }} 
                                 inputProps={{
                                     style: {
                                         height: "0vw"
                                     }
+                                }} 
+                                sx={{
+                                    bgcolor: '#fff',
+                                    borderRadius: '10px',
+                                    border: '2px solid black',
+                                    boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
+                                    '& .MuiInputBase-input': {
+                                      py: '1rem',
+                                      pl: isFocused ? '0px' : '13px',
+                                      transition: 'padding-left 0.2s ease-out'
+                                    },
+                                    '& .MuiInputAdornment-root': {
+                                      position: 'absolute',
+                                      left: '3px',
+                                      transition: 'opacity 0.2s ease-out',
+                                      opacity: isFocused ? 0 : 1,
+                                    },
+                                }} 
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      <SearchIcon style={{ fill: "grey" }} />
+                                    </InputAdornment>
+                                  ),
                                 }} />
-                                 <IconButton type="submit" aria-label="search" onClick={handleKeyPress}>
-                                <SearchIcon style={{ fill: "black" }} />
-                            </IconButton>
+                                
                             <IconButton type="submit" aria-label="sort" onClick={handleSortMenuOpen} >
                                 <SortIcon style={{ fill: "black" }} />
                             </IconButton>
@@ -153,7 +186,7 @@ function Community() {
                            
                         </Grid>
                         <Grid item xs={2} md={2}>
-                            <Typography id="newmap-modal-title" variant="h6" component="h2" sx={{ marginLeft: "5%" }} style={{color: "#8c8a8a"}}>
+                            <Typography id="newmap-modal-title" variant="h5" component="h2" sx={{ marginLeft: "5%",fontWeight: 'bold' }} style={{color: "#8c8a8a"}}>
                                 Community
                             </Typography>
                         </Grid>

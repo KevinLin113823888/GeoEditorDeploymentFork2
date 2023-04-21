@@ -91,6 +91,8 @@ export default function AppBanner() {
 
     let editToolbar = "";
     let menu = introMenu;
+
+    
     function getAccountMenu() {
         if(store.currentScreen!=="home" && store.guestMode==false){
         return (<Grid container justifyContent="flex-end" style={{ gap: 10 }}>
@@ -98,15 +100,33 @@ export default function AppBanner() {
                 onClick={handleSetScreenYourMap}
                 component={Link}
                 to="/map"
-                style={{ border: "solid #000000", color: "black" }}
+                sx={{
+                    border: "solid #f0f8ff",
+                    color: "black",
+                    backgroundColor:"#d1d9e4",
+                    '&:hover': {
+                      backgroundColor: "#c4ccd4",
+                      transition: "background-color 0.3s ease-in-out",
+                    }
+                  }}
+                
             >
                 <MapIcon />
+                
             </IconButton>
             <IconButton
                 onClick={handleSetScreenCommunity}
                 component={Link}
                 to="/community"
-                style={{ border: "solid #000000", color: "black" }}
+                sx={{
+                    border: "solid #f0f8ff",
+                    color: "black",
+                    backgroundColor:"#d1d9e4",
+                    '&:hover': {
+                      backgroundColor: "#c4ccd4",
+                      transition: "background-color 0.3s ease-in-out",
+                    }
+                  }}
             >
                 <PeopleIcon />
             </IconButton>
@@ -115,7 +135,15 @@ export default function AppBanner() {
                 aria-controls={menuId}
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
-                style={{ border: "solid #000000", color: "black" }}
+                sx={{
+                    border: "solid #f0f8ff",
+                    color: "black",
+                    backgroundColor:"#d1d9e4",
+                    '&:hover': {
+                      backgroundColor: "#c4ccd4",
+                      transition: "background-color 0.3s ease-in-out",
+                    }
+                  }}
             >
                 <AccountCircle />
             </IconButton>
@@ -127,22 +155,22 @@ export default function AppBanner() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" style={{ background: "#C6DCE5", margin: '0' }} elevation={0}>
+            <AppBar position="static" style={{ background: "#f0f8ff", margin: '0', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }} elevation={0}>
                 <Toolbar variant="regular">
                     <div onClick={goHome} data-cy="home-link" >
                         <Typography
-                            style={{ fontSize: "2.5rem", fontFamily: "October Tamil", color: "#5282f2", fontWeight: "bold", display: "inline" }}
+                            style={{ fontSize: "2.5rem", fontFamily: "October Tamil", color: "#3b82f6", fontWeight: "bold", display: "inline" }}
 
                             component="span">
                             Geo
                         </Typography>
                         <Typography
-                            style={{ fontSize: "2.5rem", fontFamily: "Satisfy", color: "#65bc3f", fontWeight: "bold", display: "inline" }}
+                            style={{ fontSize: "2.5rem", fontFamily: "Satisfy", color: "#10b981", fontWeight: "bold", display: "inline" }}
                             component="span">
                             Editor
                         </Typography>
                     </div>
-                    <PublicIcon style={{ fontSize: "2rem", color: "#009800" }} />
+                    <PublicIcon style={{ fontSize: "2rem", color: "#009800" }} sx={{"&:hover": {  transform: 'rotate(15deg)'} }} />
                     {
                         getAccountMenu()
                     }

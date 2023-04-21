@@ -1,7 +1,7 @@
 import { React, useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 
-import TextField from '@mui/material/TextField';
+import {TextField,InputAdornment} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -20,6 +20,7 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import MapCard from './MapCard.js'
 
 
+
 import MUIDeleteAccModal from './MUIDeleteAccModal'
 import MUICopyMapModal from './MUICopyMapModal'
 import CreateNewMapModal from './CreateNewMapModal'
@@ -36,6 +37,16 @@ function YourMap() {
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
     const { store } = useContext(GlobalStoreContext);
+    const [isFocused, setIsFocused] = useState(false);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
 
 
     useEffect(() => {
@@ -128,7 +139,8 @@ function YourMap() {
     }
 
     return (
-        <div className="YourMap">
+       
+        <div className="YourMap" >
             <MUIDeleteAccModal />
             <CreateNewMapModal/>
             <MUIChangeMapNameModal 
@@ -144,15 +156,40 @@ function YourMap() {
                         <Grid item xs={8} md={6}>
 
                             <TextField type="text" id="outlined-basic" variant="outlined" onChange={
-                                handleUpdateSearch} onKeyPress={handleKeyPress} height="2.2vw" placeholder="Search" style={{ marginTop: "0.1vw", background: "#ffffff", width: "60%" }}
+                                handleUpdateSearch} onKeyPress={handleKeyPress} placeholder="Search" 
+                                style={{ marginTop: "0.1vw", background: "#F4F6F8", width: "60%",
+                                }}
+                                sx={{
+                                    bgcolor: '#fff',
+                                    borderRadius: '10px',
+                                    border: '2px solid black',
+                                    boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
+                                    '& .MuiInputBase-input': {
+                                      py: '1rem',
+                                      pl: isFocused ? '0px' : '13px',
+                                      transition: 'padding-left 0.2s ease-out'
+                                    },
+                                    '& .MuiInputAdornment-root': {
+                                      position: 'absolute',
+                                      left: '3px',
+                                      transition: 'opacity 0.2s ease-out',
+                                      opacity: isFocused ? 0 : 1,
+                                    },
+                                  }}
+                                  onFocus={handleFocus}
+                                  onBlur={handleBlur}
+                                  InputProps={{
+                                    startAdornment: (
+                                      <InputAdornment position="start">
+                                        <SearchIcon style={{ fill: "grey" }} />
+                                      </InputAdornment>
+                                    ),
+                                  }}
                                 inputProps={{
                                     style: {
                                         height: "0vw"
                                     }
                                 }} />
-                                 <IconButton type="submit" aria-label="search" onClick={handleKeyPress}>
-                                <SearchIcon style={{ fill: "black" }} />
-                            </IconButton>
                             <IconButton type="submit" aria-label="sort" onClick={handleSortMenuOpen} >
                                 <SortIcon style={{ fill: "black" }} />
                             </IconButton>
@@ -161,7 +198,7 @@ function YourMap() {
                            
                         </Grid>
                         <Grid item xs={4} md={2}>
-                            <Typography id="newmap-modal-title" variant="h6" component="h2" sx={{ marginLeft: "5%" }} style={{color: "#8c8a8a"}}>
+                            <Typography id="newmap-modal-title" variant="h5"  sx={{ marginLeft: "5%" ,fontWeight: 'bold'}} style={{color: "#8c8a8a"}}>
                                 My Maps
                             </Typography>
                         </Grid>
@@ -170,7 +207,7 @@ function YourMap() {
                         </Grid>
                         <Grid item  xs={3.7} md={1.4}>
                             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" 
-                            sx={{ width: "100%", backgroundColor: "#ededed", height: "30vh", marginLeft: "10%","&:hover": { backgroundColor: "grey",}}} onClick={openCreateModal} >
+                            sx={{ width: "100%", backgroundColor: "#ededed", height: "30vh", marginLeft: "10%","&:hover": { backgroundColor: "grey",transform: 'translateY(-4px)',},borderRadius:'15px',}} onClick={openCreateModal} >
                                 <ControlPointIcon style={{ fill: "black", fontSize: "5rem" }} />
                             </Box>
                         </Grid>
@@ -204,6 +241,7 @@ function YourMap() {
 
             {sortMenu}
         </div>
+        
     )
 }
 

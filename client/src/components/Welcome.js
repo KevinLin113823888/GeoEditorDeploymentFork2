@@ -39,13 +39,13 @@ function Welcome() {
                     
                     <div data-cy="message">Create, share, and explore community maps with an easy to use map editor</div>
                 </Box>
-                <Button data-cy="login-link" component={Link}to="/login" variant="contained" color="primary" sx={{ marginTop: '5%' }}>
+                <Button data-cy="login-link" component={Link}to="/login" variant="contained" color="primary" sx={{ marginTop: '5%',bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a' } }}>
                     Login
                 </Button>
-                <Button data-cy="register-link" component={Link} to="/register" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
+                <Button data-cy="register-link" component={Link} to="/register" variant="contained" color="primary" sx={{ marginTop: '2%', bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a' } }}>
                     Register
                 </Button>
-                <Button component={Link} onClick={handleGuest} to="/community" variant="contained" color="primary" sx={{ marginTop: '2%' }}>
+                <Button component={Link} onClick={handleGuest} to="/community" variant="contained" color="primary" sx={{ marginTop: '2%', bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a' } }}>
                     Continue as Guest
                 </Button>
             </Box>

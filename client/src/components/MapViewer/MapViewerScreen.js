@@ -168,9 +168,10 @@ function MapViewerScreen(){
                 <Button
                     style={{
                         width: "100%",
-                        backgroundColor: "#3c7dc3",
+                        //backgroundColor: "#3c7dc3",
 
                     }}
+                    sx={{bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a' } }}
                     variant="contained"
                     onClick={Function}
                 >
