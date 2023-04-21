@@ -221,6 +221,7 @@ function YourMap() {
                                     id = {map.id}
                                     key = {map.id}
                                     title={map.title}
+                                    handleUpdate={onLoad}
                                 />
                                 </Grid>
                             ))

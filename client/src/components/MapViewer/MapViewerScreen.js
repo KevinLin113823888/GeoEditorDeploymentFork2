@@ -79,6 +79,7 @@ function MapViewerScreen(props){
             }
             setMapChange(data.title);
             setGeoJson({type: data.type, features: feat});
+            initGeojsonGraphicalData(GeoJson);
         })
         .catch(err => console.log(err));
     },[])
