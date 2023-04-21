@@ -24,10 +24,13 @@ class communityController {
             var currentCommunityPreview = await CommunityPreview.findOne({ mapCard: new mongoose.Types.ObjectId(id) });
             // console.log(currentCommunityPreview);
             var currentCommunityData = await MapData.findOne({ _id: currentCommunityPreview.mapData });
+            var currentCommunityCard = await MapCard.findOne({ mapData: currentCommunityData._id });
+            var currentOwner = await User.findOne({ _id: currentCommunityCard.owner });
 
             return res.status(200).json({
                 status: "OK", 
                 title: currentCommunityPreview.title,
+                ownerName: currentOwner.username,
                 type: currentCommunityData.type, 
                 feature: JSON.stringify(currentCommunityData.feature), 
                 comments: currentCommunityPreview.comments, 
@@ -55,6 +58,8 @@ class communityController {
             return res.status(400).json({error: true, message: e.toString() });
         }
     }
+
+    static as
 };
 
 module.exports = communityController;
