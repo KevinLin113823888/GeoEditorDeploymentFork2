@@ -55,8 +55,8 @@ export default class TextboxTPS extends jsTPS_Transaction {
                     lat:this.textBoxCoord.lat,
                     lng:this.textBoxCoord.lng}
             }
-            textBoxlist.push(newTextBox)
-            // textBoxlist.splice(0,0,newTextBox)
+            // textBoxlist.push(newTextBox)
+            textBoxlist.splice(0,0,newTextBox)
         }
 
 
