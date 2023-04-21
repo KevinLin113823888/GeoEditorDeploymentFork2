@@ -60,6 +60,8 @@ function MUICommunityPreviewModal() {
     const [title, setTitle] = useState("untitled");
     const [owner, setOwner] = useState("owner");
     const { store } = useContext(GlobalStoreContext);
+    const [forkName, setForkName] = useState(title);
+    const [previewId, setPreviewId] = useState("");
 
     useEffect(() => {
         if(store.currentModal == 'COMMUNITY_PREVIEW_MODAL'){
@@ -82,6 +84,7 @@ function MUICommunityPreviewModal() {
                     return;
                 }
                 setTitle(data.title);
+                setPreviewId(data.id);
                 // console.log(feat)
                 setGeoJson({type: data.type, features: feat});
                 
@@ -96,10 +99,25 @@ function MUICommunityPreviewModal() {
 
 
     function handleFork() {
-
+        fetch(process.env.REACT_APP_API_URL + 'community/forkCommunityMap', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: previewId,
+                newName: forkName
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data)
+        })
+        .catch(err => console.log(err));
     }
 
-    function handleDownload() {
+    function handleDownloadGeoJson() {
 
     }
 
@@ -312,25 +330,30 @@ function MUICommunityPreviewModal() {
                     <header className="dialog-header">
                         <Box style={{ marginBottom: "10%" }}>
                             <Typography variant="h6" component="h2" style={{ fontSize: "2rem" }}>
-                                <strong>Fork map to your maps?</strong>
+                                <strong>Enter new map name to fork to your maps</strong>
                             </Typography>
                         </Box>
                     </header>
+
+                    <TextField type="text" id="outlined-basic"  variant="outlined" 
+                    onChange={e => {setForkName(e.target.value)}} height="2.2vw" placeholder="Enter Name" style={{background:"#ffffff",width:"50%"}} 
+                    inputProps={{
+                        style: {
+                          fontSize:"1rem",
+                          height: "0vw"
+                        }}} />
+
                     <Box>
-                        <div class="modal-footer" id="confirm-cancel-container">
-                            <input type="button"
-                                class="modal-confirm-button"
+                    <input type="button" 
+                                class="modal-confirm-button" 
                                 onClick={() => {
-                                    handleFork();
-                                }}
+                                    handleFork();}}
                                 value='Confirm' />
-                            <input type="button"
-                                class="modal-cancel-button"
-                                onClick={() => {
-                                    closeForkModal();
-                                }}
-                                value='Cancel' />
-                        </div>
+                    <input type="button" 
+                            class="modal-cancel-button" 
+                            onClick={() => {
+                                closeForkModal();}}
+                            value='Cancel' />
                     </Box>
                 </Box>
             </Modal>
@@ -358,8 +381,8 @@ function MUICommunityPreviewModal() {
                     </header>
                     <input type="button"
                         class="modal-confirm-button"
-                        // onClick={() => {
-                        //     handleFork();}}
+                        onClick={() => {
+                            handleDownloadGeoJson();}}
                         value='GeoJSON' />
                     <input type="button"
                         class="modal-confirm-button"
