@@ -140,7 +140,17 @@ class communityController {
     }
 
     static async blockCommunityMap(req, res) {
+        try {
+            var { id } = req.body;
+            let session = req.cookies.values;
 
+            var currentUser = await findOneAndUpdate({ username: session.username}, { $push: { blockedUsers: id } });
+            currentUser.save();
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
     }
 
     static async addComment(req, res) {
