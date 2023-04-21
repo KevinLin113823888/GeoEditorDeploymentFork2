@@ -21,12 +21,12 @@ function GeomanJsWrapper(props) {
 
     const isAddTextActive = useRef(false);
 
-    const defaultTextbox = useRef([])
+    const geoJsonTextbox = useRef([])
 
 
 
 
-    const [textBoxList,setTextBoxList] = useState([])
+    const [textBoxList,setTextBoxList] = useState(store.currentMapData.graphicalData.textBoxList)
 
     const [newPolygonFeature, setNewPolygonFeature] = useState(
         {
@@ -37,50 +37,79 @@ function GeomanJsWrapper(props) {
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [[]
-
                 ]
             }
         }
     )
 
     useEffect (()=>{
-
-        let graphData = store.currentMapData.graphicalData
-        if(graphData === undefined ){
-            console.log("well its undefined")
-            return
-        }
-
+        //called once to initialize the textboxs from geoJson
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
         const leafletContainer = LL
+        if(geoJsonTextbox.current.length===0)
+        {
+            map.eachLayer(function (layer) {
+                if(layer._latlng!==undefined)
+                {
+                    geoJsonTextbox.current.push(layer._latlng)
+                    let name = layer._content
+                    let coords = geoJsonTextbox.current[geoJsonTextbox.current.length-1]
 
-
-        //this willb e called once hopefully
-        map.eachLayer(function (layer) {
-            if(layer._latlng!==undefined)
-            {
-                defaultTextbox.current.push(layer._latlng)
-                let name = layer._content
-                let coords = defaultTextbox.current[defaultTextbox.current.length-1]
-
-                let newTextBox = {
-                    overlayText: name, coords: {
-                        lat:coords.lat,
-                        lng:coords.lng,
+                    let newTextBox = {
+                        overlayText: name, coords: {
+                            lat:coords.lat,
+                            lng:coords.lng,
+                        }
                     }
+                    store.currentMapData.graphicalData.textBoxList.push(newTextBox)
+                    layer.removeFrom(map)
                 }
-                store.currentMapData.graphicalData.textBoxList.push(newTextBox)
-                layer.removeFrom(map)
-            }
-        });
-
-        // console.log(store.currentMapData.graphicalData.textBoxList)
-        setTextBoxList( store.currentMapData.graphicalData.textBoxList)
-
-    },[store.currentMapData.graphicalData]) 
+            });
+        }
+        // setTextBoxList( store.currentMapData.graphicalData.textBoxList)
+    },[])
 
     //lets make is so that this is stateful, and that this can be called more than once.
+
+    const handleTooltipEditJSTPS = (oldText,newText,index) => {
+        let mappedData = {
+            store: store,
+            setStore: setStore,
+            type: "edit",
+            // textBoxCoord: e.latlng,
+            oldText: oldText,
+            newText: newText,
+            state:setTextBoxList,
+            index:index
+        }
+        console.log("jstps for edit text")
+        store.jstps.addTransaction(new TextboxTPS(mappedData))
+    }
+    const handleTooltipMoveJSTPS = (index,textBoxCoord) => {
+        let mappedData = {
+            store: store,
+            setStore: setStore,
+            type: "move",
+            textBoxCoord: textBoxCoord,
+            state:setTextBoxList,
+            index:index
+        }
+        console.log("jstps for move text")
+        store.jstps.addTransaction(new TextboxTPS(mappedData))
+    }
+    const handleTooltipDeleteJSTPS = (index) => {
+        let mappedData = {
+            store: store,
+            setStore: setStore,
+            type: "delete",
+            state:setTextBoxList,
+            index:index
+        }
+        console.log("jstps for delete text")
+        store.jstps.addTransaction(new TextboxTPS(mappedData))
+    }
+
     useEffect (()=>{
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
@@ -92,9 +121,7 @@ function GeomanJsWrapper(props) {
         map.eachLayer(function (layer) {
             if (layer.options.pane === "tooltipPane") layer.removeFrom(map);
         });
-
-
-        textBoxList.map(function(val){
+        textBoxList.map(function(val,index){
             var toolTip = L.tooltip({
                 permanent: true,
                 direction:"auto",
@@ -110,13 +137,16 @@ function GeomanJsWrapper(props) {
                 input.value = toolTip._content;
                 input.addEventListener('blur', function (event) {
                     // Replace the input element with the new tooltip content
-                    toolTip.setContent(input.value);
+                    //calling the jstps for edit
+                    handleTooltipEditJSTPS(val,input.value,index)
+                    // toolTip.setContent(input.value);
                 });
                 input.addEventListener('keydown', function(event) {
                     try{
                         if (event.key === 'Enter') {
                             // Update the tooltip content with the new value of the input element
-                            toolTip.setContent(input.value);
+                            handleTooltipEditJSTPS(val,input.value,index)
+                            // toolTip.setContent(input.value);
                         }}
                     catch(e){
                     }
@@ -126,11 +156,12 @@ function GeomanJsWrapper(props) {
                 input.focus();
             });
             el.addEventListener('contextmenu',function(event){
-                event.stopPropagation();
-                event.preventDefault();
-                toolTip.removeEventListener("blur")
-                toolTip.removeEventListener("dblclick")
-                map.removeLayer(toolTip)
+                handleTooltipDeleteJSTPS(index)
+                // event.stopPropagation();
+                // event.preventDefault();
+                // toolTip.removeEventListener("blur")
+                // toolTip.removeEventListener("dblclick")
+                // map.removeLayer(toolTip)
             })
             var draggable = new L.Draggable(el);
             draggable.enable();
@@ -140,8 +171,9 @@ function GeomanJsWrapper(props) {
                 var tooltipOrigin = L.point(toolTip._container.getBoundingClientRect().width / 2, toolTip._container.getBoundingClientRect().height);
                 var layerPoint = e.target._newPos.add(tooltipOrigin).subtract(tooltipOffset);
                 var latlng = map.layerPointToLatLng(layerPoint);
-                toolTip.setLatLng(latlng)
-
+                // toolTip.setLatLng(latlng)
+                // idk if we should include this as a jstps because this gives a lot of transactions
+                handleTooltipMoveJSTPS(index,latlng)
             })
             // Add event listeners to the tooltip for drag events
             el.style.pointerEvents = 'auto';

@@ -24,6 +24,7 @@ export default class TextboxTPS extends jsTPS_Transaction {
 
         this.toolTip = mappedData.toolTip
         this.handleMapTextEdit = mappedData.handleMapTextEdit
+        this.index = mappedData.index
     }
 
     //check if the geojson contains graphicalData key and adds it if not
@@ -43,45 +44,39 @@ export default class TextboxTPS extends jsTPS_Transaction {
     doTransaction() {
 
         console.log("JSTPS ADD CALLED")
-        let mapObj = this.mapObj
-        // this.initGeojsonGraphicalData(mapObj)
-
-        let textBoxlist = mapObj.graphicalData.textBoxList
-
+        let textBoxlist = this.mapObj.graphicalData.textBoxList
         let before = JSON.parse(JSON.stringify(textBoxlist))
+
         if(this.type === "add"){
             let newTextBox = {
                 overlayText:"HELLOTHERER",coords:{
                     lat:this.textBoxCoord.lat,
                     lng:this.textBoxCoord.lng}
             }
-            // textBoxlist.push(newTextBox)
-            textBoxlist.splice(0,0,newTextBox)
+            textBoxlist.push(newTextBox)
         }
-
-
-
-
-
-
+        else if(this.type === "edit"){
+            let tb = textBoxlist[this.index]
+            tb.overlayText = this.newText
+        }
+        else if(this.type === "move"){
+            let tb = textBoxlist[this.index]
+            tb.coords = this.textBoxCoord
+        }
+        else if(this.type === "delete"){
+            textBoxlist.splice(this.index,1)
+        }
 
         let after = textBoxlist
         this.diffDelta = this.diff.diff(before,after)
-        this.refreshState(mapObj)
+        this.refreshState(this.mapObj)
     }
 
     undoTransaction() {
-        let mapObj = this.mapObj
+        this.diff.unpatch(this.mapObj.graphicalData.textBoxList,this.diffDelta)
+        // console.log("after applying mapObj delta")
+        // console.log(mapObj.graphicalData.textBoxList)
 
-        this.diff.unpatch(mapObj.graphicalData.textBoxList,this.diffDelta)
-        console.log("after applying mapObj delta")
-        console.log(mapObj.graphicalData.textBoxList)
-
-        // if(this.type === "add"){
-        //     mapObj.graphicalData.textBoxList.splice(0,1)
-            // this.changeMapFunc(toolTip,"delete")
-        // }
-
-        this.refreshState(mapObj)
+        this.refreshState(this.mapObj)
     }
 }
