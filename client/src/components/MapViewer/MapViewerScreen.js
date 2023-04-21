@@ -337,7 +337,7 @@ function MapViewerScreen(props){
             console.log("data of new name", data);
         })
         .catch(err => console.log(err));
-        
+    }
     function initGeojsonGraphicalData (geoJsonObj) {
         geoJsonObj.graphicalData ??= {}
         geoJsonObj.graphicalData.backgroundColor ??= "#FFFFFF"
