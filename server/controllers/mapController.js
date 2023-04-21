@@ -78,20 +78,30 @@ class mapController {
         }
     }
     
-    // duplicate map still no work, need to also add mapdata
     static async duplicateMapById(req, res) {
         try {
             var { id, newName } = req.body;
 
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
+            var currentMapData = await MapData.findOne({ _id: new mongoose.Types.ObjectId(currentMapCard.mapData) });
             let mapCardObjId = new mongoose.Types.ObjectId();
+            let mapDataObjId = new mongoose.Types.ObjectId();
+
+            let mapDataObj = currentMapData.toObject();
+            delete mapDataObj._id;
+            mapDataObj._id = mapDataObjId
+            var mapDataClone = new MapData(mapDataObj);
+            await mapDataClone.save();
 
             let mapCardObj = currentMapCard.toObject();
             delete mapCardObj._id;
-            mapCardObj.map = mapCardObjId;
+            mapCardObj._id = mapCardObjId;
             mapCardObj.title = newName;
-            const mapCardClone = new MapCard(mapCardObj);
+            mapCardObj.mapData = mapDataObjId;
+            var mapCardClone = new MapCard(mapCardObj);
             await mapCardClone.save();
+
+            await User.update({ _id: currentMapCard.owner }, { $push: { ownedMapCards: mapCardObjId } })
 
             return res.status(200).json({status: 'OK'});
         }
@@ -121,6 +131,7 @@ class mapController {
             var { id } = req.body;
             var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { published: true });
             var newCommunityPreview = new CommunityPreview({
+                title: currentMapCard.title,
                 mapCard: currentMapCard._id,
                 mapData: currentMapCard.mapData,
                 comments: [], 

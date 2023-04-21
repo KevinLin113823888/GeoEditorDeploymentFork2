@@ -22,11 +22,12 @@ class communityController {
             var { id } = req.body;
 
             var currentCommunityPreview = await CommunityPreview.findOne({ mapCard: new mongoose.Types.ObjectId(id) });
-            console.log(currentCommunityPreview);
+            // console.log(currentCommunityPreview);
             var currentCommunityData = await MapData.findOne({ _id: currentCommunityPreview.mapData });
 
             return res.status(200).json({
                 status: "OK", 
+                title: currentCommunityPreview.title,
                 type: currentCommunityData.type, 
                 feature: JSON.stringify(currentCommunityData.feature), 
                 comments: currentCommunityPreview.comments, 
