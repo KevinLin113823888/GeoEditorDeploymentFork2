@@ -124,7 +124,7 @@ function GeomanJsWrapper(props) {
         textBoxList.map(function(val,index){
             var toolTip = L.tooltip({
                 permanent: true,
-                direction:"auto",
+                direction:"center",
                 className:"leaflet-tooltip"
             }).setContent(val.overlayText).setLatLng(val.coords)
             toolTip.addTo(map)
