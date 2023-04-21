@@ -58,10 +58,12 @@ function MUICommunityPreviewModal() {
     const [reportModal, setReportModal] = useState(false);
     const [geoJson, setGeoJson] = useState(null);
     const [title, setTitle] = useState("untitled");
+    const [owner, setOwner] = useState("owner");
     const { store } = useContext(GlobalStoreContext);
 
     useEffect(() => {
         if(store.currentModal == 'COMMUNITY_PREVIEW_MODAL'){
+            // console.log(store.currentPreviewId)
             fetch(process.env.REACT_APP_API_URL + 'community/getCommunityPreviewById', {
                 method: "POST",
                 credentials: 'include',
@@ -74,12 +76,13 @@ function MUICommunityPreviewModal() {
             })
             .then((res) => res.json())
             .then((data) => {
-                // console.log(data)
+                console.log(data)
                 let feat = JSON.parse(data.feature);
                 if(feat.length === 0){
                     return;
                 }
-                console.log(feat)
+                setTitle(data.title);
+                // console.log(feat)
                 setGeoJson({type: data.type, features: feat});
                 
             })

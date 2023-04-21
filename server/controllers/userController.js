@@ -11,7 +11,7 @@ class userController {
             let session = req.cookies.values;
 
             var user = await userInfoSchema.findOne({username: session.username});
-            console.log("owned map cards of ", session.username, user.ownedMapCards);
+            // console.log("owned map cards of ", session.username, user.ownedMapCards);
 
             var mapcard_list = [];
 

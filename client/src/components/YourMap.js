@@ -146,7 +146,9 @@ function YourMap() {
             <MUIChangeMapNameModal 
                 handleUpdate={onLoad}
             />
-            <MUICopyMapModal/>
+            <MUICopyMapModal
+                handleUpdate={onLoad}
+                />
             <div id="borderchange">
                 <Box sx={{ marginTop: "1%" }}>
                     <Grid container rowSpacing={2} columnSpacing={4}>
@@ -214,12 +216,11 @@ function YourMap() {
                         
                         { 
                             mapCards.map((map) => (
-                                <Grid item xs={3.7} md={1.4} key = {map._id} >
+                                <Grid item xs={3.7} md={1.4} key = {map.id} >
                                 <MapCard
-                                    id = {map._id}
-                                    key = {map._id}
+                                    id = {map.id}
+                                    key = {map.id}
                                     title={map.title}
-                                    
                                 />
                                 </Grid>
                             ))

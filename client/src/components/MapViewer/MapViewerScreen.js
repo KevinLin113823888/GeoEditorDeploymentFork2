@@ -3,6 +3,7 @@ import MapEditor from './MapEditor';
 import * as shapefile from "shapefile";
 import na from './na.json'
 import React, {useContext, useEffect, useState} from 'react';
+import { useLocation } from 'react-router-dom';
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import MapPropertySidebar from "./MapPropertySidebar";
@@ -28,19 +29,22 @@ import * as topoClient from 'topojson-client';
 import * as topoSimplify from 'topojson-simplify';
 
 
-function MapViewerScreen(){
+function MapViewerScreen(props){
 
     const [fileExist, setFileExist] = useState(false);
-    const [state, setState] = useState(true);
+    // const [state, setState] = useState(true);
     const [data, setData] = useState([]);
-    const [mapName,setMapChange] = useState("Untitled");
+    const { state } = useLocation();
+    const [mapName,setMapChange] = useState('untitled');
     const [keyid, setKeyid] = useState(0)
     // const [compressCount, setCompressCount] = useState(0.005);
 
     const { store } = useContext(GlobalStoreContext);
     const [GeoJson, setGeoJson] = [store.currentMapData,store.setCurrentMapData]
     const { id } = useParams();
-
+    // if (state){
+    //     setMapChange(state.title);
+    // }
     const names = [];
     let count = 0;
     let shpfile = null;
@@ -52,7 +56,11 @@ function MapViewerScreen(){
 
 
     useEffect(() => {
+        if (state){
+            setMapChange(state.title);
+        }
         console.log("ID of map", id);
+        // console.log(state);
         fetch(process.env.REACT_APP_API_URL + 'map/getMapById', {
             method: "post",
             credentials: 'include',
@@ -69,7 +77,7 @@ function MapViewerScreen(){
             if(feat.length === 0){
                 return;
             }
-            // setMapChange(data.title);
+            setMapChange(data.title);
             setGeoJson({type: data.type, features: feat});
         })
         .catch(err => console.log(err));
@@ -151,7 +159,7 @@ function MapViewerScreen(){
             }
         })
         // console.log("features", GeoJson.features);
-        setState(!state);
+        // setState(!state);
     }
 
     const upload = () => {
@@ -308,6 +316,28 @@ function MapViewerScreen(){
         else if (e.key === 'y' && e.ctrlKey)
             store.jstps.doTransaction()
     }
+
+    function handleChangeMapName(event) {
+        // store.changeModal("NONE");
+
+        fetch(process.env.REACT_APP_API_URL + 'map/changeMapNameById', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: id,
+                newName: event.target.value
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("data of new name", data);
+        })
+        .catch(err => console.log(err));
+    }
+
     return (
         <div className="App" onKeyPress={handleKeyPress}>
 
@@ -337,7 +367,10 @@ function MapViewerScreen(){
             <InputGroup className="mb-3">
                 <input type="text" className="form-control" 
                 id="validationCustom01" value={mapName}
-                       required />
+                onChange={e => {setMapChange(e.target.value)}}
+                onBlur={handleChangeMapName}
+                required
+                       />
 
             </InputGroup>
                     </Box>

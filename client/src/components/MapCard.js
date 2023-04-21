@@ -12,6 +12,7 @@ function MapCard(props) {
     const navigate = useNavigate();
     const { store } = useContext(GlobalStoreContext);
     const { id, title} = props;
+    // console.log(id, title);
 
     function handleRemoveMap(event) {
         console.log("removing map of ", id);
@@ -29,7 +30,8 @@ function MapCard(props) {
         })
         .then((res) => res.json())
         .then((data) => {
-
+            console.log(data);
+            props.handleUpdate()
         })
         .catch(err => console.log(err));
     }
@@ -54,7 +56,7 @@ function MapCard(props) {
         console.log("duplicating map of ", id);
         event.stopPropagation();
         event.preventDefault();
-        store.changeModal("COPY_MAP");
+        store.setCurrentMapCardId(id, "COPY_MAP")
 
         // store.changeModal("NEW_MAP_NAME");
         

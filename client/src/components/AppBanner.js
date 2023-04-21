@@ -157,7 +157,7 @@ export default function AppBanner() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" style={{ background: "#f0f8ff", margin: '0', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }} elevation={0}>
                 <Toolbar variant="regular">
-                    <div onClick={goHome} data-cy="home-link" >
+                    <div onClick={goHome} data-cy="home-link" style={{cursor: 'pointer'}} >
                         <Typography
                             style={{ fontSize: "2.5rem", fontFamily: "October Tamil", color: "#3b82f6", fontWeight: "bold", display: "inline" }}
 
