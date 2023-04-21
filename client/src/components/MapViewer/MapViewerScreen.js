@@ -132,6 +132,7 @@ function MapViewerScreen(){
                         
                         temp = topoClient.feature(topo, topo.objects.foo);
 
+                        initGeojsonGraphicalData(temp)
                         setGeoJson(temp)
                         sendImportReq(temp);
                         setFileExist(true);
@@ -216,7 +217,7 @@ function MapViewerScreen(){
             console.log(topo)
             
             temp = topoClient.feature(topo, topo.objects.foo);
-
+            initGeojsonGraphicalData(temp)
             setGeoJson(temp);
             sendImportReq(temp);
         }
@@ -308,6 +309,14 @@ function MapViewerScreen(){
         else if (e.key === 'y' && e.ctrlKey)
             store.jstps.doTransaction()
     }
+
+    function initGeojsonGraphicalData (geoJsonObj) {
+        geoJsonObj.graphicalData ??= {}
+        geoJsonObj.graphicalData.backgroundColor ??= "#FFFFFF"
+        geoJsonObj.graphicalData.textBoxList ??= []
+        geoJsonObj.graphicalData.legend ??= []
+    }
+
     return (
         <div className="App" onKeyPress={handleKeyPress}>
 
@@ -353,7 +362,9 @@ function MapViewerScreen(){
                         {Buttons(handleMapClassification, "Classification")}
                         {Buttons(handleSave, "Save")}
                         {Buttons(() => {
+                            initGeojsonGraphicalData(na)
                             setGeoJson(na)
+
                         }, "Demo")}
 
                     </Grid>

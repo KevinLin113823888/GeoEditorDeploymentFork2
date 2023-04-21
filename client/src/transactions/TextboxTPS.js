@@ -27,12 +27,12 @@ export default class TextboxTPS extends jsTPS_Transaction {
     }
 
     //check if the geojson contains graphicalData key and adds it if not
-    initGeojsonGraphicalData (geoJsonObj) {
-        geoJsonObj.graphicalData ??= {}
-        geoJsonObj.graphicalData.backgroundColor ??= "#FFFFFF"
-        geoJsonObj.graphicalData.textBoxList ??= []
-        geoJsonObj.graphicalData.legend ??= []
-    }
+    // initGeojsonGraphicalData (geoJsonObj) {
+    //     geoJsonObj.graphicalData ??= {}
+    //     geoJsonObj.graphicalData.backgroundColor ??= "#FFFFFF"
+    //     geoJsonObj.graphicalData.textBoxList ??= []
+    //     geoJsonObj.graphicalData.legend ??= []
+    // }
     refreshState (mapObj) {
         console.log("called to refresh i suppose")
         console.log(mapObj)
@@ -44,37 +44,44 @@ export default class TextboxTPS extends jsTPS_Transaction {
 
         console.log("JSTPS ADD CALLED")
         let mapObj = this.mapObj
-        this.initGeojsonGraphicalData(mapObj)
+        // this.initGeojsonGraphicalData(mapObj)
 
         let textBoxlist = mapObj.graphicalData.textBoxList
+
+        let before = JSON.parse(JSON.stringify(textBoxlist))
         if(this.type === "add"){
             let newTextBox = {
                 overlayText:"HELLOTHERER",coords:{
                     lat:this.textBoxCoord.lat,
                     lng:this.textBoxCoord.lng}
             }
-            textBoxlist.splice(0,0,newTextBox)
+            textBoxlist.push(newTextBox)
+            // textBoxlist.splice(0,0,newTextBox)
         }
+
+
+
+
+
+
+
+        let after = textBoxlist
+        this.diffDelta = this.diff.diff(before,after)
         this.refreshState(mapObj)
-
-        console.log("this after the changes for the map obj")
-        console.log(mapObj.graphicalData.textBoxList)
-
     }
 
     undoTransaction() {
         let mapObj = this.mapObj
-        console.log("this is for the map obj")
-        // console.log(this.mapObj)
 
+        this.diff.unpatch(mapObj.graphicalData.textBoxList,this.diffDelta)
+        console.log("after applying mapObj delta")
         console.log(mapObj.graphicalData.textBoxList)
 
-        if(this.type === "add"){
-            mapObj.graphicalData.textBoxList.splice(0,1)
+        // if(this.type === "add"){
+        //     mapObj.graphicalData.textBoxList.splice(0,1)
             // this.changeMapFunc(toolTip,"delete")
-        }
+        // }
 
-        // console.log(mapObj.graphicalData.textBoxList)
         this.refreshState(mapObj)
     }
 }

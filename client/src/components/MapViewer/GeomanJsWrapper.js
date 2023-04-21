@@ -21,6 +21,8 @@ function GeomanJsWrapper(props) {
 
     const isAddTextActive = useRef(false);
 
+    const ts = useRef([])
+
 
 
     // let textBox = [{overlayText:"HELLOTHERER",coords:{lat:20,lng:100}},{overlayText:"YOLO DUED",coords:{lat:30,lng:80}}]
@@ -50,8 +52,34 @@ function GeomanJsWrapper(props) {
             return
         }
 
+        const LL = context.layerContainer || context.map;
+        const map = LL.pm.map
+        const leafletContainer = LL
 
-        // console.log("@@@@@@@@@@@@@@@@@@@@@@@ geoman textbox updated")
+        map.eachLayer(function (layer) {
+
+            if(layer._latlng!==undefined)
+            {
+                ts.current.push(layer._latlng)
+                let name = layer._content
+                let coords = ts.current[ts.current.length-1]
+
+                // console.log(coords)
+                let newTextBox = {
+                    overlayText: name, coords: {
+                        lat:coords.lat,
+                        lng:coords.lng,
+                    }
+                }
+
+                // console.log("os this is our new text box i guess")
+                // console.log(newTextBox)
+
+                store.currentMapData.graphicalData.textBoxList.push(newTextBox)
+                layer.removeFrom(map)
+            }
+        });
+
         console.log(store.currentMapData.graphicalData.textBoxList)
         setTextBoxList( store.currentMapData.graphicalData.textBoxList)
 
@@ -59,19 +87,22 @@ function GeomanJsWrapper(props) {
 
     //lets make is so that this is stateful, and that this can be called more than once.
     useEffect (()=>{
-
-        // console.log("use effect refresh geomn for the @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
-
 
         if(textBoxList===undefined){
             return
         }
+        map.eachLayer(function (layer) {
+            console.log("or is this --- caled first")
+            // if (layer.options.pane === "tooltipPane") layer.removeFrom(map);
+        });
+
+
         textBoxList.map(function(val){
             var toolTip = L.tooltip({
                 permanent: true,
-                direction:"none",
+                direction:"auto",
                 className:"leaflet-tooltip"
             }).setContent(val.overlayText).setLatLng(val.coords)
             toolTip.addTo(map)
@@ -124,14 +155,44 @@ function GeomanJsWrapper(props) {
 
     useEffect(() => {
 
-        if (isInitialRender.current) {// skip initial execution of useEffect
-            isInitialRender.current = false;// set it to false so subsequent changes of dependency arr will make useEffect to execute
+        if (isInitialRender.current === false ) {// skip all future renders.
             return;
         }
+        isInitialRender.current = false;// set it to false so subsequent changes of dependency arr will make useEffect to execute
+
+
+        //only allow the first render
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
         const leafletContainer = LL
-        
+
+        //
+        // map.eachLayer(function (layer) {
+        //
+        //     if(layer._latlng!==undefined)
+        //     {
+        //         ts.current.push(layer._latlng)
+        //         let name = layer._content
+        //         let coords = ts.current[ts.current.length-1]
+        //
+        //         console.log(coords)
+        //         let newTextBox = {
+        //             overlayText: name, coords: coords
+        //         }
+        //
+        //         console.log("os this is our new text box i guess")
+        //         console.log(newTextBox)
+        //
+        //         store.currentMapData.graphicalData.textBoxList.push(newTextBox)
+        //         layer.removeFrom(map)
+        //     }
+        // });
+
+
+
+        console.log("once, this is only ever done once i hope to god")
+
+
 
         map.on('zoomend', function () {
             let centerArr = []

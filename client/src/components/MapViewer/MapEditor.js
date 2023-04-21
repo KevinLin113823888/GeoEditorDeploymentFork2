@@ -726,13 +726,6 @@ function MapEditor(props) {
                     />
                     <TileLayer url="http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png" />
                 </LayerGroup>
-                <GeomanJsWrapper
-                        toggleSelectMode={toggleSelectMode}
-                        compress={props.handleCompress}
-                        file = {geoJsonMapData}
-                        updateEditor = {handleUpdate}
-                        updateViewer = {props.updateViewer}
-                    />
 
                     <FeatureGroup>
 
@@ -743,6 +736,14 @@ function MapEditor(props) {
                         />
 
                     </FeatureGroup>
+
+                        <GeomanJsWrapper
+                            toggleSelectMode={toggleSelectMode}
+                            compress={props.handleCompress}
+                            file = {geoJsonMapData}
+                            updateEditor = {handleUpdate}
+                            updateViewer = {props.updateViewer}
+                        />
             </MapContainer>
                     
 
