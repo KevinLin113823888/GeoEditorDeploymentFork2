@@ -217,14 +217,27 @@ function MapViewerScreen(props){
         reader.readAsText(e.target.files[0]);
         reader.onload = e => {
             var temp = JSON.parse(e.target.result);
+            // console.log("iumport")
+            // console.log(temp) //this has grahpical data
 
+
+            let graphical =  JSON.parse(JSON.stringify(temp.graphicalData))
             var topo = topoServer.topology({foo: temp});
             topo = topoSimplify.presimplify(topo);
             
             topo = topoSimplify.simplify(topo, 0.005);
             console.log(topo)
-            
-            temp = topoClient.feature(topo, topo.objects.foo);
+
+
+            temp = topoClient.feature(topo, topo.objects.foo); //this removes all non geojson related data
+            //this includes removing graphical data and any region color ..... bruh
+
+
+            temp.graphicalData = graphical
+
+            // console.log("iumport")
+            // console.log(temp)
+
             initGeojsonGraphicalData(temp)
             setGeoJson(temp);
             sendImportReq(temp);
