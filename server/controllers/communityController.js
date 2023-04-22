@@ -22,7 +22,6 @@ class communityController {
             var { id } = req.body;
 
             var currentCommunityPreview = await CommunityPreview.findOne({ mapCard: new mongoose.Types.ObjectId(id) });
-            // console.log(currentCommunityPreview);
             var currentCommunityData = await MapData.findOne({ _id: currentCommunityPreview.mapData });
             var currentCommunityCard = await MapCard.findOne({ mapData: currentCommunityData._id });
             var currentOwner = await User.findOne({ _id: currentCommunityCard.owner });
@@ -32,6 +31,8 @@ class communityController {
                 title: currentCommunityPreview.title,
                 id: currentCommunityPreview._id,
                 ownerName: currentOwner.username,
+                follow: currentOwner.usersFollowing,
+                block: currentOwner.blockedUsers,
                 type: currentCommunityData.type, 
                 feature: JSON.stringify(currentCommunityData.feature), 
                 comments: currentCommunityPreview.comments, 
@@ -88,6 +89,7 @@ class communityController {
             var { id, reportMessage } = req.body;
 
             var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { reports: reportMessage } });
+            await currentCommunityPreview.save();
 
             return res.status(200).json({status: 'OK'});
         }
@@ -100,10 +102,12 @@ class communityController {
     static async likeCommunityMap(req, res) {
         try {
             var { id } = req.body;
+            let session = req.cookies.values;
 
-            // var currentCommunityPreview = await 
+            var currentOwner = await User.findOne({ username: session.username });
+            var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { likes: currentOwner._id } });
 
-
+            return res.status(200).json({status: 'OK'});
         }
         catch(e){
             console.log(e.toString())
@@ -114,10 +118,12 @@ class communityController {
     static async dislikeCommunityMap(req, res) {
         try {
             var { id } = req.body;
+            let session = req.cookies.values;
 
-            // var currentCommunityPreview = await 
+            var currentOwner = await User.findOne({ username: session.username });
+            var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { dislikes: currentOwner._id } });
 
-
+            return res.status(200).json({status: 'OK'});
         }
         catch(e){
             console.log(e.toString())
