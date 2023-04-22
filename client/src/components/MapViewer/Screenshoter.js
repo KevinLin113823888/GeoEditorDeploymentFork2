@@ -21,10 +21,7 @@ function Screenshoter(props) {
         // }
 
         var bounds = new L.LatLngBounds();
-        // map.whenReady((map.eachLayer((layer) => {
-        //     console.log(layer)
-        //     }
-        //     )));
+        
         map.whenReady(() => {
             map.eachLayer(function(layer){
                 setTimeout(function() {
@@ -34,7 +31,11 @@ function Screenshoter(props) {
                         bounds.extend(layer._layers[key]._bounds);
                     })
                 }
+                try{
                 map.fitBounds(bounds);
+                }catch(e){
+
+                }
             }, 1000);
             });
         });
