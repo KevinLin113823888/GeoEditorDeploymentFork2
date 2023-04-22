@@ -48,8 +48,9 @@ class communityController {
     }
 
     static async forkCommunityMap(req, res) {
-        try {
+        // try {
             var { id, newName } = req.body;
+            let session = req.cookies.values;
 
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentCommunityData = await MapData.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapData) });
@@ -73,15 +74,15 @@ class communityController {
             var mapCardClone = new MapCard(mapCardObj);
             await mapCardClone.save();
 
-            var user = await User.findOneAndUpdate({ _id: currentMapCard.owner }, { $push: { ownedMapCards: mapCardObjId } });
+            var user = await User.findOneAndUpdate({ username: session.username }, { $push: { ownedMapCards: mapCardObjId } });
             await user.save();
 
             return res.status(200).json({status: 'OK'});
-        }
-        catch(e){
-            console.log(e.toString())
-            return res.status(400).json({error: true, message: e.toString() });
-        }
+        // }
+        // catch(e){
+        //     console.log(e.toString())
+        //     return res.status(400).json({error: true, message: e.toString() });
+        // }
     }
 
     static async reportCommunityMap(req, res) {

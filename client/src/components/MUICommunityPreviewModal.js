@@ -131,7 +131,23 @@ function MUICommunityPreviewModal() {
     }
 
     function handleReport() {
-
+        // closeForkModal();
+        // fetch(process.env.REACT_APP_API_URL + 'community/forkCommunityMap', {
+        //     method: "POST",
+        //     credentials: 'include',
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify({
+        //         id: previewId,
+        //         newName: forkName
+        //     }),
+        // })
+        // .then((res) => res.json())
+        // .then((data) => {
+        //     console.log(data)
+        // })
+        // .catch(err => console.log(err));
     }
 
     function handleLike() {
