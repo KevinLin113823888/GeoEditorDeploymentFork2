@@ -86,7 +86,7 @@ function MUICommunityPreviewModal() {
                 }
                 setTitle(data.title);
                 setPreviewId(data.id);
-                // console.log(feat)
+                setOwner(data.ownerName);
                 setGeoJson({type: data.type, features: feat});
                 
             })
@@ -266,7 +266,7 @@ function MUICommunityPreviewModal() {
                                     </Box>
                                     <AccountCircleIcon className="material-icons-community" style={{ fontSize: '1.7rem' }} sx={{ marginTop: '1%', marginRight: '1%' }} />
                                     <Typography id="owner" variant="h8" component="h4" style={{ fontSize: "1.7rem", display: 'inline' }} sx={{}}  >
-                                        Bob Guy1
+                                        {owner}
                                     </Typography>
                                     <Box sx={{ marginTop: '2%' }}>
                                         <input type="button"
