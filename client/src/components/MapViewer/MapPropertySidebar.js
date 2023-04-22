@@ -42,10 +42,10 @@ function MapPropertySidebar() { //should not use props
     let propertiesSideBar = <div></div>
     if (store.currentFeatureIndex > 0) {
         propertiesSideBar = 
-            <Box sx={{ width: "93%", height: "80vh", maxHeight: "80%", overflowY: "scroll", }} style={{ border: "1px solid black" }}>
+            <Box sx={{ width: "93%", height: "80vh", maxHeight: "80%", overflowY: "scroll", }} style={{ border: "1px solid black",backgroundColor:"#f5f5f5",borderRadius:"12px",}}>
                 <Box sx={{ marginLeft: "3%" }}>
                     <Typography
-                        style={{ fontSize: "2rem", fontFamily: "October Tamil", color: "#000000", fontWeight: "bold", display: "inline" }}
+                        style={{ fontSize: "2rem", fontFamily:'Helvetica', color: "#000000", fontWeight: "bold", display: "inline" }}
                         className="material-icons"
                         component="span">
                         Properties

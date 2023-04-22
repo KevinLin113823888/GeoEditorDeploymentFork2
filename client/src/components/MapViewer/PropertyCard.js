@@ -11,6 +11,8 @@ import EditPropertiesTPS from "../../transactions/EditPropertiesTPS"
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './mapEditor.css';
+
 
 function PropertyCard(props) {
     const { store } = useContext(GlobalStoreContext);
@@ -112,13 +114,15 @@ function PropertyCard(props) {
                 <input type="text" className="form-control" id="validationCustom01" value={getPropertyKey}
                        onChange={handleChangePropertyKey}
                        onBlur={handlePropertyKeyBlur}
-
+                       style={{fontFamily:'Helvetica'}}
                        required />
                 <input type="text" className="form-control" id="validationCustom01" value={getPropertyValue}
                        onChange={handleChangePropertyValue}
                        onBlur={handlePropertyValueBlur}
-                       required />
-                <DeleteIcon onClick={handleDelete} sx={{"&:hover": {fill: "rgba(255,240,10,0.8)"}}} style={{fontSize:"1.6rem"}}/>
+                       style={{borderRadius:"0px 6px 6px 0px",fontFamily:'Helvetica'}}
+
+                       required />  
+                <DeleteIcon className= "material-icons2" onClick={handleDelete} sx={{"&:hover": {fill: "rgba(255,240,10,0.8)"}}} style={{fontSize:"1.6rem",marginTop:"5px"}}/>
 
             </InputGroup>
 

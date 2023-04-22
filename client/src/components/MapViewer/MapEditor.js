@@ -671,7 +671,6 @@ function MapEditor(props) {
             }
 
         }
-        
 
         setUpdate(update => update + 1);
     }

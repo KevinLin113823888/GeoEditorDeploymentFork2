@@ -371,7 +371,8 @@ function MapViewerScreen(props){
                         sx={{
                             paddingLeft: "2%",
                             paddingTop: "1%",
-                            maxWidth: '30%'}}>
+                            maxWidth: '30%',fontFamily:'Helvetica'}}
+                        style={{}}>
 
             <InputGroup className="mb-3">
                 <input type="text" className="form-control" 
@@ -379,8 +380,8 @@ function MapViewerScreen(props){
                 onChange={e => {setMapChange(e.target.value)}}
                 onBlur={handleChangeMapName}
                 required
-                style={{ fontSize: "2rem",fontWeight:"bold", border: "none"}}
-                sx={{width:'20%'}}
+                style={{ fontSize: "2rem",fontWeight:"bold", border: "none",}}
+                sx={{width:'20%',fontFamily:'Helvetica'}}
                        />
 
             </InputGroup>

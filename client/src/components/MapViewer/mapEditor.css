@@ -65,3 +65,6 @@
     .leaflet-tooltip-right:before {
         border: none !important;
     }
+    .material {
+      vertical-align: -5rem; /*Change this to adjust the icon*/
+    }
