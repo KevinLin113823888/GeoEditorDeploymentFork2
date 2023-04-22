@@ -47,8 +47,9 @@ function GeomanJsWrapper(props) {
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
         const leafletContainer = LL
-        if(geoJsonTextbox.current.length===0)
+        if(geoJsonTextbox.current.length===0 && textBoxList.length===0)
         {
+            console.log("called once ??")
             map.eachLayer(function (layer) {
                 if(layer._latlng!==undefined)
                 {
