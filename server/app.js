@@ -1,6 +1,7 @@
 const express = require("express");
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
+var session = require('express-session');
 
 const app = express();
 
@@ -10,9 +11,17 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json({ limit: '100mb' }));
-// app.use(express.urlencoded({ limit: '50mb' }));
-
+app.use(session(
+    { 
+        secret: "pizzaspaghetti", 
+        cookie: { maxAge: 60000 }, 
+        resave: false,
+        saveUninitialized: true
+    }
+));
 app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const connectDB = require("./mongo");
 var userRouter = require('./routes/userRoute');

@@ -8,11 +8,9 @@ const MapData = require('../models/mapDataModel')
 class userController {
     static async getLoggedIn(req, res) {
         try{
-            let session = req.cookies.values;
+            let username = req.session.username;
 
-            console.log("this should be the cookies right.")
-            console.log(session)
-            var user = await userInfoSchema.findOne({username: session.username});
+            var user = await userInfoSchema.findOne({username: username});
 
             var mapcard_list = [];
             for(let i = 0; i<user.ownedMapCards.length; i++){
@@ -20,7 +18,7 @@ class userController {
                 mapcard_list.push({title: card.title, id: card._id})
             }
 
-            return res.status(200).json({status: 'OK', username: session.username, mapcards: mapcard_list});
+            return res.status(200).json({status: 'OK', username: username, mapcards: mapcard_list});
         }
         catch(e){
             console.log(e.toString())
@@ -48,8 +46,9 @@ class userController {
                 usersFollowing: []
             });
             await user.save();
-            console.log("saved to db");
-            return res.status(200).cookie("values", {id: user._id, username: user.username}).json({status: 'OK', name: user.name});
+            req.session.username = user.username;
+            console.log(req.session);
+            return res.status(200).json({status: 'OK', name: user.name});
         }
         catch (e){
             console.log(e.toString());
@@ -69,13 +68,10 @@ class userController {
             var isMatch = await bcrypt.compare(password, user.password);
             if(!isMatch)
                 throw new Error("Invalid password")
-
-            return res.status(200).cookie("values",
-                {
-                    id: user._id,
-                    username: user.username
-                }
-            ).json({status: 'OK', name: user.name});
+            
+            req.session.username = user.username;
+            console.log(req.session);
+            return res.status(200).json({status: 'OK', name: user.name});
         }
         catch(e){
             console.log(e.toString())
@@ -85,7 +81,8 @@ class userController {
 
     static async logout(req, res, next) {
         try{
-            return res.status(200).clearCookie("values").json({status: 'OK'});
+            req.session.destroy();
+            return res.status(200).json({status: 'OK'});
         }catch (e){
             console.log(e)
             return res.status(400).clearCookie("values").json({status: e.toString()});
@@ -158,8 +155,8 @@ class userController {
     static async deleteUser(req, res) {
         try{
             var { password } = req.body;
-            let session = req.cookies.values;
-            var user = await userInfoSchema.findOne({username: session.username});
+            let username = req.session.username;
+            var user = await userInfoSchema.findOne({username: username});
 
             var isMatch = await bcrypt.compare(password, user.password);
             if(!isMatch)
