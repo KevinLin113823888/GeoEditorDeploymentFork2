@@ -35,7 +35,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --forceExit --detectOpenHandles",
     "eject": "react-scripts eject",
     "cypress": "cypress open"
   },
@@ -58,6 +58,7 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^12.9.0"
+    "cypress": "^12.9.0",
+    "jest": "^27.5.1"
   }
 }

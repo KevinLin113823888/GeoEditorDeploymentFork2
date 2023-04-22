@@ -42,9 +42,7 @@ function MapViewerScreen(props){
     const { store } = useContext(GlobalStoreContext);
     const [GeoJson, setGeoJson] = [store.currentMapData,store.setCurrentMapData]
     const { id } = useParams();
-    // if (state){
-    //     setMapChange(state.title);
-    // }
+    
     const names = [];
     let count = 0;
     let shpfile = null;
@@ -219,14 +217,27 @@ function MapViewerScreen(props){
         reader.readAsText(e.target.files[0]);
         reader.onload = e => {
             var temp = JSON.parse(e.target.result);
+            // console.log("iumport")
+            // console.log(temp) //this has grahpical data
 
+
+            let graphical =  JSON.parse(JSON.stringify(temp.graphicalData))
             var topo = topoServer.topology({foo: temp});
             topo = topoSimplify.presimplify(topo);
             
             topo = topoSimplify.simplify(topo, 0.005);
             console.log(topo)
-            
-            temp = topoClient.feature(topo, topo.objects.foo);
+
+
+            temp = topoClient.feature(topo, topo.objects.foo); //this removes all non geojson related data
+            //this includes removing graphical data and any region color ..... bruh
+
+
+            temp.graphicalData = graphical
+
+            // console.log("iumport")
+            // console.log(temp)
+
             initGeojsonGraphicalData(temp)
             setGeoJson(temp);
             sendImportReq(temp);
@@ -249,7 +260,24 @@ function MapViewerScreen(props){
     const handleImport = () => {store.changeModal(CurrentModal.MAP_IMPORT)}
     const handleExport = () => {store.changeModal(CurrentModal.MAP_EXPORT)}
 
-    const handleSave = () =>   {}
+    function handleSave(){
+        fetch(process.env.REACT_APP_API_URL + 'map/saveMapById', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              id: id,
+              map: GeoJson
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+        })
+        .catch(err => console.log(err));
+    }
 
     const handlePublish = () => {
         fetch(process.env.REACT_APP_API_URL + 'map/publishMapById', {
