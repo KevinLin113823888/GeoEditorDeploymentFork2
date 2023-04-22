@@ -11,10 +11,8 @@ class userController {
             let session = req.cookies.values;
 
             var user = await userInfoSchema.findOne({username: session.username});
-            // console.log("owned map cards of ", session.username, user.ownedMapCards);
 
             var mapcard_list = [];
-
             for(let i = 0; i<user.ownedMapCards.length; i++){
                 var card = await MapCard.findOne({_id: user.ownedMapCards[i]});
                 mapcard_list.push({title: card.title, id: card._id})
@@ -49,13 +47,7 @@ class userController {
             });
             await user.save();
             console.log("saved to db");
-            return res.status(200).cookie("values",
-                {
-                    id: user._id,
-                    username: user.username
-                }
-            ).json({status: 'OK', name: user.name});
-            // return res.status(200).json({status: 'OK'});
+            return res.status(200).cookie("values", {id: user._id, username: user.username}).json({status: 'OK', name: user.name});
         }
         catch (e){
             console.log(e.toString());

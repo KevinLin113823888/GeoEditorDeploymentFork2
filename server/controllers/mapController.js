@@ -8,18 +8,14 @@ class mapController {
     static async createMap(req, res) {
         try {
             var { title } = req.body;
-            // console.log("creating map", title);
             let session = req.cookies.values;
 
             var owner = await User.findOne({username: session.username});
-            // console.log("owner", owner.name);
-            
             var newMapData = new MapData({
                 type: " ", 
                 feature: []
             })
             await newMapData.save();
-            // console.log(newMapData);
 
             var newMapCard = new MapCard({
                 title: title,
@@ -45,8 +41,6 @@ class mapController {
 
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentMapData = await MapData.findOne({ _id: currentMapCard.mapData });
-
-            // console.log("features of the map", currentMapData.feature, currentMapData.type);
 
             return res.status(200).json({status: 'OK', title: currentMapCard.title, type: currentMapData.type, feature: JSON.stringify(currentMapData.feature) });
         }
@@ -190,6 +184,31 @@ class mapController {
             var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: map.type, feature: map.features });
             await currentMapData.save();
 
+            return res.status(200).json({status: 'OK'});
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
+    }
+
+    static async getMapImageById(req, res) {
+        try {
+            { id } = req.body;
+            var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
+            return res.status(200).json({status: 'OK', image: currentMapCard.mapImages});
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
+    }
+
+    static async setMapImagebyId(req, res) {
+        try {
+            { id, image } = req.body;
+            var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { mapImages: image });
+            await currentMapCard.save();
             return res.status(200).json({status: 'OK'});
         }
         catch(e){
