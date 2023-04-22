@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef,useContext } from 'react';
-import { MapContainer, TileLayer, useMap, GeoJSON, LayerGroup, FeatureGroup, useMapEvents, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, useMap, GeoJSON, LayerGroup, FeatureGroup, useMapEvents, Marker, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import MapColorwheelModal from "./MapViewerModal/MapColorwheelModal";
 import SubregionColorModal from "./MapViewerModal/SubregionColorModal";
@@ -25,6 +25,7 @@ function MapEditor(props) {
     const [isPopup, setPopup] = useState(false);
     const [update, setUpdate] = useState(1);
     const { store } = useContext(GlobalStoreContext);
+    const tileRef = useRef();
 
     const regionsSelectedRef = useRef([])
     const regionsSelectedRef2 = useRef([])
@@ -694,6 +695,17 @@ function MapEditor(props) {
         setUpdate(update=>update+1)
     }
 
+    useEffect(() => {
+        if(tileRef.current === undefined)
+            return
+            console.log("this for the background map colors")
+            console.log(tileRef.current.getContainer().style)
+            tileRef.current
+                .getContainer()
+                .style.setProperty("opacity", `50%`);
+    }, [tileRef.current]);
+
+
     return (
         <div>
             <MapColorwheelModal/>
@@ -709,31 +721,25 @@ function MapEditor(props) {
 
             {geoJsonMapData.features ?
                 <div>
-                    
-                    
+
                     <MapContainer
-                style={{ height: "80vh" }}sx={{marginTop:"30vh"}} zoom={store.zoomLevel} center={store.centerCoords}
+                style={{ height: "80vh",
+                    backgroundColor: "red",
+                }}sx={{marginTop:"30vh"}} zoom={store.zoomLevel} center={store.centerCoords}
                 editable={true}
             >
-                
-                <TileLayer url="xxx" />
 
-                <LayerGroup>
-                    <TileLayer
-                        attribution='&amp;copy <update href="http://osm.org/copyright">OpenStreetMap</update> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <TileLayer url="http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png" />
-                </LayerGroup>
-
+                        <TileLayer
+                            ref={tileRef}
+                            attribution='&amp;copy <update href="http://osm.org/copyright">OpenStreetMap</update> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
                     <FeatureGroup>
-
                         <GeoJSON
                             key={update}
                             data={geoJsonMapData.features}
                             onEachFeature={onEachCountry}
                         />
-
                     </FeatureGroup>
 
                         <GeomanJsWrapper
@@ -744,12 +750,6 @@ function MapEditor(props) {
                             updateViewer = {props.updateViewer}
                         />
             </MapContainer>
-                    
-
-
-
-
-
                 </div>
                 :
                 <></>

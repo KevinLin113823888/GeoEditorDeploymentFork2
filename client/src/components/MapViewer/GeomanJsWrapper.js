@@ -68,7 +68,15 @@ function GeomanJsWrapper(props) {
                 }
             });
         }
-        // setTextBoxList( store.currentMapData.graphicalData.textBoxList)
+        // map.eachLayer(function (layer) {
+        //     if(layer._url !== undefined){
+        //         console.log("this is for layer")
+        //         console.log(layer)
+        //         layer.getContainer().style.setProperty("opacity", `50%`)
+        //         console.log(layer.getContainer().style)
+        //     }
+        // })
+            // setTextBoxList( store.currentMapData.graphicalData.textBoxList)
     },[])
 
     //lets make is so that this is stateful, and that this can be called more than once.
