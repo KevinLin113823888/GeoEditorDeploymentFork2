@@ -243,7 +243,7 @@ function MapViewerScreen(props) {
     const handleExport = () => { store.changeModal(CurrentModal.MAP_EXPORT) }
 
     function handleSave() {
-        store.takeScreenShot(!store.setScreenshot)
+        // store.takeScreenShot(!store.setScreenshot)
         fetch(process.env.REACT_APP_API_URL + 'map/saveMapById', {
             method: "POST",
             credentials: 'include',
@@ -422,7 +422,9 @@ function MapViewerScreen(props) {
                             sx={{
                                 paddingLeft: "1.5%"
                             }}>
-                            <MapEditor changeName={changeRegionName} key={keyid} handleCompress={handleCompress} updateViewer={handleUpdate} />
+                            <MapEditor changeName={changeRegionName} key={keyid} 
+                            handleCompress={handleCompress} updateViewer={handleUpdate} 
+                            mapCardId={id} />
                         </Box>
                     <Grid item xs={12} md={12}>
                         <MapLegendFooter />

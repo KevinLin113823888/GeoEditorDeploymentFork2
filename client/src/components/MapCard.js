@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import Box from '@mui/material/Box';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
@@ -11,8 +11,30 @@ import background from "./cardPic.png";
 function MapCard(props) {
     const navigate = useNavigate();
     const { store } = useContext(GlobalStoreContext);
-    const { id, title} = props;
+    const { id, title, image, imageType} = props;
+    const [imageurl, setImageurl] = useState(background)
     // console.log(id, title);
+    useEffect(() =>{
+        // const blob = new Blob([image], {type: imageType});
+        const byteCharacters = atob(image.split(',')[1]);
+        const byteNumbers = new Array(byteCharacters.length);
+
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: imageType });
+        const urlpath = URL.createObjectURL(blob).substring(4);
+        setImageurl(urlpath);
+        // document.getElementbyId('mapcardid').style.backgroundImage = urlpath;
+
+        // var a = document.createElement("a")
+        // a.href = URL.createObjectURL(blob)
+        // a.download = "screenshot.png"
+        // a.click()
+
+    }, []);
 
     function handleRemoveMap(event) {
         console.log("removing map of ", id);
@@ -83,8 +105,11 @@ function MapCard(props) {
             border: '3px solid #34D399',
             },}}>
             <Box onClick = {handleClick} sx={{ width: "100%",
-                backgroundImage:`url(${background})`,
-                height: "20vh", borderRadius:'15px 15px 0px 0px', border:"0px"}}/>
+                backgroundImage: `url(${background})`,
+                height: "20vh", borderRadius:'15px 15px 0px 0px', border:"0px"}}
+                id = "mapcardid"
+                />
+                    {/* <img src={imageurl}/> */}
             <Box sx={{ width: "100%",
                 backgroundColor: "#F0F4F8",
                 height: "10vh", borderRadius:'0px 0px 15px 15px', border:"0px"}}>

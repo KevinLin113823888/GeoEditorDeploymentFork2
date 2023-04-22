@@ -5,8 +5,8 @@ const cors = require("cors");
 const app = express();
 
 app.use(cors({
-    // origin: ['http://localhost:3000','https://bejewelled-rugelach-940512.netlify.app'],
-    origin: "*",
+    origin: ['http://localhost:3000','https://bejewelled-rugelach-940512.netlify.app'],
+    // origin: "*",
     credentials: true
 }));
 app.use(express.json({ limit: '100mb' }));
