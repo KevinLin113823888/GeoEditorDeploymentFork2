@@ -13,5 +13,6 @@ router.post('/mapClassificationById', MapController.mapClassificationById);
 router.post('/importMapFileById', MapController.importMapFileById);
 router.post('/saveMapById', MapController.saveMapById);
 router.post('/getMapImageById', MapController.getMapImageById);
+router.post('/setMapImageById', MapController.setMapImagebyId);
 
 module.exports = router

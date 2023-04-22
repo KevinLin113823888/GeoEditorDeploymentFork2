@@ -21,7 +21,9 @@ export const GlobalStoreActionType = {
     SET_ZOOM: "SET_ZOOM",
     SET_ADD_REGION: "SET_ADD_REGION",
     SET_PREVIEW_ID: "SET_PREVIEW_ID",
-    SET_CURRENT_MAPCARD_ID: "SET_CURRENT_MAPCARD_ID"
+    SET_CURRENT_MAPCARD_ID: "SET_CURRENT_MAPCARD_ID",
+    SET_SCREENSHOT: "SET_SCREENSHOT",
+    SET_SCREENSHOT_BLOB: "SET_SCREENSHOT_BLOB",
 }
 
 export const CurrentModal = {
@@ -64,6 +66,8 @@ function GlobalStoreContextProvider(props) {
         colorwheelHandler: null, //this is what function to call after submitting color modal
         currentPreviewId: null,
         currentMapCardId: null,
+        setScreenshot: false,
+        
     });
 
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
@@ -190,6 +194,12 @@ function GlobalStoreContextProvider(props) {
                     ...store,
                     currentMapCardId: payload.id,
                     currentModal: payload.modal
+                });
+            }
+            case GlobalStoreActionType.SET_SCREENSHOT: {
+                return setStore({
+                    ...store,
+                    setScreenshot: payload.screenshot
                 });
             }
             default:
@@ -325,6 +335,14 @@ function GlobalStoreContextProvider(props) {
                 }
             }
         );
+    }
+    store.takeScreenShot=function(screenshot){
+        storeReducer({
+            type: GlobalStoreActionType.SET_SCREENSHOT,
+            payload: {
+                screenshot: screenshot
+            }
+        });
     }
 
     return (

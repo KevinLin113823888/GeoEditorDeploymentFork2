@@ -203,7 +203,7 @@ function MapViewerScreen(props) {
             // console.log(temp) //this has grahpical data
 
 
-            let graphical = JSON.parse(JSON.stringify(temp.graphicalData))
+            // let graphical = JSON.parse(JSON.stringify(temp.graphicalData))
             var topo = topoServer.topology({ foo: temp });
             topo = topoSimplify.presimplify(topo);
 
@@ -215,7 +215,7 @@ function MapViewerScreen(props) {
             //this includes removing graphical data and any region color ..... bruh
 
 
-            temp.graphicalData = graphical
+            // temp.graphicalData = graphical
 
             // console.log("iumport")
             // console.log(temp)

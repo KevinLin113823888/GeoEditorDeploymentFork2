@@ -20,12 +20,14 @@ import L from "leaflet";
 import { CurrentModal, GlobalStoreContext } from "../../store/index"
 import './mapEditor.css';
 
+import Screenshoter from './Screenshoter';
+
 function MapEditor(props) {
   
     const [isPopup, setPopup] = useState(false);
     const [update, setUpdate] = useState(1);
     const { store } = useContext(GlobalStoreContext);
-    const tileRef = useRef();
+    // const tileRef = useRef();
 
     const regionsSelectedRef = useRef([])
     const regionsSelectedRef2 = useRef([])
@@ -695,15 +697,15 @@ function MapEditor(props) {
         setUpdate(update=>update+1)
     }
 
-    useEffect(() => { //why isnt this permanent>
-        if(tileRef.current === undefined)
-            return
-            console.log("this for the background map colors")
-            console.log(tileRef.current.getContainer().style)
-            tileRef.current
-                .getContainer()
-                .style.setProperty("opacity", `50%`);
-    }, [tileRef.current,store.currentMapData.graphicalData]);
+    // useEffect(() => { //why isnt this permanent>
+    //     if(tileRef.current === undefined)
+    //         return
+    //         console.log("this for the background map colors")
+    //         console.log(tileRef.current.getContainer().style)
+    //         tileRef.current
+    //             .getContainer()
+    //             .style.setProperty("opacity", `50%`);
+    // }, [tileRef.current,store.currentMapData.graphicalData]);
 
 
     return (
@@ -721,16 +723,28 @@ function MapEditor(props) {
 
             {geoJsonMapData.features ?
                 <div>
-
-                    <MapContainer
-                style={{ height: "80vh",
-                    backgroundColor: store.currentMapData.graphicalData.backgroundColor,
-                }}sx={{marginTop:"30vh"}} zoom={store.zoomLevel} center={store.centerCoords}
+                    
+                    
+                    <MapContainer id="mapitem"
+                style={{ height: "80vh" }}sx={{marginTop:"30vh"}} zoom={store.zoomLevel} center={store.centerCoords}
                 editable={true}
-            >
+                >
+                <Screenshoter
+                    mapCardId = {props.mapCardId}
+                    />
+                
+                <TileLayer url="xxx" />
+
+                <LayerGroup>
+                    <TileLayer
+                        attribution='&amp;copy <update href="http://osm.org/copyright">OpenStreetMap</update> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <TileLayer url="http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png" />
+                </LayerGroup>
 
                         <TileLayer
-                            ref={tileRef}
+                            // ref={tileRef}
                             attribution='&amp;copy <update href="http://osm.org/copyright">OpenStreetMap</update> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />

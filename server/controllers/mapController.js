@@ -194,7 +194,7 @@ class mapController {
 
     static async getMapImageById(req, res) {
         try {
-            { id } = req.body;
+            var { id } = req.body;
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
             return res.status(200).json({status: 'OK', image: currentMapCard.mapImages});
         }
@@ -206,7 +206,7 @@ class mapController {
 
     static async setMapImagebyId(req, res) {
         try {
-            { id, image } = req.body;
+            var { id, image } = req.body;
             var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { mapImages: image });
             await currentMapCard.save();
             return res.status(200).json({status: 'OK'});
@@ -217,5 +217,7 @@ class mapController {
         }
     }
 }
+
+
 
 module.exports = mapController;
