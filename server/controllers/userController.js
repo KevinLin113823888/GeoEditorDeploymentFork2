@@ -10,6 +10,8 @@ class userController {
         try{
             let session = req.cookies.values;
 
+            console.log("this should be the cookies right.")
+            console.log(session)
             var user = await userInfoSchema.findOne({username: session.username});
 
             var mapcard_list = [];
