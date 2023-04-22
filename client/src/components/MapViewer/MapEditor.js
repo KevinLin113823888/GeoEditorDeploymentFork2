@@ -695,7 +695,7 @@ function MapEditor(props) {
         setUpdate(update=>update+1)
     }
 
-    useEffect(() => {
+    useEffect(() => { //why isnt this permanent>
         if(tileRef.current === undefined)
             return
             console.log("this for the background map colors")
@@ -703,7 +703,7 @@ function MapEditor(props) {
             tileRef.current
                 .getContainer()
                 .style.setProperty("opacity", `50%`);
-    }, [tileRef.current]);
+    }, [tileRef.current,store.currentMapData.graphicalData]);
 
 
     return (
@@ -724,7 +724,7 @@ function MapEditor(props) {
 
                     <MapContainer
                 style={{ height: "80vh",
-                    backgroundColor: "red",
+                    backgroundColor: store.currentMapData.graphicalData.backgroundColor,
                 }}sx={{marginTop:"30vh"}} zoom={store.zoomLevel} center={store.centerCoords}
                 editable={true}
             >

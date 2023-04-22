@@ -346,15 +346,29 @@ function GeomanJsWrapper(props) {
                 store.jstps.addTransaction(new EditLegendTPS(mappedData))
             }
 
+            const handleChangeBackgroundColor = (color) => {
+                console.log("handle background color called")
+                store.currentMapData.graphicalData.backgroundColor = color
+                let newMap = {...store.currentMapData}
+                setStore({
+                    ...store,
+                    currentMapData: newMap
+                })
+
+                console.log(store.currentMapData)
+            }
+            const handleChangeBackgroundColorModal = () => {
+                store.colorwheelHandler = handleChangeBackgroundColor
+                store.changeModal("MAP_PICK_COLOR_WHEEL")
+            }
 
             //each of the right geoman buttons, [their names, extra menu after click, function on initial click]
             //null means no popup actions
             const customButtonCollection = [
                 ["merge", mergeButtonAction, mergeButtonClick],
-                //TODO: jstps for this one
                 // ["addRegion", mergeButtonAction,            mergeButtonClick ], //i think this one is already done i guess
                 ["addLegend", null, handleAddLegend],
-                ["changeBackgroundColor", mergeButtonAction, mergeButtonClick],
+                ["changeBackgroundColor", null, handleChangeBackgroundColorModal],
                 ["changeRegionColor", changeRegionColorAction, colorButtonClick],
                 ["changeBorderColor", changeBorderColorAction,colorButtonClick],
                 ["addText", extendedMenuActionCancel, addTextButtonClick],

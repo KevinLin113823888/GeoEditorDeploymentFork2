@@ -37,7 +37,6 @@ function LegendCard(props) {
     function handleChangeLegendColor() {
 
         store.colorwheelHandler = handleChangeColor
-       
         store.changeModal("MAP_PICK_COLOR_WHEEL")
     }
 
