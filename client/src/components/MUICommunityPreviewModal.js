@@ -61,6 +61,7 @@ function MUICommunityPreviewModal() {
     const [owner, setOwner] = useState("owner");
     const { store } = useContext(GlobalStoreContext);
     const [forkName, setForkName] = useState(title);
+    const [reportInfo, setReportInfo] = useState("");
     const [previewId, setPreviewId] = useState("");
 
     useEffect(() => {
@@ -131,23 +132,24 @@ function MUICommunityPreviewModal() {
     }
 
     function handleReport() {
-        // closeForkModal();
-        // fetch(process.env.REACT_APP_API_URL + 'community/forkCommunityMap', {
-        //     method: "POST",
-        //     credentials: 'include',
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify({
-        //         id: previewId,
-        //         newName: forkName
-        //     }),
-        // })
-        // .then((res) => res.json())
-        // .then((data) => {
-        //     console.log(data)
-        // })
-        // .catch(err => console.log(err));
+        closeReportModal();
+        console.log("report", reportInfo);
+        fetch(process.env.REACT_APP_API_URL + 'community/reportCommunityMap', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: previewId,
+                reportMessage: reportInfo
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data)
+        })
+        .catch(err => console.log(err));
     }
 
     function handleLike() {
@@ -445,7 +447,7 @@ function MUICommunityPreviewModal() {
                         </Box>
                     </header>
                     <Box sx={{ width: "100%", height: "100%", }}>
-                        <TextField type='text' placeholder="Please provide a reason for report..." sx={{ width: '100%', height: '100%' }}
+                        <TextField type='text' placeholder="Please provide a reason for report..."  onChange={e => {setReportInfo(e.target.value)}}  sx={{ width: '100%', height: '100%' }}
                             multiline
                             rows={5}
                             maxRows={Infinity} />
