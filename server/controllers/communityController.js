@@ -130,8 +130,22 @@ class communityController {
             var { id } = req.body;
             let session = req.cookies.values;
 
-            var currentUser = await findOneAndUpdate({ username: session.username}, { $push: { usersFollowing: id } });
-            currentUser.save();
+            var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
+            var currentCommunityCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapCard) });
+
+            var currentUser = await User.findOne({ username: session.username});
+            let userToFollow = currentCommunityCard.owner;
+            let isFollowing = false;
+            currentUser.usersFollowing.forEach(id => {
+                if (id.toString() === userToFollow.toString()) {
+                    isFollowing = true;
+                }
+            });
+            if (isFollowing === false) {
+                var currentUser = await User.findOneAndUpdate({ username: session.username}, { $push: { usersFollowing: currentCommunityCard.owner } });
+                await currentUser.save();
+            }
+            return res.status(200).json({status: 'OK'});
         }
         catch(e){
             console.log(e.toString())
@@ -144,8 +158,22 @@ class communityController {
             var { id } = req.body;
             let session = req.cookies.values;
 
-            var currentUser = await findOneAndUpdate({ username: session.username}, { $push: { blockedUsers: id } });
-            currentUser.save();
+            var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
+            var currentCommunityCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapCard) });
+
+            var currentUser = await User.findOne({ username: session.username});
+            let userToBlock = currentCommunityCard.owner;
+            let isBlocked = false;
+            currentUser.blockedUsers.forEach(id => {
+                if (id.toString() === userToBlock.toString()) {
+                    isBlocked = true;
+                }
+            });
+            if (isBlocked === false) {
+                var currentUser = await User.findOneAndUpdate({ username: session.username}, { $push: { blockedUsers: currentCommunityCard.owner } });
+                await currentUser.save();
+            }
+            return res.status(200).json({status: 'OK'});
         }
         catch(e){
             console.log(e.toString())
@@ -154,7 +182,19 @@ class communityController {
     }
 
     static async addComment(req, res) {
+        try {
+            var { id, comment } = req.body;
+            let session = req.cookies.values;
 
+            var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { comments: { comment: comment, username: session.username } }});
+            currentCommunityPreview.save();
+
+            return res.status(200).json({status: 'OK'});
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
     }
 };
 
