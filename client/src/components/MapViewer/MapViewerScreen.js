@@ -243,6 +243,7 @@ function MapViewerScreen(props) {
     const handleExport = () => { store.changeModal(CurrentModal.MAP_EXPORT) }
 
     function handleSave() {
+        store.takeScreenShot(!store.setScreenshot)
         fetch(process.env.REACT_APP_API_URL + 'map/saveMapById', {
             method: "POST",
             credentials: 'include',

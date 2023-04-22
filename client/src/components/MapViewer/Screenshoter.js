@@ -11,8 +11,9 @@ function Screenshoter(props) {
     
     const { store } = useContext(GlobalStoreContext);
     const map = useMap();
-
+    
     useEffect(() =>{
+        console.log("hey")
         var screenshot = L.simpleMapScreenshoter().addTo(map);
         let format = 'blob'
         // let overridedPluginOptions = {
@@ -24,19 +25,23 @@ function Screenshoter(props) {
         //     console.log(layer)
         //     }
         //     )));
-        map.whenReady(()=>{
-        })
-        // // map.eachLayer(function(layer){
-        // //     if(layer._layers){
-        // //         console.log(layer)
-        // //         console.log(layer._layers)
-        // //         Object.keys(layer._layers).forEach(key =>{
-        // //             bounds.extend(layer._layers[key]._bounds);
-        // //             console.log(layer._layers[key]._bounds)
-
-        // //         })
-        // //     }
-        // // });
+        map.whenReady(() => {
+            map.eachLayer(function(layer){
+                setTimeout(function() {
+                if(layer._layers){
+                    
+                    Object.keys(layer._layers).forEach(key =>{
+                        bounds.extend(layer._layers[key]._bounds);
+                    })
+                }
+                map.fitBounds(bounds);
+            }, 1000);
+            });
+        });
+      
+        console.log(bounds)
+        //map.fitBounds(bounds);  
+        
         // if(bounds){
         //     console.log(bounds)
         //     map.fitBounds(bounds);
