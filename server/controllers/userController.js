@@ -47,7 +47,7 @@ class userController {
             await user.save();
             // req.session.username = user.username;
             res.cookie('values', { username: user.username }, {
-                httpOnly: isCookieSecure,
+                httpOnly: false,
                 secure: isCookieSecure,
             }).json({status: 'OK', name: user.name});
         }
@@ -72,8 +72,9 @@ class userController {
             
             // req.session.username = user.username;
             // return res.status(200).json({status: 'OK', name: user.name});
+            consoole.log("secure", isCookieSecure);
             res.cookie('values', { username: user.username }, {
-                httpOnly: isCookieSecure,
+                httpOnly: false,
                 secure: isCookieSecure,
             }).json({status: 'OK', name: user.name});
         }
