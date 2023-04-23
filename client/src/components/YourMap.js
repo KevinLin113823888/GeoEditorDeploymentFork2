@@ -216,11 +216,13 @@ function YourMap() {
                         
                         { 
                             mapCards.map((map) => (
-                                <Grid item xs={3.7} md={1.4} key = {map.id} >
+                                <Grid item xs={3.7} md={1.4} key = {map._id} >
                                 <MapCard
-                                    id = {map.id}
-                                    key = {map.id}
+                                    id = {map._id}
+                                    key = {map._id}
                                     title={map.title}
+                                    image={map.mapImages}
+                                    imageType={map.imageType}
                                     handleUpdate={onLoad}
                                 />
                                 </Grid>

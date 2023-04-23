@@ -5,7 +5,7 @@ import * as L from "leaflet";
 import React, { useState, useEffect, useRef,useContext } from 'react';
 import { CurrentModal, GlobalStoreContext } from "../../store/index"
 import { Buffer } from "buffer";
-import FileSaver from 'file-saver';
+// import FileSaver from 'file-saver';
 
 function Screenshoter(props) {
     
@@ -13,7 +13,6 @@ function Screenshoter(props) {
     const map = useMap();
     
     useEffect(() =>{
-        console.log("hey")
         var screenshot = L.simpleMapScreenshoter().addTo(map);
         let format = 'blob'
         // let overridedPluginOptions = {
@@ -32,11 +31,11 @@ function Screenshoter(props) {
                     })
                 }
                 try{
-                map.fitBounds(bounds);
+                    map.fitBounds(bounds);
                 }catch(e){
-
+                    console.log(e)
                 }
-            }, 1000);
+            }, 0);
             });
         });
       
@@ -49,14 +48,64 @@ function Screenshoter(props) {
         // }
 
         screenshot.takeScreen(format).then(blob => {
-            console.log("screenshot taken");
             console.log(blob);
-            const blobString = convertBlobToString(blob);
+            // const blobString = convertBlobToString(blob);
             const type = blob.type;
 
+            // var a = document.createElement("a")
+            // a.href = URL.createObjectURL(blob)
+            // a.download = "screenshot.png"
+            // a.click()
+
+            const reader = new FileReader();
+            // const base64String = "wd";
+            reader.readAsDataURL(blob);
+            reader.onloadend = () => {
+                const base64String = reader.result;
+                fetch(process.env.REACT_APP_API_URL + 'map/setMapImageById', {
+                    method: "POST",
+                    credentials: 'include',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id: props.mapCardId,
+                        image: base64String,
+                        type: type,
+                    }),
+                })
+                .then((res) => {
+                    res.json();
+                }).then((data)=>{
+                    console.log(data);
+                })
+                .catch(err => console.log(err));
+            }
+            // console.log(base64String, type)
+
+            // fetch(process.env.REACT_APP_API_URL + 'map/setMapImageById', {
+            //     method: "POST",
+            //     credentials: 'include',
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify({
+            //         id: props.mapCardId,
+            //         image: base64String,
+            //         type: type,
+            //     }),
+            // })
+            // .then((res) => {
+            //     res.json();
+            // }).then((data)=>{
+            //     console.log(data);
+            // })
+            // .catch(err => console.log(err));
         }).catch(e => {
             console.error(e)
         })
+        console.log("screenshot taken");
+
     },[store.setScreenshot]);
 
     async function convertBlobToString(blob){

@@ -202,6 +202,8 @@ function Community() {
                                     id = {map._id}
                                     key = {map._id}
                                     title={map.title}
+                                    image={map.mapImages}
+                                    imageType={map.imageType}
                                 />
                                 </Grid>
                             ))
