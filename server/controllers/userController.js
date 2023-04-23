@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt');
 const userInfoSchema = require("../models/userInfoModel");
 const MapCard = require('../models/mapCardModel')
 const MapData = require('../models/mapDataModel')
-const isCookieSecure = 
-  process.env.NODE_ENV === "production" ? true : false;
+const isCookieSecure = process.env.NODE_ENV === "production" ? true : false;
+const sameSiteCookie = process.env.NODE_ENV === "production" ? "none" : "lax";
 
 class userController {
     static async getLoggedIn(req, res) {
@@ -49,7 +49,7 @@ class userController {
             res.cookie('values', { username: user.username }, {
                 httpOnly: isCookieSecure,
                 secure: isCookieSecure,
-                sameSite: "none",
+                sameSite: sameSiteCookie,
             }).json({status: 'OK', name: user.name});
         }
         catch (e){
@@ -76,7 +76,7 @@ class userController {
             res.cookie('values', { username: user.username }, {
                 httpOnly: isCookieSecure,
                 secure: isCookieSecure,
-                sameSite: "none",
+                sameSite: sameSiteCookie,
             }).json({status: 'OK', name: user.name});
         }
         catch(e){
