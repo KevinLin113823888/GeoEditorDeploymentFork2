@@ -14,7 +14,7 @@ app.use(express.json({ limit: '100mb' }));
 app.use(session(
     { 
         secret: "pizzaspaghetti", 
-        cookie: { maxAge: 60000 }, 
+        cookie: {  }, 
         resave: false,
         saveUninitialized: true
     }

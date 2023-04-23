@@ -129,6 +129,24 @@ function Community() {
     function openPreview(){
         store.changeModal(CurrentModal.COMMUNITY_PREVIEW_MODAL);
     }
+    function displayMaps(){
+        if(mapCards.length>0){
+            return mapCards.map((map) => (
+                <Grid item xs={3.7} md={1.4} key = {map._id} >
+                <MapCard
+                    id = {map._id}
+                    key = {map._id}
+                    title={map.title}
+                    image={map.mapImages}
+                    imageType={map.imageType}
+                />
+                </Grid>
+            ))
+        }
+        else{
+            return <></>
+        }
+    }
 
     return (
         <div className="Community">
@@ -195,18 +213,8 @@ function Community() {
                         </Grid>
                         
                         
-                        { 
-                            mapCards.map((map) => (
-                                <Grid item xs={3.7} md={1.4} key = {map._id} >
-                                <MapCard
-                                    id = {map._id}
-                                    key = {map._id}
-                                    title={map.title}
-                                    image={map.mapImages}
-                                    imageType={map.imageType}
-                                />
-                                </Grid>
-                            ))
+                        {  
+                            displayMaps()
                         }
 
                     </Grid>

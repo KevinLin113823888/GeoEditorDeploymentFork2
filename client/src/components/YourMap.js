@@ -137,7 +137,25 @@ function YourMap() {
     function handleSort() {
         console.log("sorting that needs to be implemented");
     }
-
+    function displayMaps(){
+        if(mapCards.length>0){
+            return mapCards.map((map) => (
+                <Grid item xs={3.7} md={1.4} key = {map._id} >
+                <MapCard
+                    id = {map._id}
+                    key = {map._id}
+                    title={map.title}
+                    image={map.mapImages}
+                    imageType={map.imageType}
+                    handleUpdate={onLoad}
+                />
+                </Grid>
+            ))
+        }
+        else{
+            return <></>
+        }
+    }
     return (
        
         <div className="YourMap" >
@@ -213,20 +231,9 @@ function YourMap() {
                                 <ControlPointIcon style={{ fill: "black", fontSize: "5rem" }} />
                             </Box>
                         </Grid>
-                        
+                    
                         { 
-                            mapCards.map((map) => (
-                                <Grid item xs={3.7} md={1.4} key = {map._id} >
-                                <MapCard
-                                    id = {map._id}
-                                    key = {map._id}
-                                    title={map.title}
-                                    image={map.mapImages}
-                                    imageType={map.imageType}
-                                    handleUpdate={onLoad}
-                                />
-                                </Grid>
-                            ))
+                            displayMaps()
                         }
 
                     </Grid>
