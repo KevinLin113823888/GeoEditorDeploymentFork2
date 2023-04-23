@@ -15,8 +15,8 @@ app.use(session(
     { 
         secret: "pizzaspaghetti", 
         cookie: { 
-          httpOnly: false,
-          secure: false,
+          httpOnly: true,
+          secure: true,
          }, 
         resave: false,
         saveUninitialized: true
