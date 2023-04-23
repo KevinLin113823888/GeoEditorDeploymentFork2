@@ -13,8 +13,8 @@ function MapCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const { id, title, image, imageType} = props;
     const [imageurl, setImageurl] = useState(background)
-    // console.log(id, title);
     useEffect(() =>{
+        // console.log(id, title, image, imageType);
         // const blob = new Blob([image], {type: imageType});
         const byteCharacters = atob(image.split(',')[1]);
         const byteNumbers = new Array(byteCharacters.length);

@@ -12,13 +12,8 @@ class userController {
 
             var user = await userInfoSchema.findOne({username: username});
 
-            var mapcard_list = [];
-            for(let i = 0; i<user.ownedMapCards.length; i++){
-                var card = await MapCard.findOne({_id: user.ownedMapCards[i]});
-                mapcard_list.push({title: card.title, id: card._id})
-            }
-
-            return res.status(200).json({status: 'OK', username: username, mapcards: mapcard_list});
+            const mapCards = await MapCard.find({ '_id': { $in: user.ownedMapCards } });
+            return res.status(200).json({status: 'OK', username: username, mapcards: mapCards});
         }
         catch(e){
             console.log(e.toString())
