@@ -202,13 +202,13 @@ function GeomanJsWrapper(props) {
         const map = LL.pm.map
         const leafletContainer = LL
 
-        map.on('zoomend', function () {
-            let centerArr = []
-            let center = map.getCenter()
-            centerArr[0] = center.lat
-            centerArr[1] = center.lng
-            store.setZoomLevel(map.getZoom(), centerArr)
-        });
+        // map.on('zoomend', function () {
+        //     let centerArr = []
+        //     let center = map.getCenter()
+        //     centerArr[0] = center.lat
+        //     centerArr[1] = center.lng
+        //     store.setZoomLevel(map.getZoom(), centerArr)
+        // });
         map.on('pm:drawstart', ({ workingLayer }) => {
 
 
