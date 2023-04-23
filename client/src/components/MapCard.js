@@ -7,6 +7,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom'
 import background from "./cardPic.png";
+import '../App.css';
 
 function MapCard(props) {
     const navigate = useNavigate();
@@ -16,6 +17,8 @@ function MapCard(props) {
     useEffect(() =>{
         // console.log(id, title, image, imageType);
         // const blob = new Blob([image], {type: imageType});
+        if(!image)
+            return
         const byteCharacters = atob(image.split(',')[1]);
         const byteNumbers = new Array(byteCharacters.length);
 
@@ -25,9 +28,9 @@ function MapCard(props) {
 
         const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], { type: imageType });
-        const urlpath = URL.createObjectURL(blob).substring(4);
-        setImageurl(urlpath);
-        // document.getElementbyId('mapcardid').style.backgroundImage = urlpath;
+        const urlpath = URL.createObjectURL(blob);
+        // setImageurl(urlpath);
+        document.querySelector(`#${"cardImage"+id}`).src = urlpath;
 
         // var a = document.createElement("a")
         // a.href = URL.createObjectURL(blob)
@@ -98,18 +101,23 @@ function MapCard(props) {
             boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.15)',
             width:"100%",
             border: '2px solid transparent',
+            height:"30.6vh",
             '&:hover': {
             transform: 'translateY(-4px)',
             borderColor: '#4F46E5',
             boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.15)',
             border: '3px solid #34D399',
             },}}>
-            <Box onClick = {handleClick} sx={{ width: "100%",
-                backgroundImage: `url(${background})`,
-                height: "20vh", borderRadius:'15px 15px 0px 0px', border:"0px"}}
-                id = "mapcardid"
+            <Box onClick = {handleClick} sx={{ 
+                width: "100%",
+                // backgroundImage: `url(${background})`,
+                // height: "20vh", 
+                borderRadius:'15px 15px 0px 0px', border:"0px"}}
+                // id = "mapcardid"
                 />
-                    {/* <img src={imageurl}/> */}
+                <img id={"cardImage"+id} className="mapcardimage" onClick = {handleClick} src={background}
+                 style={{width:"100%", height:"67%", objectFit:"cover", borderRadius:'15px 15px 0px 0px'}}
+                 />
             <Box sx={{ width: "100%",
                 backgroundColor: "#F0F4F8",
                 height: "10vh", borderRadius:'0px 0px 15px 15px', border:"0px"}}>
@@ -123,7 +131,41 @@ function MapCard(props) {
             </Box>
             </Box>
         </Box>
-        
+    
+    if(!image){
+        cardElement = <Box sx={{ marginLeft: "10%",
+        borderRadius:'15px',
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.15)',
+        width:"100%",
+        height:"30.6vh",
+        border: '2px solid transparent',
+        '&:hover': {
+        transform: 'translateY(-4px)',
+        borderColor: '#4F46E5',
+        boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.15)',
+        border: '3px solid #34D399',
+        },}}>
+        <Box onClick = {handleClick} sx={{ 
+            width: "100%",
+            backgroundImage: `url(${background})`,
+            height: "20vh", 
+            borderRadius:'15px 15px 0px 0px', border:"0px"}}
+            // id = "mapcardid"
+            />
+        <Box sx={{ width: "100%",
+            backgroundColor: "#F0F4F8",
+            height: "10vh", borderRadius:'0px 0px 15px 15px', border:"0px"}}>
+            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"> 
+            <Box style={{fontWeight:"bold"}}>{title}</Box>
+            <Box sx={{marginTop:"3%"}}>
+                <FileCopyIcon onClick = {handleDuplicateMap} sx={{"&:hover": { fill: "yellow"}}}/>
+                <BorderColorIcon onClick = {handleEditMapName} sx={{"&:hover": { fill: "yellow"}}}/>
+                <DeleteIcon onClick = {handleRemoveMap}sx={{"&:hover": { fill: "yellow"}}}/>
+            </Box>
+        </Box>
+        </Box>
+    </Box>
+    }
    
     if(store.currentScreen=="community"){
         cardElement=
@@ -132,6 +174,7 @@ function MapCard(props) {
         borderRadius:'15px',
         boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.15)',
         width:"100%",
+        height:"30.6vh",
         border: '2px solid transparent',
         '&:hover': {
         transform: 'translateY(-4px)',
@@ -140,8 +183,11 @@ function MapCard(props) {
         border: '3px solid #34D399',
         },}}>
             <Box onClick = {handleClickCommunity} sx={{ width: "100%",
-                backgroundImage:`url(${background})`,
-                height: "20vh", borderRadius:'15px 15px 0px 0px', border:"0px"}}/>
+                borderRadius:'15px 15px 0px 0px', border:"0px"}}/>
+                <img id={"cardImage"+id} className="mapcardimage" onClick = {handleClickCommunity} src={background}
+                     style={{width:"100%", height:"67%", objectFit:"cover", borderRadius:'15px 15px 0px 0px'}}
+                 />
+
             <Box sx={{ width: "100%",
                 backgroundColor: "#F0F4F8",
                 height: "10vh", borderRadius:'0px 0px 15px 15px', border:"0px"}}>
@@ -151,6 +197,7 @@ function MapCard(props) {
                 </Box>
             </Box>
         </Box>
+
        
     }
     return (
