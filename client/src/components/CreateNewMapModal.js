@@ -77,7 +77,7 @@ function CreateNewMapModal() {
                     display="flex"
                     flexDirection="column"
                     justifyContent="center"
-                    alignItems="center" style={{backgroundColor:"#f1f1f1", color:"#000000"}}>    
+                    alignItems="center" style={{color:"#000000"}}>    
                     
                 <Typography style={{fontSize:"2rem"}} sx={{marginBottom:"5%"}}>
                         <strong>Enter new Map name</strong>

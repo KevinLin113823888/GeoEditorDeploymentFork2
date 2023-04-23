@@ -231,10 +231,12 @@ function MapViewerScreen(props) {
 
     function handleCompress() {
         var temp = GeoJson;
+        var graphical = GeoJson.graphicalData;
         var topo = topoServer.topology({ foo: temp });
         topo = topoSimplify.presimplify(topo);
         topo = topoSimplify.simplify(topo, 0.05);
         temp = topoClient.feature(topo, topo.objects.foo);
+        temp.graphicalData = graphical;
         setGeoJson(temp);
         setKeyid(keyid => keyid + 1)
     }
