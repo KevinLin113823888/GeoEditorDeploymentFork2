@@ -7,7 +7,7 @@ const CommunityPreview = require('../models/communityPreviewModel')
 class communityController {
     static async getCommunity(req, res) {
         try {
-            let username = req.session.username;
+            // let username = req.cookies.values.username;
             var mapCards = await MapCard.find({published:true});
             return res.status(200).json({status: "OK", mapcards: mapCards});
         }
@@ -62,7 +62,7 @@ class communityController {
     static async forkCommunityMap(req, res) {
         try {
             var { id, newName } = req.body;
-            let username = req.session.username;
+            let username = req.cookies.values.username;
 
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentCommunityData = await MapData.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapData) });
@@ -115,7 +115,7 @@ class communityController {
     static async likeCommunityMap(req, res) {
         try {
             var { id } = req.body;
-            let username = req.session.username;
+            let username = req.cookies.values.username;
 
             var currentOwner = await User.findOne({ username: username });
             console.log("ID", currentOwner._id);
@@ -149,7 +149,7 @@ class communityController {
     static async dislikeCommunityMap(req, res) {
         try {
             var { id } = req.body;
-            let username = req.session.username;
+            let username = req.cookies.values.username;
 
             var currentOwner = await User.findOne({ username: username });
             var availableCommunityPreview = await CommunityPreview.find({dislikes: {"$in": [currentOwner._id]}}); 
@@ -181,7 +181,7 @@ class communityController {
     static async followCommunityMap(req, res) {
         try {
             var { id } = req.body;
-            let username = req.session.username;
+            let username = req.cookies.values.username;
 
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentCommunityCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapCard) });
@@ -209,7 +209,7 @@ class communityController {
     static async blockCommunityMap(req, res) {
         try {
             var { id } = req.body;
-            let username = req.session.username;
+            let username = req.cookies.values.username;
 
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentCommunityCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapCard) });
@@ -237,7 +237,7 @@ class communityController {
     static async addComment(req, res) {
         try {
             var { id, comment } = req.body;
-            let username = req.session.username;
+            let username = req.cookies.values.username;
 
             var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { comments: { comment: comment, username: username } }});
             currentCommunityPreview.save();

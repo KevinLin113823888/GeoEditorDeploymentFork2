@@ -8,7 +8,7 @@ const MapData = require('../models/mapDataModel')
 class userController {
     static async getLoggedIn(req, res) {
         try{
-            let username = req.session.username;
+            let username = req.cookies.values.username;
 
             var user = await userInfoSchema.findOne({username: username});
             var mapCards = {};
@@ -43,8 +43,11 @@ class userController {
                 usersFollowing: []
             });
             await user.save();
-            req.session.username = user.username;
-            return res.status(200).json({status: 'OK', name: user.name});
+            // req.session.username = user.username;
+            res.cookie('values', { username: user.username }, {
+                httpOnly: false,
+                secure: false,
+            }).json({status: 'OK', name: user.name});
         }
         catch (e){
             console.log(e.toString());
@@ -65,8 +68,12 @@ class userController {
             if(!isMatch)
                 throw new Error("Invalid password")
             
-            req.session.username = user.username;
-            return res.status(200).json({status: 'OK', name: user.name});
+            // req.session.username = user.username;
+            // return res.status(200).json({status: 'OK', name: user.name});
+            res.cookie('values', { username: user.username }, {
+                httpOnly: false,
+                secure: false,
+            }).json({status: 'OK', name: user.name});
         }
         catch(e){
             console.log(e.toString())
@@ -76,8 +83,8 @@ class userController {
 
     static async logout(req, res, next) {
         try{
-            req.session.destroy();
-            return res.status(200).json({status: 'OK'});
+            // req.session.destroy();
+            return res.clearCookie("values").status(200).json({status: 'OK'});
         }catch (e){
             console.log(e)
             return res.status(400).clearCookie("values").json({status: e.toString()});
@@ -148,7 +155,7 @@ class userController {
     static async deleteUser(req, res) {
         try{
             var { password } = req.body;
-            let username = req.session.username;
+            let username = req.cookies.values.username;
             var user = await userInfoSchema.findOne({username: username});
 
             var isMatch = await bcrypt.compare(password, user.password);
