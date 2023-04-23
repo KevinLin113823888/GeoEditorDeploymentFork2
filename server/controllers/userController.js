@@ -44,7 +44,6 @@ class userController {
             });
             await user.save();
             req.session.username = user.username;
-            console.log(req.session);
             return res.status(200).json({status: 'OK', name: user.name});
         }
         catch (e){
@@ -67,7 +66,6 @@ class userController {
                 throw new Error("Invalid password")
             
             req.session.username = user.username;
-            console.log(req.session);
             return res.status(200).json({status: 'OK', name: user.name});
         }
         catch(e){
@@ -94,8 +92,6 @@ class userController {
             if(emailUser === null){
                 throw new Error("email is null")
             }
-
-            console.log("username", emailUser.username);
             // send username to email here
             // nodemailer stuff
 

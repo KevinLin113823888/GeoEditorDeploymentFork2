@@ -25,6 +25,16 @@ class communityController {
             var currentCommunityData = await MapData.findOne({ _id: currentCommunityPreview.mapData });
             var currentCommunityCard = await MapCard.findOne({ mapData: currentCommunityData._id });
             var currentOwner = await User.findOne({ _id: currentCommunityCard.owner });
+            var like = false;
+            var dislike = false;
+
+            if (currentCommunityPreview.likes.includes(currentOwner._id)){
+                like = true;
+            }
+
+            if (currentCommunityPreview.dislikes.includes(currentOwner._id)) {
+                dislike = true;
+            }
 
             return res.status(200).json({
                 status: "OK", 
@@ -36,8 +46,10 @@ class communityController {
                 type: currentCommunityData.type, 
                 feature: JSON.stringify(currentCommunityData.feature), 
                 comments: currentCommunityPreview.comments, 
-                likes: currentCommunityPreview.likes, 
-                dislikes: currentCommunityPreview.dislikes, 
+                like: like,
+                likeAmount: currentCommunityPreview.likes.length,
+                dislike: dislike,
+                dislikeAmount: currentCommunityPreview.dislikes.length,
                 reports: currentCommunityPreview.reports
             });
         }
@@ -106,9 +118,27 @@ class communityController {
             let username = req.session.username;
 
             var currentOwner = await User.findOne({ username: username });
-            var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { likes: currentOwner._id } });
+            console.log("ID", currentOwner._id);
+            var availableCommunityPreview = await CommunityPreview.find({likes: {"$in": [currentOwner._id]}}); 
+            console.log("savailable", availableCommunityPreview);
+            var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
 
-            return res.status(200).json({status: 'OK'});
+            if (availableCommunityPreview.length > 0) { // already liked, so unlike it
+                var communityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $pull: { likes: currentOwner._id.toString() } }, {new: true});
+                await communityPreview.save();
+                return res.status(200).json({status: 'UNLIKED', likeLength: communityPreview.likes.length, dislikeLength:  communityPreview.dislikes.length });
+            } else { // didn't like it yet
+                var currentDislikes = await CommunityPreview.find({dislikes: {"$in": [currentOwner._id]}});
+                if (currentDislikes) { // check if already dislike, if you are, then remove dislike
+                    var dislikePreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $pull: { dislikes: currentOwner._id.toString() } }, {new: true});
+                    await dislikePreview.save();
+                    console.log("currentDislikes when liking", dislikePreview);
+                }
+                // like 
+                var communityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { likes: currentOwner._id.toString() } }, {new: true});
+                await communityPreview.save();
+                return res.status(200).json({status: 'LIKED', likeLength: communityPreview.likes.length, dislikeLength:  communityPreview.dislikes.length });
+            }
         }
         catch(e){
             console.log(e.toString())
@@ -122,9 +152,25 @@ class communityController {
             let username = req.session.username;
 
             var currentOwner = await User.findOne({ username: username });
-            var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { dislikes: currentOwner._id } });
+            var availableCommunityPreview = await CommunityPreview.find({dislikes: {"$in": [currentOwner._id]}}); 
+            var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
+            console.log("current owner", currentOwner._id, currentOwner.username);
 
-            return res.status(200).json({status: 'OK'});
+            if (availableCommunityPreview.length > 0) {
+                var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $pull: { dislikes: currentOwner._id.toString() } }, {new: true});
+                await currentCommunityPreview.save();
+                return res.status(200).json({status: 'UNDISLIKED', likeLength: currentCommunityPreview.likes.length, dislikeLength:  currentCommunityPreview.dislikes.length});
+            } else {
+                var currentLikes = await CommunityPreview.find({likes: {"$in": [currentOwner._id]}});
+                if (currentLikes) {
+                    var likePreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $pull: { likes: currentOwner._id.toString() } }, {new: true});
+                    await likePreview.save();
+                    console.log("currentLikes when disliking", likePreview);
+                }
+                var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { dislikes: currentOwner._id.toString() } }, {new: true});
+                await currentCommunityPreview.save();
+                return res.status(200).json({status: 'DISLIKED', likeLength: currentCommunityPreview.likes.length, dislikeLength:  currentCommunityPreview.dislikes.length});
+            }
         }
         catch(e){
             console.log(e.toString())

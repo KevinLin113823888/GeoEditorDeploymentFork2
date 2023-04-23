@@ -53,20 +53,30 @@ const style2 = {
 
 function MUICommunityPreviewModal() {
     const navigate = useNavigate();
+    const { store } = useContext(GlobalStoreContext);
     const [forkModal, setForkModal] = useState(false);
     const [downloadModal, setDownloadModal] = useState(false);
     const [reportModal, setReportModal] = useState(false);
     const [geoJson, setGeoJson] = useState(null);
     const [title, setTitle] = useState("untitled");
     const [owner, setOwner] = useState("owner");
-    const { store } = useContext(GlobalStoreContext);
     const [forkName, setForkName] = useState(title);
     const [reportInfo, setReportInfo] = useState("");
     const [previewId, setPreviewId] = useState("");
+    const [following, setFollowing] = useState([]);
+    const [blocked, setBlocked] = useState([]);
+    const [comments, setComments] = useState([]);
+    const [likes, setLikes] = useState("black");
+    const [likeLength, setLikeLength] = useState(0);
+    const [dislikes, setDislikes] = useState("black");
+    const [dislikeLength, setdisLikeLength] = useState(0);
 
     useEffect(() => {
         if(store.currentModal == 'COMMUNITY_PREVIEW_MODAL'){
-            // console.log(store.currentPreviewId)
+            setLikes("black");
+            setDislikes("black");
+            setLikeLength(0);
+            setdisLikeLength(0);
             fetch(process.env.REACT_APP_API_URL + 'community/getCommunityPreviewById', {
                 method: "POST",
                 credentials: 'include',
@@ -79,7 +89,7 @@ function MUICommunityPreviewModal() {
             })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data)
+                console.log("initial data", data)
                 let feat = JSON.parse(data.feature);
                 if(feat.length === 0){
                     return;
@@ -87,8 +97,16 @@ function MUICommunityPreviewModal() {
                 setTitle(data.title);
                 setPreviewId(data.id);
                 setOwner(data.ownerName);
-                setGeoJson({type: data.type, features: feat});
-                
+                setGeoJson({type: data.type, features: feat}); 
+                if (data.like) {
+                    setLikes("red");
+                }
+                if (data.dislike) {
+                    setDislikes("red");
+                }
+                // let percentage = data.likeAmount / (data.dislikeAmount + data.likeAmount);
+                setLikeLength(data.likeAmount);
+                setdisLikeLength(data.dislikeAmount);
             })
             .catch(err => console.log(err));
         }
@@ -153,11 +171,55 @@ function MUICommunityPreviewModal() {
     }
 
     function handleLike() {
-
+        fetch(process.env.REACT_APP_API_URL + 'community/likeCommunityMap', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: previewId
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("data for liking", data);
+            if (data.status === "LIKED") {
+                setLikes("red");
+                setDislikes("black");
+            } else {
+                setLikes("black");
+            }
+            setLikeLength(data.likeLength);
+            setdisLikeLength(data.dislikeLength);
+        })
+        .catch(err => console.log(err));
     }
 
     function handleDislike() {
-
+        fetch(process.env.REACT_APP_API_URL + 'community/dislikeCommunityMap', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: previewId
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("data for disliking", data);
+            if (data.status === "DISLIKED") {
+                setDislikes("red");
+                setLikes("black");
+            } else {
+                setDislikes("black");
+            }
+            setLikeLength(data.likeLength);
+            setdisLikeLength(data.dislikeLength);
+        })
+        .catch(err => console.log(err));
     }
 
     function handleFollow() {
@@ -270,14 +332,14 @@ function MUICommunityPreviewModal() {
                                     </Typography>
                                     <Box sx={{ marginTop: '2%' }}>
                                         <input type="button"
-                                            class="preview-button"
+                                            className="preview-button"
                                             onClick={() => {
                                                 handleFollow();
                                             }}
                                             disabled= {disable}
                                             value='Follow' />
                                         <input type="button"
-                                            class="preview-button"
+                                            className="preview-button"
                                             onClick={() => {
                                                 handleBlock();
                                             }}
@@ -303,23 +365,23 @@ function MUICommunityPreviewModal() {
 
                                     <Box>
                                         <IconButton type="submit" disabled= {disable} onClick={handleLike} >
-                                            <ThumbUpIcon style={{ fontSize: '2rem', fill: fillColor1 }} />
+                                            <ThumbUpIcon style={{ fontSize: '2rem', fill: likes }} />
                                         </IconButton>
                                         <Typography className="material-icons-community" style={{ color:fillColor1,fontSize: '2rem',fontWeight:"bold"}} sx={{display:"inline"}}>
-                                        5
+                                        {likeLength}
                                         </Typography>
                                         <IconButton type="submit" disabled= {disable} onClick={handleDislike} >
-                                            <ThumbDownIcon style={{ fontSize: '2rem', fill: fillColor1 }} />
+                                            <ThumbDownIcon style={{ fontSize: '2rem', fill: dislikes }} />
                                         </IconButton>
                                         <Typography className="material-icons-community" style={{ color:fillColor1,fontSize: '2rem',fontWeight:"bold"}} sx={{display:"inline"}}>
-                                        5
+                                        {dislikeLength}
                                         </Typography>
                                     </Box>
-                                    <Grid container >
+                                    {/* <Grid container >
                                     <Box style={{backgroundColor:"white"}} sx={{height:'.5rem',width:"48%",border:".1rem solid black"}} ></Box>
                                     <Box style={{backgroundColor:"black"}} sx={{height:'.5rem',width:"48%",border:".1rem solid black"}} ></Box>
                                    
-                                    </Grid>
+                                    </Grid> */}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -372,12 +434,12 @@ function MUICommunityPreviewModal() {
 
                     <Box>
                     <input type="button" 
-                                class="modal-confirm-button" 
+                                className="modal-confirm-button" 
                                 onClick={() => {
                                     handleFork();}}
                                 value='Confirm' />
                     <input type="button" 
-                            class="modal-cancel-button" 
+                            className="modal-cancel-button" 
                             onClick={() => {
                                 closeForkModal();}}
                             value='Cancel' />
@@ -407,17 +469,17 @@ function MUICommunityPreviewModal() {
                         </Box>
                     </header>
                     <input type="button"
-                        class="modal-confirm-button"
+                        className="modal-confirm-button"
                         onClick={() => {
                             handleDownloadGeoJson();}}
                         value='GeoJSON' />
                     <input type="button"
-                        class="modal-confirm-button"
+                        className="modal-confirm-button"
                         // onClick={() => {
                         //     handleFork();}}
                         value='Shapefile/DBF zip' />
                     <input type="button"
-                        class="modal-confirm-button"
+                        className="modal-confirm-button"
                         // onClick={() => {
                         //     handleFork();}}
                         value='Jpeg' />
@@ -454,7 +516,7 @@ function MUICommunityPreviewModal() {
                     </Box>
 
                     <input type="button"
-                        class="modal-confirm-button"
+                        className="modal-confirm-button"
                         onClick={() => {
                             handleReport();
                         }}
