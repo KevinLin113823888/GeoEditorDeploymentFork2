@@ -6,8 +6,7 @@ var session = require('express-session');
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:3000','https://bejewelled-rugelach-940512.netlify.app', 
-    'https://bejewelled-palmier-26e86d.netlify.app/'],
+    origin: ['http://localhost:3000','https://bejewelled-rugelach-940512.netlify.app', 'https://bejewelled-palmier-26e86d.netlify.app/'],
     credentials: true,
     allowedHeaders: "Content-Type, Authorization, X-Requested-With",
 }));
