@@ -11,17 +11,17 @@ app.use(cors({
     allowedHeaders: "Content-Type, Authorization, X-Requested-With",
 }));
 app.use(express.json({ limit: '100mb' }));
-app.use(session(
-    { 
-        secret: "pizzaspaghetti", 
-        cookie: { 
-          httpOnly: true,
-          secure: true,
-         }, 
-        resave: false,
-        saveUninitialized: true
-    }
-));
+// app.use(session(
+//     { 
+//         secret: "pizzaspaghetti", 
+//         cookie: { 
+//           httpOnly: true,
+//           secure: true,
+//          }, 
+//         resave: false,
+//         saveUninitialized: true
+//     }
+// ));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
