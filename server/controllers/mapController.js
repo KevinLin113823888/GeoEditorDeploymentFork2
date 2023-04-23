@@ -8,9 +8,9 @@ class mapController {
     static async createMap(req, res) {
         try {
             var { title } = req.body;
-            let session = req.cookies.values;
+            let username = req.session.username;
 
-            var owner = await User.findOne({username: session.username});
+            var owner = await User.findOne({username: username});
             var newMapData = new MapData({
                 type: " ", 
                 feature: []
@@ -196,7 +196,7 @@ class mapController {
         try {
             var { id } = req.body;
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
-            return res.status(200).json({status: 'OK', image: currentMapCard.mapImages, imageType: currentMapCard.imageType});
+            return res.status(200).json({status: 'OK', image: currentMapCard.mapImages});
         }
         catch(e){
             console.log(e.toString())
@@ -206,9 +206,8 @@ class mapController {
 
     static async setMapImagebyId(req, res) {
         try {
-            var { id, image, type } = req.body;
-            console.log("hello", id, type);
-            var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { mapImages: image, imageType: type });
+            var { id, image } = req.body;
+            var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { mapImages: image });
             await currentMapCard.save();
             return res.status(200).json({status: 'OK'});
         }

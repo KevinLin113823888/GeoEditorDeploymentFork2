@@ -10,7 +10,6 @@ const mapCardSchema = new Schema(
         title: { type: String, required: true, unique: true },
         owner: {type: ObjectId, required: true},
         mapImages:{type: String,required: false},
-        imageType: {type: String, required: false},
         classification:{type: [String],required: false},
         lastModifiedDate:{type: Date, required: false},
         published: {type: Boolean, required: false},
