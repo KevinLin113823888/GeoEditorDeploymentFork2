@@ -8,9 +8,9 @@ class mapController {
     static async createMap(req, res) {
         try {
             var { title } = req.body;
-            let username = req.session.username;
+            let session = req.cookies.values;
 
-            var owner = await User.findOne({username: username});
+            var owner = await User.findOne({username: session.username});
             var newMapData = new MapData({
                 type: " ", 
                 feature: []
