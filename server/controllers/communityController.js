@@ -206,10 +206,10 @@ class communityController {
     }
 
     static async followCommunityMap(req, res) {
-        // try {
+        try {
             var { id } = req.body;
             let username = req.cookies.values.username;
-            console.log("Username", username);
+            // console.log("Username", username);
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentCommunityCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapCard) });
 
@@ -230,11 +230,11 @@ class communityController {
                 await currentUser.save();
                 return res.status(200).json({status: 'Follow', follow: false});
             }
-        // }
-        // catch(e){
-        //     console.log(e.toString())
-        //     return res.status(400).json({error: true, message: e.toString() });
-        // }
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
     }
 
     static async blockCommunityMap(req, res) {
