@@ -133,12 +133,12 @@ function MapViewerScreen(props) {
 
                             var temp = geoJson;
 
-                            var topo = topoServer.topology({ foo: temp });
-                            topo = topoSimplify.presimplify(topo);
+                            // var topo = topoServer.topology({ foo: temp });
+                            // topo = topoSimplify.presimplify(topo);
 
-                            topo = topoSimplify.simplify(topo, 0.005);
+                            // topo = topoSimplify.simplify(topo, 0.005);
 
-                            temp = topoClient.feature(topo, topo.objects.foo);
+                            // temp = topoClient.feature(topo, topo.objects.foo);
 
                             initGeojsonGraphicalData(temp)
                             setGeoJson(temp)
@@ -169,9 +169,6 @@ function MapViewerScreen(props) {
         setGeoJson(na);
         setFileExist(true);
     }
-
-
-
 
     const handleShpDbfFile = (e, type) => {
         {
@@ -204,14 +201,14 @@ function MapViewerScreen(props) {
 
 
             // let graphical = JSON.parse(JSON.stringify(temp.graphicalData))
-            var topo = topoServer.topology({ foo: temp });
-            topo = topoSimplify.presimplify(topo);
+            // var topo = topoServer.topology({ foo: temp });
+            // topo = topoSimplify.presimplify(topo);
 
-            topo = topoSimplify.simplify(topo, 0.005);
-            console.log(topo)
+            // topo = topoSimplify.simplify(topo, 0.005);
+            // console.log(topo)
 
 
-            temp = topoClient.feature(topo, topo.objects.foo); //this removes all non geojson related data
+            // temp = topoClient.feature(topo, topo.objects.foo); //this removes all non geojson related data
             //this includes removing graphical data and any region color ..... bruh
 
 
@@ -234,7 +231,7 @@ function MapViewerScreen(props) {
         var graphical = GeoJson.graphicalData;
         var topo = topoServer.topology({ foo: temp });
         topo = topoSimplify.presimplify(topo);
-        topo = topoSimplify.simplify(topo, 0.05);
+        topo = topoSimplify.simplify(topo, 0.005);
         temp = topoClient.feature(topo, topo.objects.foo);
         temp.graphicalData = graphical;
         setGeoJson(temp);

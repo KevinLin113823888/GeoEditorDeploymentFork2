@@ -13,30 +13,9 @@ function MapCard(props) {
     const navigate = useNavigate();
     const { store } = useContext(GlobalStoreContext);
     const { id, title, image, imageType} = props;
-    const [imageurl, setImageurl] = useState(background)
     useEffect(() =>{
-        // console.log(id, title, image, imageType);
-        // const blob = new Blob([image], {type: imageType});
-        if(!image)
-            return
-        const byteCharacters = atob(image.split(',')[1]);
-        const byteNumbers = new Array(byteCharacters.length);
-
-        for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
-
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: imageType });
-        const urlpath = URL.createObjectURL(blob);
-        // setImageurl(urlpath);
-        document.querySelector(`#${"cardImage"+id}`).src = urlpath;
-
-        // var a = document.createElement("a")
-        // a.href = URL.createObjectURL(blob)
-        // a.download = "screenshot.png"
-        // a.click()
-
+        if(image)
+            document.querySelector(`#${"cardImage"+id}`).src = image;
     }, []);
 
     function handleRemoveMap(event) {
