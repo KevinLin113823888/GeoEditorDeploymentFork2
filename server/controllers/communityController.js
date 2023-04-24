@@ -145,9 +145,9 @@ class communityController {
             let username = req.cookies.values.username;
 
             var currentOwner = await User.findOne({ username: username });
-            console.log("ID", currentOwner._id);
+            // console.log("ID", currentOwner._id);
             var availableCommunityPreview = await CommunityPreview.find({likes: {"$in": [currentOwner._id]}}); 
-            console.log("savailable", availableCommunityPreview);
+            // console.log("savailable", availableCommunityPreview);
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
 
             if (availableCommunityPreview.length > 0) { // already liked, so unlike it
@@ -159,7 +159,7 @@ class communityController {
                 if (currentDislikes) { // check if already dislike, if you are, then remove dislike
                     var dislikePreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $pull: { dislikes: currentOwner._id.toString() } }, {new: true});
                     await dislikePreview.save();
-                    console.log("currentDislikes when liking", dislikePreview);
+                    // console.log("currentDislikes when liking", dislikePreview);
                 }
                 // like 
                 var communityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { likes: currentOwner._id.toString() } }, {new: true});
@@ -192,7 +192,7 @@ class communityController {
                 if (currentLikes) {
                     var likePreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $pull: { likes: currentOwner._id.toString() } }, {new: true});
                     await likePreview.save();
-                    console.log("currentLikes when disliking", likePreview);
+                    // console.log("currentLikes when disliking", likePreview);
                 }
                 var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { dislikes: currentOwner._id.toString() } }, {new: true});
                 await currentCommunityPreview.save();
@@ -209,7 +209,7 @@ class communityController {
         try {
             var { id } = req.body;
             let username = req.cookies.values.username;
-            // console.log("Username", username);
+            console.log("follow ID", id, username);
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentCommunityCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapCard) });
 
@@ -241,7 +241,7 @@ class communityController {
         try {
             var { id } = req.body;
             let username = req.cookies.values.username;
-            console.log("ID", id, username);
+            console.log("block ID", id, username);
 
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentCommunityCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapCard) });
