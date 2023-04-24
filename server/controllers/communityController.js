@@ -63,11 +63,11 @@ class communityController {
                 }
             });
 
-            console.log("current preview", currentCommunityPreview._id);
+            console.log("current preview", currentCommunityPreview._id.toString());
             return res.status(200).json({
                 status: "OK", 
                 title: currentCommunityPreview.title,
-                id: currentCommunityPreview._id,
+                id: currentCommunityPreview._id.toString(),
                 ownerName: currentOwner.username,
                 follow: isFollowing ? "Followed" : "Follow",
                 block: isBlocked ? "Blocked" : "Block",

@@ -90,7 +90,7 @@ function MUICommunityPreviewModal() {
             })
             .then((res) => res.json())
             .then((data) => {
-                console.log("initial data", data)
+                console.log("initial data", data);
                 let feat = JSON.parse(data.feature);
                 if(feat.length === 0){return;}
                 setTitle(data.title);
@@ -238,6 +238,7 @@ function MUICommunityPreviewModal() {
     }
 
     function handleBlock() {
+        console.log("previewID", previewId);
         fetch(process.env.REACT_APP_API_URL + 'community/blockCommunityMap', {
             method: "POST",
             credentials: 'include',
