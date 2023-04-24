@@ -27,11 +27,11 @@ import {FeatureGroup, GeoJSON, LayerGroup, MapContainer, TileLayer} from "react-
 
 
 
-import axios from 'axios'
-axios.defaults.withCredentials = true;
-const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-})
+// import axios from 'axios'
+// axios.defaults.withCredentials = true;
+// const api = axios.create({
+//     baseURL: process.env.REACT_APP_API_URL,
+// })
 
 
 const style = {
@@ -294,32 +294,50 @@ function MUICommunityPreviewModal() {
     function handleComment(e) {
         if (e.key === 'Enter') {
             let comment = e.target.value
-
-
-            let res = api.post(`/community/addComment`, {
-                // SPECIFY THE PAYLOAD
-                id:previewId,
-                comment: comment,
-            }).then(
-                (response) => {
-                    var result = response.data;
-                    if(result.status === 'OK'){
-                        let copy = JSON.parse(JSON.stringify(comments))
-                        copy.unshift(JSON.parse(JSON.stringify(comment)))
-                        setComments(comment => {
-                            return copy
-                        })
+            if (comment.length > 1) {
+                fetch(process.env.REACT_APP_API_URL + 'community/addComment', {
+                    method: "POST",
+                    credentials: 'include',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id: previewId,
+                        comment: comment,
+                    }),
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    if(data.status === 'OK'){
+                        let copy = comments;
+                        copy.unshift(comment);
+                        setComments(copy);
                     }
-                    console.log(result);
-                },
-                (error) => {
-                    console.log(error);
-                }
-            );
-            console.log(res)
+                })
+                .catch(err => console.log(err));
+            }
 
-            //this is our text value
-
+            // let res = api.post(`/community/addComment`, {
+            //     // SPECIFY THE PAYLOAD
+            //     id:previewId,
+            //     comment: comment,
+            // }).then(
+            //     (response) => {
+            //         var result = response.data;
+            //         if(result.status === 'OK'){
+            //             let copy = JSON.parse(JSON.stringify(comments))
+            //             copy.unshift(JSON.parse(JSON.stringify(comment)))
+            //             setComments(comment => {
+            //                 return copy
+            //             })
+            //         }
+            //         console.log(result);
+            //     },
+            //     (error) => {
+            //         console.log(error);
+            //     }
+            // );
+            // console.log(res)
         }
     }
 
