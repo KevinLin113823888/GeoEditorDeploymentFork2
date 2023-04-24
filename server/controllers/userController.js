@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const userInfoSchema = require("../models/userInfoModel");
 const MapCard = require('../models/mapCardModel')
 const MapData = require('../models/mapDataModel')
+const isCookieSecure = process.env.NODE_ENV === "production" ? true : false;
+const sameSiteCookie = process.env.NODE_ENV === "production" ? "none" : "lax";
 
 class userController {
     static async getLoggedIn(req, res) {
@@ -45,8 +47,9 @@ class userController {
             await user.save();
             // req.session.username = user.username;
             res.cookie('values', { username: user.username }, {
-                httpOnly: false,
-                secure: false,
+                httpOnly: isCookieSecure,
+                secure: isCookieSecure,
+                sameSite: sameSiteCookie,
             }).json({status: 'OK', name: user.name});
         }
         catch (e){
@@ -71,8 +74,9 @@ class userController {
             // req.session.username = user.username;
             // return res.status(200).json({status: 'OK', name: user.name});
             res.cookie('values', { username: user.username }, {
-                httpOnly: false,
-                secure: false,
+                httpOnly: isCookieSecure,
+                secure: isCookieSecure,
+                sameSite: sameSiteCookie,
             }).json({status: 'OK', name: user.name});
         }
         catch(e){
@@ -84,7 +88,8 @@ class userController {
     static async logout(req, res, next) {
         try{
             // req.session.destroy();
-            return res.clearCookie("values").status(200).json({status: 'OK'});
+            // return res.clearCookie("values").status(200).json({status: 'OK'});
+            res.cookies.set('values', {maxAge: 0}).json({status: 'OK'});;
         }catch (e){
             console.log(e)
             return res.status(400).clearCookie("values").json({status: e.toString()});

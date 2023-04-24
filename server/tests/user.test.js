@@ -94,7 +94,7 @@ describe('Testing user controller', () => {
         // console.log(response.body.passwordRecoveryCode)
         expect(response.statusCode).toBe(200)
         expect(response.body.passwordRecoveryCode).toBeDefined();
-        
+
         recoveryCode = response.body.passwordRecoveryCode
     })
 
