@@ -20,7 +20,6 @@ import { CurrentModal, GlobalStoreContext } from '../store'
 
 import MUIChangeMapNameModal from './MUIChangeMapNameModal'
 
-
 function Community() {
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
@@ -38,7 +37,6 @@ function Community() {
       setIsFocused(false);
     };
 
-
     useEffect(() => {
         fetch(process.env.REACT_APP_API_URL + 'community/getCommunity', {
             method: "GET",
@@ -49,14 +47,14 @@ function Community() {
         })
         .then((res) => res.json())
         .then((data) => {
-           console.log(data)
+        //    console.log(data)
            if (data.mapcards === undefined) {
                 setMapCards([]);
-                console.log('none')
+                // console.log('none')
             } else {
-                console.log(data.mapcards)
+                // console.log(data.mapcards)
                 setMapCards(data.mapcards);
-                console.log(mapCards);
+                // console.log(mapCards);
             }
         })
         .catch(err => console.log(err));

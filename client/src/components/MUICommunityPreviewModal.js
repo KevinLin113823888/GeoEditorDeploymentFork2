@@ -88,7 +88,7 @@ function MUICommunityPreviewModal() {
             setdisLikeLength(0);
             // setFollowing("Follow")
             // setBlocked("Block")
-            setComments([])
+            setComments([]);
 
             fetch(process.env.REACT_APP_API_URL + 'community/getCommunityPreviewById', {
                 method: "POST",
@@ -104,20 +104,14 @@ function MUICommunityPreviewModal() {
             .then((data) => {
                 console.log("initial data", data)
                 let feat = JSON.parse(data.feature);
-                if(feat.length === 0){
-                    return;
-                }
+                if(feat.length === 0){return;}
                 setTitle(data.title);
                 setPreviewId(data.id);
                 setOwner(data.ownerName);
                 setGeoJson({type: data.type, features: feat});
                 setComments(data.comments)
-                if (data.like) {
-                    setLikes("red");
-                }
-                if (data.dislike) {
-                    setDislikes("red");
-                }
+                if (data.like) {setLikes("red");}
+                if (data.dislike) {setDislikes("red");}
                 setLikeLength(data.likeAmount);
                 setdisLikeLength(data.dislikeAmount);
                 setFollowing(data.follow);

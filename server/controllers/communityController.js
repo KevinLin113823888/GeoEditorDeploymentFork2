@@ -7,8 +7,17 @@ const CommunityPreview = require('../models/communityPreviewModel')
 class communityController {
     static async getCommunity(req, res) {
         try {
-            // let username = req.cookies.values.username;
-            var mapCards = await MapCard.find({published:true});
+            let username = req.cookies.values.username;
+            let currentUser = await User.findOne({username: username});
+            let blockedUsers = currentUser.blockedUsers;
+            var mapCards = await MapCard.find({published: true});
+            mapCards = mapCards.filter(map => !blockedUsers.includes(map.owner));
+            // var mapCards = await MapCard.aggregate([
+            //     { $match: { published: true } },
+            //     { $match: { owner: {$ne: blockedUsers } } }
+            // ]);
+            // console.log("mapCards being sent", mapCards);
+
             return res.status(200).json({status: "OK", mapcards: mapCards});
         }
         catch(e){
