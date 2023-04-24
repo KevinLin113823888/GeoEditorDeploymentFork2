@@ -1,6 +1,6 @@
 describe('template spec', () => {
   it('passes', () => {
-    cy.visit('https://bejewelled-rugelach-940512.netlify.app/')
+    cy.visit('https://bejewelled-palmier-26e86d.netlify.app/')
     /* ==== Generated with Cypress Studio ==== */
     cy.get('[data-cy="login-link"]').click();
     cy.get('#userName').clear();
@@ -9,10 +9,13 @@ describe('template spec', () => {
     cy.get('#password').clear();
     cy.get('#password').type('test');
     cy.get('[data-cy="submit-button"]').click();
-    cy.get('#cardImage644606653d389749e5e550d4').click();
-    cy.get('#leaflet-tooltip-259').dblclick();
-    cy.get('#leaflet-tooltip-259 > input').clear();
-    cy.get('#leaflet-tooltip-259 > input').type('Russiaaaaa');
+
+    cy.get('#cardImage644683a310eedf34e440433d').click();
+
+    cy.get('#leaflet-tooltip-2485 > input').dblclick();
+    cy.get('#leaflet-tooltip-2485 > input').clear();
+    cy.get('#leaflet-tooltip-2485 > input').type('Russiaaaaa');
+
     cy.get('.MuiGrid-grid-xs-8').click();
     cy.get('[title="addText"] > .leaflet-buttons-control-button > .control-icon').click();
     cy.get('#mapitem').click();
