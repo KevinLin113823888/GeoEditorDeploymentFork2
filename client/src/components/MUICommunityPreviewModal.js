@@ -25,6 +25,16 @@ import MapEditor from "./MapViewer/MapEditor";
 import GeomanJsWrapper from "./MapViewer/GeomanJsWrapper";
 import {FeatureGroup, GeoJSON, LayerGroup, MapContainer, TileLayer} from "react-leaflet";
 
+
+
+
+import axios from 'axios'
+axios.defaults.withCredentials = true;
+const api = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+})
+
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -97,7 +107,8 @@ function MUICommunityPreviewModal() {
                 setTitle(data.title);
                 setPreviewId(data.id);
                 setOwner(data.ownerName);
-                setGeoJson({type: data.type, features: feat}); 
+                setGeoJson({type: data.type, features: feat});
+                setComments(data.comments)
                 if (data.like) {
                     setLikes("red");
                 }
@@ -253,15 +264,49 @@ function MUICommunityPreviewModal() {
         setReportModal(true)
     }
 
-    let commentList=[{comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude1"},
-    {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude2"},
-    {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude3"},
-    {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude4"},
-    {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude5"},
-    {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude6"},
-    {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude7"},
-    {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude8"},
-    ]
+    function handleComment(e) {
+        if (e.key === 'Enter') {
+            let comment = e.target.value
+
+
+            let res = api.post(`/community/addComment`, {
+                // SPECIFY THE PAYLOAD
+                id:previewId,
+                comment: comment,
+            }).then(
+                (response) => {
+                    var result = response.data;
+                    if(result.status === 'OK'){
+                        let copy = JSON.parse(JSON.stringify(comments))
+                        copy.unshift(JSON.parse(JSON.stringify(comment)))
+                        setComments(comment => {
+                            return copy
+                        })
+                    }
+                    console.log(result);
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+            console.log(res)
+
+            //this is our text value
+
+        }
+    }
+
+
+    let commentList=comments
+    //     [{comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude1"},
+    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude2"},
+    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude3"},
+    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude4"},
+    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude5"},
+    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude6"},
+    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude7"},
+    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude8"},
+    // ]
 
     function onEachFeature(feature, layer){
         const featureName = feature.properties.admin;
@@ -386,7 +431,9 @@ function MUICommunityPreviewModal() {
                             </Grid>
                         </Grid>
                         <Grid item xs={3} >
-                            <TextField type='text' placeholder="Add a comment..." sx={{ width: '100%',marginLeft: "2.55%" }} />
+                            <TextField type='text' placeholder="Add a comment..."
+                                       onKeyDown={handleComment}
+                                       sx={{ width: '100%',marginLeft: "2.55%" }} />
                             <Box sx={{ width: "100%", backgroundColor: "#f7fafc", maxHeight: "33vw", marginLeft: "2.55%",overflowY: "scroll" }}>
                               
                                 {commentList.map((commentObj, index) => (
