@@ -1,7 +1,7 @@
 const express = require("express");
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
-var session = require('express-session');
+// var session = require('express-session');
 require("dotenv").config();
 
 const app = express();
