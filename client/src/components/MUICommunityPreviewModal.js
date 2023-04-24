@@ -72,8 +72,8 @@ function MUICommunityPreviewModal() {
     const [forkName, setForkName] = useState(title);
     const [reportInfo, setReportInfo] = useState("");
     const [previewId, setPreviewId] = useState("");
-    const [following, setFollowing] = useState("");
-    const [blocked, setBlocked] = useState([]);
+    const [following, setFollowing] = useState("Follow");
+    const [blocked, setBlocked] = useState("Block");
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState("black");
     const [likeLength, setLikeLength] = useState(0);
@@ -86,6 +86,9 @@ function MUICommunityPreviewModal() {
             setDislikes("black");
             setLikeLength(0);
             setdisLikeLength(0);
+            // setFollowing("Follow")
+            // setBlocked("Block")
+            setComments([])
 
             fetch(process.env.REACT_APP_API_URL + 'community/getCommunityPreviewById', {
                 method: "POST",
@@ -118,6 +121,7 @@ function MUICommunityPreviewModal() {
                 setLikeLength(data.likeAmount);
                 setdisLikeLength(data.dislikeAmount);
                 setFollowing(data.follow);
+                setBlocked(data.block)
             })
             .catch(err => console.log(err));
         }
@@ -252,7 +256,22 @@ function MUICommunityPreviewModal() {
     }
 
     function handleBlock() {
-
+        fetch(process.env.REACT_APP_API_URL + 'community/blockCommunityMap', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: previewId
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("status of block", data.status);
+            setBlocked(data.status);
+        })
+        .catch(err => console.log(err));
     }
 
     function closeForkModal() {
@@ -405,7 +424,7 @@ function MUICommunityPreviewModal() {
                                             }}
                                             style={{ marginLeft: '.5%' }}
                                             disabled= {disable}
-                                            value='Block' />
+                                            value={blocked} />
                                     </Box>
                                 </Grid>
                                 <Grid item xs={2} >

@@ -46,13 +46,21 @@ class communityController {
                 }
             });
 
+            let userToBlock = currentCommunityCard.owner;
+            let isBlocked = false;
+            currentUser.blockedUsers.forEach(id => {
+                if (id.toString() === userToFollow.toString()) {
+                    isBlocked = true;
+                }
+            });
+
             return res.status(200).json({
                 status: "OK", 
                 title: currentCommunityPreview.title,
                 id: currentCommunityPreview._id,
                 ownerName: currentOwner.username,
                 follow: isFollowing ? "Followed" : "Follow",
-                block: currentOwner.blockedUsers,
+                block: isBlocked ? "Blocked" : "Block",
                 type: currentCommunityData.type, 
                 feature: JSON.stringify(currentCommunityData.feature), 
                 comments: currentCommunityPreview.comments, 
@@ -239,8 +247,12 @@ class communityController {
             if (isBlocked === false) {
                 var currentUser = await User.findOneAndUpdate({ username: username}, { $push: { blockedUsers: currentCommunityCard.owner } });
                 await currentUser.save();
+                return res.status(200).json({status: 'Blocked'});
+            } else {
+                var currentUser = await User.findOneAndUpdate({ username: username}, { $pull: { blockedUsers: currentCommunityCard.owner } });
+                await currentUser.save();
+                return res.status(200).json({status: 'Block'});
             }
-            return res.status(200).json({status: 'OK'});
         }
         catch(e){
             console.log(e.toString())
