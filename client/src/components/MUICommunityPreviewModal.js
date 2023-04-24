@@ -24,16 +24,6 @@ import MapEditor from "./MapViewer/MapEditor";
 import GeomanJsWrapper from "./MapViewer/GeomanJsWrapper";
 import {FeatureGroup, GeoJSON, LayerGroup, MapContainer, TileLayer} from "react-leaflet";
 
-
-
-
-// import axios from 'axios'
-// axios.defaults.withCredentials = true;
-// const api = axios.create({
-//     baseURL: process.env.REACT_APP_API_URL,
-// })
-
-
 const style = {
     position: 'absolute',
     top: '50%',
@@ -86,8 +76,6 @@ function MUICommunityPreviewModal() {
             setDislikes("black");
             setLikeLength(0);
             setdisLikeLength(0);
-            // setFollowing("Follow")
-            // setBlocked("Block")
             setComments([]);
 
             fetch(process.env.REACT_APP_API_URL + 'community/getCommunityPreviewById', {
@@ -316,42 +304,8 @@ function MUICommunityPreviewModal() {
                 })
                 .catch(err => console.log(err));
             }
-
-            // let res = api.post(`/community/addComment`, {
-            //     // SPECIFY THE PAYLOAD
-            //     id:previewId,
-            //     comment: comment,
-            // }).then(
-            //     (response) => {
-            //         var result = response.data;
-            //         if(result.status === 'OK'){
-            //             let copy = JSON.parse(JSON.stringify(comments))
-            //             copy.unshift(JSON.parse(JSON.stringify(comment)))
-            //             setComments(comment => {
-            //                 return copy
-            //             })
-            //         }
-            //         console.log(result);
-            //     },
-            //     (error) => {
-            //         console.log(error);
-            //     }
-            // );
-            // console.log(res)
         }
     }
-
-
-    let commentList=comments
-    //     [{comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude1"},
-    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude2"},
-    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude3"},
-    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude4"},
-    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude5"},
-    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude6"},
-    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude7"},
-    // {comment:"Wow, this is a great map. It is really such a fascinating map. I constantly dream about this map every night.",username:"Joe Dude8"},
-    // ]
 
     function onEachFeature(feature, layer){
         const featureName = feature.properties.admin;
@@ -370,7 +324,6 @@ function MUICommunityPreviewModal() {
         fillColor2 = "grey"
     }
     return (
-
         <div>
             <Modal
                 open={store.currentModal === "COMMUNITY_PREVIEW_MODAL"}
@@ -482,7 +435,7 @@ function MUICommunityPreviewModal() {
                                        sx={{ width: '100%',marginLeft: "2.55%" }} />
                             <Box sx={{ width: "100%", backgroundColor: "#f7fafc", maxHeight: "33vw", marginLeft: "2.55%",overflowY: "scroll" }}>
                               
-                                {commentList.map((commentObj, index) => (
+                                {comments.map((commentObj, index) => (
                                     <CommentCard
                                         key={'map-comment-' + (index)}
                                         index={index}
