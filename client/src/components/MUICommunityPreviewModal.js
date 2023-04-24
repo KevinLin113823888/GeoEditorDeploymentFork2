@@ -1,7 +1,6 @@
 import { React, useState, useEffect, useContext } from "react";
 
 import { CurrentModal, GlobalStoreContext } from "../store";
-// import * as React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -73,7 +72,7 @@ function MUICommunityPreviewModal() {
     const [forkName, setForkName] = useState(title);
     const [reportInfo, setReportInfo] = useState("");
     const [previewId, setPreviewId] = useState("");
-    const [following, setFollowing] = useState([]);
+    const [following, setFollowing] = useState("");
     const [blocked, setBlocked] = useState([]);
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState("black");
@@ -87,6 +86,7 @@ function MUICommunityPreviewModal() {
             setDislikes("black");
             setLikeLength(0);
             setdisLikeLength(0);
+
             fetch(process.env.REACT_APP_API_URL + 'community/getCommunityPreviewById', {
                 method: "POST",
                 credentials: 'include',
@@ -115,9 +115,9 @@ function MUICommunityPreviewModal() {
                 if (data.dislike) {
                     setDislikes("red");
                 }
-                // let percentage = data.likeAmount / (data.dislikeAmount + data.likeAmount);
                 setLikeLength(data.likeAmount);
                 setdisLikeLength(data.dislikeAmount);
+                setFollowing(data.follow);
             })
             .catch(err => console.log(err));
         }
@@ -126,7 +126,6 @@ function MUICommunityPreviewModal() {
     function handleCloseModal(event) {
         store.changeModal("NONE");
     }
-
 
     function handleFork() {
         closeForkModal();
@@ -234,7 +233,22 @@ function MUICommunityPreviewModal() {
     }
 
     function handleFollow() {
-
+        fetch(process.env.REACT_APP_API_URL + 'community/followCommunityMap', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: previewId
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("status of follow", data.status);
+            setFollowing(data.status);
+        })
+        .catch(err => console.log(err));
     }
 
     function handleBlock() {
@@ -382,7 +396,8 @@ function MUICommunityPreviewModal() {
                                                 handleFollow();
                                             }}
                                             disabled= {disable}
-                                            value='Follow' />
+                                            value={following}
+                                        />
                                         <input type="button"
                                             className="preview-button"
                                             onClick={() => {

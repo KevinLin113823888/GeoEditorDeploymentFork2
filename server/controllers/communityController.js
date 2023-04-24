@@ -20,6 +20,7 @@ class communityController {
     static async getCommunityPreviewById(req, res) {
         try {
             var { id } = req.body;
+            let username = req.cookies.values.username;
 
             var currentCommunityPreview = await CommunityPreview.findOne({ mapCard: new mongoose.Types.ObjectId(id) });
             var currentCommunityData = await MapData.findOne({ _id: currentCommunityPreview.mapData });
@@ -36,12 +37,21 @@ class communityController {
                 dislike = true;
             }
 
+            var currentUser = await User.findOne({ username: username});
+            let userToFollow = currentCommunityCard.owner;
+            let isFollowing = false;
+            currentUser.usersFollowing.forEach(id => {
+                if (id.toString() === userToFollow.toString()) {
+                    isFollowing = true;
+                }
+            });
+
             return res.status(200).json({
                 status: "OK", 
                 title: currentCommunityPreview.title,
                 id: currentCommunityPreview._id,
                 ownerName: currentOwner.username,
-                follow: currentOwner.usersFollowing,
+                follow: isFollowing ? "Followed" : "Follow",
                 block: currentOwner.blockedUsers,
                 type: currentCommunityData.type, 
                 feature: JSON.stringify(currentCommunityData.feature), 
@@ -197,8 +207,12 @@ class communityController {
             if (isFollowing === false) {
                 var currentUser = await User.findOneAndUpdate({ username: username}, { $push: { usersFollowing: currentCommunityCard.owner } });
                 await currentUser.save();
+                return res.status(200).json({status: 'Followed', follow: true});
+            } else {
+                var currentUser = await User.findOneAndUpdate({ username: username}, { $pull: { usersFollowing: currentCommunityCard.owner } });
+                await currentUser.save();
+                return res.status(200).json({status: 'Follow', follow: false});
             }
-            return res.status(200).json({status: 'OK'});
         }
         catch(e){
             console.log(e.toString())
