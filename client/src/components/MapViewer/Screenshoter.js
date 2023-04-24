@@ -11,11 +11,19 @@ function Screenshoter(props) {
     
     const { store } = useContext(GlobalStoreContext);
 
-
     const map = useMap();
 
     useEffect(() =>{
-        var screenshot = L.simpleMapScreenshoter().addTo(map);
+        let pluginOptions = {
+            cropImageByInnerWH: true, // crop blank opacity from image borders
+            hidden: true, // hide screen icon
+            mimeType: 'image/png', // used if format == image,
+            onPixelDataFail: async function({ node, plugin, error, mapPane, domtoimageOptions }) {
+                return plugin._getPixelDataOfNormalMap(domtoimageOptions)
+            }
+         }
+
+        var screenshot = L.simpleMapScreenshoter(pluginOptions).addTo(map);
         let format = 'image'
 
         var bounds = new L.LatLngBounds();
