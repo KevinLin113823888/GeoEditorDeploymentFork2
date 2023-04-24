@@ -4,12 +4,23 @@ const bcrypt = require('bcrypt');
 const userInfoSchema = require("../models/userInfoModel");
 const MapCard = require('../models/mapCardModel')
 const MapData = require('../models/mapDataModel')
+const auth = require('../auth')
+
 const isCookieSecure = process.env.NODE_ENV === "production" ? true : false;
 const sameSiteCookie = process.env.NODE_ENV === "production" ? "none" : "lax";
 
 class userController {
     static async getLoggedIn(req, res) {
         try{
+            let userId = auth.verifyUser(req);
+            if (!userId) {
+                return res.status(200).json({
+                    loggedIn: false,
+                    user: null,
+                    errorMessage: "Not logged in"
+                })
+            }
+            // console.log("userId", userId);
             let username = req.cookies.values.username;
 
             var user = await userInfoSchema.findOne({username: username});
@@ -46,7 +57,10 @@ class userController {
             });
             await user.save();
             // req.session.username = user.username;
-            res.cookie('values', { username: user.username }, {
+
+            const token = auth.signToken(user._id);
+
+            res.cookie('values', { username: user.username, token: token }, {
                 httpOnly: isCookieSecure,
                 secure: isCookieSecure,
                 sameSite: sameSiteCookie,
@@ -70,10 +84,12 @@ class userController {
             var isMatch = await bcrypt.compare(password, user.password);
             if(!isMatch)
                 throw new Error("Invalid password")
+
+            const token = auth.signToken(user._id);
             
             // req.session.username = user.username;
             // return res.status(200).json({status: 'OK', name: user.name});
-            res.cookie('values', { username: user.username }, {
+            res.cookie('values', { username: user.username, token: token }, {
                 httpOnly: isCookieSecure,
                 secure: isCookieSecure,
                 sameSite: sameSiteCookie,
