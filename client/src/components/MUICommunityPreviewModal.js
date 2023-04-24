@@ -1,7 +1,6 @@
 import { React, useState, useEffect, useContext } from "react";
 
 import { CurrentModal, GlobalStoreContext } from "../store";
-// import * as React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -73,8 +72,8 @@ function MUICommunityPreviewModal() {
     const [forkName, setForkName] = useState(title);
     const [reportInfo, setReportInfo] = useState("");
     const [previewId, setPreviewId] = useState("");
-    const [following, setFollowing] = useState([]);
-    const [blocked, setBlocked] = useState([]);
+    const [following, setFollowing] = useState("Follow");
+    const [blocked, setBlocked] = useState("Block");
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState("black");
     const [likeLength, setLikeLength] = useState(0);
@@ -87,6 +86,10 @@ function MUICommunityPreviewModal() {
             setDislikes("black");
             setLikeLength(0);
             setdisLikeLength(0);
+            // setFollowing("Follow")
+            // setBlocked("Block")
+            setComments([])
+
             fetch(process.env.REACT_APP_API_URL + 'community/getCommunityPreviewById', {
                 method: "POST",
                 credentials: 'include',
@@ -115,9 +118,10 @@ function MUICommunityPreviewModal() {
                 if (data.dislike) {
                     setDislikes("red");
                 }
-                // let percentage = data.likeAmount / (data.dislikeAmount + data.likeAmount);
                 setLikeLength(data.likeAmount);
                 setdisLikeLength(data.dislikeAmount);
+                setFollowing(data.follow);
+                setBlocked(data.block)
             })
             .catch(err => console.log(err));
         }
@@ -126,7 +130,6 @@ function MUICommunityPreviewModal() {
     function handleCloseModal(event) {
         store.changeModal("NONE");
     }
-
 
     function handleFork() {
         closeForkModal();
@@ -234,11 +237,41 @@ function MUICommunityPreviewModal() {
     }
 
     function handleFollow() {
-
+        fetch(process.env.REACT_APP_API_URL + 'community/followCommunityMap', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: previewId
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("status of follow", data.status);
+            setFollowing(data.status);
+        })
+        .catch(err => console.log(err));
     }
 
     function handleBlock() {
-
+        fetch(process.env.REACT_APP_API_URL + 'community/blockCommunityMap', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: previewId
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("status of block", data.status);
+            setBlocked(data.status);
+        })
+        .catch(err => console.log(err));
     }
 
     function closeForkModal() {
@@ -382,7 +415,8 @@ function MUICommunityPreviewModal() {
                                                 handleFollow();
                                             }}
                                             disabled= {disable}
-                                            value='Follow' />
+                                            value={following}
+                                        />
                                         <input type="button"
                                             className="preview-button"
                                             onClick={() => {
@@ -390,7 +424,7 @@ function MUICommunityPreviewModal() {
                                             }}
                                             style={{ marginLeft: '.5%' }}
                                             disabled= {disable}
-                                            value='Block' />
+                                            value={blocked} />
                                     </Box>
                                 </Grid>
                                 <Grid item xs={2} >
