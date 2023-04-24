@@ -230,7 +230,7 @@ class communityController {
                 await currentUser.save();
                 return res.status(200).json({status: 'Follow', follow: false});
             }
-        }
+        // }
         // catch(e){
         //     console.log(e.toString())
         //     return res.status(400).json({error: true, message: e.toString() });
