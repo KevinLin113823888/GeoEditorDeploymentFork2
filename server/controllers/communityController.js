@@ -206,7 +206,7 @@ class communityController {
     }
 
     static async followCommunityMap(req, res) {
-        try {
+        // try {
             var { id } = req.body;
             let username = req.cookies.values.username;
             console.log("Username", username);
@@ -231,10 +231,10 @@ class communityController {
                 return res.status(200).json({status: 'Follow', follow: false});
             }
         }
-        catch(e){
-            console.log(e.toString())
-            return res.status(400).json({error: true, message: e.toString() });
-        }
+        // catch(e){
+        //     console.log(e.toString())
+        //     return res.status(400).json({error: true, message: e.toString() });
+        // }
     }
 
     static async blockCommunityMap(req, res) {
