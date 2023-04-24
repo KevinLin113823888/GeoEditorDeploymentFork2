@@ -63,6 +63,7 @@ class communityController {
                 }
             });
 
+            console.log("current preview", currentCommunityPreview._id);
             return res.status(200).json({
                 status: "OK", 
                 title: currentCommunityPreview.title,
