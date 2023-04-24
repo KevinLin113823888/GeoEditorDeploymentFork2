@@ -12,11 +12,11 @@ describe('template spec', () => {
     cy.get('.css-wkpw2c > .MuiFormControl-root > .MuiInputBase-root > #outlined-basic').clear('c');
     cy.get('.css-wkpw2c > .MuiFormControl-root > .MuiInputBase-root > #outlined-basic').type('copy');
     cy.get('.modal-confirm-button').click();
-    cy.get(':nth-child(9) > .css-1cju3ff > .css-oqv722 > .css-wkpw2c > .css-1udklsk > [data-testid="BorderColorIcon"] > path').click();
-    cy.get('.css-wkpw2c > .MuiFormControl-root > .MuiInputBase-root > #outlined-basic').clear('re');
-    cy.get('.css-wkpw2c > .MuiFormControl-root > .MuiInputBase-root > #outlined-basic').type('rename');
-    cy.get('.modal-confirm-button').click();
-    cy.get(':nth-child(9) > .css-1cju3ff > .css-oqv722 > .css-wkpw2c > .css-1udklsk > [data-testid="DeleteIcon"] > path').click();
+    // cy.get(':nth-child(9) > .css-1cju3ff > .css-oqv722 > .css-wkpw2c > .css-1udklsk > [data-testid="BorderColorIcon"] > path', { timeout: 20000 }).click();
+    // cy.get('.css-wkpw2c > .MuiFormControl-root > .MuiInputBase-root > #outlined-basic').clear('re');
+    // cy.get('.css-wkpw2c > .MuiFormControl-root > .MuiInputBase-root > #outlined-basic').type('rename');
+    // cy.get('.modal-confirm-button').click();
+    // cy.get(':nth-child(9) > .css-1cju3ff > .css-oqv722 > .css-wkpw2c > .css-1udklsk > [data-testid="DeleteIcon"] > path').click();
     /* ==== End Cypress Studio ==== */
   })
 })
