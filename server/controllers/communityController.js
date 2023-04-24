@@ -241,6 +241,7 @@ class communityController {
         try {
             var { id } = req.body;
             let username = req.cookies.values.username;
+            console.log("ID", id, username);
 
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentCommunityCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapCard) });
