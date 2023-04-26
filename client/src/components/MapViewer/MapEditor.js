@@ -37,41 +37,32 @@ function MapEditor(props) {
     const currentRegion = useRef("");
 
     const geoJsonMapData = store.currentMapData;
-    //const context = useLeafletContext();
-   
-    // useEffect(() =>{
-    //     console.log("changed");
-    //     setUpdate(update => update+1);
-    // },[]);
-    
-    const nameChange = (event) => {
-        let layer = event.target;
 
-        let newName = prompt("Input new region name:", layer.feature.properties.name);
-        if (!newName) {
-            return;
-        }
-        props.changeName(layer.feature.properties.name, newName);
-        layer.bindPopup(newName)
-        layer.bindTooltip(layer.feature.properties.name,
-            { permanent: true, direction: 'center' }
-        ).openTooltip();
-        //setUpdate(update+1);
-        setUpdate(update => update + 1);
-    }
+    // const nameChange = (event) => {
+    //     let layer = event.target;
+    //     let newName = prompt("Input new region name:", layer.feature.properties.name);
+    //     if (!newName) {
+    //         return;
+    //     }
+    //     props.changeName(layer.feature.properties.name, newName);
+    //     layer.bindPopup(newName)
+    //     layer.bindTooltip(layer.feature.properties.name,
+    //         { permanent: true, direction: 'center' }
+    //     ).openTooltip();
+    //     //setUpdate(update+1);
+    //     setUpdate(update => update + 1);
+    // }
     function arraysEqual(arr1, arr2) {
         // Check if the arrays have the same length
         if (arr1.length !== arr2.length) {
             return false;
         }
-
         // Loop through each element of the arrays and compare their values
         for (let i = 0; i < arr1.length; i++) {
             if (arr1[i] !== arr2[i]) {
                 return false;
             }
         }
-
         // If all elements match, the arrays are equal
         return true;
     }
@@ -538,9 +529,9 @@ function MapEditor(props) {
 
         });
 
-        layer.on({
-            dblclick: nameChange.bind(this)
-        });
+        // layer.on({
+        //     dblclick: nameChange.bind(this)
+        // });
         layer.on('pm:vertexremoved', e => {
             console.log("vertexremoved")
             handleRemoveVertex(e)

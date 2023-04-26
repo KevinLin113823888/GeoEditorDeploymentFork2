@@ -19,11 +19,9 @@ import ImportModal from "./MapViewerModal/ImportModal";
 import MapLegendFooter from "./MapLegendFooter";
 import { useParams } from 'react-router-dom';
 import Box from "@mui/material/Box";
-
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import * as topoServer from 'topojson-server';
 import * as topoClient from 'topojson-client';
 import * as topoSimplify from 'topojson-simplify';
@@ -48,17 +46,15 @@ function MapViewerScreen(props) {
     let shpfile = null;
     let dbffile = null;
 
-    // useEffect(() => {
-    //     setGeoJson(na)
-    // },[])
-
-
+    useEffect(() => {
+        initGeojsonGraphicalData(na)
+        setGeoJson(na)
+    },[])
     useEffect(() => {
         if (state) {
             setMapChange(state.title);
         }
         console.log("ID of map", id);
-        // console.log(state);
         fetch(process.env.REACT_APP_API_URL + 'map/getMapById', {
             method: "post",
             credentials: 'include',
@@ -198,8 +194,6 @@ function MapViewerScreen(props) {
             var temp = JSON.parse(e.target.result);
             // console.log("iumport")
             // console.log(temp) //this has grahpical data
-
-
             // let graphical = JSON.parse(JSON.stringify(temp.graphicalData))
             // var topo = topoServer.topology({ foo: temp });
             // topo = topoSimplify.presimplify(topo);
@@ -331,8 +325,6 @@ function MapViewerScreen(props) {
     }
 
     function handleChangeMapName(event) {
-        // store.changeModal("NONE");
-
         fetch(process.env.REACT_APP_API_URL + 'map/changeMapNameById', {
             method: "POST",
             credentials: 'include',
@@ -359,14 +351,10 @@ function MapViewerScreen(props) {
 
     const Buttons = (Function, Text) => {
         const wrappedButton =
-
-
             <Button
                 className='responsive-text'
                 style={{
-
                     //backgroundColor: "#3c7dc3",
-
                 }}
                 sx={{ bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a' }, fontFamily: "Helvetica",
                  fontSize: { xs: '.7rem', md: '1rem' }, marginLeft: { xs: '1.3rem', md: '10px' }, textAlign: 'right', marginBottom:"10px" }}

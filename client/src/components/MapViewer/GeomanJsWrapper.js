@@ -6,6 +6,9 @@ import './geomanButton.css';
 import { CurrentModal, GlobalStoreContext } from '../../store/index'
 import EditLegendTPS from '../../transactions/EditLegendTPS'
 import TextboxTPS from '../../transactions/TextboxTPS'
+import VertexTPS from '../../transactions/VertexTPS'
+
+
 
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -41,9 +44,8 @@ function GeomanJsWrapper(props) {
             }
         }
     )
-
+    //called once to initialize the textboxs from geoJson
     useEffect (()=>{
-        //called once to initialize the textboxs from geoJson
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
         const leafletContainer = LL
@@ -78,8 +80,6 @@ function GeomanJsWrapper(props) {
         // })
             // setTextBoxList( store.currentMapData.graphicalData.textBoxList)
     },[])
-
-    //lets make is so that this is stateful, and that this can be called more than once.
 
     const handleTooltipEditJSTPS = (oldText,newText,index) => {
         let mappedData = {
@@ -118,7 +118,7 @@ function GeomanJsWrapper(props) {
         console.log("jstps for delete text")
         store.jstps.addTransaction(new TextboxTPS(mappedData))
     }
-
+    //lets make is so that this is stateful, and that this can be called more than once.
     useEffect (()=>{
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
@@ -189,6 +189,7 @@ function GeomanJsWrapper(props) {
         })
     },[textBoxList])
 
+    //this will be the one to intialize the buttons, these are called once and are not stateful
     useEffect(() => {
 
         if (isInitialRender.current === false ) {// skip all future renders.
@@ -210,8 +211,6 @@ function GeomanJsWrapper(props) {
         //     store.setZoomLevel(map.getZoom(), centerArr)
         // });
         map.on('pm:drawstart', ({ workingLayer }) => {
-
-
             workingLayer.on('pm:vertexadded', (e) => {
                 let newCoords = []
                 newCoords[0] = e.latlng.lng
@@ -230,8 +229,10 @@ function GeomanJsWrapper(props) {
             if (newPolygonFeature.geometry.coordinates[0].length > 0) {
                 let firstCoord = newPolygonFeature.geometry.coordinates[0][0];
                 sameFirstandLastCoords.geometry.coordinates[0].push(firstCoord)
-                props.file.features.push(sameFirstandLastCoords)
 
+                console.log("this is the polygon that we want to add for our jstps i think.")
+                console.log(sameFirstandLastCoords)
+                props.file.features.push(sameFirstandLastCoords)
 
                 let centerArr = []
                 let center = map.getCenter()
