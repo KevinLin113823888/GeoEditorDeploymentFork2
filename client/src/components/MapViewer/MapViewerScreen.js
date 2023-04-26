@@ -46,10 +46,10 @@ function MapViewerScreen(props) {
     let shpfile = null;
     let dbffile = null;
 
-    useEffect(() => {
-        initGeojsonGraphicalData(na)
-        setGeoJson(na)
-    },[])
+    // useEffect(() => {
+    //     initGeojsonGraphicalData(na)
+    //     setGeoJson(na)
+    // },[])
     useEffect(() => {
         if (state) {
             setMapChange(state.title);
