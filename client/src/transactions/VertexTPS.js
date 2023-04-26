@@ -10,61 +10,64 @@ export default class VertexTPS extends jsTPS_Transaction {
         this.mappedData = mappedData
         this.store = this.mappedData.store
         this.setStore = this.mappedData.setStore
-        this.type = this.mappedData.type
-        this.mapObj =  this.mappedData.store.currentMapData
+        this.state = mappedData.state
+        this.index = mappedData.index
+        this.update = mappedData.update
+        this.type = mappedData.type
+        this.newRegionName = mappedData.newRegionName
+        this.newPolygon = mappedData.newPolygon
 
-        this.newText = mappedData.newText
-        this.oldText = mappedData.oldText
-
-        this.textBoxCoord = mappedData.textBoxCoord
         this.diff =  require('jsondiffpatch')
         this.diffDelta = null;
-
-        this.state = mappedData.state
-
-        this.toolTip = mappedData.toolTip
-        this.handleMapTextEdit = mappedData.handleMapTextEdit
-        this.index = mappedData.index
     }
-    refreshState (mapObj) {
-        console.log("called to refresh i suppose")
-        console.log(mapObj)
-        this.store.setCurrentMapData(mapObj)
-        this.state([...mapObj.graphicalData.textBoxList])
+    refreshState () {
+
+        this.store.updateViewer()
+        this.update()
+        // this.setStore({
+        //     ...this.store,
+        //     currentMapData: this.store.currentMapData
+        // })
     }
 
     doTransaction() {
-        console.log("JSTPS ADD CALLED")
-        let textBoxlist = this.mapObj.graphicalData.textBoxList
-        let before = JSON.parse(JSON.stringify(textBoxlist))
+        console.log("JSTPS for vertex changes")
+        let features = this.store.currentMapData.features
+        let before = JSON.parse(JSON.stringify(features))
 
+        console.log(features)
+
+        //this undo and redo actually works, its just that when we draw polygon, the polygon trails stays on the screen.
         if(this.type === "add"){
-            let newTextBox = {
-                overlayText:"HELLOTHERER",coords:{
-                    lat:this.textBoxCoord.lat,
-                    lng:this.textBoxCoord.lng}
+            this.newPolygon.properties.name = this.newRegionName
+            // this.store.currentMapData.features.push(newPolygon)
+            let lastFeatureIndex = features.length
+            this.diffDelta = {
+                [lastFeatureIndex]: [this.newPolygon],
+                "_t": "a"
             }
-            textBoxlist.push(newTextBox)
         }
-        else if(this.type === "edit"){
-            let tb = textBoxlist[this.index]
-            tb.overlayText = this.newText
-        }
-        else if(this.type === "move"){
-            let tb = textBoxlist[this.index]
-            tb.coords = this.textBoxCoord
-        }
-        else if(this.type === "delete"){
-            textBoxlist.splice(this.index,1)
-        }
+        console.log("result of the constructed delta.")
+        console.log(JSON.stringify(this.diffDelta))
 
-        let after = textBoxlist
-        this.diffDelta = this.diff.diff(before,after)
-        this.refreshState(this.mapObj)
+
+        let after = features
+        console.log("result of the actual delta.")
+        console.log(JSON.stringify(this.diff.diff(before,after)))
+
+        this.diff.patch(features,this.diffDelta)
+        this.refreshState()
     }
 
     undoTransaction() {
-        this.diff.unpatch(this.mapObj.graphicalData.textBoxList,this.diffDelta)
-        this.refreshState(this.mapObj)
+        console.log("undo transaction")
+        let feas = this.store.currentMapData.features
+        console.log(feas)
+
+        this.diff.unpatch(this.store.currentMapData.features,this.diffDelta)
+
+        console.log(feas)
+
+        this.refreshState()
     }
 }

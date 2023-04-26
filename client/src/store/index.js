@@ -64,6 +64,10 @@ function GlobalStoreContextProvider(props) {
         centerCoords:[20,100],
         jstps:  new jsTPS(),
         colorwheelHandler: null, //this is what function to call after submitting color modal
+        polygonData: null,
+        updateEditor: null,
+        updateViewer: null,
+
         currentPreviewId: null,
         currentMapCardId: null,
         setScreenshot: false,

@@ -698,6 +698,11 @@ function MapEditor(props) {
     //             .style.setProperty("opacity", `50%`);
     // }, [tileRef.current,store.currentMapData.graphicalData]);
 
+    //initalize the handle update stuff.
+    useEffect(() => {
+        store.updateEditor = handleUpdate
+    },[])
+
 
     return (
         <div>
@@ -707,7 +712,7 @@ function MapEditor(props) {
                 handleCancelMergeSelection = {handleCancelMergeSelection}
             />
             <MapAddRegionModal
-                handleAddRegion={handleAddRegion}
+                // handleAddRegion={handleAddRegion}
             />
             <SubregionColorModal handleChangeRegionColor={handleChangeRegionColor} handleCancelRegionSelection={handleCancelRegionSelection}/>
             <BorderColorModal handleChangeBorderColor={handleChangeBorderColor} handleCancelRegionSelection={handleCancelRegionSelection}/>
@@ -751,7 +756,7 @@ function MapEditor(props) {
                             toggleSelectMode={toggleSelectMode}
                             compress={props.handleCompress}
                             file = {geoJsonMapData}
-                            updateEditor = {handleUpdate}
+                            // updateEditor = {handleUpdate}
                             updateViewer = {props.updateViewer}
                         />
             </MapContainer>
