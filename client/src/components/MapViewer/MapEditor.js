@@ -296,25 +296,38 @@ function MapEditor(props) {
     }
 
     const handleMarkerDragEnd = (e) => {
-        console.log("updating the handle marker drag bruh........ cry😭😭😭")
 
-        console.log(e)
 
-        // let vertexEditFeature = e.target.feature
-        // let newVertex = [e.latlng.lng,e.latlng.lat]
-        //
-        // let transactionMappedData = {
-        //     type: "add",
-        //     store: store,
-        //     setStore: setStore,
-        //     updateView: store.updateViewer,
-        //     update:store.updateEditor,
-        //     indexPath : e.indexPath,
-        //     editingFeature: vertexEditFeature,
-        //     new2DVec:newVertex,
-        // }
-        // store.jstps.addTransaction(new VertexTPS(transactionMappedData))
-        // return;
+        //TODO: this is for the shared border stuff i have no idea man damn
+        // let geojson = store.currentMapData
+        // let geoFeature = store.currentMapData.features
+        // let workingFeature = e.layer.feature
+        // geoFeature.forEach(feature1 => {
+        //     let overlap = turf.lineOverlap(feature1,workingFeature)
+        //     if(overlap.features.length===0)
+        //         return //skip
+        //     //overlap
+        //     console.log("the feature that contains the overlap")
+        //     console.log(feature1)
+        //     console.log(overlap)
+        //     // do we have to do this 😭😭😭😭
+        // })
+
+
+        let vertexEditFeature = e.target.feature
+        let newVertex = [e.markerEvent.target._latlng.lng, e.markerEvent.target._latlng.lat]
+        let transactionMappedData = {
+            type: "drag",
+            store: store,
+            setStore: setStore,
+            updateView: store.updateViewer,
+            update:store.updateEditor,
+            indexPath : e.indexPath,
+            editingFeature: vertexEditFeature,
+            new2DVec:newVertex,
+        }
+        store.jstps.addTransaction(new VertexTPS(transactionMappedData))
+        return;
 
         console.log(e.target)
         const layer = e.target;

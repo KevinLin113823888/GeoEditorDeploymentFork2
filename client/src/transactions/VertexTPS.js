@@ -39,8 +39,6 @@ export default class VertexTPS extends jsTPS_Transaction {
     refreshState () {
 
         let i=this.indexPath
-
-        //what we are doing is we take the polygon we are working with and storing it back onto the geojson file
         if(i.length===3)            //multi polygon
             this.editingFeature.geometry.coordinates[i[0]][i[1]] = this.polygon
         else            //single polygon
@@ -51,21 +49,29 @@ export default class VertexTPS extends jsTPS_Transaction {
 
     doTransaction() {
 
-        let polygon = this.polygon
-        let vertexIndex = this.vertexIndex
-
-        let before = JSON.parse(JSON.stringify(polygon))
         if(this.type === "add"){
-            // let coords = [[-99.49218749999999,-11.867350911459294],[100.960937499999996,-11.867350911459294],[24.9609375,20.632784250388028],[24.960937499999996,47.517200697839414],[-6.152343750000001,47.517200697839414],[-37.265624999999986,47.517200697839414],[-68.37890624999997,47.517200697839414],[-99.49218749999999,47.517200697839414],[-99.49218749999999,-11.867350911459294]]
-            polygon.splice(vertexIndex,0,this.new2DVec)
+            this.polygon.splice(this.vertexIndex,0,this.new2DVec)
         }
-
-        this.diffDelta = this.diff.diff(before,polygon)
+        else if(this.type === "drag"){
+            this.oldVertex = this.polygon[this.vertexIndex]
+            this.newVertex = this.new2DVec
+            this.polygon[this.vertexIndex] = this.newVertex
+        }
+        // console.log("after do")
+        // console.log(this.polygon)
         this.refreshState()
     }
 
     undoTransaction() {
-        this.diff.unpatch( this.polygon,this.diffDelta)
+        if(this.type === "add"){
+            this.polygon.splice(this.vertexIndex,1)
+        }
+        else if(this.type === "drag"){
+            this.polygon[this.vertexIndex] = this.oldVertex
+        }
+        // console.log("after undo")
+        // console.log(this.polygon)
+
         this.refreshState()
     }
 }
