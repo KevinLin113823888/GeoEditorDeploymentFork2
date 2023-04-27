@@ -37,6 +37,8 @@ function MapEditor(props) {
     const selectModeToggle = useRef(false)
 
     const currentRegion = useRef("");
+
+    let dragStartCoords = []
     // const [vertexEditRegion, setVertexEditRegion] = useState(null);
 
     const geoJsonMapData = store.currentMapData;
@@ -221,10 +223,7 @@ function MapEditor(props) {
         setUpdate(update => update + 1);
     }
     function handleRemoveVertex(e) {
-
         console.log("vertex removal")
-
-
         let vertexEditFeature = e.target.feature
         let transactionMappedData = {
             type: "delete",
@@ -238,8 +237,6 @@ function MapEditor(props) {
         store.jstps.addTransaction(new VertexTPS(transactionMappedData))
         return;
 
-        return;
-        
         let indexPath = e.indexPath;
         let ind0 = indexPath[0]
         let ind1 = indexPath[1]
@@ -313,6 +310,34 @@ function MapEditor(props) {
 
     }
 
+    const handleDraggedRegion = (e) =>{
+        console.log("handle dragon region")
+
+        let dragEndCoords = e.layer._latlngs[0]
+        console.log(dragStartCoords)
+        console.log(dragEndCoords)
+
+        let dx = dragEndCoords[0].lng-dragStartCoords[0].lng
+        let dy = dragEndCoords[0].lat-dragStartCoords[0].lat
+
+
+        let vertexEditFeature = e.target.feature
+        let transactionMappedData = {
+            type: "dragRegion",
+            store: store,
+            setStore: setStore,
+            updateView: store.updateViewer,
+            update:store.updateEditor,
+            editingFeature: vertexEditFeature,
+            dx:dx,
+            dy:dy
+        }
+        store.jstps.addTransaction(new RegionTPS(transactionMappedData))
+        return;
+
+        console.log(dx,dy)
+
+    }
     const handleMarkerDragEnd = (e) => {
 
 
@@ -619,7 +644,30 @@ function MapEditor(props) {
             console.log("pm:markerdragend")
             handleMarkerDragEnd(e);
         });
-       
+
+        layer.on('pm:dragstart', e => {
+            console.log("pm:dragstart")
+            // console.log(e)
+            dragStartCoords = e.layer._latlngs[0]
+            // console.log(dragStartCoords)
+        });
+        layer.on('pm:dragend', e => {
+            console.log("pm:dragend")
+            // console.log(e)
+
+
+            // let dragEndCoords = e.layer._latlngs[0]
+            // console.log(dragStartCoords)
+            // console.log(dragEndCoords)
+
+            handleDraggedRegion(e)
+        });
+
+        // layer.on('pm:drag', e => {
+        //     console.log("pm:bruh")
+        //     console.log(e)
+        //     // handleDraggedRegion(e)
+        // });
     }
 
 

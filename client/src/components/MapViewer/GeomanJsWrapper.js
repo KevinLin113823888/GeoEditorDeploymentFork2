@@ -415,7 +415,7 @@ function GeomanJsWrapper(props) {
                 rotateMode: false, //last 4 that are removed are below
                 removalMode: false,
                 cutPolygon: false,
-                dragMode: false,
+                dragMode: true,
                 editMode: true
             });
             LL.pm.setGlobalOptions({

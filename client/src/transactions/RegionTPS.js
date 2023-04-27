@@ -18,52 +18,45 @@ export default class RegionTPS extends jsTPS_Transaction {
         this.newRegionName = mappedData.newRegionName
         this.newPolygon = mappedData.newPolygon
 
+
+
         this.diff =  require('jsondiffpatch')
         this.diffDelta = null;
+
+
+        this.editingFeature = mappedData.editingFeature
+        this.dx = mappedData.dx
+        this.dy = mappedData.dy
     }
     refreshState () {
 
         this.updateView()
         this.update()
-        // this.setStore({
-        //     ...this.store,
-        //     currentMapData: this.store.currentMapData
-        // })
     }
 
     doTransaction() {
-        console.log("JSTPS for vertex changes")
+        console.log("JSTPS for region changes")
         let features = this.store.currentMapData.features
-        let before = JSON.parse(JSON.stringify(features))
-
-        console.log(features)
-
-        //this undo and redo actually works, its just that when we draw polygon, the polygon trails stays on the screen.
         if(this.type === "add"){
             this.newPolygon.properties.name = this.newRegionName
-            // this.store.currentMapData.features.push(newPolygon)
-            let lastFeatureIndex = features.length
-            this.diffDelta = {
-                [lastFeatureIndex]: [this.newPolygon],
-                "_t": "a"
-            }
+            this.store.currentMapData.features.push(this.newPolygon)
         }
-        console.log("result of the constructed delta.")
-        console.log(JSON.stringify(this.diffDelta))
-
-
-        let after = features
-        console.log("result of the actual delta.")
-        console.log(JSON.stringify(this.diff.diff(before,after)))
-
-        this.diff.patch(features,this.diffDelta)
+        else if(this.type === "dragRegion"){
+            console.log("drag region called")
+            console.log(this.editingFeature)
+            let poly = this.editingFeature
+            //TODO: we just basically have to update the coordinates by the dx and dy by adding them for every single one
+            // for(let i=0;i<)
+        }
         this.refreshState()
     }
 
     undoTransaction() {
-        console.log("undo transaction")
-
-        this.diff.unpatch(this.store.currentMapData.features,this.diffDelta)
+        console.log("undo")
+        console.log(this.store.currentMapData.features)
+        if(this.type === "add"){
+            this.store.currentMapData.features.pop()
+        }
         this.refreshState()
     }
 }
