@@ -300,7 +300,22 @@ function MapEditor(props) {
 
         console.log(e)
 
-        // return
+        // let vertexEditFeature = e.target.feature
+        // let newVertex = [e.latlng.lng,e.latlng.lat]
+        //
+        // let transactionMappedData = {
+        //     type: "add",
+        //     store: store,
+        //     setStore: setStore,
+        //     updateView: store.updateViewer,
+        //     update:store.updateEditor,
+        //     indexPath : e.indexPath,
+        //     editingFeature: vertexEditFeature,
+        //     new2DVec:newVertex,
+        // }
+        // store.jstps.addTransaction(new VertexTPS(transactionMappedData))
+        // return;
+
         console.log(e.target)
         const layer = e.target;
         const newlatlng=[];
@@ -568,8 +583,6 @@ function MapEditor(props) {
         });
         layer.on('pm:markerdragstart', e => {
             console.log("pm:markerdragstart")
-
-
         });
         layer.on('pm:markerdragend', e => {
             console.log("pm:markerdragend")
