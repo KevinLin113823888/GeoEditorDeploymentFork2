@@ -6,7 +6,7 @@ import './geomanButton.css';
 import { CurrentModal, GlobalStoreContext } from '../../store/index'
 import EditLegendTPS from '../../transactions/EditLegendTPS'
 import TextboxTPS from '../../transactions/TextboxTPS'
-import VertexTPS from '../../transactions/VertexTPS'
+import RegionTPS from '../../transactions/RegionTPS'
 
 
 
@@ -195,10 +195,8 @@ function GeomanJsWrapper(props) {
 
     //this will be the one to intialize the buttons, these are called once and are not stateful
     useEffect(() => {
-
-        if (isInitialRender.current === false ) {// skip all future renders.
+        if (isInitialRender.current === false )// skip all future renders.
             return;
-        }
         isInitialRender.current = false;// set it to false so subsequent changes of dependency arr will make useEffect to execute
 
 
@@ -215,33 +213,17 @@ function GeomanJsWrapper(props) {
         //     store.setZoomLevel(map.getZoom(), centerArr)
         // });
         map.on('pm:drawstart', ({ workingLayer }) => {
-
-            console.log("called on init?")
-            console.log(workingLayer)
-
-
             workingLayer.on('pm:vertexadded', (e) => {
-                console.log("is this called everytime vertex is added")
-                console.log(e)
-
                 let newCoords = [e.latlng.lng,e.latlng.lat]
                 constructedNewPolyRegion.current.geometry.coordinates[0].push(newCoords)
             });
             // workingLayer.removeFrom(map)
-
         });
         map.on('pm:drawend', ({ workingLayer }) => {
-
-            let sameFirstandLastCoords = constructedNewPolyRegion.current
             let newPoly = constructedNewPolyRegion.current
-            console.log("bruh what is going on")
-            // console.log(sameFirstandLastCoords)
-            console.log(newPoly)
             if (newPoly.geometry.coordinates[0].length > 0) {
                 let firstCoord = newPoly.geometry.coordinates[0][0];
                 newPoly.geometry.coordinates[0].push(firstCoord)
-
-                console.log(sameFirstandLastCoords)
 
                 //to make stateful.
                 store.polygonData = newPoly

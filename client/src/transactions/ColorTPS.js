@@ -3,7 +3,7 @@ import jsTPS_Transaction from "../common/jsTPS"
 /* * @author McKilla Gorilla
  * @author ?
  */
-export default class VertexTPS extends jsTPS_Transaction {
+export default class ColorTPS extends jsTPS_Transaction {
 
     constructor(mappedData) {
         super();

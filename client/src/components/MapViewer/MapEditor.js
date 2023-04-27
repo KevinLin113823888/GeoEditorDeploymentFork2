@@ -21,12 +21,14 @@ import { CurrentModal, GlobalStoreContext } from "../../store/index"
 import './mapEditor.css';
 
 import Screenshoter from './Screenshoter';
+import RegionTPS from "../../transactions/RegionTPS";
+import VertexTPS from "../../transactions/VertexTPS";
 
 function MapEditor(props) {
   
     const [isPopup, setPopup] = useState(false);
     const [update, setUpdate] = useState(1);
-    const { store } = useContext(GlobalStoreContext);
+    const { store, setStore} = useContext(GlobalStoreContext);
     // const tileRef = useRef();
 
     const regionsSelectedRef = useRef([])
@@ -35,6 +37,7 @@ function MapEditor(props) {
     const selectModeToggle = useRef(false)
 
     const currentRegion = useRef("");
+    // const [vertexEditRegion, setVertexEditRegion] = useState(null);
 
     const geoJsonMapData = store.currentMapData;
 
@@ -77,11 +80,36 @@ function MapEditor(props) {
     }
    
     function handleAddVertex(e) {
-        console.log(e)
-        
+        // console.log("this is our vertex add.")
+        // console.log(e)
+        // let vertexEditFeature = e.target.feature
+        // let newVertex = [e.latlng.lng,e.latlng.lat]
+        // let indexPath = e.indexPath;
+        // let i = indexPath
+        // let vertexPoly = vertexEditFeature.geometry.coordinates[i[0]]
+        // let vertexMultiPoly = vertexEditFeature.geometry.coordinates[i[0]][i[1]]
+        // let polygon = i.length===3?vertexMultiPoly:vertexPoly
+        // let index = indexPath[i.length-1]
+        // let transactionMappedData = {
+        //     type: "add",
+        //     store: store,
+        //     setStore: setStore,
+        //     updateView: store.updateViewer,
+        //     update:store.updateEditor,
+        //
+        //     polygon:polygon,
+        //     index:index,
+        //     editingFeature: vertexEditFeature,
+        //     new2DVec:newVertex,
+        // }
+        // store.jstps.addTransaction(new VertexTPS(transactionMappedData))
+        // return;
+
         let indexPath = e.indexPath;
+
         let ind0 = indexPath[0]
         let ind1 = indexPath[1]
+
         let featureName = e.target.feature.properties.name
         let ind2 = -1;
         if (indexPath.length > 2) {
@@ -109,7 +137,7 @@ function MapEditor(props) {
 
         let featureInd2=-1
         let prevCoord=[]
-        
+
         try {
         geoJsonMapData.features.forEach(feature => {
             let foundOneCoord=false
@@ -126,32 +154,32 @@ function MapEditor(props) {
                     ind1 = -1;
                     coordinates.forEach(coordinate => {
                         ind1++;
-                            
+
                         if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1] &&foundOneCoord==true){
-                            
+
                             geoJsonMapData.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
-                           
+
                             throw new Error("Break the loop.")
                         }else if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1]){
                             foundOneCoord=true
-                            
-                            
+
+
                         }
                         if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1] &&foundOneCoord==true){
-                            
+
                             geoJsonMapData.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
-                            
+
                             throw new Error("Break the loop.")
-                            
+
                         }else if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1]){
                             foundOneCoord=true
-                           
+
                         }
                         prevCoord[0]= coordinate[0]
                         prevCoord[1]= coordinate[1]
 
-                       
-                       
+
+
                     });
                 });
             } else if (feature.geometry.type === 'MultiPolygon') {
@@ -171,35 +199,33 @@ function MapEditor(props) {
 
                         coordinates.forEach(coordinate => {
                             ind2++;
-                            
+
                             if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1] &&foundOneCoord==true){
                                 geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
                                 throw new Error("Break the loop.")
                             }else if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1]){
                                 foundOneCoord=true
-                                
+
                             }
                             if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1] &&foundOneCoord==true){
                                 geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
                                 throw new Error("Break the loop.")
                             }else if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1]){
                                 foundOneCoord=true
-                               
+
                             }
-                                               
+
                         });
-                        
+
                     });
                 });
             }
-        }        
+        }
         });
     }catch(error){
 
     }
-    
         setUpdate(update => update + 1);
-
     }
     function handleRemoveVertex(e) {
         
@@ -277,8 +303,9 @@ function MapEditor(props) {
     }
 
     const handleMarkerDragEnd = (e) => {
-        
-        
+
+        console.log("updating the handle marker drag bruh........ cry😭😭😭")
+        console.log(e)
         console.log(e.target)
         const layer = e.target;
         const newlatlng=[];
@@ -294,8 +321,6 @@ function MapEditor(props) {
         let currentFeatures = geoJsonMapData.features;
         if (indexPath.length == 3) {
             index2 = indexPath[2]
-
-
             for (let i = 0; i < currentFeatures.length; i++) {
                 let name = currentFeatures[i].properties.name;
                 if (name == featureName) {
@@ -541,6 +566,8 @@ function MapEditor(props) {
             handleAddVertex(e)
         });
         layer.on('pm:edit', e => {
+            console.log("this is the layer")
+            console.log(layer)
             console.log("pm:edit")
             console.log(e.target)
         });
@@ -551,7 +578,7 @@ function MapEditor(props) {
         });
         layer.on('pm:markerdragend', e => {
             console.log("pm:markerdragend")
-            handleMarkerDragEnd(e);
+            // handleMarkerDragEnd(e);
         });
        
     }

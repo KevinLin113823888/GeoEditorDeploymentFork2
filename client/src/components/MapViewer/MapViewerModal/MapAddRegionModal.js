@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import GlobalStoreContext, {CurrentModal} from "../../../store";
-import VertexTPS from "../../../transactions/VertexTPS";
+import RegionTPS from "../../../transactions/RegionTPS";
 const style = {
     position: 'absolute',
     top: '50%',
@@ -42,7 +42,7 @@ function MapAddRegionModal(props) {
             updateView: store.updateViewer,
             update:store.updateEditor,
         }
-        store.jstps.addTransaction(new VertexTPS(transactionMappedData))
+        store.jstps.addTransaction(new RegionTPS(transactionMappedData))
 
     }
     function handleCloseModal(event) {
