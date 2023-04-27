@@ -57,6 +57,10 @@ export default class VertexTPS extends jsTPS_Transaction {
             this.newVertex = this.new2DVec
             this.polygon[this.vertexIndex] = this.newVertex
         }
+        else if(this.type === "delete"){
+            this.oldVertex = this.polygon[this.vertexIndex]
+            this.polygon.splice(this.vertexIndex,1)
+        }
         // console.log("after do")
         // console.log(this.polygon)
         this.refreshState()
@@ -68,6 +72,9 @@ export default class VertexTPS extends jsTPS_Transaction {
         }
         else if(this.type === "drag"){
             this.polygon[this.vertexIndex] = this.oldVertex
+        }
+        else if(this.type === "delete"){
+            this.polygon.splice(this.vertexIndex,0,this.oldVertex)
         }
         // console.log("after undo")
         // console.log(this.polygon)

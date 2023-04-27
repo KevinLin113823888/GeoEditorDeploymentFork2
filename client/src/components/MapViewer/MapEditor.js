@@ -221,6 +221,24 @@ function MapEditor(props) {
         setUpdate(update => update + 1);
     }
     function handleRemoveVertex(e) {
+
+        console.log("vertex removal")
+
+
+        let vertexEditFeature = e.target.feature
+        let transactionMappedData = {
+            type: "delete",
+            store: store,
+            setStore: setStore,
+            updateView: store.updateViewer,
+            update:store.updateEditor,
+            indexPath : e.indexPath,
+            editingFeature: vertexEditFeature,
+        }
+        store.jstps.addTransaction(new VertexTPS(transactionMappedData))
+        return;
+
+        return;
         
         let indexPath = e.indexPath;
         let ind0 = indexPath[0]
