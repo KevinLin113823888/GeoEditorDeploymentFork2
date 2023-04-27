@@ -383,7 +383,7 @@ function GeomanJsWrapper(props) {
                 name: 'PolygonCopy',
                 block: 'edit',
                 title: 'add new region',
-                // actions: drawPolygonClone,
+                actions: extendedMenuActionCancel,
             });
 
             //each of the right geoman buttons, [their names, extra menu after click, function on initial click]

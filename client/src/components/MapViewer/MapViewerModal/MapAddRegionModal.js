@@ -39,6 +39,7 @@ function MapAddRegionModal(props) {
             setStore: setStore,
             newPolygon: store.polygonData,
             newRegionName: addRegionName,
+            updateView: store.updateViewer,
             update:store.updateEditor,
         }
         store.jstps.addTransaction(new VertexTPS(transactionMappedData))

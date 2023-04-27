@@ -12,6 +12,7 @@ export default class VertexTPS extends jsTPS_Transaction {
         this.setStore = this.mappedData.setStore
         this.state = mappedData.state
         this.index = mappedData.index
+        this.updateView = mappedData.updateView
         this.update = mappedData.update
         this.type = mappedData.type
         this.newRegionName = mappedData.newRegionName
@@ -22,7 +23,7 @@ export default class VertexTPS extends jsTPS_Transaction {
     }
     refreshState () {
 
-        this.store.updateViewer()
+        this.updateView()
         this.update()
         // this.setStore({
         //     ...this.store,
@@ -61,13 +62,8 @@ export default class VertexTPS extends jsTPS_Transaction {
 
     undoTransaction() {
         console.log("undo transaction")
-        let feas = this.store.currentMapData.features
-        console.log(feas)
 
         this.diff.unpatch(this.store.currentMapData.features,this.diffDelta)
-
-        console.log(feas)
-
         this.refreshState()
     }
 }
