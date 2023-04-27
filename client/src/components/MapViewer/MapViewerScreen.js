@@ -369,7 +369,8 @@ function MapViewerScreen(props) {
         return wrappedButton
     }
     return (
-        <div className="App" onKeyPress={handleKeyPress}>
+        <div className="App"              onKeyDown={handleKeyPress}
+        >
 
             <ImportModal
                 handleGeoJson={handleGeoJson}
@@ -386,7 +387,7 @@ function MapViewerScreen(props) {
             <MapAddRegionModal />
 
 
-            <Grid container columnSpacing={2} rowSpacing={0}>
+            <Grid container columnSpacing={2} rowSpacing={0} >
                 <Grid item xs={12} md={6}>
                     <Box
                         sx={{
@@ -411,8 +412,8 @@ function MapViewerScreen(props) {
                                 paddingLeft: "1.5%"
                             }}>
                             <MapEditor changeName={changeRegionName} key={keyid} 
-                            handleCompress={handleCompress} updateViewer={handleUpdate} 
-                            mapCardId={id} />
+                            handleCompress={handleCompress} updateViewer={handleUpdate}
+                                       mapCardId={id}/>
                         </Box>
                     <Grid item xs={12} md={12}>
                         <MapLegendFooter />
