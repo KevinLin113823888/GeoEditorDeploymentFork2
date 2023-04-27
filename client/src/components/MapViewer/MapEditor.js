@@ -80,30 +80,23 @@ function MapEditor(props) {
     }
    
     function handleAddVertex(e) {
-        // console.log("this is our vertex add.")
-        // console.log(e)
-        // let vertexEditFeature = e.target.feature
-        // let newVertex = [e.latlng.lng,e.latlng.lat]
-        // let indexPath = e.indexPath;
-        // let i = indexPath
-        // let vertexPoly = vertexEditFeature.geometry.coordinates[i[0]]
-        // let vertexMultiPoly = vertexEditFeature.geometry.coordinates[i[0]][i[1]]
-        // let polygon = i.length===3?vertexMultiPoly:vertexPoly
-        // let index = indexPath[i.length-1]
-        // let transactionMappedData = {
-        //     type: "add",
-        //     store: store,
-        //     setStore: setStore,
-        //     updateView: store.updateViewer,
-        //     update:store.updateEditor,
-        //
-        //     polygon:polygon,
-        //     index:index,
-        //     editingFeature: vertexEditFeature,
-        //     new2DVec:newVertex,
-        // }
-        // store.jstps.addTransaction(new VertexTPS(transactionMappedData))
-        // return;
+        console.log("this is our vertex add.")
+        console.log(e)
+        let vertexEditFeature = e.target.feature
+        let newVertex = [e.latlng.lng,e.latlng.lat]
+
+        let transactionMappedData = {
+            type: "add",
+            store: store,
+            setStore: setStore,
+            updateView: store.updateViewer,
+            update:store.updateEditor,
+            indexPath : e.indexPath,
+            editingFeature: vertexEditFeature,
+            new2DVec:newVertex,
+        }
+        store.jstps.addTransaction(new VertexTPS(transactionMappedData))
+        return;
 
         let indexPath = e.indexPath;
 
@@ -303,9 +296,11 @@ function MapEditor(props) {
     }
 
     const handleMarkerDragEnd = (e) => {
-
         console.log("updating the handle marker drag bruh........ cry😭😭😭")
+
         console.log(e)
+
+        // return
         console.log(e.target)
         const layer = e.target;
         const newlatlng=[];
@@ -567,9 +562,9 @@ function MapEditor(props) {
         });
         layer.on('pm:edit', e => {
             console.log("this is the layer")
-            console.log(layer)
+            // console.log(layer)
             console.log("pm:edit")
-            console.log(e.target)
+            // console.log(e.target)
         });
         layer.on('pm:markerdragstart', e => {
             console.log("pm:markerdragstart")
@@ -578,7 +573,7 @@ function MapEditor(props) {
         });
         layer.on('pm:markerdragend', e => {
             console.log("pm:markerdragend")
-            // handleMarkerDragEnd(e);
+            handleMarkerDragEnd(e);
         });
        
     }
