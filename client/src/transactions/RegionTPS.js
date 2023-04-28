@@ -3,6 +3,8 @@ import jsTPS_Transaction from "../common/jsTPS"
 /* * @author McKilla Gorilla
  * @author ?
  */
+import * as turf from '@turf/turf'
+
 export default class RegionTPS extends jsTPS_Transaction {
 
     constructor(mappedData) {
@@ -18,8 +20,6 @@ export default class RegionTPS extends jsTPS_Transaction {
         this.newRegionName = mappedData.newRegionName
         this.newPolygon = mappedData.newPolygon
 
-
-
         this.diff =  require('jsondiffpatch')
         this.diffDelta = null;
 
@@ -30,7 +30,7 @@ export default class RegionTPS extends jsTPS_Transaction {
     }
     refreshState () {
 
-        this.updateView()
+        // this.updateView()
         this.update()
     }
 
@@ -42,11 +42,23 @@ export default class RegionTPS extends jsTPS_Transaction {
             this.store.currentMapData.features.push(this.newPolygon)
         }
         else if(this.type === "dragRegion"){
-            console.log("drag region called")
-            console.log(this.editingFeature)
-            let poly = this.editingFeature
-            //TODO: we just basically have to update the coordinates by the dx and dy by adding them for every single one
-            // for(let i=0;i<)
+            let firstCoord = this.editingFeature.geometry.coordinates //for single polygons.... god damn it
+            if(this.editingFeature.geometry.type === "Polygon")
+                firstCoord = [firstCoord]
+            for(let i = 0; i<firstCoord.length;i++) {
+                let multiPolygon = firstCoord[i]
+                for(let j=0;j<multiPolygon.length;j++){
+                    let polygon = multiPolygon[j]
+                    for(let k=0;k<polygon.length;k++){
+                        let vec2D= polygon[k]
+                        vec2D[0]+=this.dx
+                        vec2D[1]+=this.dy
+                    }
+                }
+            }
+            if(this.editingFeature.geometry.type === "Polygon")
+                firstCoord = firstCoord[0]
+            this.editingFeature.geometry.coordinates =firstCoord
         }
         this.refreshState()
     }
@@ -56,6 +68,25 @@ export default class RegionTPS extends jsTPS_Transaction {
         console.log(this.store.currentMapData.features)
         if(this.type === "add"){
             this.store.currentMapData.features.pop()
+        }
+        else if(this.type === "dragRegion"){
+            let firstCoord = this.editingFeature.geometry.coordinates //for single polygons.... god damn it
+            if(this.editingFeature.geometry.type === "Polygon")
+                firstCoord = [firstCoord]
+            for(let i = 0; i<firstCoord.length;i++) {
+                let multiPolygon = firstCoord[i]
+                for(let j=0;j<multiPolygon.length;j++){
+                    let polygon = multiPolygon[j]
+                    for(let k=0;k<polygon.length;k++){
+                        let vec2D= polygon[k]
+                        vec2D[0]-=this.dx
+                        vec2D[1]-=this.dy
+                    }
+                }
+            }
+            if(this.editingFeature.geometry.type === "Polygon")
+                firstCoord = firstCoord[0]
+            this.editingFeature.geometry.coordinates =firstCoord
         }
         this.refreshState()
     }

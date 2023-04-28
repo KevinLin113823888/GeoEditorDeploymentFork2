@@ -317,11 +317,20 @@ function MapEditor(props) {
         console.log(dragStartCoords)
         console.log(dragEndCoords)
 
+        if(e.target.feature.geometry.type === "MultiPolygon"){
+            dragEndCoords = dragEndCoords[0]
+            dragStartCoords=dragStartCoords[0]
+        }
+
         let dx = dragEndCoords[0].lng-dragStartCoords[0].lng
         let dy = dragEndCoords[0].lat-dragStartCoords[0].lat
 
 
+
         let vertexEditFeature = e.target.feature
+
+        console.log("dragg")
+        console.log(dx,dy)
         let transactionMappedData = {
             type: "dragRegion",
             store: store,
