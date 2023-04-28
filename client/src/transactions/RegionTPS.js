@@ -27,6 +27,21 @@ export default class RegionTPS extends jsTPS_Transaction {
         this.editingFeature = mappedData.editingFeature
         this.dx = mappedData.dx
         this.dy = mappedData.dy
+
+        if(this.type === "remove"){
+            console.log("removed called")
+            let featureLst = this.store.currentMapData.features
+
+            let deleteIndex = -1
+            console.log("compare")
+            for(let i=0;i<featureLst.length;i++){
+                if(featureLst[i] == this.editingFeature){
+                    deleteIndex = i
+                    break;
+                }
+            }
+            this.deleteIndex = deleteIndex
+        }
     }
     refreshState () {
 
@@ -62,22 +77,12 @@ export default class RegionTPS extends jsTPS_Transaction {
             this.editingFeature.geometry.coordinates =firstCoord
         }
         else if(this.type === "remove"){
-            console.log("removed called")
             let featureLst = this.store.currentMapData.features
 
-            let deleteIndex = -1
-            console.log("compare")
-            for(let i=0;i<featureLst.length;i++){
-                if(featureLst[i] == this.editingFeature){
-                    deleteIndex = i
-                    break;
-                }
-            }
-            this.deleteIndex = deleteIndex
-            this.deletedFeature = JSON.parse(JSON.stringify(featureLst[deleteIndex]))
+            this.deletedFeature = JSON.parse(JSON.stringify(featureLst[this.deleteIndex]))
             console.log("this is the one that got deleted ")
             console.log(this.deletedFeature)
-            this.store.currentMapData.features.splice(deleteIndex,1)
+            this.store.currentMapData.features.splice(this.deleteIndex,1)
             console.log("after")
             console.log(this.store.currentMapData.features)
         }
@@ -109,6 +114,9 @@ export default class RegionTPS extends jsTPS_Transaction {
             if(this.editingFeature.geometry.type === "Polygon")
                 firstCoord = firstCoord[0]
             this.editingFeature.geometry.coordinates =firstCoord
+        }
+        else if(this.type === "remove"){
+            this.store.currentMapData.features.splice(this.deleteIndex,0,this.deletedFeature)
         }
         this.refreshState()
     }
