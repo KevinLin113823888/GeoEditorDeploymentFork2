@@ -125,6 +125,7 @@ class mapController {
     static async publishMapById(req, res) {
         try {
             var { id } = req.body;
+
             var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { published: true });
             var newCommunityPreview = new CommunityPreview({
                 title: currentMapCard.title,
@@ -180,8 +181,9 @@ class mapController {
     static async saveMapById(req, res) {
         try {
             var { id, map } = req.body;
+
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
-            var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: map.type, feature: map.features });
+            var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: map.type, feature: map.features, graphicalData: map.graphicalData });
             await currentMapData.save();
 
             return res.status(200).json({status: 'OK'});
@@ -195,7 +197,9 @@ class mapController {
     static async getMapImageById(req, res) {
         try {
             var { id } = req.body;
+
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
+
             return res.status(200).json({status: 'OK', image: currentMapCard.mapImages, imageType: currentMapCard.imageType});
         }
         catch(e){
@@ -207,10 +211,28 @@ class mapController {
     static async setMapImagebyId(req, res) {
         try {
             var { id, image, type } = req.body;
-            console.log("hello", id, type);
+
             var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { mapImages: image, imageType: type });
             await currentMapCard.save();
+
             return res.status(200).json({status: 'OK'});
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
+    }
+
+    static async searchMap(req, res) {
+        try {
+            var { searchName } = req.body;
+            let username = req.cookies.values.username;
+
+            var user = await User.findOne({username: username});
+            var mapCards = {};
+            if(user)
+                mapCards = await MapCard.find({ _id: { $in: user.ownedMapCards }, title: { $regex: '.*' + searchName + '.*' }});
+            return res.status(200).json({status: 'OK', mapcards: mapCards});
         }
         catch(e){
             console.log(e.toString())

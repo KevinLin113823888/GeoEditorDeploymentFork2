@@ -26,7 +26,7 @@ class userController {
             var user = await userInfoSchema.findOne({username: username});
             var mapCards = {};
             if(user)
-                mapCards = await MapCard.find({ '_id': { $in: user.ownedMapCards } });
+                mapCards = await MapCard.find({ _id: { $in: user.ownedMapCards } });
 
             return res.status(200).json({status: 'OK', username: username, mapcards: mapCards});
         }

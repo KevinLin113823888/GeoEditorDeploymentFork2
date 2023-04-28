@@ -10,12 +10,9 @@ class communityController {
             let username = req.cookies.values.username;
             let currentUser = await User.findOne({username: username});
             let blockedUsers = currentUser.blockedUsers;
-            var mapCards = await MapCard.find({published: true});
-            mapCards = mapCards.filter(map => !blockedUsers.includes(map.owner));
-            // var mapCards = await MapCard.aggregate([
-            //     { $match: { published: true } },
-            //     { $match: { owner: {$ne: blockedUsers } } }
-            // ]);
+            // var mapCards = await MapCard.find({published: true});
+            // mapCards = mapCards.filter(map => !blockedUsers.includes(map.owner));
+            var mapCards = await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers }}}]);
             // console.log("mapCards being sent", mapCards);
 
             return res.status(200).json({status: "OK", mapcards: mapCards});

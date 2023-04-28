@@ -14,7 +14,7 @@ function authManager() {
             }
 
             const verified = jwt.verify(token, process.env.JWT_SECRET)
-            // console.log("verified.userId: " + verified.userId);
+            console.log("verified.userId: " + verified.userId);
             req.userId = verified.userId;
 
             next();
@@ -43,9 +43,7 @@ function authManager() {
     }
 
     signToken = (userId) => {
-        return jwt.sign({
-            userId: userId
-        }, process.env.JWT_SECRET);
+        return jwt.sign({userId: userId}, process.env.JWT_SECRET);
     }
 
     return this;
