@@ -19,7 +19,6 @@ function MapPropertySidebar() { //should not use props
 
     useEffect(() =>{
         console.log(store.currentFeatureIndex)
-        console.log("changed");
         if(Object.keys(store.currentMapData).length===0)
             return
         setPropertyObj(store.currentMapData.features[store.currentFeatureIndex].properties)
@@ -28,7 +27,6 @@ function MapPropertySidebar() { //should not use props
 
 
     const handleAddProperty = () => {
-        console.log("asd")
         let mappedData = {
             store: store,
             type: "add",
@@ -47,18 +45,14 @@ function MapPropertySidebar() { //should not use props
                     <Typography
                         style={{ fontSize: "2rem", fontFamily:'Helvetica', color: "#000000", fontWeight: "bold", display: "inline" }}
                         className="material-icons"
-                        component="span">
+                        component="span"
+                    >
                         Properties
                     </Typography>
-                    <IconButton
-                        onClick = {handleAddProperty}
-                    >
-                        < AddIcon style={{ fill: "#000000", fontSize: "2rem" }}
-
-                        />
+                    <IconButton onClick = {handleAddProperty}>
+                        < AddIcon style={{ fill: "#000000", fontSize: "2rem" }}/>
                     </IconButton>
-                    {
-                        Object.entries(propertyObj).map(([key, value]) =>
+                        {Object.entries(propertyObj).map(([key, value]) =>
                             (<PropertyCard
                                 mapDataFeatureIndex={store.currentFeatureIndex}
                                 propertyValue={value}
@@ -67,13 +61,9 @@ function MapPropertySidebar() { //should not use props
                                 setPropertyObj = {setPropertyObj}
                                 // delete = {handleDelete}
                             />)
-                    )}
-
+                        )}
                 </Box>
-
             </Box>
-
-       
     }
 
     return (

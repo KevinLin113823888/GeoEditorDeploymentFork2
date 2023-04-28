@@ -8,15 +8,10 @@ class communityController {
     static async getCommunity(req, res) {
         try {
             let username = req.cookies.values.username;
+
             let currentUser = await User.findOne({username: username});
             let blockedUsers = currentUser.blockedUsers;
-            var mapCards = await MapCard.find({published: true});
-            mapCards = mapCards.filter(map => !blockedUsers.includes(map.owner));
-            // var mapCards = await MapCard.aggregate([
-            //     { $match: { published: true } },
-            //     { $match: { owner: {$ne: blockedUsers } } }
-            // ]);
-            // console.log("mapCards being sent", mapCards);
+            var mapCards = await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers }}}]);
 
             return res.status(200).json({status: "OK", mapcards: mapCards});
         }
@@ -146,9 +141,7 @@ class communityController {
             let username = req.cookies.values.username;
 
             var currentOwner = await User.findOne({ username: username });
-            // console.log("ID", currentOwner._id);
             var availableCommunityPreview = await CommunityPreview.find({likes: {"$in": [currentOwner._id]}}); 
-            // console.log("savailable", availableCommunityPreview);
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
 
             if (availableCommunityPreview.length > 0) { // already liked, so unlike it
@@ -182,7 +175,6 @@ class communityController {
             var currentOwner = await User.findOne({ username: username });
             var availableCommunityPreview = await CommunityPreview.find({dislikes: {"$in": [currentOwner._id]}}); 
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
-            console.log("current owner", currentOwner._id, currentOwner.username);
 
             if (availableCommunityPreview.length > 0) {
                 var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $pull: { dislikes: currentOwner._id.toString() } }, {new: true});
@@ -193,7 +185,6 @@ class communityController {
                 if (currentLikes) {
                     var likePreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $pull: { likes: currentOwner._id.toString() } }, {new: true});
                     await likePreview.save();
-                    // console.log("currentLikes when disliking", likePreview);
                 }
                 var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { dislikes: currentOwner._id.toString() } }, {new: true});
                 await currentCommunityPreview.save();
@@ -210,7 +201,6 @@ class communityController {
         try {
             var { id } = req.body;
             let username = req.cookies.values.username;
-            console.log("follow ID", id, username);
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentCommunityCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapCard) });
 
@@ -242,7 +232,6 @@ class communityController {
         try {
             var { id } = req.body;
             let username = req.cookies.values.username;
-            console.log("block ID", id, username);
 
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentCommunityCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(currentCommunityPreview.mapCard) });
@@ -280,6 +269,16 @@ class communityController {
             currentCommunityPreview.save();
 
             return res.status(200).json({status: 'OK'});
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
+    }
+
+    static async searchMap(req, res) {
+        try {
+
         }
         catch(e){
             console.log(e.toString())

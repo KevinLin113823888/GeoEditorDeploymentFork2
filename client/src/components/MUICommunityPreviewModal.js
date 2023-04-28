@@ -90,7 +90,6 @@ function MUICommunityPreviewModal() {
             })
             .then((res) => res.json())
             .then((data) => {
-                console.log("initial data", data);
                 let feat = JSON.parse(data.feature);
                 if(feat.length === 0){return;}
                 setTitle(data.title);
@@ -435,7 +434,6 @@ function MUICommunityPreviewModal() {
                                        onKeyDown={handleComment}
                                        sx={{ width: '100%',marginLeft: "2.55%" }} />
                             <Box sx={{ width: "100%", backgroundColor: "#f7fafc", maxHeight: "33vw", marginLeft: "2.55%",overflowY: "scroll" }}>
-                              
                                 {comments.map((commentObj, index) => (
                                     <CommentCard
                                         key={'map-comment-' + (index)}
@@ -444,13 +442,9 @@ function MUICommunityPreviewModal() {
                                     />
                                 ))}
                             </Box>
-                            
                         </Grid>
-
-
                     </Grid>
                 </Box>
-
             </Modal>
 
             <Modal

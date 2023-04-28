@@ -14,5 +14,6 @@ router.post('/importMapFileById', auth.verify, MapController.importMapFileById);
 router.post('/saveMapById', auth.verify, MapController.saveMapById);
 router.post('/getMapImageById', auth.verify, MapController.getMapImageById);
 router.post('/setMapImageById', auth.verify, MapController.setMapImagebyId);
+router.post('/searchMap', auth.verify, MapController.searchMap);
 
 module.exports = router

@@ -14,17 +14,17 @@ const mapDataSchema = new Schema(
             Schema.Types.Feature
         ], required: true},
         // mapProperties: { type: Object, required: false },
-        // graphicalData:{type:{
-        //     backgroundColor:String,
-        //     textBoxList:{type:[{
-        //         overlayText:String,
-        //         coordinates:{type: Mixed,default:[]}
-        //     }]},
-        //     legend:{type:[{
-        //         color: String,
-        //         legendText: String
-        //     }]}
-        // }, required: false }
+        graphicalData:{type:{
+            backgroundColor: String,
+            textBoxList: {type:[{
+                overlayText:String,
+                coordinates:{type: Mixed,default:[]}
+            }]},
+            legend: {type:[{
+                color: String,
+                legendText: String
+            }]}
+        }, required: false }
     },
     { timestamps: true },
 )

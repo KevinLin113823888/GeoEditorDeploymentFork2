@@ -50,7 +50,8 @@ function MapViewerScreen(props) {
         initGeojsonGraphicalData(na)
         // setGeoJson(na)
         store.updateViewer = handleUpdate
-    },[])
+    },[]);
+
     useEffect(() => {
         if (state) {
             setMapChange(state.title);
@@ -78,7 +79,7 @@ function MapViewerScreen(props) {
                 setGeoJson(geo);
             })
             .catch(err => console.log(err));
-    }, [])
+    }, []);
 
     const sendImportReq = (geoJson) => {
         console.log("GEOJSON FILE UPLOADED", geoJson);
@@ -239,7 +240,7 @@ function MapViewerScreen(props) {
 
     function handleSave() {
         store.takeScreenShot(true);
-        
+        console.log("store to save", store.currentMapData);
         fetch(process.env.REACT_APP_API_URL + 'map/saveMapById', {
             method: "POST",
             credentials: 'include',
@@ -248,7 +249,7 @@ function MapViewerScreen(props) {
             },
             body: JSON.stringify({
                 id: id,
-                map: GeoJson
+                map: store.currentMapData
             }),
         })
             .then((res) => res.json())
@@ -360,20 +361,16 @@ function MapViewerScreen(props) {
                     //backgroundColor: "#3c7dc3",
                 }}
                 sx={{ bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a' }, fontFamily: "Helvetica",
-                 fontSize: { xs: '.7rem', md: '1rem' }, marginLeft: { xs: '1.3rem', md: '10px' }, textAlign: 'right', marginBottom:"10px" }}
+                fontSize: { xs: '.7rem', md: '1rem' }, marginLeft: { xs: '1.3rem', md: '10px' }, textAlign: 'right', marginBottom:"10px" }}
                 variant="contained"
                 onClick={Function}
             >
                 {Text}
             </Button>
-
-
         return wrappedButton
     }
     return (
-        <div className="App"              onKeyDown={handleKeyPress}
-        >
-
+        <div className="App" onKeyDown={handleKeyPress}>
             <ImportModal
                 handleGeoJson={handleGeoJson}
                 handleShpDbfFile={handleShpDbfFile}
@@ -387,7 +384,6 @@ function MapViewerScreen(props) {
             <MapColorwheelModal />
             <MapMergeChangeRegionNameModal />
             <MapAddRegionModal />
-
 
             <Grid container columnSpacing={2} rowSpacing={0} >
                 <Grid item xs={12} md={6}>
@@ -428,7 +424,6 @@ function MapViewerScreen(props) {
                     <MapPropertySidebar />
                 </Grid>
                 <Grid item xs={2} sx={{ display: { xs: 'block', md: 'none' } }}>
-
                 </Grid>
             </Grid>
         </div>
