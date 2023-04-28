@@ -48,7 +48,7 @@ function MapViewerScreen(props) {
 
     useEffect(() => {
         initGeojsonGraphicalData(na)
-        setGeoJson(na)
+        // setGeoJson(na)
         store.updateViewer = handleUpdate
     },[])
     useEffect(() => {

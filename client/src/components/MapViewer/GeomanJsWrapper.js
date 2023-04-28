@@ -372,14 +372,14 @@ function GeomanJsWrapper(props) {
             //null means no popup actions
             const customButtonCollection = [
                 ["merge", mergeButtonAction, mergeButtonClick],
-                // ["addRegion" ], //i think this one is already done i guess
+                // ["addRegion" ], //these ones are baked in
                 ["addLegend", null, handleAddLegend],
                 ["changeBackgroundColor", null, handleChangeBackgroundColorModal],
                 ["changeRegionColor", changeRegionColorAction, colorButtonClick],
                 ["changeBorderColor", changeBorderColorAction,colorButtonClick],
                 ["addText", extendedMenuActionCancel, addTextButtonClick],
-                ["editVertex", mergeButtonAction, mergeButtonClick],
-                ["moveRegion", mergeButtonAction, mergeButtonClick],
+                // ["editVertex", mergeButtonAction, mergeButtonClick], //baked
+                // ["moveRegion", mergeButtonAction, mergeButtonClick], //baked
                 ["splitRegion", extendedMenuActionCancel, mergeButtonClick],
                 ["deleteRegion", extendedMenuActionCancel, mergeButtonClick],
                 ["undo", null, undoButtonClick],

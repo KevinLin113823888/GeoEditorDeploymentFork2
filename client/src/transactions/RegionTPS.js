@@ -40,6 +40,7 @@ export default class RegionTPS extends jsTPS_Transaction {
         if(this.type === "add"){
             this.newPolygon.properties.name = this.newRegionName
             this.store.currentMapData.features.push(this.newPolygon)
+            this.updateView()
         }
         else if(this.type === "dragRegion"){
             let firstCoord = this.editingFeature.geometry.coordinates //for single polygons.... god damn it
@@ -68,6 +69,7 @@ export default class RegionTPS extends jsTPS_Transaction {
         console.log(this.store.currentMapData.features)
         if(this.type === "add"){
             this.store.currentMapData.features.pop()
+            this.updateView()
         }
         else if(this.type === "dragRegion"){
             let firstCoord = this.editingFeature.geometry.coordinates //for single polygons.... god damn it
