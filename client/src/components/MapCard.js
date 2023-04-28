@@ -40,12 +40,13 @@ function MapCard(props) {
         .catch(err => console.log(err));
     }
     function handleClick(event) {
+        store.changeScreen("mapEditor")
         console.log("clicking map of ", id);
         event.stopPropagation();
         event.preventDefault();
         // GO TO MAP EDITOR SCREEN
-        store.changeScreen("mapEditor")
         navigate("/map/" + id);
+        store.centerScreen(true);
     }
     function handleClickCommunity(event) {
         event.stopPropagation();

@@ -23,7 +23,7 @@ export const GlobalStoreActionType = {
     SET_PREVIEW_ID: "SET_PREVIEW_ID",
     SET_CURRENT_MAPCARD_ID: "SET_CURRENT_MAPCARD_ID",
     SET_SCREENSHOT: "SET_SCREENSHOT",
-    SET_SCREENSHOT_BLOB: "SET_SCREENSHOT_BLOB",
+    SET_CENTER_SCREEN: "SET_CENTER_SCREEN",
 }
 
 export const CurrentModal = {
@@ -71,7 +71,7 @@ function GlobalStoreContextProvider(props) {
         currentPreviewId: null,
         currentMapCardId: null,
         setScreenshot: false,
-        
+        setCenterScreen: false,
     });
 
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
@@ -119,7 +119,8 @@ function GlobalStoreContextProvider(props) {
                     ...store,
 
                     currentModal : CurrentModal.NONE,
-                    currentMapData:  payload,
+                    currentMapData:  payload.data,
+                    setScreenshot: payload.takeScreenShot,
 
                 });
             }
@@ -203,7 +204,15 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.SET_SCREENSHOT: {
                 return setStore({
                     ...store,
-                    setScreenshot: payload.screenshot
+                    setScreenshot: payload.screenshot,
+                    currentModal: "NONE"
+                });
+            }
+            case GlobalStoreActionType.SET_CENTER_SCREEN: {
+                return setStore({
+                    ...store,
+                    setCenterScreen : payload.centerScreen,
+                    currentModal: "NONE"
                 });
             }
             default:
@@ -252,12 +261,16 @@ function GlobalStoreContextProvider(props) {
             }
         );
     }
-    store.setCurrentMapData= function(geoJsonMap){
+    store.setCurrentMapData= function(geoJsonMap, takeScreenShot=false){
         console.log("reducer called with")
         console.log(geoJsonMap)
         storeReducer({
                 type: GlobalStoreActionType.UPDATE_CURRENT_MAPDATA,
-                payload: geoJsonMap
+                payload: {
+                    data: geoJsonMap,
+                    takeScreenShot : takeScreenShot,
+                },
+
             }
         );
     }
@@ -348,7 +361,14 @@ function GlobalStoreContextProvider(props) {
             }
         });
     }
-
+    store.centerScreen=function(centerScreen){
+        storeReducer({
+            type: GlobalStoreActionType.SET_CENTER_SCREEN,
+            payload: {
+                centerScreen: centerScreen
+            }
+        });
+    }
     return (
         <GlobalStoreContext.Provider value={{
             store,setStore

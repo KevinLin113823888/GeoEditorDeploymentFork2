@@ -14,6 +14,11 @@ function Screenshoter(props) {
     const map = useMap();
 
     useEffect(() =>{
+        if(!store.setScreenshot){
+            return
+        }
+        store.takeScreenShot(false);
+
         let pluginOptions = {
             cropImageByInnerWH: true, // crop blank opacity from image borders
             hidden: true, // hide screen icon
@@ -93,7 +98,36 @@ function Screenshoter(props) {
 
     },[store.setScreenshot]);
 
-         
+    useEffect(() =>{
+        if(!store.setCenterScreen){
+            return
+        }
+        store.centerScreen(false);
+
+        var bounds = new L.LatLngBounds();
+        
+        map.whenReady(() => {
+            map.eachLayer(function(layer){
+                setTimeout(function() {
+                if(layer._layers){
+                    Object.keys(layer._layers).forEach(key =>{
+                        bounds.extend(layer._layers[key]._bounds);
+                    })
+                }
+                try{
+                    map.fitBounds(bounds);
+                }catch(e){
+                    console.log(e)
+                }
+            }, 0);
+            });
+        });
+      
+        console.log(bounds);
+
+    },[store.setCenterScreen]);
+
+        
     return (
         <></>
     )

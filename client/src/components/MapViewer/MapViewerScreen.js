@@ -138,10 +138,11 @@ function MapViewerScreen(props) {
                             // temp = topoClient.feature(topo, topo.objects.foo);
 
                             initGeojsonGraphicalData(temp)
-                            setGeoJson(temp)
+                            setGeoJson(temp, true)
                             sendImportReq(temp);
                             setFileExist(true);
                             setKeyid(keyid => keyid + 1)
+                            // store.takeScreenShot(true);
                         }
                     })
             })
@@ -179,7 +180,6 @@ function MapViewerScreen(props) {
                     shpfile = reader.result
                 if (dbffile && shpfile) {
                     console.log("done")
-                    store.changeModal("NONE");
                     // setCompressCount(6);
                     handleSubmit()
                 }
@@ -213,11 +213,11 @@ function MapViewerScreen(props) {
             // console.log(temp)
 
             initGeojsonGraphicalData(temp)
-            setGeoJson(temp);
+            setGeoJson(temp, true);
             sendImportReq(temp);
+            // store.takeScreenShot(true);
         }
         setFileExist(true);
-        // store.changeModal("NONE");
         // setCompressCount(6);
     }
 
@@ -231,13 +231,15 @@ function MapViewerScreen(props) {
         temp.graphicalData = graphical;
         setGeoJson(temp);
         setKeyid(keyid => keyid + 1)
+        store.centerScreen(true);
     }
 
     const handleImport = () => { store.changeModal(CurrentModal.MAP_IMPORT) }
     const handleExport = () => { store.changeModal(CurrentModal.MAP_EXPORT) }
 
     function handleSave() {
-        // store.takeScreenShot(!store.setScreenshot)
+        store.takeScreenShot(true);
+        
         fetch(process.env.REACT_APP_API_URL + 'map/saveMapById', {
             method: "POST",
             credentials: 'include',
