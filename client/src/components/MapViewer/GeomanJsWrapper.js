@@ -413,7 +413,7 @@ function GeomanJsWrapper(props) {
                 drawCircleMarker: false,
 
                 rotateMode: false, //last 4 that are removed are below
-                removalMode: false,
+                removalMode: true,
                 cutPolygon: false,
                 dragMode: true,
                 editMode: true
