@@ -571,8 +571,10 @@ function MapEditor(props) {
         
         if (currentRegion.current !== "") {
             let color = "#3388ff"
-            if(currentRegion.current.subRegionColor){
-                color = currentRegion.current.subRegionColor
+            
+            if(currentRegion.current.feature.subRegionColor){
+                console.log(currentRegion.current)
+                color = currentRegion.current.feature.subRegionColor
             }
             currentRegion.current.setStyle({
                 fillColor: color,
@@ -580,12 +582,14 @@ function MapEditor(props) {
             });
         }
         selectModeToggle.current = !selectModeToggle.current
-        if (selectModeToggle.current === false) {
+        console.log(regionsClicked)
             
             for (let i = 0; i < regionsClicked.length; i++) {
+                
                 let color = "#3388ff"
-                if(regionsClicked[i].subRegionColor){
-                    color =regionsClicked[i].subRegionColor
+                if(regionsClicked[i].target.feature.subRegionColor){
+                    
+                    color =regionsClicked[i].target.feature.subRegionColor
                 }
                 regionsClicked[i].target.setStyle({
                     fillColor: color,
@@ -593,7 +597,7 @@ function MapEditor(props) {
                 });
             }
             regionsClicked = []
-        }
+        
     };
     function handleUpdate(){
         setUpdate(update=>update+1)
@@ -655,7 +659,7 @@ function MapEditor(props) {
             }
 
         }
-       
+        regionsSelectedRef.current = []
         
 
         setUpdate(update => update + 1);
@@ -674,6 +678,7 @@ function MapEditor(props) {
             }
 
         }
+        regionsSelectedRef.current = []
 
         setUpdate(update => update + 1);
     }
@@ -683,7 +688,6 @@ function MapEditor(props) {
         let regionsSelected = regionsSelectedRef.current
         regionsSelectedRef.current = [] //empty everything
         setUpdate(update => update + 1);
-
 
     }
     const handleCancelRegionSelection = () => {
