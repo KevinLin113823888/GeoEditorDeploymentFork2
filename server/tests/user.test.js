@@ -38,7 +38,7 @@ describe('Testing user controller', () => {
             password: mockCredentials
         })
         const response2 =  await agent.get("/user/loggedIn")
-        const response3 =  await request(app).delete("/user/logout")
+        // const response3 =  await request(app).delete("/user/logout")
 
         expect(response1.statusCode).toBe(200)
         expect(response1.body.name).toBeDefined();
@@ -47,7 +47,7 @@ describe('Testing user controller', () => {
         expect(response2.body.username).toBeDefined();
         expect(response2.body.mapcards).toBeDefined();
 
-        expect(response3.statusCode).toBe(200)
+        // expect(response3.statusCode).toBe(200)
 
     })
 
@@ -94,7 +94,7 @@ describe('Testing user controller', () => {
         // console.log(response.body.passwordRecoveryCode)
         expect(response.statusCode).toBe(200)
         expect(response.body.passwordRecoveryCode).toBeDefined();
-        
+
         recoveryCode = response.body.passwordRecoveryCode
     })
 

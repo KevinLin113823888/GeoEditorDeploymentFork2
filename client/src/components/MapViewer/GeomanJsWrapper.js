@@ -6,6 +6,9 @@ import './geomanButton.css';
 import { CurrentModal, GlobalStoreContext } from '../../store/index'
 import EditLegendTPS from '../../transactions/EditLegendTPS'
 import TextboxTPS from '../../transactions/TextboxTPS'
+import RegionTPS from '../../transactions/RegionTPS'
+
+
 
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -17,7 +20,8 @@ function GeomanJsWrapper(props) {
     const isInitialRender = useRef(true);// in react, when refs are changed component dont re-render
     const { store, setStore } = useContext(GlobalStoreContext);
     const [update, setUpdate] = useState(1);
-    const [added, setAdded] = useState(false);
+
+    const isAddNewRegionPolygon = useRef(false);
 
     const isAddTextActive = useRef(false);
 
@@ -27,23 +31,24 @@ function GeomanJsWrapper(props) {
 
 
     const [textBoxList,setTextBoxList] = useState(store.currentMapData.graphicalData.textBoxList)
+    const [feature,setFeatures] = useState(store.currentMapData.features)
 
-    const [newPolygonFeature, setNewPolygonFeature] = useState(
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "My Polygon"
-            },
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[]
-                ]
-            }
+    const originalNewPolygon =         {
+        "type": "Feature",
+        "properties": {
+            "name": "My Polygon"
+        },
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [[]]
         }
-    )
+    }
+    const [newPolygonFeature, setNewPolygonFeature] = useState(JSON.parse(JSON.stringify(originalNewPolygon)))
 
+    const constructedNewPolyRegion = useRef(JSON.parse(JSON.stringify(originalNewPolygon)));
+
+    //called once to initialize the textboxs from geoJson
     useEffect (()=>{
-        //called once to initialize the textboxs from geoJson
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
         const leafletContainer = LL
@@ -78,8 +83,6 @@ function GeomanJsWrapper(props) {
         // })
             // setTextBoxList( store.currentMapData.graphicalData.textBoxList)
     },[])
-
-    //lets make is so that this is stateful, and that this can be called more than once.
 
     const handleTooltipEditJSTPS = (oldText,newText,index) => {
         let mappedData = {
@@ -118,8 +121,9 @@ function GeomanJsWrapper(props) {
         console.log("jstps for delete text")
         store.jstps.addTransaction(new TextboxTPS(mappedData))
     }
-
+    //lets make is so that this is stateful, and that this can be called more than once.
     useEffect (()=>{
+        console.log("called to refresh all of the textbox tootips")
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
 
@@ -187,13 +191,12 @@ function GeomanJsWrapper(props) {
             // Add event listeners to the tooltip for drag events
             el.style.pointerEvents = 'auto';
         })
-    },[textBoxList])
+    },[textBoxList,store.currentMapData])
 
+    //this will be the one to intialize the buttons, these are called once and are not stateful
     useEffect(() => {
-
-        if (isInitialRender.current === false ) {// skip all future renders.
+        if (isInitialRender.current === false )// skip all future renders.
             return;
-        }
         isInitialRender.current = false;// set it to false so subsequent changes of dependency arr will make useEffect to execute
 
 
@@ -210,44 +213,29 @@ function GeomanJsWrapper(props) {
         //     store.setZoomLevel(map.getZoom(), centerArr)
         // });
         map.on('pm:drawstart', ({ workingLayer }) => {
-
-
             workingLayer.on('pm:vertexadded', (e) => {
-                let newCoords = []
-                newCoords[0] = e.latlng.lng
-                newCoords[1] = e.latlng.lat
-                let newRegion = newPolygonFeature
-                newRegion.geometry.coordinates[0].push(newCoords)
-                setNewPolygonFeature(newRegion)
-                //store.setRegionProperties(newRegion)
-                //setNewPolygonFeature(newPolygonFeature.geometry.coordinates[0].push(newCoords))
-                //console.log(newPolygonFeature)
-
+                let newCoords = [e.latlng.lng,e.latlng.lat]
+                constructedNewPolyRegion.current.geometry.coordinates[0].push(newCoords)
             });
+            // workingLayer.removeFrom(map)
         });
-        map.on('pm:drawend', (e) => {
-            let sameFirstandLastCoords = newPolygonFeature
-            if (newPolygonFeature.geometry.coordinates[0].length > 0) {
-                let firstCoord = newPolygonFeature.geometry.coordinates[0][0];
-                sameFirstandLastCoords.geometry.coordinates[0].push(firstCoord)
-                props.file.features.push(sameFirstandLastCoords)
+        map.on('pm:drawend', ({ workingLayer }) => {
+            let newPoly = constructedNewPolyRegion.current
+            if (newPoly.geometry.coordinates[0].length > 0) {
+                let firstCoord = newPoly.geometry.coordinates[0][0];
+                newPoly.geometry.coordinates[0].push(firstCoord)
 
-
-                let centerArr = []
+                //to make stateful.
+                store.polygonData = newPoly
+                // props.file.features.push(sameFirstandLastCoords)
                 let center = map.getCenter()
-                centerArr[0] = center.lat
-                centerArr[1] = center.lng
-
-
-                props.updateViewer()
-                props.updateEditor()
-                store.setAddRegion(map.getZoom(), centerArr, "MAP_ADD_REGION_NAME")
+                store.setAddRegion(map.getZoom(), [center.lat,center.lng], "MAP_ADD_REGION_NAME")
             }
-
+            //clear what we have right now.
+            constructedNewPolyRegion.current = JSON.parse(JSON.stringify(originalNewPolygon))
         });
         if (leafletContainer) {
             console.log("ADDING")
-            setAdded(true);
             const mergeButtonAction = [
                 'cancel',
                 {
@@ -362,18 +350,36 @@ function GeomanJsWrapper(props) {
                 store.changeModal("MAP_PICK_COLOR_WHEEL")
             }
 
+
+            const addNewPolygonRegionClick = (event) => {
+
+                console.log("add new poly is clicked ")
+                if(event===undefined){
+                    console.log("event is undefined, its a not so good action hmm")
+                    isAddNewRegionPolygon.current = false
+                }
+                isAddNewRegionPolygon.current = true
+            }
+            map.pm.Toolbar.copyDrawControl('Polygon', {
+                onClick: addNewPolygonRegionClick,
+                name: 'PolygonCopy',
+                block: 'edit',
+                title: 'add new region',
+                actions: extendedMenuActionCancel,
+            });
+
             //each of the right geoman buttons, [their names, extra menu after click, function on initial click]
             //null means no popup actions
             const customButtonCollection = [
                 ["merge", mergeButtonAction, mergeButtonClick],
-                // ["addRegion", mergeButtonAction,            mergeButtonClick ], //i think this one is already done i guess
+                // ["addRegion" ], //these ones are baked in
                 ["addLegend", null, handleAddLegend],
                 ["changeBackgroundColor", null, handleChangeBackgroundColorModal],
                 ["changeRegionColor", changeRegionColorAction, colorButtonClick],
                 ["changeBorderColor", changeBorderColorAction,colorButtonClick],
                 ["addText", extendedMenuActionCancel, addTextButtonClick],
-                ["editVertex", mergeButtonAction, mergeButtonClick],
-                ["moveRegion", mergeButtonAction, mergeButtonClick],
+                // ["editVertex", mergeButtonAction, mergeButtonClick], //baked
+                // ["moveRegion", mergeButtonAction, mergeButtonClick], //baked
                 ["splitRegion", extendedMenuActionCancel, mergeButtonClick],
                 ["deleteRegion", extendedMenuActionCancel, mergeButtonClick],
                 ["undo", null, undoButtonClick],
@@ -402,14 +408,14 @@ function GeomanJsWrapper(props) {
                 drawText: false,
                 drawPolyline: false,
                 drawRectangle: false,
-                drawPolygon: true,
+                drawPolygon: false,
                 drawCircle: false,
                 drawCircleMarker: false,
 
                 rotateMode: false, //last 4 that are removed are below
                 removalMode: false,
                 cutPolygon: false,
-                dragMode: false,
+                dragMode: true,
                 editMode: true
             });
             LL.pm.setGlobalOptions({

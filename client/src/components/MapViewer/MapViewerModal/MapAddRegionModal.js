@@ -5,13 +5,7 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import GlobalStoreContext, {CurrentModal} from "../../../store";
-import Grid from "@mui/material/Grid";
-import MapEditor from "../MapEditor";
-import MapPropertySidebar from "../MapPropertySidebar";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import CloseIcon from '@mui/icons-material/Close';
+import RegionTPS from "../../../transactions/RegionTPS";
 const style = {
     position: 'absolute',
     top: '50%',
@@ -25,19 +19,33 @@ const style = {
 };
 
 function MapAddRegionModal(props) {
-    const { store } = useContext(GlobalStoreContext);
+    const { store,setStore } = useContext(GlobalStoreContext);
     const [addRegionName, setAddRegionName] = useState("");
 
-    function handleChangeMapName(event) {
+    function handleAddRegionName(event) {
+
+
 
         store.changeModal("NONE");
-        props.handleAddRegion(addRegionName)
-        //Deletes the map from the database
-        //store.deleteMap();
+        console.log("This is where the handle add new region name occurs")
+        console.log(store)
+        console.log(store.polygonData)
+
+
+
+        let transactionMappedData = {
+            type: "add",
+            store: store,
+            setStore: setStore,
+            newPolygon: store.polygonData,
+            newRegionName: addRegionName,
+            updateView: store.updateViewer,
+            update:store.updateEditor,
+        }
+        store.jstps.addTransaction(new RegionTPS(transactionMappedData))
 
     }
     function handleCloseModal(event) {
-        //props.handleCancelMergeSelection()
         store.changeModal("NONE");
     }
     function handleUpdateSearch(event) {
@@ -74,7 +82,7 @@ function MapAddRegionModal(props) {
                         <input type="button"
                                class="modal-confirm-button"
                                onClick={() => {
-                                   handleChangeMapName();}}
+                                   handleAddRegionName();}}
                                value='Confirm' />
                         <input type="button"
                                class="modal-cancel-button"

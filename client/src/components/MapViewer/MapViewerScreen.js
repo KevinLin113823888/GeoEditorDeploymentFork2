@@ -19,11 +19,9 @@ import ImportModal from "./MapViewerModal/ImportModal";
 import MapLegendFooter from "./MapLegendFooter";
 import { useParams } from 'react-router-dom';
 import Box from "@mui/material/Box";
-
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import * as topoServer from 'topojson-server';
 import * as topoClient from 'topojson-client';
 import * as topoSimplify from 'topojson-simplify';
@@ -48,17 +46,16 @@ function MapViewerScreen(props) {
     let shpfile = null;
     let dbffile = null;
 
-    // useEffect(() => {
-    //     setGeoJson(na)
-    // },[])
-
-
+    useEffect(() => {
+        initGeojsonGraphicalData(na)
+        // setGeoJson(na)
+        store.updateViewer = handleUpdate
+    },[])
     useEffect(() => {
         if (state) {
             setMapChange(state.title);
         }
         console.log("ID of map", id);
-        // console.log(state);
         fetch(process.env.REACT_APP_API_URL + 'map/getMapById', {
             method: "post",
             credentials: 'include',
@@ -170,9 +167,6 @@ function MapViewerScreen(props) {
         setFileExist(true);
     }
 
-
-
-
     const handleShpDbfFile = (e, type) => {
         {
             console.log("reading: " + type);
@@ -201,8 +195,6 @@ function MapViewerScreen(props) {
             var temp = JSON.parse(e.target.result);
             // console.log("iumport")
             // console.log(temp) //this has grahpical data
-
-
             // let graphical = JSON.parse(JSON.stringify(temp.graphicalData))
             // var topo = topoServer.topology({ foo: temp });
             // topo = topoSimplify.presimplify(topo);
@@ -232,11 +224,11 @@ function MapViewerScreen(props) {
     function handleCompress() {
         var temp = GeoJson;
         var graphical = GeoJson.graphicalData;
-        // var topo = topoServer.topology({ foo: temp });
-        // topo = topoSimplify.presimplify(topo);
-        // topo = topoSimplify.simplify(topo, 0.05);
-        // temp = topoClient.feature(topo, topo.objects.foo);
-        // temp.graphicalData = graphical;
+        var topo = topoServer.topology({ foo: temp });
+        topo = topoSimplify.presimplify(topo);
+        topo = topoSimplify.simplify(topo, 0.005);
+        temp = topoClient.feature(topo, topo.objects.foo);
+        temp.graphicalData = graphical;
         setGeoJson(temp);
         setKeyid(keyid => keyid + 1)
     }
@@ -334,8 +326,6 @@ function MapViewerScreen(props) {
     }
 
     function handleChangeMapName(event) {
-        // store.changeModal("NONE");
-
         fetch(process.env.REACT_APP_API_URL + 'map/changeMapNameById', {
             method: "POST",
             credentials: 'include',
@@ -362,14 +352,10 @@ function MapViewerScreen(props) {
 
     const Buttons = (Function, Text) => {
         const wrappedButton =
-
-
             <Button
                 className='responsive-text'
                 style={{
-
                     //backgroundColor: "#3c7dc3",
-
                 }}
                 sx={{ bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a' }, fontFamily: "Helvetica",
                  fontSize: { xs: '.7rem', md: '1rem' }, marginLeft: { xs: '1.3rem', md: '10px' }, textAlign: 'right', marginBottom:"10px" }}
@@ -383,7 +369,8 @@ function MapViewerScreen(props) {
         return wrappedButton
     }
     return (
-        <div className="App" onKeyPress={handleKeyPress}>
+        <div className="App"              onKeyDown={handleKeyPress}
+        >
 
             <ImportModal
                 handleGeoJson={handleGeoJson}
@@ -400,7 +387,7 @@ function MapViewerScreen(props) {
             <MapAddRegionModal />
 
 
-            <Grid container columnSpacing={2} rowSpacing={0}>
+            <Grid container columnSpacing={2} rowSpacing={0} >
                 <Grid item xs={12} md={6}>
                     <Box
                         sx={{
@@ -425,8 +412,8 @@ function MapViewerScreen(props) {
                                 paddingLeft: "1.5%"
                             }}>
                             <MapEditor changeName={changeRegionName} key={keyid} 
-                            handleCompress={handleCompress} updateViewer={handleUpdate} 
-                            mapCardId={id} />
+                            handleCompress={handleCompress} updateViewer={handleUpdate}
+                                       mapCardId={id}/>
                         </Box>
                     <Grid item xs={12} md={12}>
                         <MapLegendFooter />

@@ -1,28 +1,33 @@
 const express = require("express");
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
-var session = require('express-session');
+// var session = require('express-session');
+require("dotenv").config();
 
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:3000','https://bejewelled-rugelach-940512.netlify.app'],
-    // origin: "*",
-    credentials: true
+    origin: ['http://localhost:3000','https://bejewelled-rugelach-940512.netlify.app', 'https://bejewelled-palmier-26e86d.netlify.app'],
+    credentials: true,
+    allowedHeaders: "Content-Type, Authorization, X-Requested-With",
 }));
 app.use(express.json({ limit: '100mb' }));
-app.use(session(
-    { 
-        secret: "pizzaspaghetti", 
-        cookie: {  }, 
-        resave: false,
-        saveUninitialized: true
-    }
-));
+// app.use(session(
+//     { 
+//         secret: "pizzaspaghetti", 
+//         cookie: { 
+//           // httpOnly: false,
+//           secure: true,
+//           sameSite: "none",
+//          }, 
+//         resave: false,
+//         saveUninitialized: true
+//     }
+// ));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+  
 const connectDB = require("./mongo");
 var userRouter = require('./routes/userRoute');
 var mapRouter = require('./routes/mapRoute');
