@@ -278,7 +278,17 @@ class communityController {
 
     static async searchMap(req, res) {
         try {
+            var { searchName } = req.body;
+            let username = req.cookies.values.username;
 
+            var user = await User.findOne({username: username});
+            let blockedUsers = user.blockedUsers;
+            var communityPreview = {};
+            if (user) {
+                communityPreview = await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers}, title: { $regex: '.*' + searchName + '.*' }}}]);
+            }
+            
+            return res.status(200).json({status: 'OK', mapcards: communityPreview});
         }
         catch(e){
             console.log(e.toString())
