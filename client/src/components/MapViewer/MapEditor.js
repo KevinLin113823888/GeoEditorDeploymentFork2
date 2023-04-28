@@ -222,6 +222,21 @@ function MapEditor(props) {
     }
         setUpdate(update => update + 1);
     }
+
+    function handleRemoveRegion(e) {
+        let editingFeature =  e.target.feature
+
+        let transactionMappedData = {
+            type: "remove",
+            store: store,
+            setStore: setStore,
+            updateView: store.updateViewer,
+            update:store.updateEditor,
+            editingFeature: editingFeature,
+        }
+        store.jstps.addTransaction(new RegionTPS(transactionMappedData))
+    }
+
     function handleRemoveVertex(e) {
         console.log("vertex removal")
         let vertexEditFeature = e.target.feature
@@ -671,6 +686,13 @@ function MapEditor(props) {
 
             handleDraggedRegion(e)
         });
+
+
+        layer.on('pm:remove', e=> {
+            console.log("pm remove")
+            console.log(e)
+            handleRemoveRegion(e)
+        })
 
         // layer.on('pm:drag', e => {
         //     console.log("pm:bruh")

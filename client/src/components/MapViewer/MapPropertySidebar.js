@@ -21,6 +21,8 @@ function MapPropertySidebar() { //should not use props
         console.log(store.currentFeatureIndex)
         if(Object.keys(store.currentMapData).length===0)
             return
+        if(store.currentFeatureIndex>=store.currentMapData.features.length)
+            return
         setPropertyObj(store.currentMapData.features[store.currentFeatureIndex].properties)
 
     },[store.currentFeatureIndex]);
