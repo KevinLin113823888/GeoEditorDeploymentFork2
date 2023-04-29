@@ -707,7 +707,6 @@ function MapEditor(props) {
 
         }
         regionsSelectedRef.current = []
-        
 
         setUpdate(update => update + 1);
     }

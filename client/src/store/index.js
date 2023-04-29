@@ -24,6 +24,7 @@ export const GlobalStoreActionType = {
     SET_CURRENT_MAPCARD_ID: "SET_CURRENT_MAPCARD_ID",
     SET_SCREENSHOT: "SET_SCREENSHOT",
     SET_CENTER_SCREEN: "SET_CENTER_SCREEN",
+    DOWNLOAD_PNG: "DOWNLOAD_PNG",
 }
 
 export const CurrentModal = {
@@ -72,6 +73,7 @@ function GlobalStoreContextProvider(props) {
         currentMapCardId: null,
         setScreenshot: false,
         setCenterScreen: false,
+        downloadPng: false,
     });
 
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
@@ -212,6 +214,13 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     ...store,
                     setCenterScreen : payload.centerScreen,
+                    currentModal: "NONE"
+                });
+            }
+            case GlobalStoreActionType.DOWNLOAD_PNG: {
+                return setStore({
+                    ...store,
+                    downloadPng : payload.downloadPng,
                     currentModal: "NONE"
                 });
             }
@@ -366,6 +375,14 @@ function GlobalStoreContextProvider(props) {
             type: GlobalStoreActionType.SET_CENTER_SCREEN,
             payload: {
                 centerScreen: centerScreen
+            }
+        });
+    }
+    store.setDownloadPng=function(downloadPng){
+        storeReducer({
+            type: GlobalStoreActionType.DOWNLOAD_PNG,
+            payload: {
+                downloadPng: downloadPng
             }
         });
     }

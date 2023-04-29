@@ -64,8 +64,7 @@ function ExportModal(props) {
                         value='Shapefile/DBF zip' />
                     <input type="button"
                         class="modal-confirm-button"
-                        // onClick={() => {
-                        //     handleFork();}}
+                        onClick={props.handleExportPNG}
                         value='Jpeg' />
                 </Box>
             </Modal>
