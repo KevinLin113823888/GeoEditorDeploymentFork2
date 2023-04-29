@@ -381,7 +381,7 @@ function GeomanJsWrapper(props) {
                 // ["editVertex", mergeButtonAction, mergeButtonClick], //baked
                 // ["moveRegion", mergeButtonAction, mergeButtonClick], //baked
                 ["splitRegion", extendedMenuActionCancel, mergeButtonClick],
-                ["deleteRegion", extendedMenuActionCancel, mergeButtonClick],
+                // ["deleteRegion", extendedMenuActionCancel, mergeButtonClick], //baked
                 ["undo", null, undoButtonClick],
                 ["redo", null, redoButtonClick],
             ]

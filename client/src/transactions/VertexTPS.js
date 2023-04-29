@@ -29,6 +29,9 @@ export default class VertexTPS extends jsTPS_Transaction {
         this.diff =  require('jsondiffpatch')
         this.diffDelta = null;
 
+        this.sharedIndexPath=  mappedData.sharedIndexPath
+        this.sharedBorderFeature = mappedData.sharedBorderFeature
+
 
         let i=this.indexPath
         let vertexSinglePoly = this.editingFeature.geometry.coordinates[i[0]]
@@ -53,6 +56,14 @@ export default class VertexTPS extends jsTPS_Transaction {
             this.polygon.splice(this.vertexIndex,0,this.new2DVec)
         }
         else if(this.type === "drag"){
+            if(this.sharedBorderFeature!== null){
+                console.log("dragged called for shared")
+                let j = this.sharedIndexPath
+                if(this.sharedIndexPath.length === 3)
+                    this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]][j[2]] = this.new2DVec
+                else
+                    this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]] = this.new2DVec
+            }
             this.oldVertex = this.polygon[this.vertexIndex]
             this.newVertex = this.new2DVec
             this.polygon[this.vertexIndex] = this.newVertex
@@ -71,6 +82,13 @@ export default class VertexTPS extends jsTPS_Transaction {
             this.polygon.splice(this.vertexIndex,1)
         }
         else if(this.type === "drag"){
+            if(this.sharedBorderFeature!== null){
+                let j = this.sharedIndexPath
+                if(this.sharedIndexPath.length === 3)
+                    this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]][j[2]] = this.oldVertex
+                else
+                    this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]] = this.oldVertex
+            }
             this.polygon[this.vertexIndex] = this.oldVertex
         }
         else if(this.type === "delete"){

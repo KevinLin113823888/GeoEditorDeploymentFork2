@@ -35,7 +35,6 @@ function MapViewerScreen(props) {
     const { state } = useLocation();
     const [mapName, setMapChange] = useState('untitled');
     const [keyid, setKeyid] = useState(0)
-    // const [compressCount, setCompressCount] = useState(0.005);
 
     const { store } = useContext(GlobalStoreContext);
     const [GeoJson, setGeoJson] = [store.currentMapData, store.setCurrentMapData]
