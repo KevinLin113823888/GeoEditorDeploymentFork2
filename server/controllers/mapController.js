@@ -242,16 +242,24 @@ class mapController {
         }
     }
 
-    // static async sortMap(req, res) {
-    //     try {
-    //         var {type} = req.body;
+    static async sortMap(req, res) {
+        try {
+            var {type} = req.body;
+            let username = req.cookies.values.username;
 
-    //     }
-    //     catch(e){
-    //         console.log(e.toString())
-    //         return res.status(400).json({error: true, message: e.toString() });
-    //     }
-    // }
+            var user = await User.findOne({username: username});
+            var mapCards = {};
+            if (user)
+                mapCards = type === "name" ? 
+                await MapCard.find({_id: { $in: user.ownedMapCards }}).sort({title: 1}) : 
+                await MapCard.find({_id: { $in: user.ownedMapCards }}).sort({updatedAt: 1})
+            return res.status(200).json({status: 'OK', mapcards: mapCards});
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
+    }
 }
 
 

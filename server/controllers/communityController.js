@@ -295,6 +295,29 @@ class communityController {
             return res.status(400).json({error: true, message: e.toString() });
         }
     }
+
+    static async sortMap(req, res) {
+        try {
+            var { type } = req.body;
+            
+            let username = req.cookies.values.username;
+
+            var user = await User.findOne({username: username});
+            let blockedUsers = user.blockedUsers;
+            var communityPreview = {};
+            if (user) {
+                communityPreview =  type === "name" ?  
+                await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers} }}]).sort({title: 1}) :
+                await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers} }}]).sort({updatedAt: 1})
+            }
+            
+            return res.status(200).json({status: 'OK', mapcards: communityPreview});
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
+    }
 };
 
 module.exports = communityController;
