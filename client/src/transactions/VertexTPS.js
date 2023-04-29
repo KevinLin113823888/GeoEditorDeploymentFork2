@@ -58,6 +58,9 @@ export default class VertexTPS extends jsTPS_Transaction {
         else if(this.type === "drag"){
             if(this.sharedBorderFeature!== null){
                 console.log("dragged called for shared")
+                console.log(this.sharedIndexPath)
+                console.log(this.sharedBorderFeature)
+                console.log(this.new2DVec)
                 let j = this.sharedIndexPath
                 if(this.sharedIndexPath.length === 3)
                     this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]][j[2]] = this.new2DVec

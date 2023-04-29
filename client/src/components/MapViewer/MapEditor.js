@@ -374,11 +374,13 @@ function MapEditor(props) {
                     islandPoly.forEach((vertex,k) => {
                         if(vertex.toString() === oldVertexStr){
                             console.log("match found")
+                            sharedBorderFeature = feature1
                             if(feature1.geometry.type === "Polygon"){
+                                console.log("i thought it was a polygon")
                                 sharedIndexPath = [j,k]
                             }
+                        else
                             sharedIndexPath = [i,j,k]
-                            sharedBorderFeature = feature1
                         }
                     })
                 })
