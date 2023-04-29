@@ -12,6 +12,7 @@ router.post('/dislikeCommunityMap', auth.verify, CommunityController.dislikeComm
 router.post('/followCommunityMap', auth.verify, CommunityController.followCommunityMap);
 router.post('/blockCommunityMap', auth.verify, CommunityController.blockCommunityMap);
 router.post('/addComment', auth.verify, CommunityController.addComment);
-router.post('/searchMap', CommunityController.searchMap);
+router.post('/searchMap', auth.verify, CommunityController.searchMap);
+router.post('/sortMap', auth.verify, CommunityController.sortMap);
 
 module.exports = router

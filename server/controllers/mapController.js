@@ -149,9 +149,11 @@ class mapController {
     static async mapClassificationById(req, res) {
         try {
             var { id, classifications } = req.body;
+            console.log("I was here", id, classifications)
 
             let listOfClass = classifications.split(", ");
-            var currentMapCard = await MapCard.findOneAndUpdate({ map: new mongoose.Types.ObjectId(id) }, { classification: listOfClass });
+            console.log("class", listOfClass);
+            var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { classification: listOfClass });
             await currentMapCard.save();
 
             return res.status(200).json({status: 'OK'});
@@ -231,7 +233,26 @@ class mapController {
             var user = await User.findOne({username: username});
             var mapCards = {};
             if(user)
-                mapCards = await MapCard.find({ _id: { $in: user.ownedMapCards }, title: { $regex: '.*' + searchName + '.*' }});
+                mapCards = await MapCard.find({ _id: { $in: user.ownedMapCards }, $or: [{title: { $regex: '.*' + searchName + '.*' }}, {classification: searchName}]});
+            return res.status(200).json({status: 'OK', mapcards: mapCards});
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
+    }
+
+    static async sortMap(req, res) {
+        try {
+            var {type} = req.body;
+            let username = req.cookies.values.username;
+
+            var user = await User.findOne({username: username});
+            var mapCards = {};
+            if (user)
+                mapCards = type === "name" ? 
+                await MapCard.find({_id: { $in: user.ownedMapCards }}).sort({title: 1}) : 
+                await MapCard.find({_id: { $in: user.ownedMapCards }}).sort({updatedAt: 1})
             return res.status(200).json({status: 'OK', mapcards: mapCards});
         }
         catch(e){

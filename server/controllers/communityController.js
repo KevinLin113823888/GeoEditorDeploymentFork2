@@ -141,7 +141,7 @@ class communityController {
             let username = req.cookies.values.username;
 
             var currentOwner = await User.findOne({ username: username });
-            var availableCommunityPreview = await CommunityPreview.find({likes: {"$in": [currentOwner._id]}}); 
+            var availableCommunityPreview = await CommunityPreview.find({likes: {$in: [currentOwner._id]}}); 
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
 
             if (availableCommunityPreview.length > 0) { // already liked, so unlike it
@@ -149,7 +149,7 @@ class communityController {
                 await communityPreview.save();
                 return res.status(200).json({status: 'UNLIKED', likeLength: communityPreview.likes.length, dislikeLength:  communityPreview.dislikes.length });
             } else { // didn't like it yet
-                var currentDislikes = await CommunityPreview.find({dislikes: {"$in": [currentOwner._id]}});
+                var currentDislikes = await CommunityPreview.find({dislikes: {$in: [currentOwner._id]}});
                 if (currentDislikes) { // check if already dislike, if you are, then remove dislike
                     var dislikePreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $pull: { dislikes: currentOwner._id.toString() } }, {new: true});
                     await dislikePreview.save();
@@ -173,7 +173,7 @@ class communityController {
             let username = req.cookies.values.username;
 
             var currentOwner = await User.findOne({ username: username });
-            var availableCommunityPreview = await CommunityPreview.find({dislikes: {"$in": [currentOwner._id]}}); 
+            var availableCommunityPreview = await CommunityPreview.find({dislikes: {$in: [currentOwner._id]}}); 
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
 
             if (availableCommunityPreview.length > 0) {
@@ -181,7 +181,7 @@ class communityController {
                 await currentCommunityPreview.save();
                 return res.status(200).json({status: 'UNDISLIKED', likeLength: currentCommunityPreview.likes.length, dislikeLength:  currentCommunityPreview.dislikes.length});
             } else {
-                var currentLikes = await CommunityPreview.find({likes: {"$in": [currentOwner._id]}});
+                var currentLikes = await CommunityPreview.find({likes: {$in: [currentOwner._id]}});
                 if (currentLikes) {
                     var likePreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $pull: { likes: currentOwner._id.toString() } }, {new: true});
                     await likePreview.save();
@@ -285,7 +285,30 @@ class communityController {
             let blockedUsers = user.blockedUsers;
             var communityPreview = {};
             if (user) {
-                communityPreview = await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers}, title: { $regex: '.*' + searchName + '.*' }}}]);
+                communityPreview = await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers}, $or: [{title: { $regex: '.*' + searchName + '.*' }}, {classification: searchName}]}}]);
+            }
+            
+            return res.status(200).json({status: 'OK', mapcards: communityPreview});
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
+    }
+
+    static async sortMap(req, res) {
+        try {
+            var { type } = req.body;
+            
+            let username = req.cookies.values.username;
+
+            var user = await User.findOne({username: username});
+            let blockedUsers = user.blockedUsers;
+            var communityPreview = {};
+            if (user) {
+                communityPreview =  type === "name" ?  
+                await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers} }}]).sort({title: 1}) :
+                await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers} }}]).sort({updatedAt: 1})
             }
             
             return res.status(200).json({status: 'OK', mapcards: communityPreview});
