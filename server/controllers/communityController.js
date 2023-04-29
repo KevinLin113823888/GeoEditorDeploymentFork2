@@ -58,7 +58,7 @@ class communityController {
                 }
             });
 
-            console.log("current preview", currentCommunityPreview._id.toString());
+            // console.log("current preview", currentCommunityPreview._id.toString());
             return res.status(200).json({
                 status: "OK", 
                 title: currentCommunityPreview.title,

@@ -69,6 +69,7 @@ function MUICommunityPreviewModal() {
     const [likeLength, setLikeLength] = useState(0);
     const [dislikes, setDislikes] = useState("black");
     const [dislikeLength, setdisLikeLength] = useState(0);
+    const [update, setUpdate] = useState(1);
 
     useEffect(() => {
         if(store.currentModal == 'COMMUNITY_PREVIEW_MODAL'){
@@ -106,7 +107,7 @@ function MUICommunityPreviewModal() {
             })
             .catch(err => console.log(err));
         }
-    }, [store.currentModal]);
+    }, [store.currentModal, update]);
 
     function handleCloseModal(event) {
         store.changeModal("NONE");
@@ -304,6 +305,7 @@ function MUICommunityPreviewModal() {
                 })
                 .catch(err => console.log(err));
             }
+            setUpdate(update=>update+1);
         }
     }
 
