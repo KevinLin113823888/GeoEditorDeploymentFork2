@@ -78,12 +78,42 @@ function YourMap() {
         setAnchorEl(event.currentTarget);
     };
     const handleSortByDate = (event) => {
-        //store.sortMapCardsByDate()
+        fetch(process.env.REACT_APP_API_URL + 'map/sortMap', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                type: 'date'
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            setMapCards(data.mapcards);
+        })
+        .catch(err => console.log(err));
         setAnchorEl(null);
 
     };
     const handleSortByName = (event) => {
-        //store.sortMapCardsByName()
+        fetch(process.env.REACT_APP_API_URL + 'map/sortMap', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                type: 'name'
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            setMapCards(data.mapcards);
+        })
+        .catch(err => console.log(err));
         setAnchorEl(null);
     };
 
@@ -122,11 +152,49 @@ function YourMap() {
     function handleKeyPress(event) {
         if (search != "") {
             if (event.type === "keypress" && event.code === "Enter") {
-                console.log("search for", search);
+                console.log("search for enter", search);
+
+                fetch(process.env.REACT_APP_API_URL + 'map/searchMap', {
+                    method: "POST",
+                    credentials: 'include',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        searchName: search
+                    }),
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    setMapCards(data.mapcards);
+                })
+                .catch(err => console.log(err));
+
             }
             if (event.type === "click") {
                 console.log("search for", search);
             }
+        }
+        else{
+            fetch(process.env.REACT_APP_API_URL + 'user/loggedIn', {
+                method: "GET",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    setUsername(data.username);
+                    if (data.mapcards === undefined) {
+                        setMapCards([]);
+                    } else {
+                        setMapCards(data.mapcards);
+                    }
+                })
+                .catch(err => console.log(err));
         }
     }
 
@@ -134,9 +202,10 @@ function YourMap() {
         store.changeModal(CurrentModal.CREATE_NEW_MAP)
     }
 
-    function handleSort() {
-        console.log("sorting that needs to be implemented");
-    }
+    // function handleSort() {
+    //     console.log("sorting that needs to be implemented");
+    // }
+    
     function displayMaps(){
         if(mapCards.length>0){
             return mapCards.map((map) => (

@@ -64,12 +64,42 @@ function Community() {
         setAnchorEl(event.currentTarget);
     };
     const handleSortByDate = (event) => {
-        //store.sortMapCardsByDate()
+        fetch(process.env.REACT_APP_API_URL + 'community/sortMap', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                type: 'date'
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            setMapCards(data.mapcards);
+        })
+        .catch(err => console.log(err));
         setAnchorEl(null);
 
     };
     const handleSortByName = (event) => {
-        //store.sortMapCardsByName()
+        fetch(process.env.REACT_APP_API_URL + 'community/sortMap', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                type: 'name'
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            setMapCards(data.mapcards);
+        })
+        .catch(err => console.log(err));
         setAnchorEl(null);
     };
 
@@ -108,11 +138,47 @@ function Community() {
     function handleKeyPress(event) {
         if (search != "") {
             if (event.type === "keypress" && event.code === "Enter") {
-                console.log("search for", search);
+                console.log("search for enter", search);
+
+                fetch(process.env.REACT_APP_API_URL + 'community/searchMap', {
+                    method: "POST",
+                    credentials: 'include',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        searchName: search
+                    }),
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    setMapCards(data.mapcards);
+                })
+                .catch(err => console.log(err));
+
             }
             if (event.type === "click") {
                 console.log("search for", search);
             }
+        }
+        else{
+            fetch(process.env.REACT_APP_API_URL + 'community/getCommunity', {
+                method: "GET",
+                credentials: 'include',
+                headers: {
+                "Content-Type": "application/json",
+                }
+            })
+            .then((res) => res.json())
+            .then((data) => {
+               if (data.mapcards === undefined) {
+                    setMapCards([]);
+                } else {
+                    setMapCards(data.mapcards);
+                }
+            })
+            .catch(err => console.log(err));
         }
     }
 
@@ -120,9 +186,9 @@ function Community() {
         store.changeModal(CurrentModal.CREATE_NEW_MAP)
     }
 
-    function handleSort() {
-        console.log("sorting that needs to be implemented");
-    }
+    // function handleSort() {
+    //     console.log("sorting that needs to be implemented");
+    // }
 
     function openPreview(){
         store.changeModal(CurrentModal.COMMUNITY_PREVIEW_MODAL);
