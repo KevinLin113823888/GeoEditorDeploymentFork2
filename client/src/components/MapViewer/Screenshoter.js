@@ -14,10 +14,13 @@ function Screenshoter(props) {
     const map = useMap();
 
     useEffect(() =>{
+        console.log('center screen', store.setScreenshot)
+
         if(!store.setScreenshot){
             return
         }
         store.takeScreenShot(false);
+        store.setScreenshot = false;
 
         let pluginOptions = {
             cropImageByInnerWH: true, // crop blank opacity from image borders
@@ -85,40 +88,42 @@ function Screenshoter(props) {
 
     },[store.setScreenshot]);
 
-    // useEffect(() =>{
-    //     if(!store.setCenterScreen){
-    //         return
-    //     }
-    //     store.centerScreen(false);
+    useEffect(() =>{
+        console.log('center screen', store.setCenterScreen)
+        if(!store.setCenterScreen){
+            return
+        }
+        store.centerScreen(false);
+        store.setCenterScreen = false;
 
-    //     var bounds = new L.LatLngBounds();
+        var bounds = new L.LatLngBounds();
         
-    //     map.whenReady(() => {
-    //         map.eachLayer(function(layer){
-    //             setTimeout(function() {
-    //             if(layer._layers){
-    //                 Object.keys(layer._layers).forEach(key =>{
-    //                     bounds.extend(layer._layers[key]._bounds);
-    //                 })
-    //             }
-    //             try{
-    //                 map.fitBounds(bounds);
-    //             }catch(e){
-    //                 console.log(e)
-    //             }
-    //         }, 0);
-    //         });
-    //     });
-      
-    //     console.log(bounds);
-
-    // },[store.setCenterScreen]);
+        map.whenReady(() => {
+            map.eachLayer(function(layer){
+                setTimeout(function() {
+                if(layer._layers){
+                    Object.keys(layer._layers).forEach(key =>{
+                        bounds.extend(layer._layers[key]._bounds);
+                    })
+                }
+                try{
+                    map.fitBounds(bounds);
+                }catch(e){
+                    console.log(e)
+                }
+            }, 0);
+            });
+        });
+    },[store.setCenterScreen]);
 
     useEffect(() =>{
+        console.log('center screen', store.downloadPng)
+
         if(!store.downloadPng){
             return
         }
         store.setDownloadPng(false);
+        store.downloadPng = false;
 
         let pluginOptions = {
             cropImageByInnerWH: true, // crop blank opacity from image borders

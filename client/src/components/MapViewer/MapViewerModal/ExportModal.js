@@ -65,7 +65,7 @@ function ExportModal(props) {
                     <input type="button"
                         class="modal-confirm-button"
                         onClick={props.handleExportPNG}
-                        value='Jpeg' />
+                        value='PNG' />
                 </Box>
             </Modal>
     );
