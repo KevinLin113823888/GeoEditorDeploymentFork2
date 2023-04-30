@@ -304,7 +304,12 @@ function MapEditor(props) {
 
         console.log("this is the vert that we want to remo")
         console.log(orgVertex.toString())
+
+        let flag = false
         geoFeaturesList.filter(x => x!=vertexEditFeature).forEach(feature1 => {
+            if(flag){
+                return
+            }
             let reslap = turf.lineOverlap(feature1,vertexEditFeature, {tolerance: 2})
 
             if(reslap.features.length>0){
@@ -314,6 +319,7 @@ function MapEditor(props) {
                 {
                     console.log("this should be it")
                     sharedBorderFeature = feature1
+                    flag=true
                 }
             }
             else{
@@ -326,6 +332,7 @@ function MapEditor(props) {
                     {
                         console.log("this should be it")
                         sharedBorderFeature = feature1
+                        flag=true
                     }
                 }
             }
