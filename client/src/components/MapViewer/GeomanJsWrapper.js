@@ -335,18 +335,14 @@ function GeomanJsWrapper(props) {
             }
 
             const handleChangeBackgroundColor = (color) => {
-                console.log("handle background color called")
-                store.currentMapData.graphicalData.backgroundColor = color
-                let newMap = {...store.currentMapData}
-                setStore({
-                    ...store,
-                    currentMapData: newMap
-                })
 
-                console.log(store.currentMapData)
+                props.handleBackgroundColorChange(color)
             }
-            const handleChangeBackgroundColorModal = () => {
-                store.colorwheelHandler = handleChangeBackgroundColor
+            const handleChangeBackgroundColorModal = (e) => {
+                if(e===undefined)
+                    return // cancel
+                store.colorwheelHandler = props.handleBackgroundColorChange
+
                 store.changeModal("MAP_PICK_COLOR_WHEEL")
             }
 

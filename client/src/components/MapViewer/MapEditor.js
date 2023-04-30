@@ -23,14 +23,17 @@ import './mapEditor.css';
 import Screenshoter from './Screenshoter';
 import RegionTPS from "../../transactions/RegionTPS";
 import VertexTPS from "../../transactions/VertexTPS";
+import ColorTPS from "../../transactions/ColorTPS";
 
 function MapEditor(props) {
   
     const [isPopup, setPopup] = useState(false);
     const [update, setUpdate] = useState(1);
     const { store, setStore} = useContext(GlobalStoreContext);
-    // const tileRef = useRef();
 
+    const [bgColor,setBgColor] = useState("#ff0000")
+
+    const bgColorRef = useRef('#00ff00')
     const regionsSelectedRef = useRef([])
     const selectedLayerList = useRef([])
     let regionsClicked = [];
@@ -744,21 +747,23 @@ function MapEditor(props) {
     }
 
 
-    // useEffect(() => { //why isnt this permanent>
-    //     if(tileRef.current === undefined)
-    //         return
-    //         console.log("this for the background map colors")
-    //         console.log(tileRef.current.getContainer().style)
-    //         tileRef.current
-    //             .getContainer()
-    //             .style.setProperty("opacity", `50%`);
-    // }, [tileRef.current,store.currentMapData.graphicalData]);
-
-    //initalize the handle update stuff.
     useEffect(() => {
         store.updateEditor = handleUpdate
     },[])
 
+
+    const handleBackgroundColorChange = (color) => {
+        let transactionMappedData = {
+            type: "bg",
+            store: store,
+            setStore: setStore,
+            updateView: store.updateViewer,
+            updateEditor:store.updateEditor,
+            oldColor: store.currentMapData.graphicalData.backgroundColor,
+            newColor: color,
+        }
+        store.jstps.addTransaction(new ColorTPS(transactionMappedData))
+    }
 
     return (
         <div>
@@ -778,27 +783,20 @@ function MapEditor(props) {
                     
                     
                     <MapContainer id="mapitem"
-                style={{ height: "80vh" }}sx={{marginTop:"30vh"}} zoom={store.zoomLevel} center={store.centerCoords}
+
+                style={{ height: "80vh",
+                backgroundColor: store.currentMapData.graphicalData.backgroundColor }}sx={{marginTop:"30vh"}} zoom={store.zoomLevel} center={store.centerCoords}
                 editable={true}
                 >
                 <Screenshoter
                     mapCardId = {props.mapCardId}
                     />
                 
-                <TileLayer url="xxx" />
-
-                <LayerGroup>
-                    <TileLayer
-                        attribution='&amp;copy <update href="http://osm.org/copyright">OpenStreetMap</update> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <TileLayer url="http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png" />
-                </LayerGroup>
-
                         <TileLayer
-                            // ref={tileRef}
                             attribution='&amp;copy <update href="http://osm.org/copyright">OpenStreetMap</update> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            opacity={.75}
+
                         />
                     <FeatureGroup>
                         <GeoJSON
@@ -809,6 +807,7 @@ function MapEditor(props) {
                     </FeatureGroup>
 
                         <GeomanJsWrapper
+                            handleBackgroundColorChange = {handleBackgroundColorChange}
                             toggleSelectMode={toggleSelectMode}
                             compress={props.handleCompress}
                             file = {geoJsonMapData}
