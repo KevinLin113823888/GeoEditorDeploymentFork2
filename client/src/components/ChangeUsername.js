@@ -13,7 +13,7 @@ function ChangeUsername() {
     const formData = new FormData(event.currentTarget);
     const email = formData.get('email');
     const password = formData.get('password');
-    const username = formData.get('username');
+    const username = formData.get('new username');
 
     if (email !== "" && password !== "" && username != "") {
       fetch(process.env.REACT_APP_API_URL + 'user/changeUsername', {
@@ -68,10 +68,10 @@ function ChangeUsername() {
               <TextField
                 required
                 fullWidth
-                name="username"
-                label="username"
-                type="username"
-                id="username"
+                name="new username"
+                label="new username"
+                type="new username"
+                id="new username"
                 autoComplete="new-username"
               />
             </Grid>
