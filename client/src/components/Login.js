@@ -98,14 +98,14 @@ function Login() {
           <Grid container>
             <Grid item xs>
                 <Link  data-cy="forgotpassword-link"  variant="body2"
-                  onClick={() => {navigate('/forgetPassword');}}
+                  onClick={() => {navigate('/forgotPassword');}}
                 >
                   {"Forgot Password?"}
                 </Link>
             </Grid>
             <Grid item>
                 <Link data-cy="forgotusername-link" onClick={() => {
-                        navigate('/forgetUsername');}}  variant="body2">
+                        navigate('/forgotUsername');}}  variant="body2">
                     {"Forgot Username?"}
                 </Link>
             </Grid>

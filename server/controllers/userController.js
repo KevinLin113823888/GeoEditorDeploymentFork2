@@ -1,13 +1,21 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
-// const nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer");
 const userInfoSchema = require("../models/userInfoModel");
-const MapCard = require('../models/mapCardModel')
-const MapData = require('../models/mapDataModel')
-const auth = require('../auth')
+const MapCard = require('../models/mapCardModel');
+const MapData = require('../models/mapDataModel');
+const auth = require('../auth');
 
 const isCookieSecure = process.env.NODE_ENV === "production" ? true : false;
 const sameSiteCookie = process.env.NODE_ENV === "production" ? "none" : "lax";
+
+const transporter = nodemailer.createTransport({
+    service : process.env.EMAIL_SERVICE,
+    auth : {
+        user : process.env.EMAIL_USERNAME,
+        pass : process.env.EMAIL_PASSWORD
+    }
+});
 
 class userController {
     static async getLoggedIn(req, res) {
@@ -20,7 +28,6 @@ class userController {
                     errorMessage: "Not logged in"
                 })
             }
-            // console.log("userId", userId);
             let username = req.cookies.values.username;
 
             var user = await userInfoSchema.findOne({username: username});
@@ -42,7 +49,6 @@ class userController {
             var user = await userInfoSchema.findOne({email});
 
             var key = makeKey();
-
             var hashpswd = await bcrypt.hash(password, 9);
             var user = new userInfoSchema({
                 name,
@@ -56,7 +62,6 @@ class userController {
                 usersFollowing: []
             });
             await user.save();
-            // req.session.username = user.username;
 
             const token = auth.signToken(user._id);
 
@@ -77,18 +82,15 @@ class userController {
     static async login(req, res) {
         try{
             var { username, password } = req.body;
+
             var user = await userInfoSchema.findOne({username : username});
             if(!user)
                 throw new Error ("Invalid username")
-
             var isMatch = await bcrypt.compare(password, user.password);
             if(!isMatch)
                 throw new Error("Invalid password")
-
             const token = auth.signToken(user._id);
             
-            // req.session.username = user.username;
-            // return res.status(200).json({status: 'OK', name: user.name});
             res.cookie('values', { username: user.username, token: token }, {
                 httpOnly: isCookieSecure,
                 secure: isCookieSecure,
@@ -103,8 +105,6 @@ class userController {
 
     static async logout(req, res, next) {
         try{
-            // req.session.destroy();
-            // return res.clearCookie("values").status(200).json({status: 'OK'});
             res.cookies.set('values', {maxAge: 0}).json({status: 'OK'});;
         }catch (e){
             console.log(e)
@@ -120,10 +120,22 @@ class userController {
             if(emailUser === null){
                 throw new Error("email is null")
             }
-            // send username to email here
-            // nodemailer stuff
 
-            return res.status(200).json({status: 'OK', username: emailUser.username});
+            let text = "Here is the password for email address " + email + ": " + emailUser.username;
+
+            const options = {
+                from : process.env.EMAIL_USERNAME, 
+                to: email, 
+                subject: "Username Recovery", 
+                text: text,
+            }
+
+            transporter.sendMail(options, (error, info) =>{
+                if(error) console.log(error)
+                else console.log(info)
+            })
+
+            return res.status(200).json({status: 'OK'});
         }catch(e){
             return res.status(400).json({error: true, message: e.toString()});
         }
@@ -138,14 +150,26 @@ class userController {
             }
 
             let passwordRecoveryCode = makeKey()
-            await userInfoSchema.updateOne({email},{
+            let user = await userInfoSchema.findOneAndUpdate({email: email},{
                 passwordRecoveryCode: passwordRecoveryCode
+            });
+            await user.save();
+
+            let text = "Password Recovery Code: " + passwordRecoveryCode;
+
+            const options = {
+                from : process.env.EMAIL_USERNAME, 
+                to: email, 
+                subject: "Password Recovery", 
+                text: text,
+            }
+
+            transporter.sendMail(options, (error, info) =>{
+                if(error) console.log(error)
+                else console.log(info)
             })
 
-            // send code to email here
-            // nodemailer stuff
-
-            return res.status(200).json({status: 'OK', passwordRecoveryCode: passwordRecoveryCode});
+            return res.status(200).json({status: 'OK'});
         }catch(e){
             return res.status(400).json({error: true, message: e.toString()});
         }
@@ -153,11 +177,12 @@ class userController {
 
     static async changePassword(req, res) {
         try{
-            var { email,passwordRecoveryCode, password } = req.body;
+            var { email, passwordRecoveryCode, password } = req.body;
             var emailUser = await userInfoSchema.findOne({email});
+            console.log(emailUser.passwordRecoveryCode, passwordRecoveryCode);
 
             if(emailUser.passwordRecoveryCode !== passwordRecoveryCode){
-                throw new Error("invalid passwordRecoveryCode")
+                throw new Error("invalid Password Recovery Code")
             }
             var hashpswd = await bcrypt.hash(password, 9);
 
@@ -165,11 +190,29 @@ class userController {
                 password: hashpswd
             })
 
-            // check code if it exists in db
-
             return res.status(200).json({status: 'OK'});
         }catch(e){
             return res.status(400).json({ error: true, message: e.toString()});
+        }
+    }
+
+    static async changeUsername(req, res) {
+        try{
+            var { email, password, newUsername } = req.body;
+
+            var emailUser = await userInfoSchema.findOne({email});
+            if(!emailUser)
+                throw new Error ("Invalid email")
+            var isMatch = await bcrypt.compare(password, emailUser.password);
+            if(!isMatch)
+                throw new Error("Invalid password")
+
+            var user = await userInfoSchema.findOneAndUpdate({email: email}, { username: newUsername });
+            await user.save();
+    
+            return res.status(200).json({status: 'OK'});
+        }catch(e){
+            return res.status(400).json({error: true, message: e.toString()});
         }
     }
 
@@ -198,20 +241,6 @@ class userController {
             return res.status(400).json({error: true, message: e.toString()});
         }
     }
-
-    // static async changeUsername(req, res) {
-    //     try{
-    //         var { code, password } = req.body;
-    //         var emailUser = await userInfoSchema.findOne({email});
-    //
-    //         // check code if it exists in db
-    //
-    //         return res.status(200).json({status: 'OK'});
-    //     }catch(e){
-    //         return res.status(400).json({error: true, message: e.toString()});
-    //     }
-    // }
-
 }
 
 function makeKey() {

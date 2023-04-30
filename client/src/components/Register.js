@@ -8,7 +8,8 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../store';
+
 function Register() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -20,41 +21,37 @@ function Register() {
   function handleSubmit (event) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    const username =  formData.get('userName');
+    const name =  formData.get('firstName');
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const verifypassword = formData.get('passwordVerify');
+    const server =       process.env.REACT_APP_API_URL
 
-    
-      const username =  formData.get('userName');
-      const name =  formData.get('firstName');
-      const email = formData.get('email');
-      const password = formData.get('password');
-      const verifypassword = formData.get('passwordVerify');
-      const server =       process.env.REACT_APP_API_URL
-
-      fetch(server+ 'user/register', {
-        method: "POST",
-        credentials: 'include',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-          name: name,
-          username: username, 
-          email: email,
-          password: password
-        }),
-      })
-      .then((res) => {
-        res.json();
-        if (res.status === 200) {
-          console.log("REGISTERED, going to your maps");
-          navigate('/map');
-          store.changeScreen("yourmap")
-          //store.setGuest("false")
-        }
-      })
-    
- };
+    fetch(server+ 'user/register', {
+      method: "POST",
+      credentials: 'include',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        name: name,
+        username: username, 
+        email: email,
+        password: password
+      }),
+    })
+    .then((res) => {
+      res.json();
+      if (res.status === 200) {
+        console.log("REGISTERED, going to your maps");
+        navigate('/map');
+        store.changeScreen("yourmap")
+        //store.setGuest("false")
+      }
+    })  
+  };
   
-
   function changeName(event) {
     setName(event.target.value);
   }
@@ -70,23 +67,7 @@ function Register() {
   function changePassword(event) {
     setPassword(event.target.value);
   }
-/*<div className="Register">
-      <h1>Register Page</h1>
-      Name:
-      <input data-cy="name-input" onChange={changeName} type="text" />
-      Username:
-      <input data-cy="username-input" onChange={changeUserName} type="text" />
-      Email:
-      <input data-cy="email-input" onChange={changeEmail} type="text" />
-      Password:
-      <input data-cy="password-input" onChange={changePassword} type="text" />
-      <button data-cy="submit-button" onClick={postReq} type="submit" value="Submit">Submit</button>
-      <div>
-        <nav>
-          <Link data-cy="home-link" to="/">Home</Link>
-        </nav>
-      </div>
-    </div>*/
+
   return (
     <Container component="main" maxWidth="xs">
     <CssBaseline />

@@ -1,9 +1,6 @@
 import { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
-
-import { GlobalStoreContext } from '../store'
-
-
+import { Link, useNavigate } from 'react-router-dom';
+import { GlobalStoreContext } from '../store';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import AppBar from '@mui/material/AppBar';
@@ -83,7 +80,7 @@ export default function AppBanner() {
     >
 
         <MenuItem onClick={handleSetScreenYourMapClose} sx={{p:1}}><Link to='/map' style={{color:"black"}}   >View My Maps</Link></MenuItem>
-        <MenuItem onClick={handleMenuClose} sx={{p:1}}><Link to='/forgotUsername/' style={{color:"black"}}>Change Username</Link></MenuItem>
+        <MenuItem onClick={handleMenuClose} sx={{p:1}}><Link to='/changeUsername/' style={{color:"black"}}>Change Username</Link></MenuItem>
         <MenuItem onClick={handleMenuCloseGuest} sx={{p:1}}><Link to='/forgotPassword/' style={{color:"black"}}>Change Password</Link></MenuItem>
         <MenuItem onClick={handleDeleteAccount} sx={{p:1}}><Link to='#'style={{color:"black"}}>Delete Account</Link></MenuItem>
         <MenuItem onClick={handleSignOut} sx={{p:1}}><Link to='/' style={{color:"black"}}>Sign Out</Link></MenuItem>

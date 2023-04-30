@@ -25,6 +25,7 @@ const userInfoSchema = new Schema({
   },
   passwordRecoveryCode: {
     type: String,
+    expires: 1800
   },
   ownedMapCards: {
     type: [Schema.Types.ObjectId],

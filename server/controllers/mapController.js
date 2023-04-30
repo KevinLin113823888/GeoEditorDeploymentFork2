@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 const User = require('../models/userInfoModel');
-const MapCard = require('../models/mapCardModel')
-const MapData = require('../models/mapDataModel')
-const CommunityPreview = require('../models/communityPreviewModel')
+const MapCard = require('../models/mapCardModel');
+const MapData = require('../models/mapDataModel');
+const CommunityPreview = require('../models/communityPreviewModel');
 
 class mapController {
     static async createMap(req, res) {
@@ -149,10 +149,8 @@ class mapController {
     static async mapClassificationById(req, res) {
         try {
             var { id, classifications } = req.body;
-            console.log("I was here", id, classifications)
 
             let listOfClass = classifications.split(", ");
-            console.log("class", listOfClass);
             var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { classification: listOfClass });
             await currentMapCard.save();
 

@@ -4,6 +4,7 @@ import { Route, Routes, Link } from 'react-router-dom';
 import Register from './components/Register';
 import Login from './components/Login';
 import ForgotUsername from './components/ForgotUsername';
+import ChangeUsername from './components/ChangeUsername';
 import Welcome from './components/Welcome';
 import YourMap from './components/YourMap';
 import ForgotPassword from "./components/ForgotPassword";
@@ -32,8 +33,8 @@ function App() {
           <Route path="/login" exact element={<Login/>} />
           <Route path="/forgotUsername" exact element={<ForgotUsername/>} />
           <Route path="/map" exact element={<YourMap/>} />
-          {/*<Route path='/editor' exact element={<MapEditor/>} />*/}
           <Route path="/forgotPassword" exact element={<ForgotPassword/>} />
+          <Route path="/changeUsername" exact element={<ChangeUsername/>} />
           <Route path="/map/:id" exact element={<MapViewerScreen/>} />
           <Route path="/community" exact element={<Community/>} />
         </Routes>
