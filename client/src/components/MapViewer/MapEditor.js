@@ -298,8 +298,8 @@ function MapEditor(props) {
             let res = turf.intersect(feature1,vertexEditFeature)
             let reslap = turf.lineOverlap(feature1,vertexEditFeature)
 
-            console.log(res)
-            console.log(reslap)
+            // console.log(res)
+            // console.log(reslap)
 
             if(reslap.features.length>0){
                 sharedBorderFeature = feature1
