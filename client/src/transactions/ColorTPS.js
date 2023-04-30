@@ -16,6 +16,7 @@ export default class ColorTPS extends jsTPS_Transaction {
         this.type = mappedData.type
             this.oldColor=  mappedData.oldColor
             this.newColor=  mappedData.newColor
+        this.featureIndex = mappedData.featureIndex
 
     }
     refreshState () {
@@ -28,11 +29,26 @@ export default class ColorTPS extends jsTPS_Transaction {
         if(this.type === "bg"){
             this.store.currentMapData.graphicalData.backgroundColor = this.newColor
         }
+        else if(this.type === "subRegionColor" || this.type === "borderColor"){
+            for(let i=0;i<this.featureIndex.length;i++){
+                this.store.currentMapData.features[
+                    this.featureIndex[i]
+                    ][this.type] = this.newColor
+            }
+        }
         this.refreshState()
     }
     undoTransaction() {
         if(this.type === "bg"){
             this.store.currentMapData.graphicalData.backgroundColor = this.oldColor
         }
+        else if(this.type === "subRegionColor" || this.type === "borderColor"){
+            for(let i=0;i<this.featureIndex.length;i++){
+                this.store.currentMapData.features[
+                    this.featureIndex[i]
+                    ][this.type] = this.oldColor
+            }
+        }
+        this.refreshState()
     }
 }

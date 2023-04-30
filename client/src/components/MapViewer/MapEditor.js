@@ -713,25 +713,34 @@ function MapEditor(props) {
 
         setUpdate(update => update + 1);
     }
-    const handleChangeBorderColor = (color) => {
+    const handleBorderOrRegionColorChange = (color,type) => {
+        console.log("got color req of",color,type)
 
         let regionsSelected = regionsSelectedRef.current
-
+        let featureIndex = []
         for (let i = 0; i < regionsSelected.length; i++) {
-            
             for(let j=0;j<geoJsonMapData.features.length;j++){
-                if(geoJsonMapData.features[j].properties.name == regionsSelected[i].properties.name ){
-                    geoJsonMapData.features[j].borderColor = color  ;
-                 
+                if(geoJsonMapData.features[j] == regionsSelected[i]){
+                    featureIndex.push(j)
+                    // geoJsonMapData.features[j].borderColor = color;
                 }
             }
-
         }
+
+        console.log("called with")
+        console.log(featureIndex)
         regionsSelectedRef.current = []
-
-        setUpdate(update => update + 1);
+        let transactionMappedData = {
+            type: type,
+            store: store,
+            setStore: setStore,
+            updateView: store.updateViewer,
+            updateEditor:store.updateEditor,
+            newColor: color,
+            featureIndex: featureIndex,
+        }
+        store.jstps.addTransaction(new ColorTPS(transactionMappedData))
     }
-
 
     const handleCancelMergeSelection = () => {
         let regionsSelected = regionsSelectedRef.current
@@ -775,8 +784,8 @@ function MapEditor(props) {
             <MapAddRegionModal
                 // handleAddRegion={handleAddRegion}
             />
-            <SubregionColorModal handleChangeRegionColor={handleChangeRegionColor} handleCancelRegionSelection={handleCancelRegionSelection}/>
-            <BorderColorModal handleChangeBorderColor={handleChangeBorderColor} handleCancelRegionSelection={handleCancelRegionSelection}/>
+            {/*<SubregionColorModal handleChangeRegionColor={handleChangeRegionColor} handleCancelRegionSelection={handleCancelRegionSelection}/>*/}
+            {/*<BorderColorModal handleChangeBorderColor={handleChangeBorderColor} handleCancelRegionSelection={handleCancelRegionSelection}/>*/}
 
             {geoJsonMapData.features ?
                 <div>
@@ -808,6 +817,8 @@ function MapEditor(props) {
 
                         <GeomanJsWrapper
                             handleBackgroundColorChange = {handleBackgroundColorChange}
+                            handleBorderColor = {(c)=> {handleBorderOrRegionColorChange(c,"borderColor")}}
+                            handleRegionColor = {(c)=> {handleBorderOrRegionColorChange(c,"subRegionColor")}}
                             toggleSelectMode={toggleSelectMode}
                             compress={props.handleCompress}
                             file = {geoJsonMapData}

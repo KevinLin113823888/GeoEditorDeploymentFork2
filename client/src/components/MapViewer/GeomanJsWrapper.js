@@ -251,7 +251,8 @@ function GeomanJsWrapper(props) {
                 {
                     text: 'change selected region color',
                     onClick: () => {
-                        store.changeModal(CurrentModal.SUBREGION_PICK_COLOR_WHEEL)
+                        store.colorwheelHandler = props.handleRegionColor
+                        store.changeModal("MAP_PICK_COLOR_WHEEL")
                     },
                 },
             ]
@@ -260,7 +261,8 @@ function GeomanJsWrapper(props) {
                 {
                     text: 'change border color',
                     onClick: () => {
-                        store.changeModal(CurrentModal.BORDER_PICK_COLOR_WHEEL)
+                        store.colorwheelHandler = props.handleBorderColor
+                        store.changeModal("MAP_PICK_COLOR_WHEEL")
                     },
                 },
             ]
@@ -342,7 +344,6 @@ function GeomanJsWrapper(props) {
                 if(e===undefined)
                     return // cancel
                 store.colorwheelHandler = props.handleBackgroundColorChange
-
                 store.changeModal("MAP_PICK_COLOR_WHEEL")
             }
 
