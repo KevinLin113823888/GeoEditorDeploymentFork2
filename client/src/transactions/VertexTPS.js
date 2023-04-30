@@ -78,9 +78,14 @@ export default class VertexTPS extends jsTPS_Transaction {
         else if(this.type === "delete"){
             this.oldVertex = this.polygon[this.vertexIndex]
             this.polygon.splice(this.vertexIndex,1)
+            if(this.sharedIndexPath!==null && this.sharedBorderFeature!==null){
+                let j = this.sharedIndexPath
+                if(j.length === 3)
+                    this.oldSharedVertex = this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]].splice(j[2],1)[0]
+                else
+                    this.oldSharedVertex = this.sharedBorderFeature.geometry.coordinates[j[0]].splice(j[1],1)[0]
+            }
         }
-        // console.log("after do")
-        // console.log(this.polygon)
         this.refreshState()
     }
 
@@ -107,6 +112,15 @@ export default class VertexTPS extends jsTPS_Transaction {
         }
         else if(this.type === "delete"){
             this.polygon.splice(this.vertexIndex,0,this.oldVertex)
+            if(this.sharedIndexPath!==null && this.sharedBorderFeature!==null){
+                let j = this.sharedIndexPath
+                if(j.length === 3)
+                    this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]].splice(j[2],0,this.oldSharedVertex)
+                else
+                    this.sharedBorderFeature.geometry.coordinates[j[0]].splice(j[1],0,this.oldSharedVertex)
+            }
+
+
         }
         // console.log("after undo")
         // console.log(this.polygon)

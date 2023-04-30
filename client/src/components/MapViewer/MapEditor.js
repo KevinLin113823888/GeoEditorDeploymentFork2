@@ -78,6 +78,7 @@ function MapEditor(props) {
 
         let sharedBorderFeature = null
         let sharedBorderPath =[]
+        let sharedIndexLoc = null
         let betweenPoints = []
         geoFeaturesList.filter(x => x!=vertexEditFeature).forEach(feature1 => {
             let res = turf.lineOverlap(feature1,vertexEditFeature)
@@ -95,7 +96,6 @@ function MapEditor(props) {
         console.log(sharedBorderFeature)
 
         //time to find where is this new index located ig
-        let sharedIndexLoc = []
 
         if(sharedBorderFeature !== null){
 
@@ -113,7 +113,6 @@ function MapEditor(props) {
                     for(let i=0;i<island.length;i++){
                         let vertex = island[i].toString()
                         if(vertex === sharedVer1 || vertex === sharedVer2){
-
                             console.log("found the location of the shared new")
                             console.log(i)
                             i=i+1
@@ -289,6 +288,55 @@ function MapEditor(props) {
     function handleRemoveVertex(e) {
         console.log("vertex removal")
         let vertexEditFeature = e.target.feature
+
+
+        let geoFeaturesList = store.currentMapData.features
+        let sharedBorderFeature = null
+        let sharedIndexPath = null
+
+        geoFeaturesList.filter(x => x!=vertexEditFeature).forEach(feature1 => {
+            let res = turf.lineOverlap(feature1,vertexEditFeature)
+            if(res.features.length>0){
+                sharedBorderFeature = feature1
+            }
+        })
+        if(sharedBorderFeature!== null) {
+            let sharedCoords = sharedBorderFeature.geometry.coordinates
+            if (sharedBorderFeature.geometry.type === "Polygon") {
+                sharedCoords = [sharedCoords]
+            }
+            let i=e.indexPath
+            let vertexSinglePoly = vertexEditFeature.geometry.coordinates[i[0]]
+            let vertexMultiPoly =  vertexEditFeature.geometry.coordinates[i[0]][i[1]]
+            let vertexIndex = i[i.length-1]
+            let polygon = i.length===3?vertexMultiPoly:vertexSinglePoly
+            let orgVertex = polygon[vertexIndex]
+
+            for (let i = 0; i < sharedCoords.length; i++) {
+                let poly = sharedCoords[i]
+                for (let j = 0; j < poly.length; j++) {
+                    let island = poly[j]
+                    for (let k = 0; k < island.length; k++) {
+                        let vertex = island[k].toString()
+                        if(vertex ===orgVertex.toString() ){
+                            if(sharedBorderFeature.geometry.type === "Polygon"){
+                                sharedIndexPath = [j,k]
+                            }
+                            else{
+                                sharedIndexPath= [i,j,k]
+                            }
+                        }
+                        }
+                    }
+                }
+            }
+
+        console.log("final res")
+        console.log(sharedBorderFeature)
+        console.log(sharedIndexPath)
+
+
+
         let transactionMappedData = {
             type: "delete",
             store: store,
@@ -297,6 +345,8 @@ function MapEditor(props) {
             update:store.updateEditor,
             indexPath : e.indexPath,
             editingFeature: vertexEditFeature,
+            sharedBorderFeature: sharedBorderFeature,
+            sharedIndexPath: sharedIndexPath,
         }
         store.jstps.addTransaction(new VertexTPS(transactionMappedData))
         return;
