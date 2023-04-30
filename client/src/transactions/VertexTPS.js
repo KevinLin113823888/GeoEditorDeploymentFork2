@@ -54,7 +54,7 @@ export default class VertexTPS extends jsTPS_Transaction {
 
         if(this.type === "add"){
             this.polygon.splice(this.vertexIndex,0,this.new2DVec)
-            if(this.sharedBorderFeature!==null){
+            if(this.sharedIndexPath!==null && this.sharedBorderFeature!==null){
                 console.log("shared for add")
                 let j = this.sharedIndexPath
                 if(j.length === 3)

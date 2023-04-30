@@ -70,68 +70,68 @@ function MapEditor(props) {
    
     function handleAddVertex(e) {
         console.log("this is our vertex add.")
-        console.log(e)
         let vertexEditFeature = e.target.feature
         let newVertex = [e.latlng.lng,e.latlng.lat]
 
-        let geoFeaturesList = store.currentMapData.features
-
         let sharedBorderFeature = null
-        let sharedBorderPath =[]
-        let sharedIndexLoc = null
-        let betweenPoints = []
-        geoFeaturesList.filter(x => x!=vertexEditFeature).forEach(feature1 => {
+        let sharedIndexPath = null
+        let sharedPoints = new Set()
+        store.currentMapData.features.filter(x => x!=vertexEditFeature).forEach(feature1 => {
             let res = turf.lineOverlap(feature1,vertexEditFeature)
             if(res.features.length>0){
-                console.log("found match")
-                console.log(res)
-                betweenPoints = [res.features[0].geometry.coordinates[0],
-                                     res.features[0].geometry.coordinates[1]]
+                    res.features[0].geometry.coordinates.forEach(x=>{
+                        sharedPoints.add(x.toString())
+                    })
                 sharedBorderFeature = feature1
             }
         })
-
-        console.log("final res")
-        console.log(betweenPoints)
-        console.log(sharedBorderFeature)
-
         //time to find where is this new index located ig
-
         if(sharedBorderFeature !== null){
+            console.log("there contains a match ")
+            console.log(sharedPoints)
 
-            let sharedCoords = sharedBorderFeature.geometry.coordinates
-            if(sharedBorderFeature.geometry.type === "Polygon"){
-                sharedCoords = [sharedCoords]
-            }
-            let sharedVer1 = betweenPoints[0].toString()
-            let sharedVer2 = betweenPoints[1].toString()
+            let i=e.indexPath
+            let vertexSinglePoly = vertexEditFeature.geometry.coordinates[i[0]]
+            let vertexMultiPoly =  vertexEditFeature.geometry.coordinates[i[0]][i[1]]
+            let vertexIndex = i[i.length-1]
+            let polygon = i.length===3?vertexMultiPoly:vertexSinglePoly
+            let orgVertex = polygon[vertexIndex]
 
-            for(let k=0;k<sharedCoords.length;k++){
-                let poly = sharedCoords[k]
-                for(let j=0;j<poly.length;j++){
-                    let island = poly[j]
-                    for(let i=0;i<island.length;i++){
-                        let vertex = island[i].toString()
-                        if(vertex === sharedVer1 || vertex === sharedVer2){
-                            console.log("found the location of the shared new")
-                            console.log(i)
-                            i=i+1
-                            if(sharedBorderFeature.geometry.type === "Polygon"){
-                                sharedIndexLoc = [j,i]
-                            }
-                            else{
-                                sharedIndexLoc = [k,j,i]
-                            }
-                            break;
+
+
+            let curr = polygon[vertexIndex]?.toString()
+            let prev = polygon[vertexIndex-1]?.toString()
+
+            console.log("this is the orgVertex poly bruh for curr")
+            console.log(vertexIndex)
+            console.log(orgVertex)
+            console.log(curr)
+            console.log(prev)
+
+            let multiPolygon = sharedBorderFeature.geometry.coordinates
+            if(sharedBorderFeature.geometry.type === "Polygon")
+                multiPolygon = [multiPolygon]
+            multiPolygon.forEach((singlePoly,i) => {
+                singlePoly.forEach((islandPoly,j) => {
+                    islandPoly.every((vertex,k) => {
+                        let vertexStr = vertex.toString()
+                        let vertexStrNext = islandPoly[k+1]?.toString()
+
+                        if((vertexStr === curr && prev === vertexStrNext) ||
+                            (vertexStr === prev && curr === vertexStrNext) )
+                        {
+                            console.log("found someting idk")
+
+                                    sharedIndexPath=sharedBorderFeature.geometry.type === "Polygon"
+                                    ?[j,k] :[i,j,k+1]
+                                    return false
                         }
-                    }
-                }
-            }
+                        })
+                    })
+                })
         }
-
         console.log("this is the shared index.")
-        console.log(sharedIndexLoc)
-
+        console.log(sharedIndexPath)
         let transactionMappedData = {
             type: "add",
             store: store,
@@ -142,133 +142,11 @@ function MapEditor(props) {
             editingFeature: vertexEditFeature,
             new2DVec:newVertex,
             sharedBorderFeature: sharedBorderFeature,
-            betweenPoints: betweenPoints,
-            sharedIndexPath:sharedIndexLoc,
+            sharedIndexPath:sharedIndexPath,
         }
         store.jstps.addTransaction(new VertexTPS(transactionMappedData))
         return;
-    //
-    //     let indexPath = e.indexPath;
-    //
-    //     let ind0 = indexPath[0]
-    //     let ind1 = indexPath[1]
-    //
-    //     let featureName = e.target.feature.properties.name
-    //     let ind2 = -1;
-    //     if (indexPath.length > 2) {
-    //         ind2 = indexPath[2]
-    //     }
-    //     let addedLatlng = []
-    //     let addedLatlngObj = e.latlng
-    //     addedLatlng.push(e.latlng.lng)
-    //     addedLatlng.push(e.latlng.lat)
-    //     let coord1NextToLatlng = []
-    //     let coord2NextToLatlng = []
-    //     geoJsonMapData.features.forEach((feature, ind) => {
-    //         if (feature.properties.name == featureName) {
-    //             if (feature.geometry.type === "Polygon") {
-    //                 coord1NextToLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1+1]
-    //                 coord2NextToLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1-1]
-    //                 geoJsonMapData.features[ind].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
-    //             } else if (feature.geometry.type === "MultiPolygon") {
-    //                 coord1NextToLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1][ind2+1]
-    //                 coord2NextToLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1][ind2-1]
-    //                 geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
-    //             }
-    //         }
-    //     })
-    //
-    //     let featureInd2=-1
-    //     let prevCoord=[]
-    //
-    //     try {
-    //     geoJsonMapData.features.forEach(feature => {
-    //         let foundOneCoord=false
-    //         featureInd2++
-    //         // Check if the feature is a polygon or a multipolygon
-    //         if(feature.properties.name!==featureName){
-    //         if (feature.geometry.type === 'Polygon') {
-    //             // Loop through each coordinate in the polygon
-    //             ind0 = -1
-    //             ind1 = -1
-    //             ind2 = -1
-    //             feature.geometry.coordinates.forEach(coordinates => {
-    //                 ind0++;
-    //                 ind1 = -1;
-    //                 coordinates.forEach(coordinate => {
-    //                     ind1++;
-    //
-    //                     if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1] &&foundOneCoord==true){
-    //
-    //                         geoJsonMapData.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
-    //
-    //                         throw new Error("Break the loop.")
-    //                     }else if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1]){
-    //                         foundOneCoord=true
-    //
-    //
-    //                     }
-    //                     if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1] &&foundOneCoord==true){
-    //
-    //                         geoJsonMapData.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
-    //
-    //                         throw new Error("Break the loop.")
-    //
-    //                     }else if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1]){
-    //                         foundOneCoord=true
-    //
-    //                     }
-    //                     prevCoord[0]= coordinate[0]
-    //                     prevCoord[1]= coordinate[1]
-    //
-    //
-    //
-    //                 });
-    //             });
-    //         } else if (feature.geometry.type === 'MultiPolygon') {
-    //             // Loop through each polygon in the multipolygon
-    //             ind0 = -1
-    //             ind1 = -1
-    //             ind2 = -1
-    //             feature.geometry.coordinates.forEach(polygon => {
-    //                 ind0++;
-    //                 ind1 = -1;
-    //                 ind2 = -1;
-    //                 // Loop through each coordinate in the polygon
-    //
-    //                 polygon.forEach(coordinates => {
-    //                     ind1++;
-    //                     ind2 = -1;
-    //
-    //                     coordinates.forEach(coordinate => {
-    //                         ind2++;
-    //
-    //                         if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1] &&foundOneCoord==true){
-    //                             geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
-    //                             throw new Error("Break the loop.")
-    //                         }else if(coordinate[0]==coord2NextToLatlng[0] &&coordinate[1]==coord2NextToLatlng[1]){
-    //                             foundOneCoord=true
-    //
-    //                         }
-    //                         if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1] &&foundOneCoord==true){
-    //                             geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
-    //                             throw new Error("Break the loop.")
-    //                         }else if(coordinate[0]==coord1NextToLatlng[0] &&coordinate[1]==coord1NextToLatlng[1]){
-    //                             foundOneCoord=true
-    //
-    //                         }
-    //
-    //                     });
-    //
-    //                 });
-    //             });
-    //         }
-    //     }
-    //     });
-    // }catch(error){
-    //
-    // }
-    //     setUpdate(update => update + 1);
+
     }
 
     function handleRemoveRegion(e) {
