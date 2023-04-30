@@ -38,6 +38,9 @@ export default class VertexTPS extends jsTPS_Transaction {
         let vertexMultiPoly = this.editingFeature.geometry.coordinates[i[0]][i[1]]
         this.vertexIndex = i[i.length-1]
         this.polygon = i.length===3?vertexMultiPoly:vertexSinglePoly
+
+        this.ind = mappedData.ind
+
     }
     refreshState () {
 
@@ -55,12 +58,15 @@ export default class VertexTPS extends jsTPS_Transaction {
         if(this.type === "add"){
             this.polygon.splice(this.vertexIndex,0,this.new2DVec)
             if(this.sharedIndexPath!==null && this.sharedBorderFeature!==null){
-                console.log("shared for add")
                 let j = this.sharedIndexPath
                 if(j.length === 3)
+                {
                     this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]].splice(j[2],0,this.new2DVec)
-                else
+                }
+                else{
                     this.sharedBorderFeature.geometry.coordinates[j[0]].splice(j[1],0,this.new2DVec)
+
+                }
             }
         }
         else if(this.type === "drag"){
