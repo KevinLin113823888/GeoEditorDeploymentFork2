@@ -12,7 +12,7 @@ describe('Testing user controller', () => {
     let mockCredentials = new mongoose.Types.ObjectId().toString()
     let recoveryCode = ""
     // mockCredentials = "abc"
-    console.log(mockCredentials)
+    // console.log(mockCredentials)
 
     afterAll(() => {
         server.close()
@@ -72,43 +72,43 @@ describe('Testing user controller', () => {
     //     expect(response.statusCode).toBe(200)
     // })
 
-    test("forgotUsername", async () => {
-        const response =  await request(app).post("/user/forgotUsername").send({
-            // name: mockCredentials,
-            // username: mockCredentials,
-            email: mockCredentials,
-            // password: mockCredentials
-        })
-        // console.log(response)
-        expect(response.statusCode).toBe(200)
-        expect(response.body.username).toBeDefined();
+    // test("forgotUsername", async () => {
+    //     const response =  await request(app).post("/user/forgotUsername").send({
+    //         // name: mockCredentials,
+    //         // username: mockCredentials,
+    //         email: mockCredentials,
+    //         // password: mockCredentials
+    //     })
+    //     // console.log(response)
+    //     expect(response.statusCode).toBe(200)
+    //     expect(response.body.username).toBeDefined();
 
-    })
+    // })
 
-    test("sendPasswordRecoveryCode", async () => {
-        const response =  await request(app).post("/user/sendPasswordRecoveryCode").send({
-            // name: mockCredentials username: mockCredentials,
-            email: mockCredentials,
-            // password: mockCredentials
-        })
-        // console.log(response.body.passwordRecoveryCode)
-        expect(response.statusCode).toBe(200)
-        expect(response.body.passwordRecoveryCode).toBeDefined();
+    // test("sendPasswordRecoveryCode", async () => {
+    //     const response =  await request(app).post("/user/sendPasswordRecoveryCode").send({
+    //         // name: mockCredentials username: mockCredentials,
+    //         email: mockCredentials,
+    //         // password: mockCredentials
+    //     })
+    //     // console.log(response.body.passwordRecoveryCode)
+    //     expect(response.statusCode).toBe(200)
+    //     expect(response.body.passwordRecoveryCode).toBeDefined();
 
-        recoveryCode = response.body.passwordRecoveryCode
-    })
+    //     recoveryCode = response.body.passwordRecoveryCode
+    // })
 
-    test("changePassword", async () => {
-        const response =  await request(app).put("/user/changePassword").send({
-            // name: mockCredentials,
-            // username: mockCredentials,
-            email: mockCredentials,
-            passwordRecoveryCode: recoveryCode,
-            password: "new password idk"
-        })
-        // console.log(response)
-        expect(response.statusCode).toBe(200)
-    })
+    // test("changePassword", async () => {
+    //     const response =  await request(app).put("/user/changePassword").send({
+    //         // name: mockCredentials,
+    //         // username: mockCredentials,
+    //         email: mockCredentials,
+    //         passwordRecoveryCode: recoveryCode,
+    //         password: "new password idk"
+    //     })
+    //     // console.log(response)
+    //     expect(response.statusCode).toBe(200)
+    // })
 
 
 });

@@ -12,16 +12,10 @@ describe('Testing user controller', () => {
 
     let mockCredentials = new mongoose.Types.ObjectId().toString()
     let recoveryCode = ""
-    // mockCredentials = "abc"
-    console.log(mockCredentials)
+    // console.log(mockCredentials)
 
     afterAll(() => {
         server.close()
-    })
-
-    //we register and log in first.
-    test("register", async () => {
-
     })
 
     const agent = request.agent(app);
@@ -72,7 +66,7 @@ describe('Testing user controller', () => {
             geoJSONFile: geo
         })
         const body = response1.body
-        console.log(body)
+        // console.log(body)
         expect(response1.statusCode).toBe(200)
     })
 
@@ -82,7 +76,7 @@ describe('Testing user controller', () => {
             map: geo
         })
         const body = response1.body
-        console.log(body)
+        // console.log(body)
         expect(response1.statusCode).toBe(200)
     })
 
@@ -91,21 +85,20 @@ describe('Testing user controller', () => {
             id:createdMapId,
         })
         const body = response1.body
-        console.log(body)
+        // console.log(body)
         expect(response1.statusCode).toBe(200)
     })
 
-    //
-    // test('get community by id', async () => {
-    //     const response1 = await agent.post("/community/getCommunityPreviewById").send({
-    //         id:createdMapId,
-    //     })
-    //     // const body = response1.body
-    //     // console.log(body)
-    //     console.log(response1.body)
-    //     expect(response1.body).toBeDefined();
-    //     expect(response1.statusCode).toBe(200)
-    // })
+    let communityPreviewId = "";
+    test('get community by id', async () => {
+        const response1 = await agent.post("/community/getCommunityPreviewById").send({
+            id:createdMapId,
+        })
+        // console.log(response1.body)
+        communityPreviewId = response1.body.id;
+        expect(response1.body).toBeDefined();
+        expect(response1.statusCode).toBe(200)
+    })
 
     // test('fork community by id', async () => {
     //     const response1 = await agent.post("/community/forkCommunityMap").send({
@@ -138,4 +131,31 @@ describe('Testing user controller', () => {
     //     expect(response1.statusCode).toBe(200)
     // })
 
+    test('leave comment', async () => {
+        const response1 = await agent.post("/community/addComment").send({
+            id:communityPreviewId,
+            comment:"testing123"
+        })
+        // console.log(response1.body)
+        expect(response1.body).toBeDefined();
+        expect(response1.statusCode).toBe(200)
+    })
+
+    test('search map', async () => {
+        const response1 = await agent.post("/community/searchMap").send({
+            searchName:"q"
+        })
+        // console.log(response1.body)
+        expect(response1.body).toBeDefined();
+        expect(response1.statusCode).toBe(200)
+    })
+
+    test('sort map', async () => {
+        const response1 = await agent.post("/community/sortMap").send({
+            type:"name"
+        })
+        // console.log(response1.body)
+        expect(response1.body).toBeDefined();
+        expect(response1.statusCode).toBe(200)
+    })
 })

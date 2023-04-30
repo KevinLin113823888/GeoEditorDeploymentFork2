@@ -13,15 +13,10 @@ describe('Testing user controller', () => {
     let mockCredentials = new mongoose.Types.ObjectId().toString()
     let recoveryCode = ""
     // mockCredentials = "abc"
-    console.log(mockCredentials)
+    // console.log(mockCredentials)
 
     afterAll(() => {
         server.close()
-    })
-
-    //we register and log in first.
-    test("register", async () => {
-
     })
 
     const agent = request.agent(app);
@@ -62,7 +57,7 @@ describe('Testing user controller', () => {
             id:createdMapId
         })
         const body = response1.body
-        console.log(body)
+        // console.log(body)
         expect(response1.statusCode).toBe(200)
         expect(body.title).toBe(sampleTitle);
     })
@@ -73,7 +68,7 @@ describe('Testing user controller', () => {
             newName: sampleTitle+"Duplicated"
         })
         const body = response1.body
-        console.log(body)
+        // console.log(body)
         expect(response1.statusCode).toBe(200)
     })
 
@@ -83,7 +78,7 @@ describe('Testing user controller', () => {
             newName: sampleTitle+"Changed"
         })
         const body = response1.body
-        console.log(body)
+        // console.log(body)
         expect(body.name).toBe(sampleTitle+"Changed")
         expect(response1.statusCode).toBe(200)
     })
@@ -94,7 +89,7 @@ describe('Testing user controller', () => {
             newMapName: sampleTitle+"Duplicated"
         })
         const body = response1.body
-        console.log(body)
+        // console.log(body)
         expect(response1.statusCode).toBe(200)
     })
 
@@ -104,9 +99,9 @@ describe('Testing user controller', () => {
             classifications: "Mockclassification"
         })
         const body = response1.body
-        console.log(body)
-        console.log("classification message")
-        console.log(body.message)
+        // console.log(body)
+        // console.log("classification message")
+        // console.log(body.message)
         // expect(response1.statusCode).toBe(200)
     })
     test('import geo by id', async  () => {
@@ -115,7 +110,7 @@ describe('Testing user controller', () => {
             geoJSONFile: geo
         })
         const body = response1.body
-        console.log(body)
+        // console.log(body)
         expect(response1.statusCode).toBe(200)
     })
 
@@ -125,11 +120,9 @@ describe('Testing user controller', () => {
             map: geo
         })
         const body = response1.body
-        console.log(body)
+        // console.log(body)
         expect(response1.statusCode).toBe(200)
     })
-
-
 
     test('set map image by id', async  () => {
         const response1 =  await agent.post("/map/setMapImageById").send({
@@ -138,33 +131,37 @@ describe('Testing user controller', () => {
             type: "a",
         })
         const body = response1.body
-        console.log(body)
+        // console.log(body)
         expect(response1.statusCode).toBe(200)
     })
 
-    test('get map image by id', async  () => {
+    test('get map image by id', async () => {
         const response1 =  await agent.post("/map/getMapImageById").send({
             id:createdMapId,
         })
         const body = response1.body
-        console.log(body)
+        // console.log(body)
         expect(body.image).toBe("a")
         expect(response1.statusCode).toBe(200)
     })
 
+    test('search map', async () => {
+        const response1 = await agent.post("/map/searchMap").send({
+            searchName:"q"
+        })
+        // console.log(response1.body)
+        expect(response1.body).toBeDefined();
+        expect(response1.statusCode).toBe(200)
+    })
 
-
-
-    //
-    // test('delete map', async  () => {
-    //     const response1 =  await agent.post("/map/deleteMapById").send({
-    //         id:createdMapId
-    //     })
-    //     const body = response1.body
-    //     console.log(body)
-    //     expect(response1.statusCode).toBe(200)
-    // })
-
+    test('sort map', async () => {
+        const response1 = await agent.post("/map/sortMap").send({
+            type:"name"
+        })
+        // console.log(response1.body)
+        expect(response1.body).toBeDefined();
+        expect(response1.statusCode).toBe(200)
+    })
 });
 
 
