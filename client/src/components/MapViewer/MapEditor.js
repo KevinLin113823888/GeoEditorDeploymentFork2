@@ -295,11 +295,21 @@ function MapEditor(props) {
         let sharedIndexPath = null
 
         geoFeaturesList.filter(x => x!=vertexEditFeature).forEach(feature1 => {
-            let res = turf.lineOverlap(feature1,vertexEditFeature)
-            if(res.features.length>0){
+            let res = turf.intersect(feature1,vertexEditFeature)
+            let reslap = turf.lineOverlap(feature1,vertexEditFeature)
+
+            console.log(res)
+            console.log(reslap)
+
+            if(reslap.features.length>0){
+                sharedBorderFeature = feature1
+            }
+            if(res?.geometry?.coordinates?.length>0){
                 sharedBorderFeature = feature1
             }
         })
+        console.log("we we have any shared?")
+        console.log(sharedBorderFeature)
         if(sharedBorderFeature!== null) {
             let sharedCoords = sharedBorderFeature.geometry.coordinates
             if (sharedBorderFeature.geometry.type === "Polygon") {
