@@ -294,20 +294,32 @@ function MapEditor(props) {
         let sharedBorderFeature = null
         let sharedIndexPath = null
 
-        geoFeaturesList.filter(x => x!=vertexEditFeature).forEach(feature1 => {
-            let res = turf.intersect(feature1,vertexEditFeature)
-            let reslap = turf.lineOverlap(feature1,vertexEditFeature)
 
-            // console.log(res)
-            // console.log(reslap)
+        let i=e.indexPath
+        let vertexSinglePoly = vertexEditFeature.geometry.coordinates[i[0]]
+        let vertexMultiPoly =  vertexEditFeature.geometry.coordinates[i[0]][i[1]]
+        let vertexIndex = i[i.length-1]
+        let polygon = i.length===3?vertexMultiPoly:vertexSinglePoly
+        let orgVertex = polygon[vertexIndex]
+
+        console.log("this is the vert that we want to remo")
+        console.log(orgVertex.toString())
+        geoFeaturesList.filter(x => x!=vertexEditFeature).forEach(feature1 => {
+            // let res = turf.intersect(feature1,vertexEditFeature)
+            let reslap = turf.lineOverlap(feature1,vertexEditFeature,)
+
 
             if(reslap.features.length>0){
-                sharedBorderFeature = feature1
+                let resCoords = reslap.features
+                let str = (JSON.stringify(resCoords))
+                if(~str.indexOf(orgVertex))
+                {
+                    console.log("this should be it")
+                    sharedBorderFeature = feature1
+                }
             }
-            if(res?.geometry?.coordinates?.length>0){
-                sharedBorderFeature = feature1
-            }
-        })
+            })
+
         console.log("we we have any shared?")
         console.log(sharedBorderFeature)
         if(sharedBorderFeature!== null) {
@@ -315,12 +327,7 @@ function MapEditor(props) {
             if (sharedBorderFeature.geometry.type === "Polygon") {
                 sharedCoords = [sharedCoords]
             }
-            let i=e.indexPath
-            let vertexSinglePoly = vertexEditFeature.geometry.coordinates[i[0]]
-            let vertexMultiPoly =  vertexEditFeature.geometry.coordinates[i[0]][i[1]]
-            let vertexIndex = i[i.length-1]
-            let polygon = i.length===3?vertexMultiPoly:vertexSinglePoly
-            let orgVertex = polygon[vertexIndex]
+
 
             for (let i = 0; i < sharedCoords.length; i++) {
                 let poly = sharedCoords[i]
@@ -328,7 +335,7 @@ function MapEditor(props) {
                     let island = poly[j]
                     for (let k = 0; k < island.length; k++) {
                         let vertex = island[k].toString()
-                        if(vertex ===orgVertex.toString() ){
+                        if(vertex === orgVertex.toString() ){
                             if(sharedBorderFeature.geometry.type === "Polygon"){
                                 sharedIndexPath = [j,k]
                             }
