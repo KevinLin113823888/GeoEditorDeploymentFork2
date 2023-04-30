@@ -74,6 +74,65 @@ function MapEditor(props) {
         let vertexEditFeature = e.target.feature
         let newVertex = [e.latlng.lng,e.latlng.lat]
 
+        let geoFeaturesList = store.currentMapData.features
+
+        let sharedBorderFeature = null
+        let sharedBorderPath =[]
+        let betweenPoints = []
+        geoFeaturesList.filter(x => x!=vertexEditFeature).forEach(feature1 => {
+            let res = turf.lineOverlap(feature1,vertexEditFeature)
+            if(res.features.length>0){
+                console.log("found match")
+                console.log(res)
+                betweenPoints = [res.features[0].geometry.coordinates[0],
+                                     res.features[0].geometry.coordinates[1]]
+                sharedBorderFeature = feature1
+            }
+        })
+
+        console.log("final res")
+        console.log(betweenPoints)
+        console.log(sharedBorderFeature)
+
+        //time to find where is this new index located ig
+        let sharedIndexLoc = []
+
+        if(sharedBorderFeature !== null){
+
+            let sharedCoords = sharedBorderFeature.geometry.coordinates
+            if(sharedBorderFeature.geometry.type === "Polygon"){
+                sharedCoords = [sharedCoords]
+            }
+            let sharedVer1 = betweenPoints[0].toString()
+            let sharedVer2 = betweenPoints[1].toString()
+
+            for(let k=0;k<sharedCoords.length;k++){
+                let poly = sharedCoords[k]
+                for(let j=0;j<poly.length;j++){
+                    let island = poly[j]
+                    for(let i=0;i<island.length;i++){
+                        let vertex = island[i].toString()
+                        if(vertex === sharedVer1 || vertex === sharedVer2){
+
+                            console.log("found the location of the shared new")
+                            console.log(i)
+                            i=i+1
+                            if(sharedBorderFeature.geometry.type === "Polygon"){
+                                sharedIndexLoc = [j,i]
+                            }
+                            else{
+                                sharedIndexLoc = [k,j,i]
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        console.log("this is the shared index.")
+        console.log(sharedIndexLoc)
+
         let transactionMappedData = {
             type: "add",
             store: store,
@@ -83,6 +142,9 @@ function MapEditor(props) {
             indexPath : e.indexPath,
             editingFeature: vertexEditFeature,
             new2DVec:newVertex,
+            sharedBorderFeature: sharedBorderFeature,
+            betweenPoints: betweenPoints,
+            sharedIndexPath:sharedIndexLoc,
         }
         store.jstps.addTransaction(new VertexTPS(transactionMappedData))
         return;

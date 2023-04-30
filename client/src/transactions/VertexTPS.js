@@ -31,7 +31,7 @@ export default class VertexTPS extends jsTPS_Transaction {
 
         this.sharedIndexPath=  mappedData.sharedIndexPath
         this.sharedBorderFeature = mappedData.sharedBorderFeature
-
+        this.sharedIndexLoc = mappedData.sharedIndex
 
         let i=this.indexPath
         let vertexSinglePoly = this.editingFeature.geometry.coordinates[i[0]]
@@ -54,13 +54,17 @@ export default class VertexTPS extends jsTPS_Transaction {
 
         if(this.type === "add"){
             this.polygon.splice(this.vertexIndex,0,this.new2DVec)
+            if(this.sharedBorderFeature!==null){
+                console.log("shared for add")
+                let j = this.sharedIndexPath
+                if(j.length === 3)
+                    this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]].splice(j[2],0,this.new2DVec)
+                else
+                    this.sharedBorderFeature.geometry.coordinates[j[0]].splice(j[1],0,this.new2DVec)
+            }
         }
         else if(this.type === "drag"){
             if(this.sharedBorderFeature!== null){
-                console.log("dragged called for shared")
-                console.log(this.sharedIndexPath)
-                console.log(this.sharedBorderFeature)
-                console.log(this.new2DVec)
                 let j = this.sharedIndexPath
                 if(this.sharedIndexPath.length === 3)
                     this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]][j[2]] = this.new2DVec
@@ -83,6 +87,13 @@ export default class VertexTPS extends jsTPS_Transaction {
     undoTransaction() {
         if(this.type === "add"){
             this.polygon.splice(this.vertexIndex,1)
+            if(this.sharedBorderFeature!==null){
+                let j = this.sharedIndexPath
+                if(j.length === 3)
+                    this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]].splice(j[2],1)
+                else
+                    this.sharedBorderFeature.geometry.coordinates[j[0]].splice(j[1],1)
+            }
         }
         else if(this.type === "drag"){
             if(this.sharedBorderFeature!== null){
