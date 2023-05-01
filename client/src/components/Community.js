@@ -196,7 +196,7 @@ function Community() {
     function displayMaps(){
         if(mapCards.length>0){
             return mapCards.map((map) => (
-                <Grid item xs={3.7} md={1.4} key = {map._id} >
+                <Grid item xs={3.7} md={1.9} key = {map._id} >
                 <MapCard
                     id = {map._id}
                     key = {map._id}
@@ -268,8 +268,8 @@ function Community() {
                            
                         </Grid>
                         <Grid item xs={2} md={2}>
-                            <Typography id="newmap-modal-title" variant="h5" component="h2" sx={{ marginLeft: "5%",fontWeight: 'bold' }} style={{color: "#8c8a8a"}}>
-                                Community
+                            <Typography id="newmap-modal-title" variant="h5" component="h2" sx={{ marginLeft: "10%",fontWeight: 'bold' }} style={{color: "#000000"}}>
+                                Community Maps
                             </Typography>
                         </Grid>
                         <Grid item xs={10} md={10}>

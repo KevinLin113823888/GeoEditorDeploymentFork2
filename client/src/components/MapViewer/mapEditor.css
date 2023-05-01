@@ -68,3 +68,9 @@
     .material {
       vertical-align: -5rem; /*Change this to adjust the icon*/
     }
+    .leafletmapdiv{
+      border: 1px solid #000;
+    }
+    .material-icons {
+      vertical-align: -.4rem; /*Change this to adjust the icon*/
+    }

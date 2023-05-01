@@ -920,6 +920,20 @@ function MapEditor(props) {
         }
         store.jstps.addTransaction(new ColorTPS(transactionMappedData))
     }
+    let unselect = () =>{
+        if (currentRegion.current !== "") {
+            let color = "#3388ff"
+            
+            if(currentRegion.current.feature.subRegionColor){
+                console.log(currentRegion.current)
+                color = currentRegion.current.feature.subRegionColor
+            }
+            currentRegion.current.setStyle({
+                fillColor: color,
+                fillOpacity: 0.4,
+            });
+        }
+    }
 
     return (
         <div>
@@ -935,7 +949,7 @@ function MapEditor(props) {
             {/*<BorderColorModal handleChangeBorderColor={handleChangeBorderColor} handleCancelRegionSelection={handleCancelRegionSelection}/>*/}
 
             {geoJsonMapData.features ?
-                <div>
+                <div class="leafletmapdiv">
                     
                     
                     <MapContainer id="mapitem"
@@ -971,6 +985,7 @@ function MapEditor(props) {
                             file = {geoJsonMapData}
                             // updateEditor = {handleUpdate}
                             updateViewer = {props.updateViewer}
+                            unselect = {unselect}
                         />
             </MapContainer>
                 </div>

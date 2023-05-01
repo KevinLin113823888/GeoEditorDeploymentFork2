@@ -39,6 +39,7 @@ function MapViewerScreen(props) {
     const { store } = useContext(GlobalStoreContext);
     const [GeoJson, setGeoJson] = [store.currentMapData, store.setCurrentMapData]
     const { id } = useParams();
+     const [columns1,setColumns1] = useState(9.5);
 
     const names = [];
     let count = 0;
@@ -51,6 +52,13 @@ function MapViewerScreen(props) {
         store.updateViewer = handleUpdate
     },[]);
 
+    useEffect(() => {
+        if(store.currentFeatureIndex === 0){
+            setColumns1(11.8)
+        }else{
+            setColumns1(9.5)
+        }
+    },[store.currentFeatureIndex]);
     useEffect(() => {
         if (state) {
             setMapChange(state.title);
@@ -362,7 +370,7 @@ function MapViewerScreen(props) {
                 style={{
                     //backgroundColor: "#3c7dc3",
                 }}
-                sx={{ bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a' }, fontFamily: "Helvetica",
+                sx={{ border:"1px solid black",bgcolor: 'white', color: 'black', fontWeight: 'bold', '&:hover': { bgcolor: 'grey', color:"black" }, fontFamily: "Helvetica",
                 fontSize: { xs: '.7rem', md: '1rem' }, marginLeft: { xs: '1.3rem', md: '10px' }, textAlign: 'right', marginBottom:"10px" }}
                 variant="contained"
                 onClick={Function}
@@ -389,6 +397,7 @@ function MapViewerScreen(props) {
             <MapAddRegionModal />
 
             <Grid container columnSpacing={2} rowSpacing={0} >
+                
                 <Grid item xs={12} md={6}>
                     <Box
                         sx={{
@@ -407,16 +416,17 @@ function MapViewerScreen(props) {
                     {Buttons(handleCompress, "Compress")} {Buttons(handleImport, "Import")} {Buttons(handleExport, "Export")}
                     {Buttons(handlePublish, "Publish")} {Buttons(handleMapClassification, "Classification")} {Buttons(handleSave, "Save")}
                 </Grid>
-                <Grid item xs={12} md={9.5}>
+                <Grid item xs={12} md={columns1}>
                         <Box
                             sx={{
-                                paddingLeft: "1.5%"
+                                paddingLeft: "1.5%",
+                                paddingBottom:"1.5%"
                             }}>
                             <MapEditor changeName={changeRegionName} key={keyid} 
                             handleCompress={handleCompress} updateViewer={handleUpdate}
                                        mapCardId={id}/>
                         </Box>
-                    <Grid item xs={12} md={12}>
+                    <Grid item xs={12} md={11}>
                         <MapLegendFooter />
                     </Grid>
                 </Grid>

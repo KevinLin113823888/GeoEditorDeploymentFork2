@@ -30,21 +30,27 @@ function ForgotUsername() {
   return (
     <div className="ForgotUsername">
       <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" paddingTop= "10%">
-        <Typography component="h3" variant="h5">
-          Retrive your username by entering your email below
+        <Typography component="h3" variant="h4" style={{fontWeight: 'bold'}}>
+          Retreive your Username
         </Typography>
-        <Box paddingTop= '3%'>
+        <Typography paddingTop='1%' component="h3" variant="h6" >
+          Enter your email address and 
+        </Typography>
+        <Typography  component="h3" variant="h6" >
+          we will mail you your username
+        </Typography>
+        <Box paddingTop= '2%'>
           <TextField
           id="email-field"
-          label="email"
-          placeholder="email"
+          label="Email address"
+          placeholder="Email address"
           onChange={changeEmail}
           />
         </Box>
         <Box
-          paddingTop= '3%'
+          paddingTop= '1%'
         >
-        <Button variant="contained" color="primary" sx={{ marginTop: '2%' }} onClick={postReq}>
+        <Button variant="contained" color="primary" sx={{ marginTop: '2%', bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a',color:"white" } }} onClick={postReq}>
             Send Username to Email
         </Button>
         </Box>

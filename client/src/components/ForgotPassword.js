@@ -61,19 +61,22 @@ function ForgotPassword() {
     return (
         <div className="ForgotPassword">
             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" paddingTop= "1%">
-                <Typography component="h3" variant="h5">
-                  Reset your password by entering your email below
+                <Typography component="h3" variant="h4" style={{fontWeight: 'bold'}}>
+                  Reset your password
                 </Typography>
-                <Box paddingTop= '3%'>
+                <Typography paddingTop='1%' component="h3" variant="h6" >
+                    Enter your email address and we will send you a recovery code. 
+                </Typography>
+                <Box paddingTop= '2%'>
                     <TextField
                     id="email-field"
-                    label="email"
-                    placeholder="email"
+                    label="Email address"
+                    placeholder="Email address"
                     onChange={changeEmail}
                     />
                 </Box>
-                <Box paddingTop= '3%'>
-                    <Button variant="contained" color="primary" sx={{ marginTop: '2%' }} onClick={postReqSendPasswordRecoveryCode}>
+                <Box paddingTop= '1%'>
+                    <Button variant="contained" color="primary" sx={{ marginTop: '2%', bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a',color:"white" }  }} onClick={postReqSendPasswordRecoveryCode}>
                         Send Password Recovery Code
                     </Button>
                 </Box>
@@ -85,12 +88,12 @@ function ForgotPassword() {
                         alignItems="center"    
                         paddingTop= "1%"
                     >
-                        <Typography component="h3" variant="h5">
-                            Enter recovery code and new password
+                        <Typography component="h3" variant="h4" style={{fontWeight: 'bold'}}>
+                            Enter recovery code and New password
                         </Typography>
                         
-                        <Typography component="h3" variant="h5">
-                            Password will only change after entering valid recovery code
+                        <Typography paddingTop='1%' component="h3" variant="h6" >
+                            Password will only change after entering valid recovery code.
                         </Typography>
                     </Box>
                 </Box>
@@ -100,8 +103,8 @@ function ForgotPassword() {
                     <TextField
                         required
                         fullWidth
-                        name="recoveryCode"
-                        label="recoveryCode"
+                        name="Recovery code"
+                        label="Recovery code"
                         id="recoveryCode"
                         autoComplete="new-recoveryCode"
                         autoFocus
@@ -124,7 +127,7 @@ function ForgotPassword() {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 2, mb: 1 }}
+                    sx={{ mt: 2, mb: 1 , bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a',color:"white" }}}
                 >
                     Confirm
                 </Button>

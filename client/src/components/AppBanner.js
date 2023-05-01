@@ -25,12 +25,15 @@ export default function AppBanner() {
         setAnchorEl(event.currentTarget);
     };
     const handleSetScreenCommunity = () => {
+        
         store.changeScreen("community")
     };
     const handleSetScreenYourMap = () => {
+        navigate("/map");
         store.changeScreen("yourmap")
     };
     const handleSetScreenYourMapClose = () => {
+        navigate("/map");
         setAnchorEl(null);
         store.changeScreen("yourmap")
     };
@@ -42,9 +45,15 @@ export default function AppBanner() {
         setAnchorEl(null);
         store.changeModal("DELETE_ACCOUNT")
     };
-    const handleMenuCloseGuest = () => {
+    const handleMenuCloseForgotPassword = () => {
+        setAnchorEl(null);
+        navigate("/forgotPassword/");
+    }
+    const handleMenuCloseChangeUserName=()=>{
+        navigate("/changeUsername/");
         setAnchorEl(null);
     }
+    
 
     const handleLogout = () => {
         handleMenuClose();
@@ -62,6 +71,7 @@ export default function AppBanner() {
     }
 
     const menuId = 'primary-search-account-menu';
+    const menuStyle= {marginBottom:"10px",border:"1px solid black",borderRadius:"10px",bgcolor:"#F0EFEF",'&:hover': { bgcolor: 'grey',color:"white" }};
     const introMenu = <Menu
         anchorEl={anchorEl}
         anchorOrigin={{
@@ -76,14 +86,24 @@ export default function AppBanner() {
         }}
         open={isMenuOpen}
         onClose={handleMenuClose}
-        sx={{p:2}}
+        PaperProps={{
+            sx: {
+              paddingLeft:2,
+              paddingRight:2,
+              paddingTop:1, // adds padding of 2 to the Paper component
+              bgcolor:"#f0f8ff",
+              border:"1px solid black",
+              borderRadius:"10px"
+            },
+          }}
+        
     >
 
-        <MenuItem onClick={handleSetScreenYourMapClose} sx={{p:1}}><Link to='/map' style={{color:"black"}}   >View My Maps</Link></MenuItem>
-        <MenuItem onClick={handleMenuClose} sx={{p:1}}><Link to='/changeUsername/' style={{color:"black"}}>Change Username</Link></MenuItem>
-        <MenuItem onClick={handleMenuCloseGuest} sx={{p:1}}><Link to='/forgotPassword/' style={{color:"black"}}>Change Password</Link></MenuItem>
-        <MenuItem onClick={handleDeleteAccount} sx={{p:1}}><Link to='#'style={{color:"black"}}>Delete Account</Link></MenuItem>
-        <MenuItem onClick={handleSignOut} sx={{p:1}}><Link to='/' style={{color:"black"}}>Sign Out</Link></MenuItem>
+        <MenuItem onClick={handleSetScreenYourMapClose} sx={menuStyle}><Link to='/map' style={{color:"black",padding:"10px",textDecoration: 'none'}}    >View My Maps</Link></MenuItem>
+        <MenuItem onClick={handleMenuCloseChangeUserName} sx={menuStyle}><Link to='/changeUsername/' style={{color:"black",padding:"10px",textDecoration: 'none'}} >Change Username</Link></MenuItem>
+        <MenuItem onClick={handleMenuCloseForgotPassword} sx={menuStyle}><Link to='/forgotPassword/' style={{color:"black",padding:"10px",textDecoration: 'none'}}>Change Password</Link></MenuItem>
+        <MenuItem onClick={handleDeleteAccount} sx={menuStyle}><Link to='#'style={{color:"black",padding:"10px",textDecoration: 'none'}}>Delete Account</Link></MenuItem>
+        <MenuItem onClick={handleSignOut} sx={menuStyle}><Link to='/' style={{color:"black",padding:"10px",textDecoration: 'none'}}>Sign Out</Link></MenuItem>
     </Menu>
 
     let editToolbar = "";
@@ -149,6 +169,20 @@ export default function AppBanner() {
         </Grid>)
         }
     }
+    function handleGlobeClick(){
+        const globeIcon = document.getElementById('globe-icon');
+        if (globeIcon.classList.contains("spin-fast")) {
+            globeIcon.classList.remove("spin-fast");
+        }else if(globeIcon.classList.contains("spin-medium")){
+            globeIcon.classList.remove("spin-medium");
+            globeIcon.classList.add("spin-fast");
+        }else if(globeIcon.classList.contains("spin-slow")){
+            globeIcon.classList.remove("spin-slow");
+            globeIcon.classList.add("spin-medium");
+        }else{
+            globeIcon.classList.add("spin-slow");
+        }
+    }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -167,7 +201,7 @@ export default function AppBanner() {
                             Editor
                         </Typography>
                     </div>
-                    <PublicIcon style={{ fontSize: "2rem", color: "#009800" }} sx={{"&:hover": {  transform: 'rotate(15deg)'} }} />
+                    <PublicIcon id="globe-icon" className = "globe-icon" style={{ fontSize: "2rem", color: "#009800" }} sx={{"&:hover": {  transform: 'rotate(15deg)'} }} onClick={handleGlobeClick} />
                     {
                         getAccountMenu()
                     }

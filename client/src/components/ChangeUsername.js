@@ -37,8 +37,8 @@ function ChangeUsername() {
   return (
     <div className="ForgotUsername">
       <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" paddingTop= "10%">
-        <Typography component="h3" variant="h5">
-          Change your username
+        <Typography component="h3" variant="h4" style={{fontWeight: 'bold'}}>
+          Change your Username
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2, fontSize: "1vw"}}>
           <Grid container spacing={3}>
@@ -46,8 +46,8 @@ function ChangeUsername() {
               <TextField
                 required
                 fullWidth
-                name="email"
-                label="email"
+                name="Email Address"
+                label="Email Address"
                 id="email"
                 autoComplete="new-email"
                 autoFocus
@@ -57,7 +57,7 @@ function ChangeUsername() {
               <TextField
                 required
                 fullWidth
-                name="password"
+                name="Password"
                 label="Password"
                 type="password"
                 id="password"
@@ -68,8 +68,8 @@ function ChangeUsername() {
               <TextField
                 required
                 fullWidth
-                name="new username"
-                label="new username"
+                name="New Username"
+                label="New Username"
                 type="new username"
                 id="new username"
                 autoComplete="new-username"
@@ -81,9 +81,9 @@ function ChangeUsername() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 2, mb: 1 }}
+            sx={{ mt: 2, mb: 1, bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a',color:"white" } }}
           >
-            Confirm Change Username
+            Confirm
           </Button>
         </Box>
       </Box>

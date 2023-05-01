@@ -212,6 +212,10 @@ function GeomanJsWrapper(props) {
         //     centerArr[1] = center.lng
         //     store.setZoomLevel(map.getZoom(), centerArr)
         // });
+        map.on('click',()=>{
+            props.unselect()
+            store.setCurrentFeatureIndex(0);
+        })
         map.on('pm:drawstart', ({ workingLayer }) => {
             workingLayer.on('pm:vertexadded', (e) => {
                 let newCoords = [e.latlng.lng,e.latlng.lat]

@@ -123,6 +123,7 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.NONE,
                     currentMapData:  payload.data,
                     setScreenshot: payload.takeScreenShot,
+                    currentFeatureIndex:0,
 
                 });
             }
@@ -207,6 +208,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     ...store,
                     setScreenshot: payload.screenshot,
+                    currentFeatureIndex:0,
                     currentModal: "NONE"
                 });
             }

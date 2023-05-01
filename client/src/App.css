@@ -176,3 +176,48 @@ body {
     }
   }
   
+ 
+  
+  .globe-icon:hover {
+    animation: spin 2s infinite linear; 
+   
+  }
+  #globe-icon.spin-fast:hover {
+    animation: spin .01s infinite linear;
+    
+   
+  }
+  #globe-icon.spin-fast {
+    animation: spin .01s infinite linear;
+    
+   
+  }
+  #globe-icon.spin-medium:hover {
+    animation: spin .2s infinite linear;
+   
+   
+  }
+  #globe-icon.spin-medium {
+    animation: spin .2s infinite linear;
+   
+   
+  }
+  #globe-icon.spin-slow:hover {
+    animation: spin .8s infinite linear;
+    
+   
+   
+  }
+  #globe-icon.spin-slow {
+    animation: spin .8s infinite linear;
+    
+   
+   
+  }
+  
+  @keyframes spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  

@@ -9,6 +9,7 @@ import SquareIcon from '@mui/icons-material/Square';
 import InputGroup from 'react-bootstrap/InputGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import EditLegendTPS from '../../transactions/EditLegendTPS'
+import './mapEditor.css';
 
 function LegendCard(props) {
     const { store, setStore} = useContext(GlobalStoreContext);
@@ -82,7 +83,8 @@ function LegendCard(props) {
                 <input type="text" className="form-control" id="validationCustom01" value={text}
                        onChange={handleChange}
                        onBlur={handleBlur}
-                       required />
+                       required 
+                       />
                 {/*<BorderColorIcon className="material-icons" sx={{"&:hover": {fill: "rgba(255,240,10,0.8)"}} } style={{fontSize:"1.6rem"}}/>*/}
                 <SquareIcon className="material-icons" onClick={handleChangeLegendColor} sx={{color:colorString,
                     paddingTop: "1%",

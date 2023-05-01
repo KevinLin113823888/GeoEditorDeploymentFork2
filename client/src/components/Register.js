@@ -81,7 +81,7 @@ function Register() {
         }}
     >
 
-        <Typography component="h3" variant="h5">
+        <Typography component="h3" variant="h4" style={{fontWeight: 'bold'}}>
             <div data-cy="register">Sign up</div>
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2, fontSize:"1vw" }}>
@@ -146,7 +146,7 @@ function Register() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 2, mb: 1 }}
+                sx={{ mt: 2, mb: 1, bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a',color:"white" }  }}
             >
                 Sign Up
             </Button>

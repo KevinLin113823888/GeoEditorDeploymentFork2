@@ -58,7 +58,7 @@ function Login() {
         }}
       >
 
-        <Typography data-cy="login" component="h3" variant="h5">
+        <Typography data-cy="login" component="h3" variant="h4" style={{fontWeight: 'bold'}}>
           Login
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2, fontSize: "1vw"}}>
@@ -91,7 +91,7 @@ function Login() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 2, mb: 1 }}
+            sx={{ mt: 2, mb: 1, bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a',color:"white" } } }
           >
             Login
           </Button>

@@ -209,7 +209,7 @@ function YourMap() {
     function displayMaps(){
         if(mapCards.length>0){
             return mapCards.map((map) => (
-                <Grid item xs={3.7} md={1.4} key = {map._id} >
+                <Grid item xs={3.7} md={1.9} key = {map._id} >
                 <MapCard
                     id = {map._id}
                     key = {map._id}
@@ -287,14 +287,14 @@ function YourMap() {
                            
                         </Grid>
                         <Grid item xs={4} md={2}>
-                            <Typography id="newmap-modal-title" variant="h5"  sx={{ marginLeft: "5%" ,fontWeight: 'bold'}} style={{color: "#8c8a8a"}}>
+                            <Typography id="newmap-modal-title" variant="h5"  sx={{ marginLeft: "10%" ,fontWeight: 'bold'}} style={{color: "#000000"}}>
                                 My Maps
                             </Typography>
                         </Grid>
                         <Grid item xs={6} md={10}>
 
                         </Grid>
-                        <Grid item  xs={3.7} md={1.4}>
+                        <Grid item  xs={3.7} md={1.9}>
                             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" 
                             sx={{ width: "100%", backgroundColor: "#ededed", height: "30vh", marginLeft: "10%","&:hover": { backgroundColor: "grey",transform: 'translateY(-4px)',},borderRadius:'15px',}} onClick={openCreateModal} >
                                 <ControlPointIcon style={{ fill: "black", fontSize: "5rem" }} />
