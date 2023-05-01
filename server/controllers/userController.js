@@ -105,7 +105,11 @@ class userController {
 
     static async logout(req, res, next) {
         try{
-            res.cookies.set('values', {maxAge: 0}).json({status: 'OK'});;
+            // res.cookies.set('values', {maxAge: 0}).json({status: 'OK'});
+            console.log("heyyyyy");
+            res.clearCookie('values');
+            console.log(req.cookies.values);
+            return res.json({status: 'ok'});
         }catch (e){
             console.log(e)
             return res.status(400).clearCookie("values").json({status: e.toString()});
