@@ -48,33 +48,42 @@ export const CurrentModal = {
     BORDER_PICK_COLOR_WHEEL: "BORDER_PICK_COLOR_WHEEL"
 }
 
+
+
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
 // AVAILABLE TO THE REST OF THE APPLICATION
 function GlobalStoreContextProvider(props) {
-    const [store, setStore] = useState({
-        currentModal : CurrentModal.NONE,
-        currentMap: {},
-        currentMapData : {}, //the current map data we are editing
-        currentScreen: "home" ,
-        guestMode: false,
-        adminMode: false,
-        userMapCards: [{}],
-        currentRegionProp:{},
-        currentFeatureIndex:0,
-        zoomLevel:2,
-        centerCoords:[20,100],
-        jstps:  new jsTPS(),
-        colorwheelHandler: null, //this is what function to call after submitting color modal
-        polygonData: null,
-        updateEditor: null,
-        updateViewer: null,
-
-        currentPreviewId: null,
-        currentMapCardId: null,
-        setScreenshot: false,
-        setCenterScreen: false,
-        downloadPng: false,
+    const [store, setStore] = useState(() => {
+        const storedState = localStorage.getItem('store');
+        if (storedState) {
+            return JSON.parse(storedState);
+        }
+        return {
+            currentModal : CurrentModal.NONE,
+            currentMap: {},
+            currentMapData : {}, //the current map data we are editing
+            currentScreen: "home" ,
+            guestMode: false,
+            adminMode: false,
+            userMapCards: [{}],
+            currentRegionProp:{},
+            currentFeatureIndex:0,
+            zoomLevel:2,
+            centerCoords:[20,100],
+            jstps:  new jsTPS(),
+            colorwheelHandler: null, //this is what function to call after submitting color modal
+            polygonData: null,
+            updateEditor: null,
+            updateViewer: null,
+    
+            currentPreviewId: null,
+            currentMapCardId: null,
+            setScreenshot: false,
+            setCenterScreen: false,
+            downloadPng: false,
+        };
     });
+    
 
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
     // const { auth } = useContext(AuthContext);

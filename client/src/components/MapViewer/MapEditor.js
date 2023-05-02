@@ -43,30 +43,19 @@ function MapEditor(props) {
 
     let dragStartCoords = []
     const geoJsonMapData = store.currentMapData;
-    //
-    // function arraysEqual(arr1, arr2) {
-    //     // Check if the arrays have the same length
-    //     if (arr1.length !== arr2.length) {
-    //         return false;
-    //     }
-    //     // Loop through each element of the arrays and compare their values
-    //     for (let i = 0; i < arr1.length; i++) {
-    //         if (arr1[i] !== arr2[i]) {
-    //             return false;
-    //         }
-    //     }
-    //     // If all elements match, the arrays are equal
-    //     return true;
-    // }
-    // function updateLatlngDrag(featureInd2,ind0,ind1,ind2,newlatlng){
-    //     if(ind2==-1){
-    //         geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1][0]=newlatlng[0]
-    //         geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1][1]=newlatlng[1]
-    //     }else{
-    //         geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1][ind2][0]=newlatlng[0]
-    //         geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1][ind2][1]=newlatlng[1]
-    //     }
-    // }
+    
+    useEffect(() => {
+        console.log(JSON.parse(localStorage.getItem('store')))
+        function handleBeforeUnload() {
+            alert("HIIIII")
+            console.log("REFRESH HAPPENING")
+            localStorage.setItem('store', JSON.stringify(store));
+        }
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [store]);
    
     function handleAddVertex(e) {
 
@@ -648,23 +637,16 @@ function MapEditor(props) {
 
         
 
-//     // create popup contents
-    // var customPopup = "<b>My office</b><br/><img src='http://netdna.webdesignerdepot.com/uploads/2014/05/workspace_06_previo.jpg' alt='maptime logo gif' width='150px'/>";
 
-    // // specify popup options 
-    var customOptions =
-    {
-    'maxWidth': '400',
-    'width': '200',
-    'className' : 'popupCustom'
-    }    
 
         let propString = countryName
         layer.bindPopup(propString);
+        
         layer.options.fillOpacity = 0.4;
 
 
         layer.on('click', function (e) {
+            
             store.setRegionProperties({"hi":"hi","yo":"hey"})
             console.log("on layer click i guess")
             console.log(e)
@@ -738,13 +720,6 @@ function MapEditor(props) {
         });
         layer.on('pm:dragend', e => {
             console.log("pm:dragend")
-            // console.log(e)
-
-
-            // let dragEndCoords = e.layer._latlngs[0]
-            // console.log(dragStartCoords)
-            // console.log(dragEndCoords)
-
             handleDraggedRegion(e)
         });
 
