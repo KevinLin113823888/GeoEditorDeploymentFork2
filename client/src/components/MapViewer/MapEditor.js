@@ -46,10 +46,11 @@ function MapEditor(props) {
     
     useEffect(() => {
         console.log(JSON.parse(localStorage.getItem('store')))
+        
         function handleBeforeUnload() {
-            alert("HIIIII")
-            console.log("REFRESH HAPPENING")
+            
             localStorage.setItem('store', JSON.stringify(store));
+            localStorage.setItem('jsTPS', JSON.stringify(store.jstps));
         }
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => {

@@ -55,8 +55,15 @@ export const CurrentModal = {
 function GlobalStoreContextProvider(props) {
     const [store, setStore] = useState(() => {
         const storedState = localStorage.getItem('store');
+        const storedJSTPS = localStorage.getItem('jsTPS');
+        
+        console.log(storedState)
         if (storedState) {
-            return JSON.parse(storedState);
+            let storedStateObj = JSON.parse(storedState);
+            //const jstps = storedJSTPS ? JSON.parse(storedJSTPS) : new jsTPS();
+            const jstps = new jsTPS()
+            storedStateObj.jstps= jstps;
+            return storedStateObj
         }
         return {
             currentModal : CurrentModal.NONE,
