@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useRef, useState, useContext,React} from "react";
 import { useLeafletContext } from "@react-leaflet/core";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
@@ -7,6 +7,7 @@ import { CurrentModal, GlobalStoreContext } from '../../store/index'
 import EditLegendTPS from '../../transactions/EditLegendTPS'
 import TextboxTPS from '../../transactions/TextboxTPS'
 import RegionTPS from '../../transactions/RegionTPS'
+
 
 
 
@@ -33,6 +34,24 @@ function GeomanJsWrapper(props) {
     const [textBoxList,setTextBoxList] = useState(store.currentMapData.graphicalData.textBoxList)
     const [feature,setFeatures] = useState(store.currentMapData.features)
 
+    
+      useEffect(() => {
+        function handleUndoRedo(event) {
+          if (event.ctrlKey && event.key === 'z') {
+            if (store.jstps.hasTransactionToUndo())
+                    store.jstps.undoTransaction()
+          } else if (event.ctrlKey && event.key === 'y') {
+            if (store.jstps.hasTransactionToRedo())
+                    store.jstps.doTransaction()
+          }
+        }
+    
+        document.addEventListener('keydown', handleUndoRedo);
+    
+        return () => {
+          document.removeEventListener('keydown', handleUndoRedo);
+        };
+      }, []);
     const originalNewPolygon =         {
         "type": "Feature",
         "properties": {
