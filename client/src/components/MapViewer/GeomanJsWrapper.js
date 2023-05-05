@@ -26,7 +26,7 @@ function GeomanJsWrapper(props) {
 
     const isAddTextActive = useRef(false);
 
-    const geoJsonTextbox = useRef([])
+    const geoJsonTextbox = useRef(new Set())
     const shapeRef = useRef(null);
     const lineLatlngsRef = useRef([]);
     const splitClickedRef = useRef(false);
@@ -79,27 +79,14 @@ function GeomanJsWrapper(props) {
 
         //this part adds the tooltip into the graphical data, lets not do that ig
 
-        // if(geoJsonTextbox.current.length===0 && textBoxList.length===0)
-        // {
-        //     console.log("called once ??")
-        //     map.eachLayer(function (layer) {
-        //         if(layer._latlng!==undefined)
-        //         {
-        //             geoJsonTextbox.current.push(layer._latlng)
-        //             let name = layer._content
-        //             let coords = geoJsonTextbox.current[geoJsonTextbox.current.length-1]
-        //
-        //             let newTextBox = {
-        //                 overlayText: name, coords: {
-        //                     lat:coords.lat,
-        //                     lng:coords.lng,
-        //                 }
-        //             }
-        //             store.currentMapData.graphicalData.textBoxList.push(newTextBox)
-        //             layer.removeFrom(map)
-        //         }
-        //     });
-        // }
+        if(geoJsonTextbox.current.size===0 && textBoxList.length===0)
+        {
+            console.log("called once ??")
+            map.eachLayer(function (layer) {
+                if(layer._latlng!==undefined)
+                    geoJsonTextbox.current.add(layer)
+            });
+        }
 
     },[])
 
@@ -152,7 +139,12 @@ function GeomanJsWrapper(props) {
         }
         //needed to refresh
         map.eachLayer(function (layer) {
-            if (layer.options.pane === "tooltipPane") layer.removeFrom(map);
+            console.log("initial set of layers")
+            console.log(layer,geoJsonTextbox.current)
+            if (layer.options.pane === "tooltipPane"){
+                if(!geoJsonTextbox.current.has(layer))
+                    layer.removeFrom(map);
+            }
         });
         textBoxList.map(function(val,index){
             var toolTip = L.tooltip({
