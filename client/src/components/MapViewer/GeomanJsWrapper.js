@@ -76,36 +76,31 @@ function GeomanJsWrapper(props) {
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
         const leafletContainer = LL
-        if(geoJsonTextbox.current.length===0 && textBoxList.length===0)
-        {
-            console.log("called once ??")
-            map.eachLayer(function (layer) {
-                if(layer._latlng!==undefined)
-                {
-                    geoJsonTextbox.current.push(layer._latlng)
-                    let name = layer._content
-                    let coords = geoJsonTextbox.current[geoJsonTextbox.current.length-1]
 
-                    let newTextBox = {
-                        overlayText: name, coords: {
-                            lat:coords.lat,
-                            lng:coords.lng,
-                        }
-                    }
-                    store.currentMapData.graphicalData.textBoxList.push(newTextBox)
-                    layer.removeFrom(map)
-                }
-            });
-        }
-        // map.eachLayer(function (layer) {
-        //     if(layer._url !== undefined){
-        //         console.log("this is for layer")
-        //         console.log(layer)
-        //         layer.getContainer().style.setProperty("opacity", `50%`)
-        //         console.log(layer.getContainer().style)
-        //     }
-        // })
-            // setTextBoxList( store.currentMapData.graphicalData.textBoxList)
+        //this part adds the tooltip into the graphical data, lets not do that ig
+
+        // if(geoJsonTextbox.current.length===0 && textBoxList.length===0)
+        // {
+        //     console.log("called once ??")
+        //     map.eachLayer(function (layer) {
+        //         if(layer._latlng!==undefined)
+        //         {
+        //             geoJsonTextbox.current.push(layer._latlng)
+        //             let name = layer._content
+        //             let coords = geoJsonTextbox.current[geoJsonTextbox.current.length-1]
+        //
+        //             let newTextBox = {
+        //                 overlayText: name, coords: {
+        //                     lat:coords.lat,
+        //                     lng:coords.lng,
+        //                 }
+        //             }
+        //             store.currentMapData.graphicalData.textBoxList.push(newTextBox)
+        //             layer.removeFrom(map)
+        //         }
+        //     });
+        // }
+
     },[])
 
     const handleTooltipEditJSTPS = (oldText,newText,index) => {

@@ -24,6 +24,7 @@ import Screenshoter from './Screenshoter';
 import RegionTPS from "../../transactions/RegionTPS";
 import VertexTPS from "../../transactions/VertexTPS";
 import ColorTPS from "../../transactions/ColorTPS";
+import MergeAndSplitTPS from "../../transactions/MergeAndSplitTPS";
 
 function MapEditor(props) {
   
@@ -633,11 +634,6 @@ function MapEditor(props) {
         layer.bindTooltip(layer.feature.properties.name,
             { permanent: true, direction: 'center'}
         ).openTooltip()
-        
-
-        
-
-
 
         let propString = countryName
         layer.bindPopup(propString);
@@ -781,60 +777,54 @@ function MapEditor(props) {
 
         if (regionsSelected.length < 2) {
             alert("please select 2 regions first");
+        }
+        if (newName == null) { //if no name means cancel i suppose
+            regionsSelectedRef.current = [] //empty everything
             return;
         }
-        // let newName = prompt("enter new region name:");
-        if (newName == null) {
-            return;
-        }
+
+
 
         let allRegionArray = geoJsonMapData.features
         let emptyPoly = turf.multiPolygon([])
 
+        let oldRegionIndex = []
         for (let i = 0; i < regionsSelected.length; i++) {
-
             let region = regionsSelected[i]
-
-            allRegionArray = allRegionArray.filter(x => x.properties.name !== region.properties.name) //remove all with same name regions
+            for(let j=0;j<allRegionArray.length;j++){
+                if(region==allRegionArray[j]){
+                    console.log("found match in merge")
+                    oldRegionIndex.push(j)
+                }
+            }
+            // allRegionArray = allRegionArray.filter((x,i) => x.properties.name !== region.properties.name) //remove all with same name regions
             let poly = region.geometry.coordinates
-
-            poly = region.geometry.type === "Polygon" ?
-                turf.polygon(poly)
-                :
-                turf.multiPolygon(poly)
-
+            poly = region.geometry.type === "Polygon" ? turf.polygon(poly) : turf.multiPolygon(poly)
             emptyPoly = turf.union(emptyPoly, poly);
-
         }
-
-        emptyPoly.properties = regionsSelected[0].properties;
+        // emptyPoly.properties = regionsSelected[0].properties;
         emptyPoly.properties.name = newName;
         emptyPoly.subRegionColor = regionsSelected[0].subRegionColor
         emptyPoly.borderColor = regionsSelected[0].borderColor
 
-        geoJsonMapData.features = [...allRegionArray, emptyPoly] // add to the geoJsonMapData.feature
+        // geoJsonMapData.features = [...allRegionArray, emptyPoly] // add to the geoJsonMapData.feature
+
+        oldRegionIndex.sort(function(a,b){ return b-a; });
+        let transactionMappedData = {
+            type: "merge",
+            store: store,
+            setStore: setStore,
+            updateView: store.updateViewer,
+            updateEditor:store.updateEditor,
+            newRegion:emptyPoly,
+            oldRegionIndex:oldRegionIndex
+        }
+        store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
 
         regionsSelectedRef.current = [] //empty everything
-        //setUpdate(update+1) //absolutely crazy code but we need this to update the map
-        setUpdate(update => update + 1);
+        // setUpdate(update => update + 1);
     }
 
-    const handleChangeRegionColor = (color) => {
-       
-        let regionsSelected = regionsSelectedRef.current
-        for (let i = 0; i < regionsSelected.length; i++) {
-            // regionsSelected[i].subRegionColor = color
-            for(let j=0;j<geoJsonMapData.features.length;j++){
-                if(geoJsonMapData.features[j].properties.name == regionsSelected[i].properties.name ){
-                    geoJsonMapData.features[j].subRegionColor = color
-                }
-            }
-
-        }
-        regionsSelectedRef.current = []
-
-        setUpdate(update => update + 1);
-    }
     const handleBorderOrRegionColorChange = (color,type) => {
         console.log("got color req of",color,type)
 
