@@ -45,8 +45,6 @@ function MapEditor(props) {
     const geoJsonMapData = store.currentMapData;
     
     useEffect(() => {
-        console.log(JSON.parse(localStorage.getItem('store')))
-        
         function handleBeforeUnload() {
             
             localStorage.setItem('store', JSON.stringify(store));
@@ -61,7 +59,7 @@ function MapEditor(props) {
     function handleAddVertex(e) {
 
         let vertexEditFeature = e.target.feature
-
+        
         let indexPath = e.indexPath;
     
         let ind0 = indexPath[0]
@@ -102,7 +100,7 @@ function MapEditor(props) {
             let foundOneCoord = -1
             featureInd2++
             let sharedCoords = feature.geometry.coordinates
-            if (feature == vertexEditFeature) {
+            if (feature == vertexEditFeature || firstFeatureInd==featureInd2) {
                 return
             }
             if (feature.geometry.type === 'Polygon') {
@@ -635,6 +633,7 @@ function MapEditor(props) {
         layer.bindTooltip(layer.feature.properties.name,
             { permanent: true, direction: 'center'}
         ).openTooltip()
+        
 
         
 
@@ -959,7 +958,7 @@ function MapEditor(props) {
                             toggleSelectMode={toggleSelectMode}
                             compress={props.handleCompress}
                             file = {geoJsonMapData}
-                            // updateEditor = {handleUpdate}
+                            updateEditor = {handleUpdate}
                             updateViewer = {props.updateViewer}
                             unselect = {unselect}
                         />

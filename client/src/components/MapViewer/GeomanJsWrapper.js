@@ -10,10 +10,10 @@ import RegionTPS from '../../transactions/RegionTPS'
 
 
 
-
+import * as turf from '@turf/turf';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { CircleMarker } from 'react-leaflet';
+import { CircleMarker,useMap } from 'react-leaflet';
 function GeomanJsWrapper(props) {
     //with this we can actually customize all of the buttons
     //we can also add a custom merge button as well.
@@ -27,14 +27,19 @@ function GeomanJsWrapper(props) {
     const isAddTextActive = useRef(false);
 
     const geoJsonTextbox = useRef([])
+    const shapeRef = useRef(null);
+    const lineLatlngsRef = useRef([]);
+    const splitClickedRef = useRef(false);
 
+    const geoJsonMapData = store.currentMapData;
+    const map2 = useMap()
 
 
 
     const [textBoxList,setTextBoxList] = useState(store.currentMapData.graphicalData.textBoxList)
     const [feature,setFeatures] = useState(store.currentMapData.features)
 
-    
+ 
       useEffect(() => {
         function handleUndoRedo(event) {
           if (event.ctrlKey && event.key === 'z') {
@@ -145,6 +150,7 @@ function GeomanJsWrapper(props) {
         console.log("called to refresh all of the textbox tootips")
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
+        
 
         if(textBoxList===undefined){
             return
@@ -223,6 +229,7 @@ function GeomanJsWrapper(props) {
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
         const leafletContainer = LL
+        let newLineLayer;
 
         // map.on('zoomend', function () {
         //     let centerArr = []
@@ -231,18 +238,45 @@ function GeomanJsWrapper(props) {
         //     centerArr[1] = center.lng
         //     store.setZoomLevel(map.getZoom(), centerArr)
         // });
-        map.on('click',()=>{
+        map.on('click',(e)=>{
             props.unselect()
             store.setCurrentFeatureIndex(0);
+           
         })
+        map.on('pm:create', (e) => {
+            if (e.layer instanceof L.Polygon) {
+                shapeRef.current = "Polygon"
+              console.log('A polygon was drawn');
+            } else if (e.layer instanceof L.Polyline) {
+              console.log('A line was drawn');
+              newLineLayer = e.layer;
+                shapeRef.current = "Line"
+                console.log(e)
+                
+            }
+          });
         map.on('pm:drawstart', ({ workingLayer }) => {
-            workingLayer.on('pm:vertexadded', (e) => {
-                let newCoords = [e.latlng.lng,e.latlng.lat]
-                constructedNewPolyRegion.current.geometry.coordinates[0].push(newCoords)
-            });
+            
+            let numVertices = 0;
+                workingLayer.on('pm:vertexadded', (e) => {
+                    let newCoords = [e.latlng.lng,e.latlng.lat]
+                    constructedNewPolyRegion.current.geometry.coordinates[0].push(newCoords)
+                    if (splitClickedRef.current == true) {
+                       console.log("A")
+                        numVertices++;
+                        lineLatlngsRef.current.push(newCoords)
+                        if (numVertices >= 2) {
+                            map.pm.disableDraw('Line');
+                            splitClickedRef.current = false
+                        }
+                       
+                    }
+                });
             // workingLayer.removeFrom(map)
         });
         map.on('pm:drawend', ({ workingLayer }) => {
+            if(shapeRef.current=="Polygon"){
+               
             let newPoly = constructedNewPolyRegion.current
             if (newPoly.geometry.coordinates[0].length > 0) {
                 let firstCoord = newPoly.geometry.coordinates[0][0];
@@ -256,7 +290,83 @@ function GeomanJsWrapper(props) {
             }
             //clear what we have right now.
             constructedNewPolyRegion.current = JSON.parse(JSON.stringify(originalNewPolygon))
+            }else{
+                splitRegion()      
+            }
         });
+        function removeToolTip(name){
+            
+            // map.eachLayer((layer) => {
+            //     console.log(layer)
+            //     if (layer._tooltip) {
+            //       let tooltip = layer._tooltip;
+              
+            //       if (tooltip._content === name) {
+            //         console.log("PA")
+            //         layer.unbindTooltip();
+                   
+            //       }
+            //     }
+            // });
+            // geoJsonMapData.graphicalData.textBoxList = geoJsonMapData.graphicalData.textBoxList.filter(textOverlay => textOverlay.overlayText !==name);
+            // console.log( geoJsonMapData.graphicalData)
+        }
+
+        function splitRegion(){
+                let polygons = []
+                geoJsonMapData.features.forEach(feature => {
+                    if (feature.geometry.type === "Polygon") {
+                      if (feature.geometry.coordinates[0].length > 3) {
+                        polygons.push(turf.polygon(feature.geometry.coordinates));
+                      }
+                    } else if (feature.geometry.type === "MultiPolygon") {
+                      polygons.push(turf.multiPolygon(feature.geometry.coordinates));
+                    }
+                  });
+                console.log(polygons)
+                // Check if the new polyline intersects with any polygons
+                let newPolyline = turf.lineString(lineLatlngsRef.current);
+                console.log(newPolyline)
+
+                
+                for (let i = 0; i < polygons.length; i++) {
+                    
+                    //if(polygons[i].geometry.type=="Polygon"){
+                    const intersectionPoints = turf.lineIntersect(newPolyline, polygons[i]);
+                    
+                    if (intersectionPoints.features.length > 1) {
+                        let newPolyline = turf.lineString(lineLatlngsRef.current);
+                        console.log('New polyline intersects with polygon', i);
+                        let offsetLine = turf.lineOffset(newPolyline, 0.00001, { units: 'kilometers' });
+                        let thickLineCorners = turf.featureCollection([newPolyline, offsetLine]);
+                        let thickLinePolygon = turf.convex(turf.explode(thickLineCorners));
+                        let clipped = turf.difference(polygons[i], thickLinePolygon);
+                       
+                        
+                        if(polygons[i].geometry.type=="Polygon"){
+                            let num = 1;
+                            clipped.geometry.coordinates.forEach((coordinate)=>{
+                                let newPolygon = turf.polygon(coordinate)
+                                newPolygon.properties.name = geoJsonMapData.features[i].properties.name + num
+                                geoJsonMapData.features.push(newPolygon)
+                                num++
+                            })
+                        }else{
+                            geoJsonMapData.features.push(clipped)
+                        }
+                        removeToolTip(geoJsonMapData.features[i].properties.name)
+                        geoJsonMapData.features[i]=""
+                    }
+                    
+                    //}
+                }
+                const features = geoJsonMapData.features.filter(function(feature) {
+                    return feature !== "";
+                });
+                    geoJsonMapData.features=features;
+                props.updateEditor()
+                lineLatlngsRef.current = []
+        }
         if (leafletContainer) {
             console.log("ADDING")
             const mergeButtonAction = [
@@ -293,6 +403,23 @@ function GeomanJsWrapper(props) {
                 console.log("merge button toggle clicked")
                 //on click we toggle to enable the selection of regions
                 props.toggleSelectMode()
+            }
+            const splitButtonClick = (e) => {
+                if(e===undefined){
+                    splitClickedRef.current = false
+                    map.pm.disableDraw('Line');
+                    return }
+                console.log("split button clicked")
+                splitClickedRef.current = true
+                map.pm.enableDraw('Line', {
+                    snappable: true,
+                    snapDistance: 20,
+                    finishOn: 'dblclick',
+                    tooltips: true,
+                    cursorMarker: true
+                  });
+
+                  
             }
             const colorButtonClick=()=>{
                 props.toggleSelectMode()
@@ -331,7 +458,9 @@ function GeomanJsWrapper(props) {
             const extendedMenuActionCancel = [
                 'cancel',
             ]
-
+            const extendedMenuSplitActionCancel=['cancel',
+                
+            ]
 
             const undoButtonClick = () => {
                 if (store.jstps.hasTransactionToUndo())
@@ -400,7 +529,7 @@ function GeomanJsWrapper(props) {
                 ["addText", extendedMenuActionCancel, addTextButtonClick],
                 // ["editVertex", mergeButtonAction, mergeButtonClick], //baked
                 // ["moveRegion", mergeButtonAction, mergeButtonClick], //baked
-                ["splitRegion", extendedMenuActionCancel, mergeButtonClick],
+                ["splitRegion", null, splitButtonClick],
                 // ["deleteRegion", extendedMenuActionCancel, mergeButtonClick], //baked
                 ["undo", null, undoButtonClick],
                 ["redo", null, redoButtonClick],
@@ -444,6 +573,7 @@ function GeomanJsWrapper(props) {
                 limitMarkersToCount: 50,
                 removeVertexOn: "contextmenu" //right click on verticies to remove
             });
+           
             console.log("mount ")
 
 
