@@ -139,8 +139,8 @@ function GeomanJsWrapper(props) {
         }
         //needed to refresh
         map.eachLayer(function (layer) {
-            console.log("initial set of layers")
-            console.log(layer,geoJsonTextbox.current)
+            // console.log("initial set of layers")
+            // console.log(layer,geoJsonTextbox.current)
             if (layer.options.pane === "tooltipPane"){
                 if(!geoJsonTextbox.current.has(layer))
                     layer.removeFrom(map);

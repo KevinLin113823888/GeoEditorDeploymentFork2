@@ -286,6 +286,9 @@ function MapEditor(props) {
             editingFeature: editingFeature,
         }
         store.jstps.addTransaction(new RegionTPS(transactionMappedData))
+
+        // store.currentFeatureIndex = -1
+        store.setCurrentFeatureIndex(-1)
     }
 
     function handleRemoveVertex(e) {

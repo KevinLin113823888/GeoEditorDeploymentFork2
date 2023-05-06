@@ -73,7 +73,7 @@ function GlobalStoreContextProvider(props) {
             adminMode: false,
             userMapCards: [{}],
             currentRegionProp:{},
-            currentFeatureIndex:0,
+            currentFeatureIndex:-1,
             zoomLevel:2,
             centerCoords:[20,100],
             jstps:  new jsTPS(),
