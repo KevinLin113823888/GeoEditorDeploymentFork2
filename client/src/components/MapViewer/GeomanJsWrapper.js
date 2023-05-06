@@ -449,12 +449,18 @@ function GeomanJsWrapper(props) {
                 
             ]
 
-            const undoButtonClick = () => {
+            const undoButtonClick = (e) => {
+                if(e === undefined){
+                    return
+                }
                 if (store.jstps.hasTransactionToUndo())
                     store.jstps.undoTransaction()
             }
 
-            const redoButtonClick = () => {
+            const redoButtonClick = (e) => {
+                if(e === undefined){
+                    return
+                }
                 if (store.jstps.hasTransactionToRedo())
                     store.jstps.doTransaction()
             }

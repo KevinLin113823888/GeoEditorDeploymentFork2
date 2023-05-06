@@ -41,30 +41,19 @@ export default class EditLegendTPS extends jsTPS_Transaction {
 
     doTransaction() {
         let mapObj = this.mapObj
-        this.initGeojsonGraphicalData(mapObj)
+        console.log("what do transaction is this?", this.type)
 
-        console.log("transac")
         if(this.type === "add"){
-            console.log("add transact")
-            // let before = JSON.parse(JSON.stringify(mapObj.graphicalData))
-            // mapObj.graphicalData.legend.splice(0,0,{
-            //     color: "#000000",
-            //     legendText: "Default text",
-            // })
-            // this.oldIndex = 0
-
-
-            this.diffObjDelta = {"legend":{"0":[{"color":"#000000","legendText":"Default text"}],"_t":"a"}}
-            this.diff.patch(mapObj.graphicalData,this.diffObjDelta)
-
+            mapObj.graphicalData.legend.splice(0,0,{
+                color: "#000000",
+                legendText: "Default text",
+            })
+            this.oldIndex = 0
         }
         else if (this.type === "edit"){
-            console.log("called to edit right here")
             mapObj.graphicalData.legend[this.oldIndex].legendText = this.newText
         }
         else if (this.type === "delete"){
-            console.log("called to delete right here")
-
             let legendObj  = mapObj.graphicalData.legend[this.oldIndex]
 
             this.oldColor = legendObj.color
@@ -73,21 +62,23 @@ export default class EditLegendTPS extends jsTPS_Transaction {
             mapObj.graphicalData.legend.splice(this.oldIndex,1)
         }
         else if (this.type === "color"){
-            console.log("called to color right here")
             console.log(this.newColor)
             // console.log(this.oldColor)
             this.oldColor = mapObj.graphicalData.legend[this.oldIndex].color
             mapObj.graphicalData.legend[this.oldIndex].color = this.newColor
-
         }
+
+
         this.refreshState(mapObj)
     }
 
     undoTransaction() {
     let mapObj = this.mapObj
-    if(this.type === "add"){
-        // mapObj.graphicalData.legend.splice(this.oldIndex,1)
-        this.diff.unpatch(mapObj.graphicalData,this.diffObjDelta)
+
+        console.log("what undo transaction is this?", this.type)
+
+        if(this.type === "add"){
+        mapObj.graphicalData.legend.splice(this.oldIndex,1)
         }
     else if (this.type === "edit"){
         mapObj.graphicalData.legend[this.oldIndex].legendText  = this.oldText
@@ -99,7 +90,6 @@ export default class EditLegendTPS extends jsTPS_Transaction {
         })
     }
     else if (this.type === "color"){
-        console.log("color undo??")
         mapObj.graphicalData.legend[this.oldIndex].color = this.oldColor
     }
     this.refreshState(mapObj)
