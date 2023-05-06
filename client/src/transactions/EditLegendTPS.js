@@ -74,6 +74,9 @@ export default class EditLegendTPS extends jsTPS_Transaction {
         }
         else if (this.type === "color"){
             console.log("called to color right here")
+            console.log(this.newColor)
+            // console.log(this.oldColor)
+            this.oldColor = mapObj.graphicalData.legend[this.oldIndex].color
             mapObj.graphicalData.legend[this.oldIndex].color = this.newColor
 
         }
@@ -96,6 +99,7 @@ export default class EditLegendTPS extends jsTPS_Transaction {
         })
     }
     else if (this.type === "color"){
+        console.log("color undo??")
         mapObj.graphicalData.legend[this.oldIndex].color = this.oldColor
     }
     this.refreshState(mapObj)
