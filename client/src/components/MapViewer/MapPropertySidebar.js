@@ -30,6 +30,9 @@ function MapPropertySidebar() { //should not use props
             return
         setPropertyObj(store.currentMapData.features[store.currentFeatureIndex].properties)
 
+        console.log("this is our propery obj bruh")
+        console.log(propertyObj)
+
     },[store.currentFeatureIndex]);
 
 
@@ -45,7 +48,8 @@ function MapPropertySidebar() { //should not use props
     }
 
     let propertiesSideBar = <div></div>
-    if (store.currentFeatureIndex > 0) {
+    if (true) {
+        console.log("our propery is not empty therefore we should render it holy")
         propertiesSideBar = 
             <Box sx={{ width: "93%", height: "80vh", maxHeight: "80%", overflowY: "scroll",marginBottom:"5%" }} style={{ border: "1px solid black",backgroundColor:"#f5f5f5",borderRadius:"12px",}}>
                 <Box sx={{ marginLeft: "3%" }}>

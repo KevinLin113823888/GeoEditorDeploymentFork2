@@ -53,7 +53,7 @@ function MapViewerScreen(props) {
     },[]);
 
     useEffect(() => {
-        if(store.currentFeatureIndex === 0){
+        if(store.currentFeatureIndex === -1){
             setColumns1(11.8)
         }else{
             setColumns1(9.5)

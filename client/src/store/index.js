@@ -110,7 +110,7 @@ function GlobalStoreContextProvider(props) {
                     currentMapData : {},
                     currentModal: CurrentModal.NONE,
                     currentScreen: payload ,
-                    currentFeatureIndex: 0,
+                    currentFeatureIndex: -1,
                 });
             }
             case GlobalStoreActionType.NEW_MAP_NAME: {
@@ -119,7 +119,7 @@ function GlobalStoreContextProvider(props) {
                     
                     currentModal: CurrentModal.NONE,
                     currentMap: payload,
-                    currentFeatureIndex: 0,
+                    currentFeatureIndex: -1,
                 });
             }
             case GlobalStoreActionType.SET_CURRENT_MAP: {
@@ -127,7 +127,7 @@ function GlobalStoreContextProvider(props) {
                     ...store,
                     currentModal : CurrentModal.NONE,
                     currentMap:  payload,
-                    currentFeatureIndex: 0,
+                    currentFeatureIndex: -1,
 
                 });
             }
@@ -138,7 +138,7 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.NONE,
                     currentMapData:  payload.data,
                     setScreenshot: payload.takeScreenShot,
-                    currentFeatureIndex:0,
+                    currentFeatureIndex:-1,
 
                 });
             }
@@ -223,7 +223,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     ...store,
                     setScreenshot: payload.screenshot,
-                    currentFeatureIndex:0,
+                    currentFeatureIndex:-1,
                     currentModal: "NONE"
                 });
             }
