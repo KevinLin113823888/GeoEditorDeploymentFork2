@@ -97,6 +97,7 @@ function MapEditor(props) {
         let prevCoord=[]
 
         try {
+            let flag = false
         geoJsonMapData.features.forEach(feature => {
             let foundOneCoord = -1
             featureInd2++
@@ -159,7 +160,6 @@ function MapEditor(props) {
                                 sharedIndexPath:sharedIndexPath,
                             }
                             store.jstps.addTransaction(new VertexTPS(transactionMappedData))
-
                             throw new Error("Break the loop.")
                         } else if (coordinate[0] == coord1NextToLatlng[0] && coordinate[1] == coord1NextToLatlng[1]) {
                             foundOneCoord = true
@@ -171,6 +171,20 @@ function MapEditor(props) {
                 });
             });
         })
+            console.log("normal add vertex")
+
+            let transactionMappedData = {
+                type: "add",
+                store: store,
+                setStore: setStore,
+                updateView: store.updateViewer,
+                update:store.updateEditor,
+                indexPath : e.indexPath,
+                editingFeature: vertexEditFeature,
+                new2DVec: [e.latlng.lng,e.latlng.lat],
+                sharedIndexPath:null,
+            }
+            store.jstps.addTransaction(new VertexTPS(transactionMappedData))
         }
     catch(error)
     {
