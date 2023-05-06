@@ -41,21 +41,22 @@ function GeomanJsWrapper(props) {
 
  
       useEffect(() => {
-        function handleUndoRedo(event) {
-          if (event.ctrlKey && event.key === 'z') {
-            if (store.jstps.hasTransactionToUndo())
-                    store.jstps.undoTransaction()
-          } else if (event.ctrlKey && event.key === 'y') {
-            if (store.jstps.hasTransactionToRedo())
-                    store.jstps.doTransaction()
-          }
-        }
-    
-        document.addEventListener('keydown', handleUndoRedo);
-    
-        return () => {
-          document.removeEventListener('keydown', handleUndoRedo);
-        };
+          // we dont need this, we already have a undo redo key handler
+        // function handleUndoRedo(event) {
+        //   if (event.ctrlKey && event.key === 'z') {
+        //     if (store.jstps.hasTransactionToUndo())
+        //             store.jstps.undoTransaction()
+        //   } else if (event.ctrlKey && event.key === 'y') {
+        //     if (store.jstps.hasTransactionToRedo())
+        //             store.jstps.doTransaction()
+        //   }
+        // }
+        //
+        // document.addEventListener('keydown', handleUndoRedo);
+        //
+        // return () => {
+        //   document.removeEventListener('keydown', handleUndoRedo);
+        // };
       }, []);
     const originalNewPolygon =         {
         "type": "Feature",
