@@ -227,7 +227,7 @@ function GeomanJsWrapper(props) {
         // });
         map.on('click',(e)=>{
             props.unselect()
-            store.setCurrentFeatureIndex(0);
+            store.setCurrentFeatureIndex(-1);
            
         })
         map.on('pm:create', (e) => {

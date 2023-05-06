@@ -332,6 +332,8 @@ function GlobalStoreContextProvider(props) {
         );
     }
     store.setCurrentFeatureIndex=function(index){
+        // console.log("god damn it whos calling for", index)
+        // console.trace();
         storeReducer({
                 type: GlobalStoreActionType.UPDATE_FEATURE_INDEX,
                 payload: index
