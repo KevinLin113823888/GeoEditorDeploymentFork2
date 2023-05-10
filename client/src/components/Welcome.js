@@ -1,4 +1,4 @@
-import { React,useContext } from "react";
+import { React,useContext,useEffect } from "react";
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography'
@@ -7,6 +7,21 @@ import GlobalStoreContext from '../store';
 function Welcome() {
 
     const { store } = useContext(GlobalStoreContext);
+
+    useEffect(() => {
+        if(store){
+        function handleBeforeUnload() {
+            console.log("Store update?")
+            localStorage.setItem('store', JSON.stringify(store));
+            localStorage.setItem('jsTPS', JSON.stringify(store.jstps));
+        }
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+        }
+    }, [store]);
+
     function handleGuest(){
         //store.changeScreen("community");
         store.setGuest(true,"community")

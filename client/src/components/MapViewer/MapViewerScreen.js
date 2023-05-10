@@ -47,6 +47,19 @@ function MapViewerScreen(props) {
     let dbffile = null;
 
     useEffect(() => {
+        if(store){
+        function handleBeforeUnload() {
+            console.log("Store update?")
+            localStorage.setItem('store', JSON.stringify(store));
+            localStorage.setItem('jsTPS', JSON.stringify(store.jstps));
+        }
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+        }
+    }, [store]);
+    useEffect(() => {
         initGeojsonGraphicalData(na)
         // setGeoJson(na)
         store.updateViewer = handleUpdate
@@ -405,13 +418,13 @@ function MapViewerScreen(props) {
                         }}>
                         <InputGroup className="mb-3">
                             <input type="text" className="form-control" id="validationCustom01" value={mapName} onChange={e => { setMapChange(e.target.value) }}
-                                onBlur={handleChangeMapName} required style={{ fontSize: "2.5rem", fontWeight: "bold", border: "none", }}
+                                onBlur={handleChangeMapName} required style={{ fontSize: "2.2rem", fontWeight: "bold", border: "none",paddingTop: "0rem",paddingBottom:"0",marginBottom:"0" }}
                             />
                         </InputGroup>
                     </Box>
                 </Grid >
                 <Grid item xs={12} md={6} sx={{
-                    marginTop: {xs:"0%",md:"2%"}
+                    marginTop: {xs:"0%",md:"1.5%"}
                 }}>
                     {Buttons(handleCompress, "Compress")} {Buttons(handleImport, "Import")} {Buttons(handleExport, "Export")}
                     {Buttons(handlePublish, "Publish")} {Buttons(handleMapClassification, "Classification")} {Buttons(handleSave, "Save")}

@@ -246,13 +246,14 @@ function YourMap() {
 
                             <TextField type="text" id="outlined-basic" variant="outlined" onChange={
                                 handleUpdateSearch} onKeyPress={handleKeyPress} placeholder="Search" 
-                                style={{ marginTop: "0.1vw", background: "#F4F6F8", width: "60%",
+                                style={{ marginTop: "0.1vw", background: "#F4F6F8", width: "60%",outline: "none"
                                 }}
                                 sx={{
                                     bgcolor: '#fff',
                                     borderRadius: '10px',
                                     border: '2px solid black',
                                     boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
+                                    
                                     '& .MuiInputBase-input': {
                                       py: '1rem',
                                       pl: isFocused ? '0px' : '13px',

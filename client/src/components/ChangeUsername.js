@@ -1,11 +1,11 @@
-import {React, useState} from "react";
-import { Link } from 'react-router-dom';
+import {React} from "react";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button';
-import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
 
 function ChangeUsername() {
   function handleSubmit(event) {
@@ -35,6 +35,17 @@ function ChangeUsername() {
   }
 
   return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          fontSize: '1vw',
+        }}
+      >
     <div className="ForgotUsername">
       <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" paddingTop= "10%">
         <Typography component="h3" variant="h4" style={{fontWeight: 'bold'}}>
@@ -88,6 +99,8 @@ function ChangeUsername() {
         </Box>
       </Box>
     </div>
+    </Box>
+    </Container>
   );
 }
 
