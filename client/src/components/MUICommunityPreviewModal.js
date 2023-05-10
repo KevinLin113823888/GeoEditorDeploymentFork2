@@ -73,6 +73,8 @@ function MUICommunityPreviewModal() {
     const [update, setUpdate] = useState(1);
 
     useEffect(() => {
+        console.log("OPENED")
+        console.log(store.currentPreviewId)
         if(store.currentModal == 'COMMUNITY_PREVIEW_MODAL'){
             setLikes("black");
             setDislikes("black");
@@ -92,6 +94,7 @@ function MUICommunityPreviewModal() {
             })
             .then((res) => res.json())
             .then((data) => {
+                console.log(data.id)
                 let feat = JSON.parse(data.feature);
                 if(feat.length === 0){return;}
                 setTitle(data.title);
@@ -108,7 +111,7 @@ function MUICommunityPreviewModal() {
             })
             .catch(err => console.log(err));
         }
-    }, [store.currentModal, update]);
+    }, [store.currentModal]);
 
     function handleCloseModal(event) {
         store.changeModal("NONE");
@@ -199,6 +202,7 @@ function MUICommunityPreviewModal() {
     }
 
     function handleDislike() {
+        console.log(previewId)
         fetch(process.env.REACT_APP_API_URL + 'community/dislikeCommunityMap', {
             method: "POST",
             credentials: 'include',
@@ -211,11 +215,12 @@ function MUICommunityPreviewModal() {
         })
         .then((res) => res.json())
         .then((data) => {
-            console.log("data for disliking", data);
+            console.log("data for disliking", JSON.parse(JSON.stringify(data)));
             if (data.status === "DISLIKED") {
                 setDislikes("red");
                 setLikes("black");
             } else {
+                console.log("UNDISLIKED")
                 setDislikes("black");
             }
             setLikeLength(data.likeLength);

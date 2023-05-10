@@ -143,8 +143,14 @@ class communityController {
             var currentOwner = await User.findOne({ username: username });
             var availableCommunityPreview = await CommunityPreview.find({likes: {$in: [currentOwner._id]}}); 
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
-
-            if (availableCommunityPreview.length > 0) { // already liked, so unlike it
+            let arr =  currentCommunityPreview.likes;
+            let found = false;
+            for(let i = 0;i<arr.length;i++){
+                if(arr[i]===currentOwner._id.toString()){
+                    found = true;
+                }
+            }
+            if (found==true) { // already liked, so unlike it
                 var communityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $pull: { likes: currentOwner._id.toString() } }, {new: true});
                 await communityPreview.save();
                 return res.status(200).json({status: 'UNLIKED', likeLength: communityPreview.likes.length, dislikeLength:  communityPreview.dislikes.length });
@@ -171,15 +177,28 @@ class communityController {
         try {
             var { id } = req.body;
             let username = req.cookies.values.username;
-
+            
             var currentOwner = await User.findOne({ username: username });
+            console.log(id)
+            
             var availableCommunityPreview = await CommunityPreview.find({dislikes: {$in: [currentOwner._id]}}); 
             var currentCommunityPreview = await CommunityPreview.findOne({ _id: new mongoose.Types.ObjectId(id) });
-
-            if (availableCommunityPreview.length > 0) {
+            console.log(currentCommunityPreview.dislikes)
+            let arr =  currentCommunityPreview.dislikes;
+            
+            let found = false;
+            console.log(currentOwner._id.toString())
+            for(let i = 0;i<arr.length;i++){
+                console.log(arr[i])
+                if(arr[i]===currentOwner._id.toString()){
+                    found = true;
+                }
+            }
+            console.log(found)
+            if (found ==true) {
                 var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $pull: { dislikes: currentOwner._id.toString() } }, {new: true});
                 await currentCommunityPreview.save();
-                return res.status(200).json({status: 'UNDISLIKED', likeLength: currentCommunityPreview.likes.length, dislikeLength:  currentCommunityPreview.dislikes.length});
+                return res.status(200).json({status: 'UNDISLIKED', likeLength: currentCommunityPreview.likes.length, dislikeLength:  currentCommunityPreview.dislikes.length, availableCommunityPreview: availableCommunityPreview});
             } else {
                 var currentLikes = await CommunityPreview.find({likes: {$in: [currentOwner._id]}});
                 if (currentLikes) {
