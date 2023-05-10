@@ -331,13 +331,18 @@ function MapViewerScreen(props) {
     }
 
     const handleKeyPress = (e) => {
-        console.log(e)
+        // console.log(e)
         if (e.key === 'z' && e.ctrlKey)
             store.jstps.undoTransaction()
         else if (e.key === 'y' && e.ctrlKey)
             store.jstps.doTransaction()
     }
-
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyPress);
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress);
+        };
+    }, []);
     function handleChangeMapName(event) {
         fetch(process.env.REACT_APP_API_URL + 'map/changeMapNameById', {
             method: "POST",
@@ -380,7 +385,7 @@ function MapViewerScreen(props) {
         return wrappedButton
     }
     return (
-        <div className="App" onKeyDown={handleKeyPress}>
+        <div className="App" >
             <ImportModal
                 handleGeoJson={handleGeoJson}
                 handleShpDbfFile={handleShpDbfFile}
