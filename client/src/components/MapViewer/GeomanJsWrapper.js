@@ -248,7 +248,7 @@ function GeomanJsWrapper(props) {
             let numVertices = 0;
                 workingLayer.on('pm:vertexadded', (e) => {
                     let newCoords = [e.latlng.lng,e.latlng.lat]
-                    constructedNewPolyRegion.current.geometry.coordinates[0].push(newCoords)
+                    
                     if (splitClickedRef.current == true) {
                        console.log("A")
                         numVertices++;
@@ -258,6 +258,8 @@ function GeomanJsWrapper(props) {
                             splitClickedRef.current = false
                         }
                        
+                    }else{
+                        constructedNewPolyRegion.current.geometry.coordinates[0].push(newCoords)
                     }
                 });
             // workingLayer.removeFrom(map)
@@ -330,16 +332,24 @@ function GeomanJsWrapper(props) {
                         let thickLinePolygon = turf.convex(turf.explode(thickLineCorners));
                         let clipped = turf.difference(polygons[i], thickLinePolygon);
                        
-                        
+                        let name2 = geoJsonMapData.features[i].properties.name
                         if(polygons[i].geometry.type=="Polygon"){
                             let num = 1;
+                            
                             clipped.geometry.coordinates.forEach((coordinate)=>{
                                 let newPolygon = turf.polygon(coordinate)
-                                newPolygon.properties.name = geoJsonMapData.features[i].properties.name + num
+                                
+                                newPolygon.subRegionColor = geoJsonMapData.features[i].subRegionColor
+                                if(num==1)newPolygon.properties = geoJsonMapData.features[i].properties
+                                newPolygon.properties.name = (name2)+(num++)
+                               
                                 geoJsonMapData.features.push(newPolygon)
-                                num++
+                              
                             })
                         }else{
+                           clipped.subRegionColor = geoJsonMapData.features[i].subRegionColor
+                           
+                            clipped.properties = geoJsonMapData.features[i].properties
                             geoJsonMapData.features.push(clipped)
                         }
                         removeToolTip(geoJsonMapData.features[i].properties.name)
@@ -352,6 +362,7 @@ function GeomanJsWrapper(props) {
                     return feature !== "";
                 });
                     geoJsonMapData.features=features;
+                    console.log(geoJsonMapData)
                 props.updateEditor()
                 lineLatlngsRef.current = []
         }

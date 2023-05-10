@@ -78,7 +78,8 @@ function MUIChangeMapNameModal(props) {
                         style: {
                           fontSize:"1rem",
                           height: "0vw"
-                        }}} />
+                        },
+                        maxLength:18}} />
         <Box>
     <input type="button" 
                  class="modal-confirm-button" 

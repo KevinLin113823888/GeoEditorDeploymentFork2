@@ -45,6 +45,7 @@ function MapEditor(props) {
     let dragStartCoords = []
     const geoJsonMapData = store.currentMapData;
     
+    
     useEffect(() => {
         function handleBeforeUnload() {
             
@@ -936,7 +937,7 @@ function MapEditor(props) {
                     
                     <MapContainer id="mapitem"
 
-                style={{ height: "80vh",
+                style={{ height: "85vh",
                 backgroundColor: store.currentMapData.graphicalData.backgroundColor }}sx={{marginTop:"30vh"}} zoom={store.zoomLevel} center={store.centerCoords}
                 editable={true}
                 >
