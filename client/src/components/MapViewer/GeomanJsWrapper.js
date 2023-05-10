@@ -248,7 +248,7 @@ function GeomanJsWrapper(props) {
             let numVertices = 0;
                 workingLayer.on('pm:vertexadded', (e) => {
                     let newCoords = [e.latlng.lng,e.latlng.lat]
-                    constructedNewPolyRegion.current.geometry.coordinates[0].push(newCoords)
+                    
                     if (splitClickedRef.current == true) {
                        console.log("A")
                         numVertices++;
@@ -258,6 +258,8 @@ function GeomanJsWrapper(props) {
                             splitClickedRef.current = false
                         }
                        
+                    }else{
+                        constructedNewPolyRegion.current.geometry.coordinates[0].push(newCoords)
                     }
                 });
             // workingLayer.removeFrom(map)
