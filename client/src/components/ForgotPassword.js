@@ -65,7 +65,7 @@ function ForgotPassword() {
                   Reset your password
                 </Typography>
                 <Typography paddingTop='1%' component="h3" variant="h6" >
-                    Enter your email address and we will send you a recovery code. 
+                  Enter your email address and we will send you a recovery code. 
                 </Typography>
                 <Box paddingTop= '2%'>
                     <TextField

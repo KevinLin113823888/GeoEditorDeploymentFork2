@@ -39,7 +39,7 @@ class userController {
         }
         catch(e){
             console.log(e.toString())
-            return res.status(400).json({error: true, message: e.toString() });
+            return res.status(400).json({status: "ERROR", error: true, message: e.toString() });
         }
     }
 
@@ -74,8 +74,8 @@ class userController {
         catch (e){
             console.log(e.toString());
             if (!user)
-                return res.status(400).json({ error: true, message: "User is empty in the request body" });
-            return res.status(400).json({error: true, message: e.toString() });
+                return res.status(400).json({ status: "ERROR", error: true, message: "User is empty in the request body" });
+            return res.status(400).json({status: "ERROR", error: true, message: e.toString() });
         }
     }
 
@@ -85,10 +85,10 @@ class userController {
 
             var user = await userInfoSchema.findOne({username : username});
             if(!user)
-                throw new Error ("Invalid username")
+                throw new Error("Please fill in a valid username")
             var isMatch = await bcrypt.compare(password, user.password);
             if(!isMatch)
-                throw new Error("Invalid password")
+                throw new Error("Please fill in a valid password")
             const token = auth.signToken(user._id);
             
             res.cookie('values', { username: user.username, token: token }, {
@@ -99,16 +99,13 @@ class userController {
         }
         catch(e){
             console.log(e.toString())
-            return res.status(400).json({error: true, message: e.toString()});
+            return res.status(400).json({status: "ERROR", error: true, message: e.toString()});
         }
     }
 
     static async logout(req, res, next) {
         try{
-            // res.cookies.set('values', {maxAge: 0}).json({status: 'OK'});
-            console.log("heyyyyy");
             res.clearCookie('values');
-            console.log(req.cookies.values);
             return res.json({status: 'ok'});
         }catch (e){
             console.log(e)
@@ -141,7 +138,7 @@ class userController {
 
             return res.status(200).json({status: 'OK'});
         }catch(e){
-            return res.status(400).json({error: true, message: e.toString()});
+            return res.status(400).json({status: "ERROR", error: true, message: e.toString()});
         }
     }
 
@@ -150,7 +147,7 @@ class userController {
             var { email } = req.body;
             var emailUser = await userInfoSchema.findOne({email});
             if(emailUser === null){
-                throw new Error("email is null")
+                throw new Error("email is does not exist or is wrong")
             }
 
             let passwordRecoveryCode = makeKey()
@@ -175,7 +172,7 @@ class userController {
 
             return res.status(200).json({status: 'OK'});
         }catch(e){
-            return res.status(400).json({error: true, message: e.toString()});
+            return res.status(400).json({status: "ERROR", error: true, message: e.toString()});
         }
     }
 
@@ -196,7 +193,7 @@ class userController {
 
             return res.status(200).json({status: 'OK'});
         }catch(e){
-            return res.status(400).json({ error: true, message: e.toString()});
+            return res.status(400).json({ status: "ERROR", error: true, message: e.toString()});
         }
     }
 
@@ -216,7 +213,7 @@ class userController {
     
             return res.status(200).json({status: 'OK'});
         }catch(e){
-            return res.status(400).json({error: true, message: e.toString()});
+            return res.status(400).json({status: "ERROR", error: true, message: e.toString()});
         }
     }
 
@@ -242,7 +239,7 @@ class userController {
             return res.status(200).clearCookie("values").json({status: 'OK'});
         }
         catch(e){
-            return res.status(400).json({error: true, message: e.toString()});
+            return res.status(400).json({status: "ERROR", error: true, message: e.toString()});
         }
     }
 }

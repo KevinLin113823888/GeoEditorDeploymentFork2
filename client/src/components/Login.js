@@ -1,4 +1,4 @@
-import { React, useContext } from "react";
+import { React, useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,12 +8,13 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import Alert from '@mui/material/Alert';
 import { GlobalStoreContext } from '../store'
 
 function Login() {
   const navigate = useNavigate();
   const { store } = useContext(GlobalStoreContext);
-
+  const [error, setError] = useState('');
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -34,15 +35,25 @@ function Login() {
         }),
       })
       .then((res) => {
-        res.json();
         if (res.status === 200) {
           console.log("LOGGED IN, going to your maps");
           navigate('/map');
-          store.changeScreen("yourmap")
+          store.changeScreen("yourmap");
+        } else {
+          return res.json();
         }
+      })
+      .then((data) => {
+        setError([false, data.message]);
+        console.log(error);
       })
       .catch(err => console.log(err));
     }
+  }
+
+  let err = <></>;
+  if (error !== '') {
+    err = <Alert severity="error">{error[1]}</Alert>
   }
 
   return (
@@ -95,6 +106,7 @@ function Login() {
           >
             Login
           </Button>
+          {err}
           <Grid container>
             <Grid item xs>
                 <Link  data-cy="forgotpassword-link"  variant="body2"
