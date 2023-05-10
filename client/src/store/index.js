@@ -25,6 +25,7 @@ export const GlobalStoreActionType = {
     SET_SCREENSHOT: "SET_SCREENSHOT",
     SET_CENTER_SCREEN: "SET_CENTER_SCREEN",
     DOWNLOAD_PNG: "DOWNLOAD_PNG",
+    COMMUNITY_PNG: "COMMUNITY_PNG",
 }
 
 export const CurrentModal = {
@@ -87,6 +88,7 @@ function GlobalStoreContextProvider(props) {
             setScreenshot: false,
             setCenterScreen: false,
             downloadPng: false,
+            communityPng: false,
         };
     });
     
@@ -239,6 +241,12 @@ function GlobalStoreContextProvider(props) {
                     ...store,
                     downloadPng : payload.downloadPng,
                     currentModal: "NONE"
+                });
+            }
+            case GlobalStoreActionType.COMMUNITY_PNG: {
+                return setStore({
+                    ...store,
+                    communityPng : payload.communityPng,
                 });
             }
             default:
@@ -402,6 +410,14 @@ function GlobalStoreContextProvider(props) {
             type: GlobalStoreActionType.DOWNLOAD_PNG,
             payload: {
                 downloadPng: downloadPng
+            }
+        });
+    }
+    store.setCommunityPng=function(communityPng){
+        storeReducer({
+            type: GlobalStoreActionType.COMMUNITY_PNG,
+            payload: {
+                communityPng: communityPng
             }
         });
     }

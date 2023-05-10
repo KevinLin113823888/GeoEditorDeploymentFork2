@@ -23,6 +23,7 @@ import CommentCard from './CommentCard.js'
 import MapEditor from "./MapViewer/MapEditor";
 import GeomanJsWrapper from "./MapViewer/GeomanJsWrapper";
 import {FeatureGroup, GeoJSON, LayerGroup, MapContainer, TileLayer} from "react-leaflet";
+import CommunityScreenshot from './CommunityScreenshot';
 
 const style = {
     position: 'absolute',
@@ -143,6 +144,11 @@ function MUICommunityPreviewModal() {
         )
         a.download = "geoJson.geo.json"
         a.click()
+    }
+
+    function handleDownloadPNG(){
+        closeDownloadModal()
+        store.setCommunityPng(true);
     }
 
     function handleReport() {
@@ -348,6 +354,9 @@ function MUICommunityPreviewModal() {
                                     }} zoom={2} center={[20, 100]}
                                     editable={false}
                                 >
+
+                            <CommunityScreenshot/>
+
                                     <FeatureGroup>
                                         {(geoJson !== null)?
                                             <GeoJSON data={geoJson} onEachFeature={onEachFeature} />
@@ -523,9 +532,9 @@ function MUICommunityPreviewModal() {
                         value='Shapefile/DBF zip' />
                     <input type="button"
                         className="modal-confirm-button"
-                        // onClick={() => {
-                        //     handleFork();}}
-                        value='Jpeg' />
+                        onClick={() => {
+                            handleDownloadPNG();}}
+                        value='PNG' />
                 </Box>
             </Modal>
 
