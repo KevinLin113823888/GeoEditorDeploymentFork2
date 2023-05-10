@@ -40,6 +40,9 @@ function MapCard(props) {
         .catch(err => console.log(err));
     }
     function handleClick(event) {
+        store.jstps.clearAllTransactions()
+        store.currentMapData = {}
+
         store.changeScreen("mapEditor")
         console.log("clicking map of ", id);
         event.stopPropagation();
