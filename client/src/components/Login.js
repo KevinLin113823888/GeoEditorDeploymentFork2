@@ -44,8 +44,7 @@ function Login() {
         }
       })
       .then((data) => {
-        setError([false, data.message]);
-        console.log(error);
+        setError(data.message);
       })
       .catch(err => console.log(err));
     }
@@ -53,7 +52,7 @@ function Login() {
 
   let err = <></>;
   if (error !== '') {
-    err = <Alert severity="error">{error[1]}</Alert>
+    err = <Alert severity="error">{error}</Alert>
   }
 
   return (
@@ -106,7 +105,6 @@ function Login() {
           >
             Login
           </Button>
-          {err}
           <Grid container>
             <Grid item xs>
                 <Link  data-cy="forgotpassword-link"  variant="body2"
@@ -122,6 +120,7 @@ function Login() {
                 </Link>
             </Grid>
           </Grid>
+          {err}
         </Box>
       </Box>
     </Container>

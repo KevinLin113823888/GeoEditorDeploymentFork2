@@ -6,10 +6,12 @@ import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import Alert from '@mui/material/Alert';
 
 function ForgotPassword() {
     const [email, setEmail] = useState("");
-    const [displayedCode, setDisplayedCode] = useState("");
+    const [displayedCode, setDisplayedCode] = useState([false, ""]);
+    const [recoveryCodeError, setRecoveryCodeError] = useState("");
 
     function postReqSendPasswordRecoveryCode() {
         if (email !== "") {
@@ -20,18 +22,33 @@ function ForgotPassword() {
                 },
                 body: JSON.stringify({ email: email }),
             })
-            .then((res) => res.json())
+            .then((res) => {
+                return res.json();
+            })
+            .then((data) => {
+                console.log(data);
+                if (data.status === "ERROR") {
+                    setRecoveryCodeError(data.message);
+                } else {
+                    setRecoveryCodeError('');
+                }
+            })
             .catch(err => console.log(err));
         }
     }
 
     function putReqChangePassword(event) {
+        let bug = false;
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const passwordRecoveryCode = formData.get('recoveryCode');
         const password = formData.get('password');
+        if (password.length < 6) {
+            setDisplayedCode([true, "Invalid password size"]);
+            bug = true;
+        }
 
-        if (email !== "") {
+        if (email !== "" && !bug) {
             fetch(process.env.REACT_APP_API_URL + 'user/changePassword', {
                 method: "PUT",
                 headers: {
@@ -43,11 +60,14 @@ function ForgotPassword() {
                     password: password
                 }),
             })
-            .then((res) =>
-                res.json())
+            .then((res) => {
+                return res.json()
+            })
             .then((data) => {
                 if(data.status==='OK'){
-                    setDisplayedCode("password sucessfully reset")
+                    setDisplayedCode([false, "password sucessfully reset"]);
+                } else {
+                    setDisplayedCode([true, data.message]);
                 }
             })
             .catch(err => console.log(err));
@@ -56,6 +76,20 @@ function ForgotPassword() {
 
     function changeEmail(event) {
         setEmail(event.target.value);
+    }
+
+    let recErr = <></>;
+    if (recoveryCodeError !== '') {
+        recErr = <Alert severity="error">{recoveryCodeError}</Alert>
+    }
+
+    let passErr = <></>;
+    if (displayedCode[1] !== '') {
+        if (displayedCode[0] == false) {
+            passErr = <Alert severity="success">{displayedCode[1]}</Alert>
+        } else {
+            passErr = <Alert severity="error">{displayedCode[1]}</Alert>
+        }
     }
 
     return (
@@ -80,6 +114,7 @@ function ForgotPassword() {
                         Send Password Recovery Code
                     </Button>
                 </Box>
+                {recErr}
                 <Box paddingTop= '3%'>
                     <Box
                         display="flex"
@@ -131,10 +166,11 @@ function ForgotPassword() {
                     >
                         Confirm
                     </Button>
+                    {passErr}
                 </Box>
-                <Typography component="h3" variant="h5" color="#FF0000">
+                {/* <Typography component="h3" variant="h5" color="#FF0000">
                     {displayedCode}
-                </Typography>
+                </Typography> */}
             </Box>
         </div>
     );

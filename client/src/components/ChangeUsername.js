@@ -1,4 +1,4 @@
-import {React} from "react";
+import {React, useState} from "react";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button';
@@ -6,16 +6,25 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
+import Alert from '@mui/material/Alert';
+
 
 function ChangeUsername() {
+  const [error, setError] = useState("");
+
   function handleSubmit(event) {
+    let bug = false;
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const email = formData.get('email');
     const password = formData.get('password');
-    const username = formData.get('new username');
+    const username = formData.get('newusername');
+    if (username.length < 6) {
+      setError("Invalid new username");
+      bug = true;
+    }
 
-    if (email !== "" && password !== "" && username != "") {
+    if (email !== "" && password !== "" && bug === false) {
       fetch(process.env.REACT_APP_API_URL + 'user/changeUsername', {
         method: "POST",
         headers: {
@@ -29,9 +38,19 @@ function ChangeUsername() {
             }),
       })
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        console.log(data);
+        if (data.status === "ERROR") {
+          setError(data.message);
+        }
+      })
       .catch(err => console.log(err));
     }
+  }
+
+  let err = <></>;
+  if (error !== '') {
+    err = <Alert severity="error">{error}</Alert>
   }
 
   return (
@@ -57,8 +76,8 @@ function ChangeUsername() {
               <TextField
                 required
                 fullWidth
-                name="Email Address"
-                label="Email Address"
+                name="email"
+                label="email"
                 id="email"
                 autoComplete="new-email"
                 autoFocus
@@ -68,8 +87,8 @@ function ChangeUsername() {
               <TextField
                 required
                 fullWidth
-                name="Password"
-                label="Password"
+                name="password"
+                label="password"
                 type="password"
                 id="password"
                 autoComplete="new-password"
@@ -79,10 +98,10 @@ function ChangeUsername() {
               <TextField
                 required
                 fullWidth
-                name="New Username"
-                label="New Username"
-                type="new username"
-                id="new username"
+                name="newusername"
+                label="newusername"
+                type="newusername"
+                id="newusername"
                 autoComplete="new-username"
               />
             </Grid>
@@ -96,6 +115,7 @@ function ChangeUsername() {
           >
             Confirm
           </Button>
+          {err}
         </Box>
       </Box>
     </div>

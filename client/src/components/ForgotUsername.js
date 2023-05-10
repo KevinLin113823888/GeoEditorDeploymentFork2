@@ -5,9 +5,12 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
+import Alert from '@mui/material/Alert';
+
 
 function ForgotUsername() {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState('');
 
   function postReq() {
     if (email !== "") {
@@ -19,12 +22,22 @@ function ForgotUsername() {
         body: JSON.stringify({ email: email }),
       })
       .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "ERROR"){
+          setError(data.message);
+        }
+      })
       .catch(err => console.log(err));
     }
   }
 
   function changeEmail(event) {
     setEmail(event.target.value);
+  }
+
+  let err = <></>;
+  if (error !== '') {
+    err = <Alert severity="error">{error}</Alert>
   }
 
   return (
@@ -54,6 +67,7 @@ function ForgotUsername() {
             Send Username to Email
         </Button>
         </Box>
+        {err}
       </Box>
     </div>
   );

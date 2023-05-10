@@ -116,10 +116,11 @@ class userController {
     static async forgotUsername(req, res) {
         try{
             var { email } = req.body;
+            console.log("email", email);
 
             var emailUser = await userInfoSchema.findOne({email});
             if(emailUser === null){
-                throw new Error("email is null")
+                throw new Error("email is null or is not valid");
             }
 
             let text = "Here is the password for email address " + email + ": " + emailUser.username;
@@ -147,7 +148,7 @@ class userController {
             var { email } = req.body;
             var emailUser = await userInfoSchema.findOne({email});
             if(emailUser === null){
-                throw new Error("email is does not exist or is wrong")
+                throw new Error("Email is does not exist or is wrong")
             }
 
             let passwordRecoveryCode = makeKey()
@@ -172,6 +173,7 @@ class userController {
 
             return res.status(200).json({status: 'OK'});
         }catch(e){
+            console.log(e.toString());
             return res.status(400).json({status: "ERROR", error: true, message: e.toString()});
         }
     }
@@ -180,10 +182,9 @@ class userController {
         try{
             var { email, passwordRecoveryCode, password } = req.body;
             var emailUser = await userInfoSchema.findOne({email});
-            console.log(emailUser.passwordRecoveryCode, passwordRecoveryCode);
 
             if(emailUser.passwordRecoveryCode !== passwordRecoveryCode){
-                throw new Error("invalid Password Recovery Code")
+                throw new Error("Invalid Password Recovery Code")
             }
             var hashpswd = await bcrypt.hash(password, 9);
 
@@ -201,7 +202,7 @@ class userController {
         try{
             var { email, password, newUsername } = req.body;
 
-            var emailUser = await userInfoSchema.findOne({email});
+            var emailUser = await userInfoSchema.findOne({email: email});
             if(!emailUser)
                 throw new Error ("Invalid email")
             var isMatch = await bcrypt.compare(password, emailUser.password);
