@@ -49,7 +49,7 @@ export default class TextboxTPS extends jsTPS_Transaction {
 
         if(this.type === "add"){
             let newTextBox = {
-                overlayText:"HELLOTHERER",coords:{
+                overlayText:"TextBox",coords:{
                     lat:this.textBoxCoord.lat,
                     lng:this.textBoxCoord.lng}
             }

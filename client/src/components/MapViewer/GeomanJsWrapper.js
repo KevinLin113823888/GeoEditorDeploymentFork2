@@ -248,12 +248,11 @@ function GeomanJsWrapper(props) {
         });
         map.on('pm:drawend', ({ workingLayer }) => {
 
-            if(constructedNewPolyRegion.current.geometry.coordinates.length<=1 ){
-                return
-            }
-
             if(shapeRef.current=="Polygon"){
-               
+               console.log(constructedNewPolyRegion.current)
+                if(constructedNewPolyRegion.current.geometry.coordinates[0].length>=3 ){
+                   
+                
             let newPoly = constructedNewPolyRegion.current
             if (newPoly.geometry.coordinates[0].length > 0) {
                 let firstCoord = newPoly.geometry.coordinates[0][0];
@@ -265,9 +264,12 @@ function GeomanJsWrapper(props) {
                 let center = map.getCenter()
                 store.setAddRegion(map.getZoom(), [center.lat,center.lng], "MAP_ADD_REGION_NAME")
             }
+            }
             //clear what we have right now.
             constructedNewPolyRegion.current = JSON.parse(JSON.stringify(originalNewPolygon))
             }else{
+                console.log(constructedNewPolyRegion.current)
+                
                 splitRegion()      
             }
         });

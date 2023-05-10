@@ -783,7 +783,6 @@ function MapEditor(props) {
                 });
             }
             regionsClicked = []
-        
     };
     function handleUpdate(){
         setUpdate(update=>update+1)
