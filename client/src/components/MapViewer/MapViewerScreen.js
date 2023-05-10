@@ -417,8 +417,8 @@ function MapViewerScreen(props) {
                             paddingLeft: "2%", marginTop: "2%", marginBottom: "0", maxWidth: '80%', fontFamily: 'Helvetica',width: '100%'
                         }}>
                         <InputGroup className="mb-3">
-                            <input type="text" className="form-control" id="validationCustom01" value={mapName} onChange={e => { setMapChange(e.target.value) }}
-                                onBlur={handleChangeMapName} required style={{ fontSize: "2.2rem", fontWeight: "bold", border: "none",paddingTop: "0rem",paddingBottom:"0",marginBottom:"0" }}
+                            <input type="text" maxLength={18} className="form-control" id="validationCustom01" value={mapName} onChange={e => { setMapChange(e.target.value) }}
+                                onBlur={handleChangeMapName}  required style={{ fontSize: "2.2rem", fontWeight: "bold", border: "none",paddingTop: "0rem",paddingBottom:"0",marginBottom:"0" }}
                             />
                         </InputGroup>
                     </Box>
