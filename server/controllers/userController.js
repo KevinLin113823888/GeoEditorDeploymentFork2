@@ -181,7 +181,6 @@ class userController {
     static async changePassword(req, res) {
         try{
             var { email, passwordRecoveryCode, password } = req.body;
-            console.log(email, passwordRecoveryCode, password);
             var emailUser = await userInfoSchema.findOne({email});
 
             if(emailUser.passwordRecoveryCode !== passwordRecoveryCode){
@@ -203,7 +202,7 @@ class userController {
         try{
             var { email, password, newUsername } = req.body;
 
-            var emailUser = await userInfoSchema.findOne({email});
+            var emailUser = await userInfoSchema.findOne({email: email});
             if(!emailUser)
                 throw new Error ("Invalid email")
             var isMatch = await bcrypt.compare(password, emailUser.password);
