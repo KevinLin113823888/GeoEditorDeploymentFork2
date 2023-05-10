@@ -98,39 +98,39 @@ function ForgotPassword() {
                     </Box>
                 </Box>
                 <Box component="form" noValidate onSubmit={putReqChangePassword} sx={{ mt: 2, fontSize: "1vw"}}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                    <TextField
-                        required
-                        fullWidth
-                        name="Recovery code"
-                        label="Recovery code"
-                        id="recoveryCode"
-                        autoComplete="new-recoveryCode"
-                        autoFocus
-                    />
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                        <TextField
+                            required
+                            fullWidth
+                            name="recoveryCode"
+                            label="recoveryCode"
+                            id="recoveryCode"
+                            autoComplete="new-recoveryCode"
+                            autoFocus
+                        />
+                        </Grid>
+                        <Grid item xs={12}>
+                        <TextField
+                            required
+                            fullWidth
+                            name="password"
+                            label="New Password"
+                            type="password"
+                            id="password"
+                            autoComplete="new-password"
+                        />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                    <TextField
-                        required
+                    <Button
+                        data-cy="submit-button"
+                        type="submit"
                         fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="new-password"
-                    />
-                    </Grid>
-                </Grid>
-                <Button
-                    data-cy="submit-button"
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 2, mb: 1 , bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a',color:"white" }}}
-                >
-                    Confirm
-                </Button>
+                        variant="contained"
+                        sx={{ mt: 2, mb: 1 , bgcolor: '#4F46E5', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: '#3c348a',color:"white" }}}
+                    >
+                        Confirm
+                    </Button>
                 </Box>
                 <Typography component="h3" variant="h5" color="#FF0000">
                     {displayedCode}
