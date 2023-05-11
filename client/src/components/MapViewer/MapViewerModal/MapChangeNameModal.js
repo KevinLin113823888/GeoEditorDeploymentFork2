@@ -29,13 +29,17 @@ function MapMergeChangeRegionNameModal(props) {
     const [mergeRegionName, setMergeRegionName] = useState("");
 
     function handleChangeMapName(event) {
+        console.log("button click for handle change map name")
+        console.log(props.clickedLayer)
 
+        props.clickedLayer.target.feature.properties.name = mergeRegionName
+        store.updateEditor()
+        // store.updateViewer()
+        //lets just do all the jstps here for region change im too lazy for this
         store.changeModal("NONE");
-        props.handleMerge(mergeRegionName)
 
     }
     function handleCloseModal(event) {
-        props.handleCancelMergeSelection()
         store.changeModal("NONE");
     }
     function handleUpdateSearch(event) {
@@ -44,7 +48,7 @@ function MapMergeChangeRegionNameModal(props) {
 
     return (
         <Modal
-            open={store.currentModal === CurrentModal.MAP_MERGE_REGION_NAME}
+            open={store.currentModal === "CHANGE_REGION_NAME_MODAL"}
             onClick={handleCloseModal}
         >
             <Box sx={style}

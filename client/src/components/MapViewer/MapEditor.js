@@ -25,6 +25,7 @@ import RegionTPS from "../../transactions/RegionTPS";
 import VertexTPS from "../../transactions/VertexTPS";
 import ColorTPS from "../../transactions/ColorTPS";
 import MergeAndSplitTPS from "../../transactions/MergeAndSplitTPS";
+import MapChangeNameModal from "./MapViewerModal/MapChangeNameModal";
 
 function MapEditor(props) {
   
@@ -44,6 +45,8 @@ function MapEditor(props) {
 
     let dragStartCoords = []
     const geoJsonMapData = store.currentMapData;
+
+    const [clickedLayer,setClickedLayer] = useState(null);
     
     
     useEffect(() => {
@@ -701,9 +704,16 @@ function MapEditor(props) {
 
         });
 
-        // layer.on({
-        //     dblclick: nameChange.bind(this)
-        // });
+        //right click to change region, absolutely spaghetti
+
+        //keywordto
+
+        layer.on('contextmenu', function (e) {
+            setClickedLayer(e)
+            store.changeModal("CHANGE_REGION_NAME_MODAL")
+        })
+        layer.on({
+        });
         layer.on('pm:vertexremoved', e => {
             console.log("vertexremoved")
             handleRemoveVertex(e)
@@ -928,6 +938,10 @@ function MapEditor(props) {
             <MapMergeChangeRegionNameModal
                 handleMerge={handleMerge}
                 handleCancelMergeSelection = {handleCancelMergeSelection}
+            />
+            <MapChangeNameModal
+                clickedLayer = {clickedLayer}
+
             />
             <MapAddRegionModal
                 // handleAddRegion={handleAddRegion}
