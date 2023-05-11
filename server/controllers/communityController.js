@@ -29,7 +29,8 @@ class communityController {
             var currentCommunityPreview = await CommunityPreview.findOne({ mapCard: new mongoose.Types.ObjectId(id) });
             var currentCommunityData = await MapData.findOne({ _id: currentCommunityPreview.mapData });
             var currentCommunityCard = await MapCard.findOne({ mapData: currentCommunityData._id });
-            var currentOwner = await User.findOne({ _id: currentCommunityCard.owner });
+            //var currentOwner = await User.findOne({ _id: currentCommunityCard.owner });
+            var currentOwner = await User.findOne({ username: username });
             var like = false;
             var dislike = false;
 
