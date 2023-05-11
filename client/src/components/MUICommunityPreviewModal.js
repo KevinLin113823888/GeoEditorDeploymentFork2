@@ -309,9 +309,13 @@ function MUICommunityPreviewModal() {
                 .then((res) => res.json())
                 .then((data) => {
                     if(data.status === 'OK'){
-                        let copy = comments;
-                        copy.unshift(comment);
-                        setComments(copy);
+                        console.log(data)
+                        setComments(a => {
+                            return [{
+                                comment:comment,
+                                username:data.username,
+                            },...a]
+                        });
                     }
                 })
                 .catch(err => console.log(err));

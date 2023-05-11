@@ -287,7 +287,9 @@ class communityController {
             var currentCommunityPreview = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { $push: { comments: { comment: comment, username: username } }});
             currentCommunityPreview.save();
 
-            return res.status(200).json({status: 'OK'});
+            return res.status(200).json({status: 'OK',
+            username:username
+            });
         }
         catch(e){
             console.log(e.toString())
