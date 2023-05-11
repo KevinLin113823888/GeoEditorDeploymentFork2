@@ -14,6 +14,7 @@ import * as turf from '@turf/turf';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { CircleMarker,useMap } from 'react-leaflet';
+import MergeAndSplitTPS from "../../transactions/MergeAndSplitTPS";
 function GeomanJsWrapper(props) {
     //with this we can actually customize all of the buttons
     //we can also add a custom merge button as well.
@@ -115,7 +116,7 @@ function GeomanJsWrapper(props) {
         console.log("called to refresh all of the textbox tootips")
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
-        
+
 
         if(textBoxList===undefined){
             return
@@ -211,39 +212,39 @@ function GeomanJsWrapper(props) {
         map.on('click',(e)=>{
             props.unselect()
             store.setCurrentFeatureIndex(-1);
-           
+
         })
         map.on('pm:create', (e) => {
             if (e.layer instanceof L.Polygon) {
                 shapeRef.current = "Polygon"
-              console.log('A polygon was drawn');
+                console.log('A polygon was drawn');
             } else if (e.layer instanceof L.Polyline) {
-              console.log('A line was drawn');
-              newLineLayer = e.layer;
+                console.log('A line was drawn');
+                newLineLayer = e.layer;
                 shapeRef.current = "Line"
                 console.log(e)
-                
+
             }
-          });
+        });
         map.on('pm:drawstart', ({ workingLayer }) => {
-            
+
             let numVertices = 0;
-                workingLayer.on('pm:vertexadded', (e) => {
-                    let newCoords = [e.latlng.lng,e.latlng.lat]
-                    
-                    if (splitClickedRef.current == true) {
-                       console.log("A")
-                        numVertices++;
-                        lineLatlngsRef.current.push(newCoords)
-                        if (numVertices >= 2) {
-                            map.pm.disableDraw('Line');
-                            splitClickedRef.current = false
-                        }
-                       
-                    }else{
-                        constructedNewPolyRegion.current.geometry.coordinates[0].push(newCoords)
+            workingLayer.on('pm:vertexadded', (e) => {
+                let newCoords = [e.latlng.lng,e.latlng.lat]
+
+                if (splitClickedRef.current == true) {
+                    console.log("A")
+                    numVertices++;
+                    lineLatlngsRef.current.push(newCoords)
+                    if (numVertices >= 2) {
+                        map.pm.disableDraw('Line');
+                        splitClickedRef.current = false
                     }
-                });
+
+                }else{
+                    constructedNewPolyRegion.current.geometry.coordinates[0].push(newCoords)
+                }
+            });
             // workingLayer.removeFrom(map)
         });
         map.on('pm:drawend', ({ workingLayer }) => {
@@ -258,41 +259,41 @@ function GeomanJsWrapper(props) {
             }
 
             if(shapeRef.current=="Polygon"){
-               console.log(constructedNewPolyRegion.current)
+                console.log(constructedNewPolyRegion.current)
                 if(constructedNewPolyRegion.current.geometry.coordinates[0].length>=3 ){
-                   
-                
-            let newPoly = constructedNewPolyRegion.current
-            if (newPoly.geometry.coordinates[0].length > 0) {
-                let firstCoord = newPoly.geometry.coordinates[0][0];
-                newPoly.geometry.coordinates[0].push(firstCoord)
 
-                //to make stateful.
-                store.polygonData = newPoly
-                // props.file.features.push(sameFirstandLastCoords)
-                let center = map.getCenter()
-                store.setAddRegion(map.getZoom(), [center.lat,center.lng], "MAP_ADD_REGION_NAME")
-            }
-            }
-            //clear what we have right now.
-            constructedNewPolyRegion.current = JSON.parse(JSON.stringify(originalNewPolygon))
+
+                    let newPoly = constructedNewPolyRegion.current
+                    if (newPoly.geometry.coordinates[0].length > 0) {
+                        let firstCoord = newPoly.geometry.coordinates[0][0];
+                        newPoly.geometry.coordinates[0].push(firstCoord)
+
+                        //to make stateful.
+                        store.polygonData = newPoly
+                        // props.file.features.push(sameFirstandLastCoords)
+                        let center = map.getCenter()
+                        store.setAddRegion(map.getZoom(), [center.lat,center.lng], "MAP_ADD_REGION_NAME")
+                    }
+                }
+                //clear what we have right now.
+                constructedNewPolyRegion.current = JSON.parse(JSON.stringify(originalNewPolygon))
             }else{
                 console.log(constructedNewPolyRegion.current)
-                
-                splitRegion()      
+
+                splitRegion()
             }
         });
         function removeToolTip(name){
-            
+
             // map.eachLayer((layer) => {
             //     console.log(layer)
             //     if (layer._tooltip) {
             //       let tooltip = layer._tooltip;
-              
+
             //       if (tooltip._content === name) {
             //         console.log("PA")
             //         layer.unbindTooltip();
-                   
+
             //       }
             //     }
             // });
@@ -301,68 +302,100 @@ function GeomanJsWrapper(props) {
         }
 
         function splitRegion(){
-                let polygons = []
-                geoJsonMapData.features.forEach(feature => {
-                    if (feature.geometry.type === "Polygon") {
-                      if (feature.geometry.coordinates[0].length > 3) {
+            let polygons = []
+            geoJsonMapData.features.forEach(feature => {
+                if (feature.geometry.type === "Polygon") {
+                    if (feature.geometry.coordinates[0].length > 3) {
                         polygons.push(turf.polygon(feature.geometry.coordinates));
-                      }
-                    } else if (feature.geometry.type === "MultiPolygon") {
-                      polygons.push(turf.multiPolygon(feature.geometry.coordinates));
                     }
-                  });
-                console.log(polygons)
-                // Check if the new polyline intersects with any polygons
-                let newPolyline = turf.lineString(lineLatlngsRef.current);
-                console.log(newPolyline)
-
-                
-                for (let i = 0; i < polygons.length; i++) {
-                    
-                    //if(polygons[i].geometry.type=="Polygon"){
-                    const intersectionPoints = turf.lineIntersect(newPolyline, polygons[i]);
-                    
-                    if (intersectionPoints.features.length > 1) {
-                        let newPolyline = turf.lineString(lineLatlngsRef.current);
-                        console.log('New polyline intersects with polygon', i);
-                        let offsetLine = turf.lineOffset(newPolyline, 0.00001, { units: 'kilometers' });
-                        let thickLineCorners = turf.featureCollection([newPolyline, offsetLine]);
-                        let thickLinePolygon = turf.convex(turf.explode(thickLineCorners));
-                        let clipped = turf.difference(polygons[i], thickLinePolygon);
-                       
-                        let name2 = geoJsonMapData.features[i].properties.name
-                        if(polygons[i].geometry.type=="Polygon"){
-                            let num = 1;
-                            
-                            clipped.geometry.coordinates.forEach((coordinate)=>{
-                                let newPolygon = turf.polygon(coordinate)
-                                
-                                newPolygon.subRegionColor = geoJsonMapData.features[i].subRegionColor
-                                if(num==1)newPolygon.properties = geoJsonMapData.features[i].properties
-                                newPolygon.properties.name = (name2)+(num++)
-                               
-                                geoJsonMapData.features.push(newPolygon)
-                              
-                            })
-                        }else{
-                           clipped.subRegionColor = geoJsonMapData.features[i].subRegionColor
-                           
-                            clipped.properties = geoJsonMapData.features[i].properties
-                            geoJsonMapData.features.push(clipped)
-                        }
-                        removeToolTip(geoJsonMapData.features[i].properties.name)
-                        geoJsonMapData.features[i]=""
-                    }
-                    
-                    //}
+                } else if (feature.geometry.type === "MultiPolygon") {
+                    polygons.push(turf.multiPolygon(feature.geometry.coordinates));
                 }
-                const features = geoJsonMapData.features.filter(function(feature) {
-                    return feature !== "";
-                });
-                    geoJsonMapData.features=features;
-                    console.log(geoJsonMapData)
-                props.updateEditor()
-                lineLatlngsRef.current = []
+            });
+            console.log(polygons)
+            // Check if the new polyline intersects with any polygons
+            let newPolyline = turf.lineString(lineLatlngsRef.current);
+            console.log(newPolyline)
+
+
+            for (let i = 0; i < polygons.length; i++) {
+
+                //if(polygons[i].geometry.type=="Polygon"){
+                const intersectionPoints = turf.lineIntersect(newPolyline, polygons[i]);
+
+                if (intersectionPoints.features.length > 1) {
+
+
+                    let newPolyline = turf.lineString(lineLatlngsRef.current);
+                    console.log('New polyline intersects with polygon', i);
+                    let offsetLine = turf.lineOffset(newPolyline, 0.00001, { units: 'kilometers' });
+                    let thickLineCorners = turf.featureCollection([newPolyline, offsetLine]);
+                    let thickLinePolygon = turf.convex(turf.explode(thickLineCorners));
+                    let clipped = turf.difference(polygons[i], thickLinePolygon);
+
+                    let name2 = geoJsonMapData.features[i].properties.name
+                    if(polygons[i].geometry.type=="Polygon"){
+
+                        console.log("what is this part of the if")
+                        let num = 1;
+
+
+                        let listOfNewSplitRegionsToAdd = []
+                        clipped.geometry.coordinates.forEach((coordinate)=>{
+                            let newPolygon = turf.polygon(coordinate)
+
+                            newPolygon.subRegionColor = geoJsonMapData.features[i].subRegionColor
+                            if(num==1)newPolygon.properties = geoJsonMapData.features[i].properties
+                            newPolygon.properties.name = (name2)+(num++)
+
+                            // geoJsonMapData.features.push(newPolygon)
+                            listOfNewSplitRegionsToAdd.push(newPolygon)
+                        })
+                        let transactionMappedData = {
+                            type: "split",
+                            store: store,
+                            setStore: setStore,
+                            updateView: store.updateViewer,
+                            updateEditor:store.updateEditor,
+                            oldIndex: i,
+                            listOfNewSplitRegionsToAdd:listOfNewSplitRegionsToAdd,
+                        }
+                        store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
+
+                    }else{
+                        console.log("what is this part of the else")
+
+                        clipped.subRegionColor = geoJsonMapData.features[i].subRegionColor
+
+                        clipped.properties = geoJsonMapData.features[i].properties
+                        geoJsonMapData.features.push(clipped)
+                        //
+                        // let transactionMappedData = {
+                        //     type: "split",
+                        //     store: store,
+                        //     setStore: setStore,
+                        //     updateView: store.updateViewer,
+                        //     updateEditor:store.updateEditor,
+                        //     oldIndex: i,
+                        //     listOfNewSplitRegionsToAdd:[clipped],
+                        // }
+                        // store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
+
+                    }
+                    // removeToolTip(geoJsonMapData.features[i].properties.name)
+                    // geoJsonMapData.features[i]=""
+                }
+
+                //}
+            }
+        //all of these updates are done in the jstps
+            // const features = geoJsonMapData.features.filter(function(feature) {
+            //     return feature !== "";
+            // });
+            // geoJsonMapData.features=features;
+            // console.log(geoJsonMapData)
+            // props.updateEditor()
+            lineLatlngsRef.current = []
         }
         if (leafletContainer) {
             console.log("ADDING")
@@ -420,9 +453,9 @@ function GeomanJsWrapper(props) {
                     finishOn: 'dblclick',
                     tooltips: true,
                     cursorMarker: true
-                  });
+                });
 
-                  
+
             }
             const colorButtonClick=()=>{
                 props.toggleSelectMode()
@@ -430,13 +463,13 @@ function GeomanJsWrapper(props) {
 
 
             const addTextButtonClick = (event) => {
-                    console.log("BUTTON")
-                    if(event===undefined || isAddTextActive.current ){
-                        isAddTextActive.current = false
-                        map.off("click")
-                        return
-                    }
-                        isAddTextActive.current = true
+                console.log("BUTTON")
+                if(event===undefined || isAddTextActive.current ){
+                    isAddTextActive.current = false
+                    map.off("click")
+                    return
+                }
+                isAddTextActive.current = true
 
                 map.on("click", function (e) {
                     // var toolTip = L.tooltip({
@@ -462,7 +495,7 @@ function GeomanJsWrapper(props) {
                 'cancel',
             ]
             const extendedMenuSplitActionCancel=['cancel',
-                
+
             ]
 
             const undoButtonClick = (e) => {
@@ -582,7 +615,7 @@ function GeomanJsWrapper(props) {
                 limitMarkersToCount: 50,
                 removeVertexOn: "contextmenu" //right click on verticies to remove
             });
-           
+
             console.log("mount ")
 
 

@@ -21,6 +21,9 @@ export default class MergeAndSplitTPS extends jsTPS_Transaction {
 
         this.newName = mappedData.newName
         this.oldName = mappedData.oldName
+
+        this.listOfNewSplitRegionsToAdd = mappedData.listOfNewSplitRegionsToAdd
+        this.oldIndex = mappedData.oldIndex
     }
 
     refreshState () {
@@ -44,6 +47,17 @@ export default class MergeAndSplitTPS extends jsTPS_Transaction {
         else if(this.type === "rename"){
             this.newRegion.properties.name = this.newName
         }
+        else if(this.type === "split"){
+            console.log("split jstps")
+            console.log(this.oldIndex)
+
+            this.oldRegion = this.store.currentMapData.features[this.oldIndex]
+            this.store.currentMapData.features.splice(this.oldIndex,1)
+            for(let i=0;i<this.listOfNewSplitRegionsToAdd.length;i++){
+                let newSplitRegion = this.listOfNewSplitRegionsToAdd[i]
+                this.store.currentMapData.features.splice(0,0,newSplitRegion)
+            }
+        }
         this.refreshState()
     }
 
@@ -60,6 +74,12 @@ export default class MergeAndSplitTPS extends jsTPS_Transaction {
         }
         else if(this.type === "rename"){
             this.newRegion.properties.name = this.oldName
+        }
+        else if(this.type === "split"){
+            for(let i=0;i<this.listOfNewSplitRegionsToAdd.length;i++){
+                this.store.currentMapData.features.splice(0,1)
+            }
+            this.store.currentMapData.features.splice(this.oldIndex,0,this.oldRegion)
         }
         this.refreshState()
     }

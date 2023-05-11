@@ -58,13 +58,13 @@ function GlobalStoreContextProvider(props) {
         const storedState = localStorage.getItem('store');
         const storedJSTPS = localStorage.getItem('jsTPS');
  
-        if (storedState) {
-            let storedStateObj = JSON.parse(storedState);
-            //const jstps = storedJSTPS ? JSON.parse(storedJSTPS) : new jsTPS();
-            const jstps = new jsTPS()
-            storedStateObj.jstps= jstps;
-            return storedStateObj
-        }
+        // if (storedState) {
+        //     let storedStateObj = JSON.parse(storedState);
+        //     //const jstps = storedJSTPS ? JSON.parse(storedJSTPS) : new jsTPS();
+        //     const jstps = new jsTPS()
+        //     storedStateObj.jstps= jstps;
+        //     return storedStateObj
+        // }
         return {
             currentModal : CurrentModal.NONE,
             currentMap: {},
