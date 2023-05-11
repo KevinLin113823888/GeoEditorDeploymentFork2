@@ -248,7 +248,14 @@ function GeomanJsWrapper(props) {
         });
         map.on('pm:drawend', ({ workingLayer }) => {
 
-           
+            if(isAddNewRegionPolygon.current){
+                // console.log("dont want this")
+                // console.log(constructedNewPolyRegion.current.geometry.coordinates?.[0])
+                if(constructedNewPolyRegion.current.geometry.coordinates?.[0].length<=1){
+                    // console.log("no")
+                    return
+                }
+            }
 
             if(shapeRef.current=="Polygon"){
                console.log(constructedNewPolyRegion.current)
