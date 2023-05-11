@@ -396,7 +396,13 @@ function GeomanJsWrapper(props) {
                     },
                 },
             ]
-            const mergeButtonClick = () => {
+            const mergeButtonClick = (e) => {
+                console.log(e)
+                if(e===undefined){
+                    console.log("huh")
+                    props.toggleSelectMode(false)
+                    return
+                }
                 console.log("merge button toggle clicked")
                 //on click we toggle to enable the selection of regions
                 props.toggleSelectMode()

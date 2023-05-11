@@ -752,9 +752,11 @@ function MapEditor(props) {
     }
 
 
-    let toggleSelectMode = () => {
+    let toggleSelectMode = (boolean) => {
+        if(boolean!==undefined){
+            // currentRegion.current=!boolean
+        }
 
-        
         if (currentRegion.current !== "") {
             let color = "#3388ff"
             
@@ -872,6 +874,9 @@ function MapEditor(props) {
     }
 
     const handleCancelMergeSelection = () => {
+        toggleSelectMode()
+        toggleSelectMode()
+
         let regionsSelected = regionsSelectedRef.current
         regionsSelectedRef.current = [] //empty everything
         setUpdate(update => update + 1);
