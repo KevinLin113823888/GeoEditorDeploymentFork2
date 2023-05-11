@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from '@mui/icons-material/Close';
+import MergeAndSplitTPS from "../../../transactions/MergeAndSplitTPS";
 const style = {
     position: 'absolute',
     top: '50%',
@@ -25,16 +26,37 @@ const style = {
 };
 
 function MapMergeChangeRegionNameModal(props) {
-    const { store } = useContext(GlobalStoreContext);
+    const { store,setStore } = useContext(GlobalStoreContext);
     const [mergeRegionName, setMergeRegionName] = useState("");
 
     function handleChangeMapName(event) {
         console.log("button click for handle change map name")
         console.log(props.clickedLayer)
+        console.log(store.currentMapData)
 
-        props.clickedLayer.target.feature.properties.name = mergeRegionName
         store.updateEditor()
-        // store.updateViewer()
+
+        // let foundI = -1
+        // for (let i=0;i<store.currentMapData.features.length;i++){
+        //     if(store.currentMapData.features[i]==props.clickedLayer.target.feature){
+        //         console.log("found")
+        //         foundI = i
+        //         break;
+        //     }
+        // }
+
+        let transactionMappedData = {
+            type: "rename",
+            store: store,
+            setStore: setStore,
+            updateView: store.updateViewer,
+            updateEditor:store.updateEditor,
+            // newRegionIndex:foundI,
+            newRegion:props.clickedLayer.target.feature,
+            newName:mergeRegionName,
+            oldName:props.clickedLayer.target.feature.properties.name
+        }
+        store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
         //lets just do all the jstps here for region change im too lazy for this
         store.changeModal("NONE");
 
