@@ -10,7 +10,7 @@ const geo = require('./testGeoJson.json');
 
 describe('Testing user controller', () => {
 
-    let mockCredentials = new mongoose.Types.ObjectId().toString()
+    let mockCredentials = new mongoose.Types.ObjectId().toString().substring(0,8)
     let recoveryCode = ""
     // console.log(mockCredentials)
 
@@ -24,7 +24,7 @@ describe('Testing user controller', () => {
         const response0 = await request(app).post("/user/register").send({
             name: mockCredentials,
             username: mockCredentials,
-            email: mockCredentials,
+            email: mockCredentials+"@"+"gmail.com",
             password: mockCredentials
         })
         const response1 = await agent.post("/user/login").send({
