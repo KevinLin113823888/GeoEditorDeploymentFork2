@@ -36,6 +36,8 @@ function MapViewerScreen(props) {
     const [mapName, setMapChange] = useState('untitled');
     const [keyid, setKeyid] = useState(0)
     const [center, setCenter] = useState(0)
+    const [sshot, setSshot] = useState(0)
+
 
     const { store } = useContext(GlobalStoreContext);
     const [GeoJson, setGeoJson] = [store.currentMapData, store.setCurrentMapData]
@@ -173,7 +175,7 @@ function MapViewerScreen(props) {
                             sendImportReq(temp);
                             setFileExist(true);
                             // setKeyid(keyid => keyid + 1)
-                            setCenter(center => center + 1);
+                            setSshot(sshot => sshot + 1);
                             // store.takeScreenShot(true);
                         }
                     })
@@ -246,7 +248,7 @@ function MapViewerScreen(props) {
             initGeojsonGraphicalData(temp)
             setGeoJson(temp);
             sendImportReq(temp);
-            setCenter(center => center + 1);
+            setSshot(sshot => sshot + 1);
             // store.takeScreenShot(true);
             // setKeyid(keyid => keyid + 1);
         }
@@ -459,7 +461,7 @@ function MapViewerScreen(props) {
                             }}>
                             <MapEditor changeName={changeRegionName} key={keyid} 
                             handleCompress={handleCompress} updateViewer={handleUpdate}
-                                       mapCardId={id} center={center} />
+                                       mapCardId={id} center={center} sshot={sshot} />
                         </Box>
                     <Grid item xs={12} md={11}>
                         <MapLegendFooter />

@@ -66,6 +66,10 @@ function MapEditor(props) {
     useEffect(() =>{
         store.centerScreen(true);
     }, [props.center]);
+    
+    useEffect(() =>{
+        store.takeScreenShot(true);
+    }, [props.sshot]);
    
     function handleAddVertex(e) {
 
