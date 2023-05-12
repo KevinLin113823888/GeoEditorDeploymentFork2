@@ -63,16 +63,16 @@ function GeomanJsWrapper(props) {
 
         //this part adds the tooltip into the graphical data, lets not do that ig
 
-        if(geoJsonTextbox.current.size===0 && textBoxList.length===0)
-        {
+        // if(geoJsonTextbox.current.size===0 && textBoxList.length===0)
+        // {
             console.log("called once ??")
             map.eachLayer(function (layer) {
                 if(layer._latlng!==undefined)
                     geoJsonTextbox.current.add(layer)
             });
-        }
+        // }
 
-    },[])
+    },[context])
 
     const handleTooltipEditJSTPS = (oldText,newText,index) => {
         let mappedData = {
@@ -130,6 +130,7 @@ function GeomanJsWrapper(props) {
                     layer.removeFrom(map);
             }
         });
+        store.updateEditor()
         textBoxList.map(function(val,index){
             var toolTip = L.tooltip({
                 permanent: true,
