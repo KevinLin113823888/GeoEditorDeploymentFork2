@@ -334,7 +334,7 @@ function GeomanJsWrapper(props) {
                     let clipped = turf.difference(polygons[i], thickLinePolygon);
 
                     let name2 = geoJsonMapData.features[i].properties.name
-                    if(polygons[i].geometry.type=="Polygon"){
+                    if(true){
 
                         console.log("what is this part of the if")
                         let num = 1;
@@ -347,54 +347,111 @@ function GeomanJsWrapper(props) {
                             newPolygon.subRegionColor = geoJsonMapData.features[i].subRegionColor
                             if(num==1)newPolygon.properties = geoJsonMapData.features[i].properties
                             newPolygon.properties.name = (name2)+(num++)
-
-                            // geoJsonMapData.features.push(newPolygon)
                             listOfNewSplitRegionsToAdd.push(newPolygon)
                         })
-                        let transactionMappedData = {
-                            type: "split",
-                            store: store,
-                            setStore: setStore,
-                            updateView: store.updateViewer,
-                            updateEditor:store.updateEditor,
-                            oldIndex: i,
-                            listOfNewSplitRegionsToAdd:listOfNewSplitRegionsToAdd,
+
+
+
+                        if(polygons[i].geometry.type=="Polygon")
+                        {
+                            console.log("res of the clips for single poly")
+                            console.log(clipped)
+                            console.log(listOfNewSplitRegionsToAdd)
+                            let transactionMappedData = {
+                                type: "split",
+                                store: store,
+                                setStore: setStore,
+                                updateView: store.updateViewer,
+                                updateEditor:store.updateEditor,
+                                oldIndex: i,
+                                listOfNewSplitRegionsToAdd:listOfNewSplitRegionsToAdd,
+                            }
+                            store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
                         }
-                        store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
+                        else{
 
-                    }else{
-                        console.log("what is this part of the else")
+                            let newPoly = clipped.geometry.coordinates //this one contains the new split region
+                            let existingPoly = geoJsonMapData.features[i].geometry.coordinates
 
-                        clipped.subRegionColor = geoJsonMapData.features[i].subRegionColor
+                            let turfNew = turf.multiPolygon(newPoly)
+                            let turfExist = turf.multiPolygon(existingPoly)
 
-                        clipped.properties = geoJsonMapData.features[i].properties
-                        geoJsonMapData.features.push(clipped)
-                        //
-                        // let transactionMappedData = {
-                        //     type: "split",
-                        //     store: store,
-                        //     setStore: setStore,
-                        //     updateView: store.updateViewer,
-                        //     updateEditor:store.updateEditor,
-                        //     oldIndex: i,
-                        //     listOfNewSplitRegionsToAdd:[clipped],
-                        // }
-                        // store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
+
+
+                            var polygon2 = turf.polygon([[
+                                [0,0],
+                                [0,0],
+                                [0,0],
+                                [0,0],
+                            ]]);
+                            turfExist = turf.difference(turfExist,polygon2 );
+
+                            console.log("turf modified")
+                            console.log(turfNew)
+                            console.log(turfExist)
+                            let existingStrSet = new Map()
+
+                            newPoly = turfNew.geometry.coordinates //this one contains the new split region
+                            existingPoly = turfExist.geometry.coordinates
+
+
+
+
+                            for(let i=0;i<existingPoly.length;i++){
+                                existingStrSet.set(existingPoly[i].toString(),i)
+                            }
+
+
+                            let uniqueNews = []
+                            let notUniqueNews = []
+
+                            for(let i=0;i<newPoly.length;i++){
+                                let newPolyI = newPoly[i].toString()
+                                if(!existingStrSet.has(newPolyI)){
+                                    uniqueNews.push(newPoly[i])
+                                }
+                                else{
+                                    notUniqueNews.push(newPoly[i])
+                                    // existingStrSet.set(newPolyI,-1)
+                                }
+                            }
+                            console.log("so these are not the same")
+                            console.log(uniqueNews)
+                            console.log(notUniqueNews)
+
+                            notUniqueNews.push(uniqueNews.pop())
+
+                            let nu = turf.multiPolygon(notUniqueNews)
+                            nu.subRegionColor = geoJsonMapData.features[i].subRegionColor
+                            nu.properties = geoJsonMapData.features[i].properties
+                            nu.properties.name = "new"
+
+                            let u = turf.multiPolygon(uniqueNews)
+                            u.subRegionColor = geoJsonMapData.features[i].subRegionColor
+                            u.properties = geoJsonMapData.features[i].properties
+                            u.properties.name = "new"
+
+                            console.log("res of the clips for single poly")
+                            listOfNewSplitRegionsToAdd = [nu,u]
+                            console.log(listOfNewSplitRegionsToAdd)
+
+                            let transactionMappedData = {
+                                type: "split",
+                                store: store,
+                                setStore: setStore,
+                                updateView: store.updateViewer,
+                                updateEditor:store.updateEditor,
+                                oldIndex: i,
+                                listOfNewSplitRegionsToAdd:listOfNewSplitRegionsToAdd,
+                            }
+                            store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
+
+                        }
 
                     }
-                    // removeToolTip(geoJsonMapData.features[i].properties.name)
-                    // geoJsonMapData.features[i]=""
                 }
-
-                //}
             }
         //all of these updates are done in the jstps
-            // const features = geoJsonMapData.features.filter(function(feature) {
-            //     return feature !== "";
-            // });
-            // geoJsonMapData.features=features;
-            // console.log(geoJsonMapData)
-            // props.updateEditor()
             lineLatlngsRef.current = []
         }
         if (leafletContainer) {
