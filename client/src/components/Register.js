@@ -29,7 +29,7 @@ function Register() {
     const email = formData.get('email');
     const password = formData.get('password');
     if (password.length < 6) {
-      setError('Password: Please fill in a valid password');
+      setError('Password: Please fill in a valid password. Password must be atleast 6 characters long.');
       bug = true;
     }
     const verifypassword = formData.get('passwordVerify');

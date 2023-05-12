@@ -11,9 +11,18 @@ class communityController {
 
             let currentUser = await User.findOne({username: username});
             let blockedUsers = currentUser.blockedUsers;
-            var mapCards = await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers }}}]);
+            let followedUsers = currentUser.usersFollowing;
+            let comb = blockedUsers.concat(followedUsers);
+            var mapCards = await MapCard.aggregate([{ $match: 
+                { published: true, owner: { $nin: blockedUsers, $in: followedUsers } },
+            }]);
 
-            return res.status(200).json({status: "OK", mapcards: mapCards});
+            var mapCards2 = await MapCard.aggregate([ {
+                $match: 
+                    { published: true, owner: { $nin: comb } }
+            }])
+
+            return res.status(200).json({status: "OK", mapcards: [...mapCards, ...mapCards2]});
         }
         catch(e){
             console.log(e.toString())
