@@ -364,6 +364,7 @@ function GeomanJsWrapper(props) {
                                 listOfNewSplitRegionsToAdd:listOfNewSplitRegionsToAdd,
                             }
                             store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
+                        break;
                     }
                     else{
 
@@ -436,12 +437,12 @@ function GeomanJsWrapper(props) {
                         let nu = turf.multiPolygon(notUniqueNews)
                         nu.subRegionColor = geoJsonMapData.features[i].subRegionColor
                         nu.properties = geoJsonMapData.features[i].properties
-                        nu.properties.name = "new"
+                        nu.properties.name = geoJsonMapData.features[i].properties.name+"2"
 
                         let u = turf.multiPolygon(uniqueNews)
                         u.subRegionColor = geoJsonMapData.features[i].subRegionColor
                         u.properties = geoJsonMapData.features[i].properties
-                        u.properties.name = "new"
+                        u.properties.name = geoJsonMapData.features[i].properties.name+"1"
 
                         console.log("res of the clips for single poly")
                         listOfNewSplitRegionsToAdd = [nu,u]
@@ -457,7 +458,7 @@ function GeomanJsWrapper(props) {
                             listOfNewSplitRegionsToAdd:listOfNewSplitRegionsToAdd,
                         }
                         store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
-
+                        break;
                     }
                 }
             }
