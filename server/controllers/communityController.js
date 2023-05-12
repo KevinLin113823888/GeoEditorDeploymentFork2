@@ -317,7 +317,15 @@ class communityController {
             let blockedUsers = user.blockedUsers;
             var communityPreview = {};
             if (user) {
-                communityPreview = await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers}, $or: [{title: { $regex: '.*' + searchName + '.*' }}, {classification: searchName}]}}]);
+                communityPreview = await MapCard.aggregate([
+                    { $match: 
+                        { 
+                            published: true, 
+                            owner: {$nin: blockedUsers}, 
+                            $or: [{title: { $regex: '.*' + searchName + '.*', $options: 'i'}}, {classification: searchName}]
+                        }
+                    }
+                ]);
             }
             
             return res.status(200).json({status: 'OK', mapcards: communityPreview});
@@ -339,8 +347,8 @@ class communityController {
             var communityPreview = {};
             if (user) {
                 communityPreview =  type === "name" ?  
-                await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers} }}]).sort({title: 1}) :
-                await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers} }}]).sort({updatedAt: 1})
+                await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers} }}]).collation({'locale':'en'}).sort({title: 1}) :
+                await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers} }}]).collation({'locale':'en'}).sort({updatedAt: 1})
             }
             
             return res.status(200).json({status: 'OK', mapcards: communityPreview});
