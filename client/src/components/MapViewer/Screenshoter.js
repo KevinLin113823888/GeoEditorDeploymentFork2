@@ -14,7 +14,7 @@ function Screenshoter(props) {
     const map = useMap();
 
     useEffect(() =>{
-        console.log('center screen', store.setScreenshot)
+        // console.log('setscreenshot screen', store.setScreenshot)
 
         if(!store.setScreenshot){
             return
@@ -100,6 +100,7 @@ function Screenshoter(props) {
         
         map.whenReady(() => {
             map.eachLayer(function(layer){
+                console.log("aaa")
                 setTimeout(function() {
                 if(layer._layers){
                     Object.keys(layer._layers).forEach(key =>{
@@ -117,7 +118,7 @@ function Screenshoter(props) {
     },[store.setCenterScreen]);
 
     useEffect(() =>{
-        console.log('center screen', store.downloadPng)
+        // console.log('download png screen', store.downloadPng)
 
         if(!store.downloadPng){
             return

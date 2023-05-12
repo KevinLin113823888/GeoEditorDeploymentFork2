@@ -60,6 +60,10 @@ function MapEditor(props) {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, [store]);
+
+    useEffect(() =>{
+        store.centerScreen(true);
+    }, [props.center]);
    
     function handleAddVertex(e) {
 

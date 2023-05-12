@@ -35,11 +35,12 @@ function MapViewerScreen(props) {
     const { state } = useLocation();
     const [mapName, setMapChange] = useState('untitled');
     const [keyid, setKeyid] = useState(0)
+    const [center, setCenter] = useState(0)
 
     const { store } = useContext(GlobalStoreContext);
     const [GeoJson, setGeoJson] = [store.currentMapData, store.setCurrentMapData]
     const { id } = useParams();
-     const [columns1,setColumns1] = useState(9.5);
+    const [columns1,setColumns1] = useState(9.5);
 
     const names = [];
     let count = 0;
@@ -59,6 +60,7 @@ function MapViewerScreen(props) {
         };
         }
     }, [store]);
+
     useEffect(() => {
         initGeojsonGraphicalData(na)
         // setGeoJson(na)
@@ -72,6 +74,7 @@ function MapViewerScreen(props) {
             setColumns1(9.5)
         }
     },[store.currentFeatureIndex]);
+
     useEffect(() => {
         if (state) {
             setMapChange(state.title);
@@ -97,9 +100,15 @@ function MapViewerScreen(props) {
                 let geo = { type: data.type, features: feat }
                 initGeojsonGraphicalData(geo);
                 setGeoJson(geo);
+                loadmap()
             })
             .catch(err => console.log(err));
     }, []);
+
+    async function loadmap(){
+        await new Promise(r => setTimeout(r, 100));
+        setCenter(center => center + 1);
+    }
 
     const sendImportReq = (geoJson) => {
         console.log("GEOJSON FILE UPLOADED", geoJson);
@@ -159,10 +168,12 @@ function MapViewerScreen(props) {
                             // temp = topoClient.feature(topo, topo.objects.foo);
 
                             initGeojsonGraphicalData(temp)
-                            setGeoJson(temp, true)
+                            setGeoJson(temp)
+                            // setGeoJson(temp, true, false)
                             sendImportReq(temp);
                             setFileExist(true);
-                            setKeyid(keyid => keyid + 1)
+                            // setKeyid(keyid => keyid + 1)
+                            setCenter(center => center + 1);
                             // store.takeScreenShot(true);
                         }
                     })
@@ -233,11 +244,15 @@ function MapViewerScreen(props) {
             })
 
             initGeojsonGraphicalData(temp)
-            setGeoJson(temp, true);
+            setGeoJson(temp);
             sendImportReq(temp);
+            setCenter(center => center + 1);
             // store.takeScreenShot(true);
+            // setKeyid(keyid => keyid + 1);
         }
         setFileExist(true);
+        // store.takeScreenShot(true);
+
         // setCompressCount(6);
     }
 
@@ -246,12 +261,14 @@ function MapViewerScreen(props) {
         var graphical = GeoJson.graphicalData;
         var topo = topoServer.topology({ foo: temp });
         topo = topoSimplify.presimplify(topo);
-        topo = topoSimplify.simplify(topo, 0.005);
+        topo = topoSimplify.simplify(topo, 0.01);
         temp = topoClient.feature(topo, topo.objects.foo);
         temp.graphicalData = graphical;
+        // setGeoJson(temp, false, true);
         setGeoJson(temp);
-        setKeyid(keyid => keyid + 1)
-        store.centerScreen(true);
+        setCenter(center => center + 1);
+        // store.centerScreen(true);
+        // store.setCenterScreen = true;
     }
 
     const handleImport = () => { store.changeModal(CurrentModal.MAP_IMPORT) }
@@ -442,7 +459,7 @@ function MapViewerScreen(props) {
                             }}>
                             <MapEditor changeName={changeRegionName} key={keyid} 
                             handleCompress={handleCompress} updateViewer={handleUpdate}
-                                       mapCardId={id}/>
+                                       mapCardId={id} center={center} />
                         </Box>
                     <Grid item xs={12} md={11}>
                         <MapLegendFooter />
