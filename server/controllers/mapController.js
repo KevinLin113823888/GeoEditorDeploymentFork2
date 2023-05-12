@@ -42,7 +42,7 @@ class mapController {
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentMapData = await MapData.findOne({ _id: currentMapCard.mapData });
 
-            return res.status(200).json({status: 'OK', title: currentMapCard.title, type: currentMapData.type, feature: JSON.stringify(currentMapData.feature) });
+            return res.status(200).json({status: 'OK', title: currentMapCard.title, type: currentMapData.type, feature: JSON.stringify(currentMapData.feature), graphicalData: JSON.stringify(currentMapData.graphicalData) });
         }
         catch(e){
             console.log(e.toString())
