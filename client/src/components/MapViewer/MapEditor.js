@@ -653,7 +653,8 @@ function MapEditor(props) {
         fillOpacity: 0.7,
         color: feature.borderColor
     });
-        let a = `<p style="color:red;"> ${countryName}</p>`
+        let a = `<div style="color:gray;
+"> ${countryName}</div>`
         // a = countryName
         var tooltip = L.tooltip({
             content: a,
