@@ -26,6 +26,7 @@ import VertexTPS from "../../transactions/VertexTPS";
 import ColorTPS from "../../transactions/ColorTPS";
 import MergeAndSplitTPS from "../../transactions/MergeAndSplitTPS";
 import MapChangeNameModal from "./MapViewerModal/MapChangeNameModal";
+import Toastify from 'toastify-js'
 
 function MapEditor(props) {
   
@@ -656,9 +657,17 @@ function MapEditor(props) {
         fillOpacity: 0.7,
         color: feature.borderColor
     });
-        layer.bindTooltip(layer.feature.properties.name,
-            { permanent: true, direction: 'center'}
-        ).openTooltip()
+        let a = `<div style="color:gray;
+"> ${countryName}</div>`
+        // a = countryName
+        var tooltip = L.tooltip({
+            content: a,
+        permanent: true,
+        direction:"center"})
+        layer.bindTooltip(tooltip).openTooltip()
+        // layer.bindTooltip(layer.feature.properties.name,
+        //     { permanent: true, direction: 'center'}
+        // ).openTooltip()
 
         let propString = countryName
         layer.bindPopup(propString);
@@ -809,7 +818,17 @@ function MapEditor(props) {
         let regionsSelected = regionsSelectedRef.current
 
         if (regionsSelected.length < 2) {
-            alert("please select 2 regions first");
+            Toastify({
+                text: "Please Select Two Regions Before Merging",
+                gravity: "bottom",
+                position: 'left',
+                duration: 2000,
+                style: {
+                  background: '#0f3443'
+                }
+              }).showToast();
+    
+            return;
         }
         if (newName == null) { //if no name means cancel i suppose
             regionsSelectedRef.current = [] //empty everything
@@ -991,6 +1010,7 @@ function MapEditor(props) {
                             updateEditor = {handleUpdate}
                             updateViewer = {props.updateViewer}
                             unselect = {unselect}
+                            regionsSelected = {regionsSelectedRef.current}
                         />
             </MapContainer>
                 </div>

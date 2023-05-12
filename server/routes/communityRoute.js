@@ -4,6 +4,7 @@ const CommunityController = require('../controllers/communityController');
 const auth = require('../auth');
 
 router.get('/getCommunity', auth.verify, CommunityController.getCommunity);
+router.get('/getCommunityGuest', CommunityController.getCommunityGuest);
 router.post('/getCommunityPreviewById', auth.verify, CommunityController.getCommunityPreviewById);
 router.post('/forkCommunityMap', auth.verify, CommunityController.forkCommunityMap);
 router.post('/reportCommunityMap', auth.verify, CommunityController.reportCommunityMap);

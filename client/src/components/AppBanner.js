@@ -54,13 +54,19 @@ export default function AppBanner() {
         setAnchorEl(null);
     }
     
-
     const handleLogout = () => {
         handleMenuClose();
     }
     const handleHome = () => {
     }
     const handleSignOut=()=>{
+        fetch(process.env.REACT_APP_API_URL + 'user/logout', {
+            method: "delete",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
         navigate("/");
         handleMenuClose();
         store.setHome()

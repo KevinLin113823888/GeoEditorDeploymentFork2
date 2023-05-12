@@ -231,7 +231,7 @@ class mapController {
             var user = await User.findOne({username: username});
             var mapCards = {};
             if(user)
-                mapCards = await MapCard.find({ _id: { $in: user.ownedMapCards }, $or: [{title: { $regex: '.*' + searchName + '.*' }}, {classification: searchName}]});
+                mapCards = await MapCard.find({ _id: { $in: user.ownedMapCards }, $or: [{title: { $regex: '.*' + searchName + '.*', $options: 'i' }}, {classification: searchName}]});
             return res.status(200).json({status: 'OK', mapcards: mapCards});
         }
         catch(e){
@@ -249,8 +249,8 @@ class mapController {
             var mapCards = {};
             if (user)
                 mapCards = type === "name" ? 
-                await MapCard.find({_id: { $in: user.ownedMapCards }}).sort({title: 1}) : 
-                await MapCard.find({_id: { $in: user.ownedMapCards }}).sort({updatedAt: 1})
+                await MapCard.find({_id: { $in: user.ownedMapCards }}).collation({'locale':'en'}).sort({title: 1}) : 
+                await MapCard.find({_id: { $in: user.ownedMapCards }}).collation({'locale':'en'}).sort({updatedAt: 1})
             return res.status(200).json({status: 'OK', mapcards: mapCards});
         }
         catch(e){

@@ -7,6 +7,7 @@ import { CurrentModal, GlobalStoreContext } from '../../store/index'
 import EditLegendTPS from '../../transactions/EditLegendTPS'
 import TextboxTPS from '../../transactions/TextboxTPS'
 import RegionTPS from '../../transactions/RegionTPS'
+import Toastify from 'toastify-js'
 
 
 
@@ -63,16 +64,16 @@ function GeomanJsWrapper(props) {
 
         //this part adds the tooltip into the graphical data, lets not do that ig
 
-        if(geoJsonTextbox.current.size===0 && textBoxList.length===0)
-        {
+        // if(geoJsonTextbox.current.size===0 && textBoxList.length===0)
+        // {
             console.log("called once ??")
             map.eachLayer(function (layer) {
                 if(layer._latlng!==undefined)
                     geoJsonTextbox.current.add(layer)
             });
-        }
+        // }
 
-    },[])
+    },[context])
 
     const handleTooltipEditJSTPS = (oldText,newText,index) => {
         let mappedData = {
@@ -116,27 +117,32 @@ function GeomanJsWrapper(props) {
         console.log("called to refresh all of the textbox tootips")
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
-
-
         if(textBoxList===undefined){
             return
         }
         //needed to refresh
         map.eachLayer(function (layer) {
-            // console.log("initial set of layers")
             // console.log(layer,geoJsonTextbox.current)
-            if (layer.options.pane === "tooltipPane"){
-                if(!geoJsonTextbox.current.has(layer))
-                    layer.removeFrom(map);
+            if (layer.options.needsRefresh === true){
+                layer.removeFrom(map);
             }
+            // if (layer.options.pane === "tooltipPane"){
+            //     if(!geoJsonTextbox.current.has(layer))
+            //         layer.removeFrom(map);
+            // }
         });
+        // store.updateEditor()
         textBoxList.map(function(val,index){
             var toolTip = L.tooltip({
                 permanent: true,
                 direction:"center",
-                className:"leaflet-tooltip"
+                className:"leaflet-tooltip",
+                needsRefresh:true,
             }).setContent(val.overlayText).setLatLng(val.coords)
             toolTip.addTo(map)
+
+            console.log("values of tooltip")
+            console.log(toolTip)
 
             var el = toolTip.getElement();
             el.addEventListener('dblclick', function (e) {
@@ -364,6 +370,7 @@ function GeomanJsWrapper(props) {
                                 listOfNewSplitRegionsToAdd:listOfNewSplitRegionsToAdd,
                             }
                             store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
+                        break;
                     }
                     else{
 
@@ -436,12 +443,12 @@ function GeomanJsWrapper(props) {
                         let nu = turf.multiPolygon(notUniqueNews)
                         nu.subRegionColor = geoJsonMapData.features[i].subRegionColor
                         nu.properties = geoJsonMapData.features[i].properties
-                        nu.properties.name = "new"
+                        nu.properties.name = geoJsonMapData.features[i].properties.name+"2"
 
                         let u = turf.multiPolygon(uniqueNews)
                         u.subRegionColor = geoJsonMapData.features[i].subRegionColor
                         u.properties = geoJsonMapData.features[i].properties
-                        u.properties.name = "new"
+                        u.properties.name = geoJsonMapData.features[i].properties.name+"1"
 
                         console.log("res of the clips for single poly")
                         listOfNewSplitRegionsToAdd = [nu,u]
@@ -457,7 +464,7 @@ function GeomanJsWrapper(props) {
                             listOfNewSplitRegionsToAdd:listOfNewSplitRegionsToAdd,
                         }
                         store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
-
+                        break;
                     }
                 }
             }
@@ -472,7 +479,19 @@ function GeomanJsWrapper(props) {
                     text: 'merge selected region',
                     onClick: () => {
                         console.log("merging button confirmation")
+                        if(props.regionsSelected.length>1){
                         store.changeModal(CurrentModal.MAP_MERGE_REGION_NAME)
+                        }else{
+                            Toastify({
+                                text: "Please Select Two Regions Before Merging",
+                                gravity: "bottom",
+                                position: 'left',
+                                duration: 2000,
+                                style: {
+                                  background: '#0f3443'
+                                }
+                              }).showToast();
+                        }
                     },
                 },
             ]
@@ -481,8 +500,20 @@ function GeomanJsWrapper(props) {
                 {
                     text: 'change selected region color',
                     onClick: () => {
-                        store.colorwheelHandler = props.handleRegionColor
-                        store.changeModal("MAP_PICK_COLOR_WHEEL")
+                        if(props.regionsSelected.length>0){
+                            store.colorwheelHandler = props.handleRegionColor
+                            store.changeModal("MAP_PICK_COLOR_WHEEL")
+                        }else{
+                            Toastify({
+                                text: "Please Select Regions to Change Color",
+                                gravity: "bottom",
+                                position: 'left',
+                                duration: 2000,
+                                style: {
+                                  background: '#0f3443'
+                                }
+                              }).showToast();
+                        }
                     },
                 },
             ]
@@ -491,8 +522,20 @@ function GeomanJsWrapper(props) {
                 {
                     text: 'change border color',
                     onClick: () => {
+                        if(props.regionsSelected.length>0){
                         store.colorwheelHandler = props.handleBorderColor
                         store.changeModal("MAP_PICK_COLOR_WHEEL")
+                        }else{
+                            Toastify({
+                                text: "Please Select Regions to Change Color",
+                                gravity: "bottom",
+                                position: 'left',
+                                duration: 2000,
+                                style: {
+                                  background: '#0f3443'
+                                }
+                              }).showToast();
+                        }
                     },
                 },
             ]

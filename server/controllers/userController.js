@@ -105,7 +105,11 @@ class userController {
 
     static async logout(req, res, next) {
         try{
-            res.clearCookie('values');
+            res.clearCookie('values', {
+                httpOnly: isCookieSecure,
+                secure: isCookieSecure,
+                sameSite: sameSiteCookie,
+            });
             return res.json({status: 'ok'});
         }catch (e){
             console.log(e)
