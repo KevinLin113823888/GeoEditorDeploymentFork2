@@ -8,15 +8,22 @@ function Legend(props) {
     // const { store } = useContext(GlobalStoreContext);
 
     const map = useMap();
+    let legend = props.data;
 
     useEffect(() => {
         const legend = L.control({ position: "bottomright" });
 
+        console.log("FUCKKKKKK", legend);
+
         legend.onAdd = () => {
             const div = L.DomUtil.create('div', 'info legend');
-            div.innerHTML = 
-                 '<h4>This is the legend</h4>' + 
-                 '<b>Lorem ipsum dolor sit amet consectetur adipiscing</b>';
+            let labels = [];
+
+            for (let i = 0; i < legend.length; i++) {
+                labels.push('<i style="background:' + legend[i].color + '><i/> ' + legend[i].legendText);
+            }
+
+            div.innerHTML = labels.join("<br>");
             return div;
         }
 

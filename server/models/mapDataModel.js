@@ -18,7 +18,10 @@ const mapDataSchema = new Schema(
             backgroundColor: String,
             textBoxList: {type:[{
                 overlayText:String,
-                coordinates:{type: Mixed,default:[]}
+                coordinates:{type: {
+                    lat: { type: Number }
+                    lng: { type: Number }
+                }}
             }]},
             legend: {type:[{
                 color: String,
