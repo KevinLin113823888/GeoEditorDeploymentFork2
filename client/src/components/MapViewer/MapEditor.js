@@ -653,9 +653,16 @@ function MapEditor(props) {
         fillOpacity: 0.7,
         color: feature.borderColor
     });
-        layer.bindTooltip(layer.feature.properties.name,
-            { permanent: true, direction: 'center'}
-        ).openTooltip()
+        let a = `<p style="color:red;"> ${countryName}</p>`
+        // a = countryName
+        var tooltip = L.tooltip({
+            content: a,
+        permanent: true,
+        direction:"center"})
+        layer.bindTooltip(tooltip).openTooltip()
+        // layer.bindTooltip(layer.feature.properties.name,
+        //     { permanent: true, direction: 'center'}
+        // ).openTooltip()
 
         let propString = countryName
         layer.bindPopup(propString);
