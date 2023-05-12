@@ -39,15 +39,13 @@ function YourMap() {
     const { store } = useContext(GlobalStoreContext);
     const [isFocused, setIsFocused] = useState(false);
 
-  const handleFocus = () => {
+    const handleFocus = () => {
     setIsFocused(true);
-  };
+    };
 
-  const handleBlur = () => {
+    const handleBlur = () => {
     setIsFocused(false);
-  };
-
-
+    };
 
     useEffect(() => {
         onLoad();
@@ -61,17 +59,17 @@ function YourMap() {
                 "Content-Type": "application/json",
             }
         })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                setUsername(data.username);
-                if (data.mapcards === undefined) {
-                    setMapCards([]);
-                } else {
-                    setMapCards(data.mapcards);
-                }
-            })
-            .catch(err => console.log(err));
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            setUsername(data.username);
+            if (data.mapcards === undefined) {
+                setMapCards([]);
+            } else {
+                setMapCards(data.mapcards);
+            }
+        })
+        .catch(err => console.log(err));
     }
 
     const handleSortMenuOpen = (event) => {

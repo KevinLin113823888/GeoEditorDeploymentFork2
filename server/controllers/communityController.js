@@ -11,9 +11,18 @@ class communityController {
 
             let currentUser = await User.findOne({username: username});
             let blockedUsers = currentUser.blockedUsers;
-            var mapCards = await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers }}}]);
+            let followedUsers = currentUser.usersFollowing;
+            let comb = blockedUsers.concat(followedUsers);
+            var mapCards = await MapCard.aggregate([{ $match: 
+                { published: true, owner: { $nin: blockedUsers, $in: followedUsers } },
+            }]);
 
-            return res.status(200).json({status: "OK", mapcards: mapCards});
+            var mapCards2 = await MapCard.aggregate([ {
+                $match: 
+                    { published: true, owner: { $nin: comb } }
+            }])
+
+            return res.status(200).json({status: "OK", mapcards: [...mapCards, ...mapCards2]});
         }
         catch(e){
             console.log(e.toString())
@@ -308,7 +317,15 @@ class communityController {
             let blockedUsers = user.blockedUsers;
             var communityPreview = {};
             if (user) {
-                communityPreview = await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers}, $or: [{title: { $regex: '.*' + searchName + '.*' }}, {classification: searchName}]}}]);
+                communityPreview = await MapCard.aggregate([
+                    { $match: 
+                        { 
+                            published: true, 
+                            owner: {$nin: blockedUsers}, 
+                            $or: [{title: { $regex: '.*' + searchName + '.*', $options: 'i'}}, {classification: searchName}]
+                        }
+                    }
+                ]);
             }
             
             return res.status(200).json({status: 'OK', mapcards: communityPreview});
@@ -330,8 +347,8 @@ class communityController {
             var communityPreview = {};
             if (user) {
                 communityPreview =  type === "name" ?  
-                await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers} }}]).sort({title: 1}) :
-                await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers} }}]).sort({updatedAt: 1})
+                await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers} }}]).collation({'locale':'en'}).sort({title: 1}) :
+                await MapCard.aggregate([{ $match: { published: true, owner: {$nin: blockedUsers} }}]).collation({'locale':'en'}).sort({updatedAt: 1})
             }
             
             return res.status(200).json({status: 'OK', mapcards: communityPreview});
