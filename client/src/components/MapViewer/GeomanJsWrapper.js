@@ -117,28 +117,32 @@ function GeomanJsWrapper(props) {
         console.log("called to refresh all of the textbox tootips")
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
-
-
         if(textBoxList===undefined){
             return
         }
         //needed to refresh
         map.eachLayer(function (layer) {
-            // console.log("initial set of layers")
             // console.log(layer,geoJsonTextbox.current)
-            if (layer.options.pane === "tooltipPane"){
-                if(!geoJsonTextbox.current.has(layer))
-                    layer.removeFrom(map);
+            if (layer.options.needsRefresh === true){
+                layer.removeFrom(map);
             }
+            // if (layer.options.pane === "tooltipPane"){
+            //     if(!geoJsonTextbox.current.has(layer))
+            //         layer.removeFrom(map);
+            // }
         });
-        store.updateEditor()
+        // store.updateEditor()
         textBoxList.map(function(val,index){
             var toolTip = L.tooltip({
                 permanent: true,
                 direction:"center",
-                className:"leaflet-tooltip"
+                className:"leaflet-tooltip",
+                needsRefresh:true,
             }).setContent(val.overlayText).setLatLng(val.coords)
             toolTip.addTo(map)
+
+            console.log("values of tooltip")
+            console.log(toolTip)
 
             var el = toolTip.getElement();
             el.addEventListener('dblclick', function (e) {
