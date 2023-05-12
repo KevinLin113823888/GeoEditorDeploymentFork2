@@ -452,6 +452,7 @@ function MUICommunityPreviewModal() {
                         <Grid item xs={3} >
                             <TextField type='text' placeholder="Add a comment..."
                                        onKeyDown={handleComment}
+                                       disabled= {disable}
                                        sx={{ width: '100%',marginLeft: "2.55%" }} />
                             <Box sx={{ width: "100%", backgroundColor: "#f7fafc", maxHeight: "33vw", marginLeft: "2.55%",overflowY: "scroll" }}>
                                 {comments.map((commentObj, index) => (

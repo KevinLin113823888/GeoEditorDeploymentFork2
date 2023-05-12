@@ -26,6 +26,7 @@ import VertexTPS from "../../transactions/VertexTPS";
 import ColorTPS from "../../transactions/ColorTPS";
 import MergeAndSplitTPS from "../../transactions/MergeAndSplitTPS";
 import MapChangeNameModal from "./MapViewerModal/MapChangeNameModal";
+import Toastify from 'toastify-js'
 
 function MapEditor(props) {
   
@@ -805,7 +806,17 @@ function MapEditor(props) {
         let regionsSelected = regionsSelectedRef.current
 
         if (regionsSelected.length < 2) {
-            alert("please select 2 regions first");
+            Toastify({
+                text: "Please Select Two Regions Before Merging",
+                gravity: "bottom",
+                position: 'left',
+                duration: 2000,
+                style: {
+                  background: '#0f3443'
+                }
+              }).showToast();
+    
+            return;
         }
         if (newName == null) { //if no name means cancel i suppose
             regionsSelectedRef.current = [] //empty everything
@@ -987,6 +998,7 @@ function MapEditor(props) {
                             updateEditor = {handleUpdate}
                             updateViewer = {props.updateViewer}
                             unselect = {unselect}
+                            regionsSelected = {regionsSelectedRef.current}
                         />
             </MapContainer>
                 </div>

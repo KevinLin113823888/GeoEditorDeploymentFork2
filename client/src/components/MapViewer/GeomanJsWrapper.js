@@ -7,6 +7,7 @@ import { CurrentModal, GlobalStoreContext } from '../../store/index'
 import EditLegendTPS from '../../transactions/EditLegendTPS'
 import TextboxTPS from '../../transactions/TextboxTPS'
 import RegionTPS from '../../transactions/RegionTPS'
+import Toastify from 'toastify-js'
 
 
 
@@ -71,6 +72,7 @@ function GeomanJsWrapper(props) {
                     geoJsonTextbox.current.add(layer)
             });
         }
+        
 
     },[])
 
@@ -472,7 +474,19 @@ function GeomanJsWrapper(props) {
                     text: 'merge selected region',
                     onClick: () => {
                         console.log("merging button confirmation")
+                        if(props.regionsSelected.length>1){
                         store.changeModal(CurrentModal.MAP_MERGE_REGION_NAME)
+                        }else{
+                            Toastify({
+                                text: "Please Select Two Regions Before Merging",
+                                gravity: "bottom",
+                                position: 'left',
+                                duration: 2000,
+                                style: {
+                                  background: '#0f3443'
+                                }
+                              }).showToast();
+                        }
                     },
                 },
             ]
@@ -481,8 +495,20 @@ function GeomanJsWrapper(props) {
                 {
                     text: 'change selected region color',
                     onClick: () => {
-                        store.colorwheelHandler = props.handleRegionColor
-                        store.changeModal("MAP_PICK_COLOR_WHEEL")
+                        if(props.regionsSelected.length>0){
+                            store.colorwheelHandler = props.handleRegionColor
+                            store.changeModal("MAP_PICK_COLOR_WHEEL")
+                        }else{
+                            Toastify({
+                                text: "Please Select Regions to Change Color",
+                                gravity: "bottom",
+                                position: 'left',
+                                duration: 2000,
+                                style: {
+                                  background: '#0f3443'
+                                }
+                              }).showToast();
+                        }
                     },
                 },
             ]
@@ -491,8 +517,20 @@ function GeomanJsWrapper(props) {
                 {
                     text: 'change border color',
                     onClick: () => {
+                        if(props.regionsSelected.length>0){
                         store.colorwheelHandler = props.handleBorderColor
                         store.changeModal("MAP_PICK_COLOR_WHEEL")
+                        }else{
+                            Toastify({
+                                text: "Please Select Regions to Change Color",
+                                gravity: "bottom",
+                                position: 'left',
+                                duration: 2000,
+                                style: {
+                                  background: '#0f3443'
+                                }
+                              }).showToast();
+                        }
                     },
                 },
             ]
