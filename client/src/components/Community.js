@@ -51,26 +51,41 @@ function Community() {
     }, [store]);
 
     useEffect(() => {
-        fetch(process.env.REACT_APP_API_URL + 'community/getCommunity', {
-            method: "GET",
-            credentials: 'include',
-            headers: {
-            "Content-Type": "application/json",
-            }
-        })
-        .then((res) => res.json())
-        .then((data) => {
-        //    console.log(data)
-           if (data.mapcards === undefined) {
-                setMapCards([]);
-                // console.log('none')
-            } else {
-                // console.log(data.mapcards)
-                setMapCards(data.mapcards);
-                // console.log(mapCards);
-            }
-        })
-        .catch(err => console.log(err));
+        if (!store.guestMode) {
+            fetch(process.env.REACT_APP_API_URL + 'community/getCommunity', {
+                method: "GET",
+                credentials: 'include',
+                headers: {
+                "Content-Type": "application/json",
+                }
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.mapcards === undefined) {
+                    setMapCards([]);
+                } else {
+                    setMapCards(data.mapcards);
+                }
+            })
+            .catch(err => console.log(err));
+        } else {
+            fetch(process.env.REACT_APP_API_URL + 'community/getCommunityGuest', {
+                method: "GET",
+                credentials: 'include',
+                headers: {
+                "Content-Type": "application/json",
+                }
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.mapcards === undefined) {
+                    setMapCards([]);
+                } else {
+                    setMapCards(data.mapcards);
+                }
+            })
+            .catch(err => console.log(err));
+        }
     }, []);
 
     const handleSortMenuOpen = (event) => {

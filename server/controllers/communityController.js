@@ -30,6 +30,18 @@ class communityController {
         }
     }
 
+    static async getCommunityGuest(req, res) {
+        try {
+            let mapCards = await MapCard.find({ published: true });
+
+            return res.status(200).json({status: "OK", mapcards: mapCards});
+        }
+        catch(e){
+            console.log(e.toString())
+            return res.status(400).json({error: true, message: e.toString() });
+        }
+    }
+
     static async getCommunityPreviewById(req, res) {
         try {
             var { id } = req.body;
