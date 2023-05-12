@@ -1010,7 +1010,7 @@ function MapEditor(props) {
                                 unselect = {unselect}
                                 regionsSelected = {regionsSelectedRef.current}
                         />
-                        <Legend />
+                        <Legend data={geoJsonMapData.graphicalData.legend}/>
                     </MapContainer>
                 </div>
                 :
