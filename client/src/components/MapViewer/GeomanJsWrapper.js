@@ -672,6 +672,7 @@ function GeomanJsWrapper(props) {
                     setStore: setStore,
                 }
                 store.jstps.addTransaction(new EditLegendTPS(mappedData))
+                props.updateViewer()
             }
 
             const handleChangeBackgroundColor = (color) => {
