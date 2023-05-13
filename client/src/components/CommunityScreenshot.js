@@ -10,6 +10,7 @@ import FileSaver from 'file-saver';
 function CommunityScreenshot(props) {
     
     const { store } = useContext(GlobalStoreContext);
+    //const [textBoxList,setTextBoxList] = useState(store.currentMapData.graphicalData.textBoxList)
 
     const map = useMap();
 
@@ -66,6 +67,20 @@ function CommunityScreenshot(props) {
 
     },[store.communityPng]);    
 
+    useEffect (()=>{
+        
+        // if(textBoxList===undefined){
+        //     return
+        // }
+        // textBoxList.map(function(val,index){
+        //     var toolTip = L.tooltip({
+        //         permanent: true,
+        //         direction:"center",
+        //         className:"leaflet-tooltip",
+        //         needsRefresh:true,
+        //     }).setContent(val.overlayText).setLatLng(val.coords)
+        //     toolTip.addTo(map)})
+    },[store.currentModal])
 
     return (
         <></>

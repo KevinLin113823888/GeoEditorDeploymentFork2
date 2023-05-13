@@ -24,6 +24,8 @@ import MapEditor from "./MapViewer/MapEditor";
 import GeomanJsWrapper from "./MapViewer/GeomanJsWrapper";
 import {FeatureGroup, GeoJSON, LayerGroup, MapContainer, TileLayer} from "react-leaflet";
 import CommunityScreenshot from './CommunityScreenshot';
+import { useMap } from 'react-leaflet';
+import * as L from "leaflet";
 
 const style = {
     position: 'absolute',
@@ -71,7 +73,7 @@ function MUICommunityPreviewModal() {
     const [dislikes, setDislikes] = useState("black");
     const [dislikeLength, setdisLikeLength] = useState(0);
     const [update, setUpdate] = useState(1);
-
+    
     useEffect(() => {
         console.log("OPENED")
         console.log(store.currentPreviewId)
@@ -112,6 +114,9 @@ function MUICommunityPreviewModal() {
             .catch(err => console.log(err));
         }
     }, [store.currentModal]);
+
+
+
 
     function handleCloseModal(event) {
         store.changeModal("NONE");
@@ -330,6 +335,20 @@ function MUICommunityPreviewModal() {
         // layer.bindPopup(featureName);
         layer.bindTooltip(featureName,
             {permanent: true, direction: 'center'}).openTooltip();
+        
+        
+            if(!feature.subRegionColor){
+                feature.subRegionColor = "#3388ff"
+            }
+            if(!feature.borderColor){
+                feature.borderColor="#0328fc"
+            }
+           layer.setStyle({
+            // color: "blue",
+            fillColor: feature.subRegionColor,
+            fillOpacity: 0.7,
+            color: feature.borderColor
+        });
     }
 
     let disable = false;
@@ -365,6 +384,7 @@ function MUICommunityPreviewModal() {
                                 >
 
                             <CommunityScreenshot/>
+                            
 
                                     <FeatureGroup>
                                         {(geoJson !== null)?
