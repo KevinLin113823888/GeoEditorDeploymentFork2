@@ -68,21 +68,21 @@ function CommunityScreenshot(props) {
     },[store.communityPng]);    
 
     useEffect (()=>{
-        // if(props.data){
+        if(props.data){
             
-        // console.log(props.data)
-        // props.data.textBoxList.map(function(val,index){
-        //     var toolTip = L.tooltip({
-        //         permanent: true,
-        //         direction:"center",
-        //         className:"leaflet-tooltip",
-        //         needsRefresh:true,
-        //     }).setContent(val.overlayText).setLatLng(val.coords)
-        //     toolTip.addTo(map)})
+        console.log(props.data)
+        props.data.textBoxList.map(function(val,index){
+            var toolTip = L.tooltip({
+                permanent: true,
+                direction:"center",
+                className:"leaflet-tooltip",
+                needsRefresh:true,
+            }).setContent(val.overlayText).setLatLng(val.coords)
+            toolTip.addTo(map)})
 
-        // }else{
-        //     return
-        // }
+        }else{
+            return
+        }
     },[store.currentModal])
 
     return (

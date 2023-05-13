@@ -75,7 +75,7 @@ function MUICommunityPreviewModal() {
     const [update, setUpdate] = useState(1);
 
     const [keyid, setKeyid] = useState(0);
-    const [graphical,setGraphical]= useState({})
+    const [graphical,setGraphical]= useState(null)
     useEffect(() => {
         console.log("OPENED")
         console.log(store.currentPreviewId)
@@ -113,6 +113,7 @@ function MUICommunityPreviewModal() {
                 setFollowing(data.follow);
                 setBlocked(data.block);
                 setKeyid(keyid => keyid + 1);
+                setGraphical(JSON.parse(data.graphicalData))
             })
             .catch(err => console.log(err));
         }
