@@ -91,6 +91,7 @@ class communityController {
                 block: isBlocked ? "Blocked" : "Block",
                 type: currentCommunityData.type, 
                 feature: JSON.stringify(currentCommunityData.feature), 
+                graphicalData: JSON.stringify(currentCommunityData.graphicalData),
                 comments: currentCommunityPreview.comments, 
                 like: like,
                 likeAmount: currentCommunityPreview.likes.length,
