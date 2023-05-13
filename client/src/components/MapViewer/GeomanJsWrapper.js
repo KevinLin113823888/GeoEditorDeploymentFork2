@@ -479,7 +479,9 @@ function GeomanJsWrapper(props) {
                     text: 'merge selected region',
                     onClick: () => {
                         console.log("merging button confirmation")
-                        if(props.regionsSelected.length>1){
+
+                        console.log(props.regionsSelected.current)
+                        if(props.regionsSelected.current.length>1){
                         store.changeModal(CurrentModal.MAP_MERGE_REGION_NAME)
                         }else{
                             Toastify({
@@ -500,7 +502,7 @@ function GeomanJsWrapper(props) {
                 {
                     text: 'change selected region color',
                     onClick: () => {
-                        if(props.regionsSelected.length>0){
+                        if(props.regionsSelected.current.length>0){
                             store.colorwheelHandler = props.handleRegionColor
                             store.changeModal("MAP_PICK_COLOR_WHEEL")
                         }else{
@@ -522,7 +524,7 @@ function GeomanJsWrapper(props) {
                 {
                     text: 'change border color',
                     onClick: () => {
-                        if(props.regionsSelected.length>0){
+                        if(props.regionsSelected.current.length>0){
                         store.colorwheelHandler = props.handleBorderColor
                         store.changeModal("MAP_PICK_COLOR_WHEEL")
                         }else{
@@ -543,7 +545,10 @@ function GeomanJsWrapper(props) {
                 console.log(e)
                 if(e===undefined){
                     console.log("huh")
-                    props.toggleSelectMode(false)
+                    props.toggleSelectMode()
+                    // props.handleCancelMergeSelection()
+                    // console.log("res of the after button click")
+                    // console.log(props.regionsSelected)
                     return
                 }
                 console.log("merge button toggle clicked")

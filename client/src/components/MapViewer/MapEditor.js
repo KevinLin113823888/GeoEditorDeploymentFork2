@@ -788,13 +788,13 @@ function MapEditor(props) {
 
 
     let toggleSelectMode = (boolean) => {
-        if(boolean!==undefined){
-            // currentRegion.current=!boolean
-        }
 
+        console.log("called to toggle selecte mode, and toggling select mode just means to clear all existing array data")
+
+        //set the current region to not selected
         if (currentRegion.current !== "") {
             let color = "#3388ff"
-            
+
             if(currentRegion.current.feature.subRegionColor){
                 console.log(currentRegion.current)
                 color = currentRegion.current.feature.subRegionColor
@@ -804,22 +804,42 @@ function MapEditor(props) {
                 fillOpacity: 0.4,
             });
         }
-        selectModeToggle.current = !selectModeToggle.current
-        console.log(regionsClicked)
-            
-            for (let i = 0; i < regionsClicked.length; i++) {
-                
-                let color = "#3388ff"
-                if(regionsClicked[i].target.feature.subRegionColor){
-                    
-                    color =regionsClicked[i].target.feature.subRegionColor
-                }
-                regionsClicked[i].target.setStyle({
-                    fillColor: color,
-                    fillOpacity: 0.4,
-                });
+        //revert all regions clicked back to its original
+        for (let i = 0; i < regionsClicked.length; i++) {
+
+            let color = "#3388ff"
+            if(regionsClicked[i].target.feature.subRegionColor){
+
+                color =regionsClicked[i].target.feature.subRegionColor
             }
-            regionsClicked = []
+            regionsClicked[i].target.setStyle({
+                fillColor: color,
+                fillOpacity: 0.4,
+            });
+        }
+        regionsClicked = []
+
+        console.log("there should be nothing here. at all ")
+        regionsSelectedRef.current = [] //empty everything
+        console.log(regionsSelectedRef)
+
+        boolean = !selectModeToggle.current
+        selectModeToggle.current = boolean
+
+
+        setUpdate(update => update + 1);
+
+
+        // if(boolean!==undefined){
+        //     boolean = !selectModeToggle.current
+        // }
+        // if(boolean ){
+        //
+        // }
+
+
+
+
     };
     function handleUpdate(){
         setUpdate(update=>update+1)
@@ -919,11 +939,13 @@ function MapEditor(props) {
     }
 
     const handleCancelMergeSelection = () => {
-        toggleSelectMode()
-        toggleSelectMode()
 
         let regionsSelected = regionsSelectedRef.current
+
+        console.log("there should be nothing in here after ")
         regionsSelectedRef.current = [] //empty everything
+
+        console.log(regionsSelectedRef)
         setUpdate(update => update + 1);
 
     }
@@ -1017,7 +1039,7 @@ function MapEditor(props) {
                                 updateEditor = {handleUpdate}
                                 updateViewer = {props.updateViewer}
                                 unselect = {unselect}
-                                regionsSelected = {regionsSelectedRef.current}
+                                regionsSelected = {regionsSelectedRef}
                         />
                         <Legend data={store.currentMapData.graphicalData.legend} 
                             updateEditor = {handleUpdate}

@@ -9,7 +9,7 @@ function Legend(props) {
 
     const map = useMap();
     let legends = props.data;
-    console.log("LEGEND", legends);
+    // console.log("LEGEND", legends);
 
     useEffect(() => {
         const legend = L.control({ position: "bottomright" });
