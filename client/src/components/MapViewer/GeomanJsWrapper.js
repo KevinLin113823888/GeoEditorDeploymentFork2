@@ -700,26 +700,26 @@ function GeomanJsWrapper(props) {
                 onClick: addNewPolygonRegionClick,
                 name: 'PolygonCopy',
                 block: 'edit',
-                title: 'add new region',
+                title: 'Add New Region',
                 actions: extendedMenuActionCancel,
             });
 
             //each of the right geoman buttons, [their names, extra menu after click, function on initial click]
             //null means no popup actions
             const customButtonCollection = [
-                ["merge", mergeButtonAction, mergeButtonClick],
+                ["Merge Regions", mergeButtonAction, mergeButtonClick],
                 // ["addRegion" ], //these ones are baked in
-                ["addLegend", null, handleAddLegend],
-                ["changeBackgroundColor", null, handleChangeBackgroundColorModal],
-                ["changeRegionColor", changeRegionColorAction, colorButtonClick],
-                ["changeBorderColor", changeBorderColorAction,colorButtonClick],
-                ["addText", extendedMenuActionCancel, addTextButtonClick],
+                ["Add Legend", null, handleAddLegend],
+                ["Change Background Color", null, handleChangeBackgroundColorModal],
+                ["Change Region Color", changeRegionColorAction, colorButtonClick],
+                ["Change Border Color", changeBorderColorAction,colorButtonClick],
+                ["Add New Textbox", extendedMenuActionCancel, addTextButtonClick],
                 // ["editVertex", mergeButtonAction, mergeButtonClick], //baked
                 // ["moveRegion", mergeButtonAction, mergeButtonClick], //baked
-                ["splitRegion", null, splitButtonClick],
+                ["Split One Region", null, splitButtonClick],
                 // ["deleteRegion", extendedMenuActionCancel, mergeButtonClick], //baked
-                ["undo", null, undoButtonClick],
-                ["redo", null, redoButtonClick],
+                ["Undo", null, undoButtonClick],
+                ["Redo", null, redoButtonClick],
             ]
 
             for (let index in customButtonCollection) {
