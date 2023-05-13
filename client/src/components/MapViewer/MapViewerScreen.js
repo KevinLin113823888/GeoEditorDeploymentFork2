@@ -127,6 +127,11 @@ function MapViewerScreen(props) {
         setCenter(center => center +1);
     }
 
+    async function screenshotMap(){
+        await new Promise(r => setTimeout(r, 100));
+        setSshot(true);
+    }
+
     const sendImportReq = (geoJson) => {
         console.log("GEOJSON FILE UPLOADED", geoJson);
         fetch(process.env.REACT_APP_API_URL + 'map/importMapFileById', {
@@ -190,7 +195,7 @@ function MapViewerScreen(props) {
                             sendImportReq(temp);
                             setFileExist(true);
                             // setKeyid(keyid => keyid + 1)
-                            setSshot(true);
+                            screenshotMap();
                             // store.takeScreenShot(true);
                         }
                     })
@@ -263,7 +268,8 @@ function MapViewerScreen(props) {
             initGeojsonGraphicalData(temp)
             setGeoJson(temp);
             sendImportReq(temp);
-            setSshot(true);
+            screenshotMap();
+            console.log("WHY IS THIS FALSE WHY NO TRUE");
             // store.takeScreenShot(true);
             // setKeyid(keyid => keyid + 1);
         }
