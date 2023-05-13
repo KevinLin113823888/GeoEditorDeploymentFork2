@@ -42,6 +42,8 @@ class mapController {
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentMapData = await MapData.findOne({ _id: currentMapCard.mapData });
 
+            console.log("graphical data from db", currentMapData.graphicalData);
+
             return res.status(200).json({status: 'OK', title: currentMapCard.title, type: currentMapData.type, feature: JSON.stringify(currentMapData.feature), graphicalData: JSON.stringify(currentMapData.graphicalData) });
         }
         catch(e){
@@ -181,6 +183,7 @@ class mapController {
     static async saveMapById(req, res) {
         try {
             var { id, map } = req.body;
+            console.log("Map sent back", map);
 
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
             var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: map.type, feature: map.features, graphicalData: map.graphicalData });

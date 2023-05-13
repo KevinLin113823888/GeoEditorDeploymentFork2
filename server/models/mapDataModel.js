@@ -10,14 +10,12 @@ const ObjectId = Schema.Types.ObjectId
 const mapDataSchema = new Schema(
     {
         type: { type: String, required: true },
-        feature: { type: [
-            Schema.Types.Feature
-        ], required: true},
+        feature: { type: [Schema.Types.Feature], required: true},
         // mapProperties: { type: Object, required: false },
         graphicalData:{type:{
             backgroundColor: String,
             textBoxList: {type:[{
-                overlayText:String,
+                overlayText: String,
                 coords: {type: {
                     lat: { type: Number },
                     lng: { type: Number }
