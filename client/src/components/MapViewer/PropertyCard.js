@@ -65,8 +65,7 @@ function PropertyCard(props) {
     
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            handlePropertyValueBlur()
-            handlePropertyKeyBlur()
+            event.target.blur()
             // if(!editMode)
             //     setEditMode(true);
         }
@@ -114,11 +113,13 @@ function PropertyCard(props) {
                 <input type="text" className="form-control" id="validationCustom01" value={getPropertyKey}
                        onChange={handleChangePropertyKey}
                        onBlur={handlePropertyKeyBlur}
+                       onKeyDown={handleKeyPress}
                        style={{fontFamily:'Helvetica'}}
                        required />
                 <input type="text" className="form-control" id="validationCustom01" value={getPropertyValue}
                        onChange={handleChangePropertyValue}
                        onBlur={handlePropertyValueBlur}
+                       onKeyDown={handleKeyPress}
                        style={{borderRadius:"0px 6px 6px 0px",fontFamily:'Helvetica'}}
 
                        required />  
