@@ -49,23 +49,23 @@ function MapViewerScreen(props) {
     let shpfile = null;
     let dbffile = null;
 
-    useEffect(() => {
-        if (store) {
-            try {
-                function handleBeforeUnload() {
-                    console.log("Store update?")
-                    localStorage.setItem('store', JSON.stringify(store));
-                    localStorage.setItem('jsTPS', JSON.stringify(store.jstps));
-                }
-                window.addEventListener('beforeunload', handleBeforeUnload);
-                return () => {
-                    window.removeEventListener('beforeunload', handleBeforeUnload);
-                };
-            } catch (e) {
+    // useEffect(() => {
+    //     if (store) {
+    //         try {
+    //             function handleBeforeUnload() {
+    //                 console.log("Store update?")
+    //                 localStorage.setItem('store', JSON.stringify(store));
+    //                 localStorage.setItem('jsTPS', JSON.stringify(store.jstps));
+    //             }
+    //             window.addEventListener('beforeunload', handleBeforeUnload);
+    //             return () => {
+    //                 window.removeEventListener('beforeunload', handleBeforeUnload);
+    //             };
+    //         } catch (e) {
 
-            }
-        }
-    }, [store]);
+    //         }
+    //     }
+    // }, [store]);
 
     useEffect(() => {
         initGeojsonGraphicalData(na)
