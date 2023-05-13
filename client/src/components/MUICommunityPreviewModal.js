@@ -73,6 +73,8 @@ function MUICommunityPreviewModal() {
     const [dislikes, setDislikes] = useState("black");
     const [dislikeLength, setdisLikeLength] = useState(0);
     const [update, setUpdate] = useState(1);
+
+    const [keyid, setKeyid] = useState(0);
     
     useEffect(() => {
         console.log("OPENED")
@@ -109,7 +111,8 @@ function MUICommunityPreviewModal() {
                 setLikeLength(data.likeAmount);
                 setdisLikeLength(data.dislikeAmount);
                 setFollowing(data.follow);
-                setBlocked(data.block)
+                setBlocked(data.block);
+                setKeyid(keyid => keyid + 1);
             })
             .catch(err => console.log(err));
         }
@@ -380,7 +383,7 @@ function MUICommunityPreviewModal() {
                                     style={{
                                         height: "50vh",
                                     }} zoom={2} center={[20, 100]}
-                                    editable={false}
+                                    editable={false} key={keyid}
                                 >
 
                             <CommunityScreenshot/>
@@ -388,7 +391,7 @@ function MUICommunityPreviewModal() {
 
                                     <FeatureGroup>
                                         {(geoJson !== null)?
-                                            <GeoJSON data={geoJson} onEachFeature={onEachFeature} />
+                                            <GeoJSON data={geoJson} onEachFeature={onEachFeature} key={keyid} />
                                          : <></>}
                                     </FeatureGroup>
                                     <TileLayer url="xxx" />
