@@ -116,6 +116,11 @@ class mapController {
             var currentMapCard = await MapCard.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { title: newName });
             await currentMapCard.save();
 
+            if (currentMapCard.published) {
+                var currentCommunityCard = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(currentMapCard.communityPreview)}, { title: newName});
+                await currentMapCard.save();
+            }
+
             return res.status(200).json({status: 'OK', name: newName});
         }
         catch(e){
