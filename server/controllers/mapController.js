@@ -169,7 +169,7 @@ class mapController {
             var { id, geoJSONFile } = req.body;
 
             var currentMapCard = await MapCard.findOne({ _id: new mongoose.Types.ObjectId(id) });
-            var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: geoJSONFile.type, feature: geoJSONFile.features });
+            var currentMapData = await MapData.findOneAndUpdate({ _id: currentMapCard.mapData }, { type: geoJSONFile.type, feature: geoJSONFile.features, graphicalData: geoJSONFile.graphicalData });
             await currentMapData.save();
 
             return res.status(200).json({status: 'OK'});
