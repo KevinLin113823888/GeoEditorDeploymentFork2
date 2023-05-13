@@ -14,8 +14,7 @@ const mapCardSchema = new Schema(
         lastModifiedDate:{type: Date, required: false},
         published: {type: Boolean, required: false},
         publishDate:{type: Date,required: false},
-        mapData:{type: ObjectId,required: false},
-        communityPreview:{type: ObjectId,required: false}
+        mapData:{type: ObjectId,required: false}
     },
     { timestamps: true },
 )

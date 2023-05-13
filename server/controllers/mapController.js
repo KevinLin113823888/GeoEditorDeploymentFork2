@@ -117,7 +117,8 @@ class mapController {
             await currentMapCard.save();
 
             if (currentMapCard.published) {
-                var currentCommunityCard = await CommunityPreview.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(currentMapCard.communityPreview)}, { title: newName});
+                console.log("mapcard", currentMapCard.communityPreview);
+                var currentCommunityCard = await CommunityPreview.findOneAndUpdate({ mapCard: new mongoose.Types.ObjectId(currentMapCard._id)}, { title: newName});
                 await currentMapCard.save();
             }
 
