@@ -62,6 +62,12 @@ function LegendCard(props) {
         store.jstps.addTransaction(new EditLegendTPS(mappedData))
         props.updateViewer();
     }
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            event.target.blur()
+        }
+    }
+      
 
     const handleDelete = () => {
         //jstps
@@ -86,6 +92,7 @@ function LegendCard(props) {
                        onBlur={handleBlur}
                        required 
                        style={{borderRadius:"7px 7px 7px 7px",fontFamily:'Helvetica'}}
+                       onKeyPress={handleKeyPress}
                        />
                 {/*<BorderColorIcon className="material-icons" sx={{"&:hover": {fill: "rgba(255,240,10,0.8)"}} } style={{fontSize:"1.6rem"}}/>*/}
                 <SquareIcon className="material-icons" onClick={handleChangeLegendColor} sx={{color:colorString,
