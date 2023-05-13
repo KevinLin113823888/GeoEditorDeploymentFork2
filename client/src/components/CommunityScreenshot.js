@@ -10,8 +10,8 @@ import FileSaver from 'file-saver';
 function CommunityScreenshot(props) {
     
     const { store } = useContext(GlobalStoreContext);
-    //const [textBoxList,setTextBoxList] = useState(store.currentMapData.graphicalData.textBoxList)
-
+    //const [textBoxList,setTextBoxList] = useState(props.data.graphicalData.textBoxList)
+    
     const map = useMap();
 
     useEffect(() =>{
@@ -68,11 +68,10 @@ function CommunityScreenshot(props) {
     },[store.communityPng]);    
 
     useEffect (()=>{
-        
-        // if(textBoxList===undefined){
-        //     return
-        // }
-        // textBoxList.map(function(val,index){
+        // if(props.data){
+            
+        // console.log(props.data)
+        // props.data.textBoxList.map(function(val,index){
         //     var toolTip = L.tooltip({
         //         permanent: true,
         //         direction:"center",
@@ -80,6 +79,10 @@ function CommunityScreenshot(props) {
         //         needsRefresh:true,
         //     }).setContent(val.overlayText).setLatLng(val.coords)
         //     toolTip.addTo(map)})
+
+        // }else{
+        //     return
+        // }
     },[store.currentModal])
 
     return (

@@ -73,7 +73,7 @@ function MUICommunityPreviewModal() {
     const [dislikes, setDislikes] = useState("black");
     const [dislikeLength, setdisLikeLength] = useState(0);
     const [update, setUpdate] = useState(1);
-    
+    const [graphical,setGraphical]= useState({})
     useEffect(() => {
         console.log("OPENED")
         console.log(store.currentPreviewId)
@@ -110,6 +110,8 @@ function MUICommunityPreviewModal() {
                 setdisLikeLength(data.dislikeAmount);
                 setFollowing(data.follow);
                 setBlocked(data.block)
+                setGraphical(data.graphicalData)
+                
             })
             .catch(err => console.log(err));
         }
@@ -382,8 +384,8 @@ function MUICommunityPreviewModal() {
                                     }} zoom={2} center={[20, 100]}
                                     editable={false}
                                 >
-
-                            <CommunityScreenshot/>
+                            
+                            <CommunityScreenshot data={graphical}/>
                             
 
                                     <FeatureGroup>
