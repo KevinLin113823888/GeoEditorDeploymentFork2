@@ -20,10 +20,14 @@ function MapLegendFooter(props) {
             // console.log("well its undefined")
             return
         }
+
+
         // console.log("i guess its not now")
         // console.log("i can see things are getting stated")
         setLegend(graphData.legend)
-    },[store.currentMapData.graphicalData])
+        console.log("things are stated for the legend and the legend is getting updated")
+        console.log(legend)
+    },[store])
     // let legend = [
     //     {
     //         color:"#123456",

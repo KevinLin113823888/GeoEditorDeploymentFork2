@@ -25,7 +25,7 @@ function LegendCard(props) {
 
     useEffect(()=>{
         setText(props.legendObj.legendText)
-    },[props.legendObj])
+    },[props.legendObj.legendText])
     const handleChangeColor= (color)=>{
         let mappedData = {
             store: store,
