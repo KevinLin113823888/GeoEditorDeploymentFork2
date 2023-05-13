@@ -201,7 +201,7 @@ function MapViewerScreen(props) {
                             // setGeoJson(temp, true, false)
                             sendImportReq(temp);
                             setFileExist(true);
-                            // setKeyid(keyid => keyid + 1)
+                            setKeyid(keyid => keyid + 1)
                             screenshotMap();
                             // store.takeScreenShot(true);
                         }
@@ -276,7 +276,6 @@ function MapViewerScreen(props) {
             setGeoJson(temp);
             sendImportReq(temp);
             screenshotMap();
-            console.log("WHY IS THIS FALSE WHY NO TRUE");
             // store.takeScreenShot(true);
             // setKeyid(keyid => keyid + 1);
         }
