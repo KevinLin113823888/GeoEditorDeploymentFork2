@@ -37,6 +37,7 @@ export default class EditLegendTPS extends jsTPS_Transaction {
     refreshState (mapObj) {
         console.log("called to refresh i suppose")
         this.store.setCurrentMapData(mapObj)
+        this.store.updateViewer()
     }
 
     doTransaction() {
