@@ -28,6 +28,8 @@ import ColorTPS from "../../transactions/ColorTPS";
 import MergeAndSplitTPS from "../../transactions/MergeAndSplitTPS";
 import MapChangeNameModal from "./MapViewerModal/MapChangeNameModal";
 import Toastify from 'toastify-js'
+import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 function MapEditor(props) {
   
@@ -44,6 +46,7 @@ function MapEditor(props) {
     const selectModeToggle = useRef(false)
 
     const currentRegion = useRef("");
+    const { id } = useParams();
 
     let dragStartCoords = []
     const geoJsonMapData = store.currentMapData;
@@ -51,17 +54,17 @@ function MapEditor(props) {
     const [clickedLayer,setClickedLayer] = useState(null);
     
     
-    useEffect(() => {
-        function handleBeforeUnload() {
+    // useEffect(() => {
+    //     function handleBeforeUnload() {
             
-            localStorage.setItem('store', JSON.stringify(store));
-            localStorage.setItem('jsTPS', JSON.stringify(store.jstps));
-        }
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, [store]);
+    //         localStorage.setItem('store', JSON.stringify(store));
+    //         localStorage.setItem('jsTPS', JSON.stringify(store.jstps));
+    //     }
+    //     window.addEventListener('beforeunload', handleBeforeUnload);
+    //     return () => {
+    //         window.removeEventListener('beforeunload', handleBeforeUnload);
+    //     };
+    // }, [store]);
 
     useEffect(() =>{
         console.log("there((9999999999999999999999999))", props.center);
