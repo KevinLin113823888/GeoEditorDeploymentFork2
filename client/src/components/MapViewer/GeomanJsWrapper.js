@@ -443,17 +443,30 @@ function GeomanJsWrapper(props) {
 
                         notUniqueNews.push(uniqueNews.pop())
 
-                        let nu = turf.multiPolygon(notUniqueNews)
-                        nu.subRegionColor = geoJsonMapData.features[i].subRegionColor
-                        nu.properties = geoJsonMapData.features[i].properties
-                        nu.properties.name = geoJsonMapData.features[i].properties.name+"2"
 
-                        let u = turf.multiPolygon(uniqueNews)
-                        u.subRegionColor = geoJsonMapData.features[i].subRegionColor
-                        u.properties = geoJsonMapData.features[i].properties
-                        u.properties.name = geoJsonMapData.features[i].properties.name+"1"
 
-                        console.log("res of the clips for single poly")
+                        let uniqueName = JSON.parse(JSON.stringify(geoJsonMapData.features[i].properties.name)).toString()
+                        let uniqueName2 = JSON.parse(JSON.stringify(geoJsonMapData.features[i].properties.name)).toString()
+
+
+
+                        let nu = JSON.parse(JSON.stringify(turf.multiPolygon((notUniqueNews))))
+                        nu.subRegionColor = JSON.parse(JSON.stringify((geoJsonMapData.features[i].subRegionColor)))
+                        nu.properties = JSON.parse(JSON.stringify((geoJsonMapData.features[i].properties)))
+                        nu.properties.name = uniqueName+"first"
+
+
+                        let u = turf.multiPolygon(JSON.parse(JSON.stringify(uniqueNews)))
+                        u.subRegionColor = JSON.parse(JSON.stringify((geoJsonMapData.features[i].subRegionColor)))
+                        u.properties = JSON.parse(JSON.stringify((geoJsonMapData.features[i].properties)))
+                        u.properties.name = uniqueName2+"second"
+
+                        console.log("res of the other these two")
+                        console.log(JSON.parse(JSON.stringify(u.properties.name)))
+                        console.log(JSON.parse(JSON.stringify(nu.properties.name)))
+
+
+                        console.log("res of the clips for multi poly poly")
                         listOfNewSplitRegionsToAdd = [nu,u]
                         console.log(listOfNewSplitRegionsToAdd)
 
