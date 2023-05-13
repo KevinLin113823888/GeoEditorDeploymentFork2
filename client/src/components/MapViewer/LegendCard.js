@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState,useEffect } from 'react'
 import { GlobalStoreContext } from '../../store'
 import Box from '@mui/material/Box';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
@@ -23,6 +23,9 @@ function LegendCard(props) {
         //store.showPublishedListsFilteredUsers(commentObj.user);
     }
 
+    useEffect(()=>{
+        setText(props.legendObj.legendText)
+    },[props.legendObj])
     const handleChangeColor= (color)=>{
         let mappedData = {
             store: store,
