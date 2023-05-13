@@ -14,7 +14,7 @@ function Screenshoter(props) {
     const map = useMap();
 
     useEffect(() =>{
-        // console.log('setscreenshot screen', store.setScreenshot)
+        console.log('setscreenshot screen', store.setScreenshot)
 
         if(!store.setScreenshot){
             return

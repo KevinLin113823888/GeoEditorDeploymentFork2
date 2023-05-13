@@ -64,10 +64,16 @@ function MapEditor(props) {
     }, [store]);
 
     useEffect(() =>{
+        console.log("there((9999999999999999999999999))", props.center);
         store.centerScreen(true);
     }, [props.center]);
     
     useEffect(() =>{
+        if(!props.sshot){
+            return
+        }
+        props.setSshot(false)
+        console.log("here?????????????????????????????", props.sshot);
         store.takeScreenShot(true);
     }, [props.sshot]);
    

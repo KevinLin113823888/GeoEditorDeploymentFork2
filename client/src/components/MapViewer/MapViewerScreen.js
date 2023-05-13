@@ -36,7 +36,7 @@ function MapViewerScreen(props) {
     const [mapName, setMapChange] = useState('untitled');
     const [keyid, setKeyid] = useState(0)
     const [center, setCenter] = useState(0)
-    const [sshot, setSshot] = useState(0)
+    const [sshot, setSshot] = useState(false)
 
 
     const { store } = useContext(GlobalStoreContext);
@@ -98,9 +98,20 @@ function MapViewerScreen(props) {
                 if (feat.length === 0) {
                     return;
                 }
+
+                console.log(data.graphicalData)
+                let graph = {};
+                if(data.graphicalData){
+                    graph = JSON.parse(data.graphicalData)
+                    delete graph["_id"];
+                    console.log(graph)
+                }
+
                 setMapChange(data.title);
-                let geo = { type: data.type, features: feat }
+                let geo = { type: data.type, features: feat}
                 initGeojsonGraphicalData(geo);
+                console.log(geo, graph)
+                geo.graphicalData=graph;
                 setGeoJson(geo);
                 loadmap()
             })
@@ -109,7 +120,7 @@ function MapViewerScreen(props) {
 
     async function loadmap(){
         await new Promise(r => setTimeout(r, 100));
-        setCenter(center => center + 1);
+        setCenter(center => center +1);
     }
 
     const sendImportReq = (geoJson) => {
@@ -175,7 +186,7 @@ function MapViewerScreen(props) {
                             sendImportReq(temp);
                             setFileExist(true);
                             // setKeyid(keyid => keyid + 1)
-                            setSshot(sshot => sshot + 1);
+                            setSshot(true);
                             // store.takeScreenShot(true);
                         }
                     })
@@ -248,7 +259,7 @@ function MapViewerScreen(props) {
             initGeojsonGraphicalData(temp)
             setGeoJson(temp);
             sendImportReq(temp);
-            setSshot(sshot => sshot + 1);
+            setSshot(true);
             // store.takeScreenShot(true);
             // setKeyid(keyid => keyid + 1);
         }
@@ -268,7 +279,7 @@ function MapViewerScreen(props) {
         temp.graphicalData = graphical;
         // setGeoJson(temp, false, true);
         setGeoJson(temp);
-        setCenter(center => center + 1);
+        setCenter(center => center +1);
         // store.centerScreen(true);
         // store.setCenterScreen = true;
     }
@@ -461,7 +472,7 @@ function MapViewerScreen(props) {
                             }}>
                             <MapEditor changeName={changeRegionName} key={keyid} 
                             handleCompress={handleCompress} updateViewer={handleUpdate}
-                                       mapCardId={id} center={center} sshot={sshot} />
+                                       mapCardId={id} center={center} sshot={sshot} setSshot={setSshot} />
                         </Box>
                     <Grid item xs={12} md={11}>
                         <MapLegendFooter />
