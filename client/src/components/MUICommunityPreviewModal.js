@@ -111,7 +111,8 @@ function MUICommunityPreviewModal() {
                 setLikeLength(data.likeAmount);
                 setdisLikeLength(data.dislikeAmount);
                 setFollowing(data.follow);
-                setBlocked(data.block)
+                setBlocked(data.block);
+                setKeyid(keyid => keyid + 1);
             })
             .catch(err => console.log(err));
         }
