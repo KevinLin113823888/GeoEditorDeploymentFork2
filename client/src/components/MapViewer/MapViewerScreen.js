@@ -27,6 +27,7 @@ import * as topoClient from 'topojson-client';
 import * as topoSimplify from 'topojson-simplify';
 import * as turf from '@turf/turf'
 import { download } from '@crmackey/shp-write'
+import Toastify from 'toastify-js'
 
 
 function MapViewerScreen(props) {
@@ -39,6 +40,7 @@ function MapViewerScreen(props) {
     const [keyid, setKeyid] = useState(0)
     const [center, setCenter] = useState(0)
     const [sshot, setSshot] = useState(false)
+    const [prevMapName, setPrevMapName] = useState('name');
 
 
     const { store } = useContext(GlobalStoreContext);
@@ -73,7 +75,9 @@ function MapViewerScreen(props) {
         initGeojsonGraphicalData(na)
         // setGeoJson(na)
         store.updateViewer = handleUpdate
+        
     },[]);
+    
 
     useEffect(() => {
         if(store.currentFeatureIndex === -1){
@@ -114,6 +118,7 @@ function MapViewerScreen(props) {
                 }
 
                 setMapChange(data.title);
+                setPrevMapName(data.title);
                 let geo = { type: data.type, features: feat}
                 initGeojsonGraphicalData(geo);
                 console.log(geo, graph)
@@ -345,25 +350,7 @@ function MapViewerScreen(props) {
         setKeyid(keyid => keyid + 1)
     }
 
-    function handleChangeMapName(e) {
-        fetch(process.env.REACT_APP_API_URL + 'map/changeMapNameById', {
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                id: id,
-                newName: e.target.value
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("data of new name", data);
-                setMapChange(data.name);
-            })
-            .catch(err => console.log(err));
-    }
+
 
     function handleExportGeoJson(event) {
         store.changeModal("NONE");
@@ -414,6 +401,8 @@ function MapViewerScreen(props) {
         };
     }, []);
     function handleChangeMapName(event) {
+       
+        
         fetch(process.env.REACT_APP_API_URL + 'map/changeMapNameById', {
             method: "POST",
             credentials: 'include',
@@ -425,11 +414,36 @@ function MapViewerScreen(props) {
                 newName: event.target.value
             }),
         })
-            .then((res) => res.json())
-            .then((data) => {
+        .then((res) => {
+            if (res.status === 200) {
+                console.log("new map created");
+            }
+            else {
+                Toastify({
+                    text: "You already have a map with this name",
+                    gravity: "bottom",
+                    position: 'left',
+                    duration: 2000,
+                    style: {
+                      background: '#0f3443'
+                    }
+                  }).showToast();
+                  setMapChange(prevMapName)
+                throw new Error('map not created');
+                
+            }
+            return res.json();
+        }).then((data) => {
                 console.log("data of new name", data);
             })
             .catch(err => console.log(err));
+            
+            
+    }
+    function handleKeyEnterPress(event) {
+        if (event.key === 'Enter') {
+            event.target.blur()
+        }
     }
     function initGeojsonGraphicalData(geoJsonObj) {
         geoJsonObj.graphicalData ??= {}
@@ -480,7 +494,7 @@ function MapViewerScreen(props) {
                         }}>
                         <InputGroup className="mb-3">
                             <input type="text" maxLength={18} className="form-control" id="validationCustom01" value={mapName} onChange={e => { setMapChange(e.target.value) }}
-                                onBlur={handleChangeMapName}  required style={{ fontSize: "2.2rem", fontWeight: "bold", border: "none",paddingTop: "0rem",paddingBottom:"0",marginBottom:"0" }}
+                                onBlur={handleChangeMapName} onKeyPress={handleKeyEnterPress}  required style={{ fontSize: "2.2rem", fontWeight: "bold", border: "none",paddingTop: "0rem",paddingBottom:"0",marginBottom:"0" }}
                             />
                         </InputGroup>
                     </Box>

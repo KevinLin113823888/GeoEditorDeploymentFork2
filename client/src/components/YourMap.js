@@ -43,12 +43,15 @@ function YourMap() {
     setIsFocused(true);
     };
 
+    
+
     const handleBlur = () => {
     setIsFocused(false);
     };
 
     useEffect(() => {
         onLoad();
+        store.changeScreen("yourmap");
     }, []);
 
     function onLoad() {

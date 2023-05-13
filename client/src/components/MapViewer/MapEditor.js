@@ -80,6 +80,9 @@ function MapEditor(props) {
         store.takeScreenShot(true);
     }, [props.sshot]);
    
+    useEffect(() => {
+        store.currentScreen = "yourmap"
+    },[]);
     function handleAddVertex(e) {
 
         let vertexEditFeature = e.target.feature

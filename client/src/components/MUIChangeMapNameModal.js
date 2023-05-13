@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import Toastify from 'toastify-js'
 const style = {
     position: 'absolute',
     top: '50%',
@@ -23,7 +24,7 @@ function MUIChangeMapNameModal(props) {
     const [search, setSearch] = useState("");
 
     function handleChangeMapName(event) {
-        store.changeModal("NONE");
+        
 
         fetch(process.env.REACT_APP_API_URL + 'map/changeMapNameById', {
             method: "POST",
@@ -36,10 +37,28 @@ function MUIChangeMapNameModal(props) {
                 newName: search
             }),
         })
-        .then((res) => res.json())
+        .then((res) => {
+            if (res.status === 200) {
+                console.log("map name changed");
+            }
+            else {
+                Toastify({
+                    text: "You already have a map with this name",
+                    gravity: "bottom",
+                    position: 'left',
+                    duration: 2000,
+                    style: {
+                      background: '#0f3443'
+                    }
+                  }).showToast();
+                throw new Error('map not created');
+            }
+            return res.json();
+        })
         .then((data) => {
             console.log("data of new name", data);
             // setMapChange(data.name);
+            store.changeModal("NONE");
             props.handleUpdate()
         })
         .catch(err => console.log(err));

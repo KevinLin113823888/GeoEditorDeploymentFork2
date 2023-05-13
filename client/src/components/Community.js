@@ -37,18 +37,8 @@ function Community() {
       setIsFocused(false);
     };
     useEffect(() => {
-        if(store){
-        function handleBeforeUnload() {
-            console.log("Store update?")
-            localStorage.setItem('store', JSON.stringify(store));
-            localStorage.setItem('jsTPS', JSON.stringify(store.jstps));
-        }
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-        }
-    }, [store]);
+        store.changeScreen("community");
+    }, []);
 
     useEffect(() => {
         if (!store.guestMode) {

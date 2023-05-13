@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Input from '@mui/material/Input';
+import Toastify from 'toastify-js'
 
 const style = {
     position: 'absolute',
@@ -50,6 +51,15 @@ function CreateNewMapModal() {
                     console.log("new map created");
                 }
                 else {
+                    Toastify({
+                        text: "You already have a map with this name",
+                        gravity: "bottom",
+                        position: 'left',
+                        duration: 2000,
+                        style: {
+                          background: '#0f3443'
+                        }
+                      }).showToast();
                     throw new Error('map not created');
                 }
                 return res.json();
