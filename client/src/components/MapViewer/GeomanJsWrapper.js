@@ -320,6 +320,9 @@ function GeomanJsWrapper(props) {
             });
             console.log(polygons)
             // Check if the new polyline intersects with any polygons
+            if(lineLatlngsRef.current.length <= 1 ){
+                return
+            }
             let newPolyline = turf.lineString(lineLatlngsRef.current);
             console.log(newPolyline)
 
@@ -556,11 +559,26 @@ function GeomanJsWrapper(props) {
                 props.toggleSelectMode()
             }
             const splitButtonClick = (e) => {
+
+                console.log("split button clicked")
+                console.log("result of the split clicked ref")
+                console.log(lineLatlngsRef.current.length)
+                console.log(splitClickedRef.current)
+                console.log(e)
+                console.trace()
+
                 if(e===undefined){
+                    // splitClickedRef.current = false
+                    // map.pm.disableDraw('Line');
+                    return
+                }
+                if(lineLatlngsRef.current.length <= 1 &&  splitClickedRef.current === true){
+
+                    console.log("fall into the if statement")
                     splitClickedRef.current = false
                     map.pm.disableDraw('Line');
-                    return }
-                console.log("split button clicked")
+                    return
+                }
                 splitClickedRef.current = true
                 map.pm.enableDraw('Line', {
                     snappable: true,
@@ -569,8 +587,6 @@ function GeomanJsWrapper(props) {
                     tooltips: true,
                     cursorMarker: true
                 });
-
-
             }
             const colorButtonClick=()=>{
                 props.toggleSelectMode()
