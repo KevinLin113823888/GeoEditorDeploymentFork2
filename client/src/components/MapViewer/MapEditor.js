@@ -6,6 +6,7 @@ import SubregionColorModal from "./MapViewerModal/SubregionColorModal";
 import BorderColorModal from "./MapViewerModal/BorderColorModal";
 import MapMergeChangeRegionNameModal from "./MapViewerModal/MapMergeChangeRegionNameModal";
 import MapAddRegionModal from "./MapViewerModal/MapAddRegionModal";
+import Legend from "./MapViewerModal/Legend";
 import { GeomanControls } from 'react-leaflet-geoman-v2';
 // import { topojson } from 'topojson';
 import { topology } from 'topojson-server';
@@ -61,6 +62,14 @@ function MapEditor(props) {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, [store]);
+
+    useEffect(() =>{
+        store.centerScreen(true);
+    }, [props.center]);
+    
+    useEffect(() =>{
+        store.takeScreenShot(true);
+    }, [props.sshot]);
    
     function handleAddVertex(e) {
 
@@ -505,6 +514,7 @@ function MapEditor(props) {
         return;
 
     }
+
     const handleMarkerDragEnd = (e) => {
 
 
@@ -616,7 +626,6 @@ function MapEditor(props) {
         // setUpdate(update => update + 1);
     };
 
-
     function hexToRgb(hex) {
         const r = parseInt(hex.substring(1, 3), 16);
         const g = parseInt(hex.substring(3, 5), 16);
@@ -653,13 +662,13 @@ function MapEditor(props) {
         fillOpacity: 0.7,
         color: feature.borderColor
     });
-        let a = `<div style="color:gray;
-"> ${countryName}</div>`
+        let a = `<div style="color:gray;"> ${countryName}</div>`
         // a = countryName
         var tooltip = L.tooltip({
             content: a,
-        permanent: true,
-        direction:"center"})
+            permanent: true,
+            direction:"center"
+        })
         layer.bindTooltip(tooltip).openTooltip()
         // layer.bindTooltip(layer.feature.properties.name,
         //     { permanent: true, direction: 'center'}
@@ -673,9 +682,9 @@ function MapEditor(props) {
 
         layer.on('click', function (e) {
             
-            store.setRegionProperties({"hi":"hi","yo":"hey"})
-            console.log("on layer click i guess")
-            console.log(e)
+            // store.setRegionProperties({"hi":"hi","yo":"hey"})
+            // console.log("on layer click i guess")
+            // console.log(e)
             let featureName = e.target.feature.properties.name;
             geoJsonMapData.features.forEach((feature, index) => {
                 if (feature.properties.name === featureName) {
@@ -721,8 +730,6 @@ function MapEditor(props) {
             setClickedLayer(e)
             store.changeModal("CHANGE_REGION_NAME_MODAL")
         })
-        layer.on({
-        });
         layer.on('pm:vertexremoved', e => {
             console.log("vertexremoved")
             handleRemoveVertex(e)
@@ -970,45 +977,41 @@ function MapEditor(props) {
 
             {geoJsonMapData.features ?
                 <div class="leafletmapdiv">
-                    
-                    
                     <MapContainer id="mapitem"
+                        style={{ height: "85vh",
+                        backgroundColor: store.currentMapData.graphicalData.backgroundColor }}sx={{marginTop:"30vh"}} zoom={store.zoomLevel} center={store.centerCoords}
+                        editable={true}
+                    >
+                        <Screenshoter mapCardId = {props.mapCardId}/>
+                        
+                            <TileLayer
+                                attribution='&amp;copy <update href="http://osm.org/copyright">OpenStreetMap</update> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                opacity={.75}
 
-                style={{ height: "85vh",
-                backgroundColor: store.currentMapData.graphicalData.backgroundColor }}sx={{marginTop:"30vh"}} zoom={store.zoomLevel} center={store.centerCoords}
-                editable={true}
-                >
-                <Screenshoter
-                    mapCardId = {props.mapCardId}
-                    />
-                
-                        <TileLayer
-                            attribution='&amp;copy <update href="http://osm.org/copyright">OpenStreetMap</update> contributors'
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            opacity={.75}
+                            />
+                            <FeatureGroup>
+                                <GeoJSON
+                                    key={update}
+                                    data={geoJsonMapData.features}
+                                    onEachFeature={onEachCountry}
+                                />
+                            </FeatureGroup>
 
+                            <GeomanJsWrapper
+                                handleBackgroundColorChange = {handleBackgroundColorChange}
+                                handleBorderColor = {(c)=> {handleBorderOrRegionColorChange(c,"borderColor")}}
+                                handleRegionColor = {(c)=> {handleBorderOrRegionColorChange(c,"subRegionColor")}}
+                                toggleSelectMode={toggleSelectMode}
+                                compress={props.handleCompress}
+                                file = {geoJsonMapData}
+                                updateEditor = {handleUpdate}
+                                updateViewer = {props.updateViewer}
+                                unselect = {unselect}
+                                regionsSelected = {regionsSelectedRef.current}
                         />
-                    <FeatureGroup>
-                        <GeoJSON
-                            key={update}
-                            data={geoJsonMapData.features}
-                            onEachFeature={onEachCountry}
-                        />
-                    </FeatureGroup>
-
-                        <GeomanJsWrapper
-                            handleBackgroundColorChange = {handleBackgroundColorChange}
-                            handleBorderColor = {(c)=> {handleBorderOrRegionColorChange(c,"borderColor")}}
-                            handleRegionColor = {(c)=> {handleBorderOrRegionColorChange(c,"subRegionColor")}}
-                            toggleSelectMode={toggleSelectMode}
-                            compress={props.handleCompress}
-                            file = {geoJsonMapData}
-                            updateEditor = {handleUpdate}
-                            updateViewer = {props.updateViewer}
-                            unselect = {unselect}
-                            regionsSelected = {regionsSelectedRef.current}
-                        />
-            </MapContainer>
+                        <Legend data={geoJsonMapData.graphicalData.legend}/>
+                    </MapContainer>
                 </div>
                 :
                 <></>
