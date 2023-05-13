@@ -85,14 +85,15 @@ function LegendCard(props) {
                        onChange={handleChange}
                        onBlur={handleBlur}
                        required 
+                       style={{borderRadius:"7px 7px 7px 7px",fontFamily:'Helvetica'}}
                        />
                 {/*<BorderColorIcon className="material-icons" sx={{"&:hover": {fill: "rgba(255,240,10,0.8)"}} } style={{fontSize:"1.6rem"}}/>*/}
                 <SquareIcon className="material-icons" onClick={handleChangeLegendColor} sx={{color:colorString,
-                    paddingTop: "1%",
+                    marginTop: "2.5%",
                 }}/>
 
                 <DeleteIcon className="material-icons" sx={{
-                    paddingTop: "1%",
+                    marginTop: "2.5%",
                     "&:hover": {fill: "rgba(255,240,10,0.8)"}}}
                     onClick = {handleDelete}
                 />

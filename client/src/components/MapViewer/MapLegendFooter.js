@@ -34,7 +34,7 @@ function MapLegendFooter(props) {
     return (
         <Grid container rowSpacing={0} columnSpacing={2} sx={{marginLeft:"2%"}}>
             {legend.map((legendObj, index) => (
-                <Grid item xs={2.4} >
+                <Grid item xs={5} md={2.4} >
                     <LegendCard
                         // key={'map-legend-' + (index)}
                         index={index}
