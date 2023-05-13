@@ -25,6 +25,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import * as topoServer from 'topojson-server';
 import * as topoClient from 'topojson-client';
 import * as topoSimplify from 'topojson-simplify';
+import * as turf from '@turf/turf'
+import { download } from '@crmackey/shp-write'
 
 
 function MapViewerScreen(props) {
@@ -376,6 +378,21 @@ function MapViewerScreen(props) {
     }
 
     function handleExportShpDbf(event) {
+        let flattened = turf.flatten(GeoJson)
+        let geofeatures = flattened.features
+        
+        var options = {
+            name: 'ZippedShapefile',
+            folder: 'myshapes',
+            types: {
+                Multipolygon: 'myMultipolygonType',
+                Polygon: 'myPolygonType'
+              }
+        }
+        download({
+            type: 'FeatureCollection',
+            features: geofeatures
+        }, options);
         store.changeModal("NONE");
     }
 
