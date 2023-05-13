@@ -14,14 +14,14 @@ function MapLegendFooter(props) {
 
     const [legend,setLegend] = useState([])
     useEffect(() => {
-        console.log("get whatever there is first.")
+        // console.log("get whatever there is first.")
         let graphData = store.currentMapData.graphicalData
         if(graphData === undefined ){
-            console.log("well its undefined")
+            // console.log("well its undefined")
             return
         }
-        console.log("i guess its not now")
-        console.log("i can see things are getting stated")
+        // console.log("i guess its not now")
+        // console.log("i can see things are getting stated")
         setLegend(graphData.legend)
     },[store.currentMapData.graphicalData])
     // let legend = [
@@ -33,22 +33,17 @@ function MapLegendFooter(props) {
 
     return (
         <Grid container rowSpacing={0} columnSpacing={2} sx={{marginLeft:"2%"}}>
-                {legend.map((legendObj, index) => (
-                    <Grid item xs={2.4} >
+            {legend.map((legendObj, index) => (
+                <Grid item xs={2.4} >
                     <LegendCard
                         // key={'map-legend-' + (index)}
                         index={index}
                         legendObj={legendObj}
+                        updateViewer={props.updateViewer}
                     />
-                    </Grid>
-                ))} 
-                
-                        
-                
-                
+                </Grid>
+            ))}  
         </Grid>
-
-    
         )
 }
 export default MapLegendFooter;

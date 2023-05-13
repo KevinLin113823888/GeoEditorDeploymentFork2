@@ -12,20 +12,18 @@ function Legend(props) {
     console.log("LEGEND", legends);
 
     useEffect(() => {
-        const legend = L.control({ position: "bottomleft" });
+        const legend = L.control({ position: "bottomright" });
 
         legend.onAdd = () => {
             const div = L.DomUtil.create('div', 'info legend');
             let labels = [];
 
             for (let i = 0; i < legends.length; i++) {
-                console.log("LEGGEND", legends[i]);
                 labels.push('<span class="dot" style="background-color:' + legends[i].color + '"></span> ' + legends[i].legendText);
             }
             console.log("Labels", labels);
 
             div.innerHTML = labels.join("<br>");
-            // div.innerHTML = "<div>HIIIIIIII</div>"
             return div;
         }
 

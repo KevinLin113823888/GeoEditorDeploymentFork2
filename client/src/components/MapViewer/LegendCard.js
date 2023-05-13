@@ -33,7 +33,7 @@ function LegendCard(props) {
             oldIndex: index,
         }
         store.jstps.addTransaction(new EditLegendTPS(mappedData))
-
+        props.updateViewer();
     }
     function handleChangeLegendColor() {
 
@@ -60,6 +60,7 @@ function LegendCard(props) {
             oldIndex: index,
         }
         store.jstps.addTransaction(new EditLegendTPS(mappedData))
+        props.updateViewer();
     }
 
     const handleDelete = () => {
@@ -73,7 +74,7 @@ function LegendCard(props) {
             oldIndex: index,
         }
         store.jstps.addTransaction(new EditLegendTPS(mappedData))
-
+        props.updateViewer();
     }
 
     return (

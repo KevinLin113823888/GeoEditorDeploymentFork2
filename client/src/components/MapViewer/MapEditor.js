@@ -1019,7 +1019,9 @@ function MapEditor(props) {
                                 unselect = {unselect}
                                 regionsSelected = {regionsSelectedRef.current}
                         />
-                        <Legend data={store.currentMapData.graphicalData.legend}/>
+                        <Legend data={store.currentMapData.graphicalData.legend} 
+                            updateEditor = {handleUpdate}
+                            updateViewer = {props.updateViewer}/>
                     </MapContainer>
                 </div>
                 :

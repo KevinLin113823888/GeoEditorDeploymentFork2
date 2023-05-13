@@ -485,7 +485,7 @@ function MapViewerScreen(props) {
                                        mapCardId={id} center={center} sshot={sshot} setSshot={setSshot} />
                         </Box>
                     <Grid item xs={12} md={11}>
-                        <MapLegendFooter />
+                        <MapLegendFooter updateViewer={handleUpdate}/>
                     </Grid>
                 </Grid>
                 <Grid item xs={2} sx={{ display: { xs: 'block', md: 'none' } }} >
