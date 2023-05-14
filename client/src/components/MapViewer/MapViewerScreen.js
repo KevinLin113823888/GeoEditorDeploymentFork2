@@ -296,7 +296,7 @@ function MapViewerScreen(props) {
         var graphical = GeoJson.graphicalData;
         var topo = topoServer.topology({ foo: temp });
         topo = topoSimplify.presimplify(topo);
-        topo = topoSimplify.simplify(topo, compressLst[compressVal]);
+        topo = topoSimplify.simplify(topo, 0.00001);
         if (compressVal <= 6){
             setCompressVal(compressVal => compressVal+1);
         }
@@ -304,6 +304,7 @@ function MapViewerScreen(props) {
         temp.graphicalData = graphical;
         // setGeoJson(temp, false, true);
         setGeoJson(temp);
+        setKeyid(keyid => keyid + 1);
         setCenter(center => center +1);
         // store.centerScreen(true);
         // store.setCenterScreen = true;
