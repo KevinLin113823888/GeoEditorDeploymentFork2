@@ -755,7 +755,7 @@ function GeomanJsWrapper(props) {
                 continueDrawing: true,
                 editable: false,
                 limitMarkersToCount: 50,
-                snapDistance: 5,
+                snapDistance: 7,
                 removeVertexOn: "contextmenu" //right click on verticies to remove
             });
 
