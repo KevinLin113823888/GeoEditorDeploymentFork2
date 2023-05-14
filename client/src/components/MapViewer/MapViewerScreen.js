@@ -48,6 +48,9 @@ function MapViewerScreen(props) {
     const { id } = useParams();
     const [columns1,setColumns1] = useState(9.5);
 
+    const [compressVal, setCompressVal] = useState(0);
+    const compressLst = [0.003, 0.005, 0.0075, 0.01, 0.03, 0.05, 0.075 , 0.1];
+
     const names = [];
     let count = 0;
     let shpfile = null;
@@ -125,6 +128,7 @@ function MapViewerScreen(props) {
                 geo.graphicalData=graph;
                 setGeoJson(geo);
                 loadmap()
+                setCompressVal(0)
             })
             .catch(err => console.log(err));
     }, []);
@@ -189,19 +193,20 @@ function MapViewerScreen(props) {
 
                             var temp = geoJson;
 
-                            // var topo = topoServer.topology({ foo: temp });
-                            // topo = topoSimplify.presimplify(topo);
+                            var topo = topoServer.topology({ foo: temp });
+                            topo = topoSimplify.presimplify(topo);
 
-                            // topo = topoSimplify.simplify(topo, 0.005);
+                            topo = topoSimplify.simplify(topo, 0.001);
 
-                            // temp = topoClient.feature(topo, topo.objects.foo);
+                            temp = topoClient.feature(topo, topo.objects.foo);
 
-                            initGeojsonGraphicalData(temp)
-                            setGeoJson(temp)
+                            initGeojsonGraphicalData(temp);
+                            setGeoJson(temp);
                             // setGeoJson(temp, true, false)
                             sendImportReq(temp);
                             setFileExist(true);
                             setKeyid(keyid => keyid + 1)
+                            setCompressVal(0);
                             screenshotMap();
                             // store.takeScreenShot(true);
                         }
@@ -263,7 +268,7 @@ function MapViewerScreen(props) {
             let graphical = temp.graphicalData;
             var topo = topoServer.topology({ foo: temp });
             topo = topoSimplify.presimplify(topo);
-            topo = topoSimplify.simplify(topo, 0.005);
+            topo = topoSimplify.simplify(topo, 0.001);
             temp = topoClient.feature(topo, topo.objects.foo);
            
             temp.graphicalData = graphical
@@ -275,6 +280,7 @@ function MapViewerScreen(props) {
             initGeojsonGraphicalData(temp)
             setGeoJson(temp);
             sendImportReq(temp);
+            setCompressVal(0);
             screenshotMap();
             // store.takeScreenShot(true);
             // setKeyid(keyid => keyid + 1);
@@ -290,7 +296,10 @@ function MapViewerScreen(props) {
         var graphical = GeoJson.graphicalData;
         var topo = topoServer.topology({ foo: temp });
         topo = topoSimplify.presimplify(topo);
-        topo = topoSimplify.simplify(topo, 0.01);
+        topo = topoSimplify.simplify(topo, compressLst[compressVal]);
+        if (compressVal <= 6){
+            setCompressVal(compressVal => compressVal+1);
+        }
         temp = topoClient.feature(topo, topo.objects.foo);
         temp.graphicalData = graphical;
         // setGeoJson(temp, false, true);
