@@ -49,7 +49,7 @@ function MapViewerScreen(props) {
     const [columns1,setColumns1] = useState(9.5);
 
     const [compressVal, setCompressVal] = useState(0);
-    const compressLst = [0.003, 0.005, 0.0075, 0.01, 0.03, 0.05, 0.075 , 0.1];
+    const compressLst = [0.0001, 0.001, 0.005, 0.01, 0.03, 0.05, 0.075 , 0.1];
 
     const names = [];
     let count = 0;
@@ -196,7 +196,7 @@ function MapViewerScreen(props) {
                             var topo = topoServer.topology({ foo: temp });
                             topo = topoSimplify.presimplify(topo);
 
-                            topo = topoSimplify.simplify(topo, 0.001);
+                            topo = topoSimplify.simplify(topo, 0.00001);
 
                             temp = topoClient.feature(topo, topo.objects.foo);
 
@@ -268,7 +268,7 @@ function MapViewerScreen(props) {
             let graphical = temp.graphicalData;
             var topo = topoServer.topology({ foo: temp });
             topo = topoSimplify.presimplify(topo);
-            topo = topoSimplify.simplify(topo, 0.001);
+            topo = topoSimplify.simplify(topo, 0.00001);
             temp = topoClient.feature(topo, topo.objects.foo);
            
             temp.graphicalData = graphical
