@@ -222,6 +222,7 @@ function GeomanJsWrapper(props) {
 
         })
         map.on('pm:create', (e) => {
+            
             if (e.layer instanceof L.Polygon) {
                 shapeRef.current = "Polygon"
                 console.log('A polygon was drawn');
@@ -234,7 +235,11 @@ function GeomanJsWrapper(props) {
             }
         });
         map.on('pm:drawstart', ({ workingLayer }) => {
-
+            
+            LL.pm.Draw['PolygonCopy'].setOptions({
+                snapDistance: 20
+            });
+            
             let numVertices = 0;
             workingLayer.on('pm:vertexadded', (e) => {
                 let newCoords = [e.latlng.lng,e.latlng.lat]
@@ -755,13 +760,13 @@ function GeomanJsWrapper(props) {
                 continueDrawing: true,
                 editable: false,
                 limitMarkersToCount: 50,
-                snapDistance: 7,
+                snapDistance: 2,
                 removeVertexOn: "contextmenu" //right click on verticies to remove
             });
 
             console.log("mount ")
 
-
+            
         }
 
     }, [context]);
