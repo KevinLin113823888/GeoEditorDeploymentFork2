@@ -171,9 +171,10 @@ function GeomanJsWrapper(props) {
                 input.focus();
             });
             el.addEventListener('contextmenu',function(event){
+                event.preventDefault();
                 handleTooltipDeleteJSTPS(index)
                 // event.stopPropagation();
-                // event.preventDefault();
+                 
                 // toolTip.removeEventListener("blur")
                 // toolTip.removeEventListener("dblclick")
                 // map.removeLayer(toolTip)
