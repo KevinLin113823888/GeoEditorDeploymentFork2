@@ -334,9 +334,8 @@ function MUICommunityPreviewModal() {
     }
 
     function onEachFeature(feature, layer){
-        const featureName = feature.properties.admin;
-        // console.log("why");
-        // layer.bindPopup(featureName);
+        const featureName = feature.properties.name;
+
         layer.bindTooltip(featureName,
             {permanent: true, direction: 'center'}).openTooltip();
         
