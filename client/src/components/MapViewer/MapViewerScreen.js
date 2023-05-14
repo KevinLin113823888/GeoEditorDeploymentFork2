@@ -262,8 +262,8 @@ function MapViewerScreen(props) {
 
             let graphical = temp.graphicalData;
             var topo = topoServer.topology({ foo: temp });
-            topo = topoSimplify.presimplify(topo);
-            topo = topoSimplify.simplify(topo, 0.005);
+            // topo = topoSimplify.presimplify(topo);
+            // topo = topoSimplify.simplify(topo, 0.005);
             temp = topoClient.feature(topo, topo.objects.foo);
            
             temp.graphicalData = graphical
