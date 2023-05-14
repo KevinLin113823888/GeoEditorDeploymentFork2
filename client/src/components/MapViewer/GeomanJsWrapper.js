@@ -707,28 +707,24 @@ function GeomanJsWrapper(props) {
             //each of the right geoman buttons, [their names, extra menu after click, function on initial click]
             //null means no popup actions
             const customButtonCollection = [
-                ["Merge Regions", mergeButtonAction, mergeButtonClick],
-                // ["addRegion" ], //these ones are baked in
-                ["Add Legend", null, handleAddLegend],
-                ["Change Background Color", null, handleChangeBackgroundColorModal],
-                ["Change Region Color", changeRegionColorAction, colorButtonClick],
-                ["Change Border Color", changeBorderColorAction,colorButtonClick],
-                ["Add New Textbox", extendedMenuActionCancel, addTextButtonClick],
-                // ["editVertex", mergeButtonAction, mergeButtonClick], //baked
-                // ["moveRegion", mergeButtonAction, mergeButtonClick], //baked
-                ["Split One Region", null, splitButtonClick],
-                // ["deleteRegion", extendedMenuActionCancel, mergeButtonClick], //baked
-                ["Undo", null, undoButtonClick],
-                ["Redo", null, redoButtonClick],
+                ["merge", mergeButtonAction, mergeButtonClick, "Merge"],
+                ["addLegend", null, handleAddLegend, "Add Legend"],
+                ["changeBackgroundColor", null, handleChangeBackgroundColorModal, "Change Background Color"],
+                ["changeRegionColor", changeRegionColorAction, colorButtonClick, "Change Region Color"],
+                ["changeBorderColor", changeBorderColorAction,colorButtonClick, "Change Border Color"],
+                ["addText", extendedMenuActionCancel, addTextButtonClick, "Add New Textbox"],
+                ["splitRegion", null, splitButtonClick, "Split Region"],
+                ["undo", null, undoButtonClick, "Undo"],
+                ["redo", null, redoButtonClick, "Redo"],
             ]
 
             for (let index in customButtonCollection) {
-                const [name, action, onClickHandler] = customButtonCollection[index]
+                const [name, action, onClickHandler, title] = customButtonCollection[index]
 
                 map.pm.Toolbar.createCustomControl({
                     className: name,
                     name: name,
-                    title: name,
+                    title: title,
                     block: 'edit',
                     actions: action,
                     onClick: onClickHandler
