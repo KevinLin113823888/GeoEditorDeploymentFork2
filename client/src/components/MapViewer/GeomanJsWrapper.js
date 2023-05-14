@@ -171,9 +171,10 @@ function GeomanJsWrapper(props) {
                 input.focus();
             });
             el.addEventListener('contextmenu',function(event){
+                event.preventDefault();
                 handleTooltipDeleteJSTPS(index)
                 // event.stopPropagation();
-                // event.preventDefault();
+                 
                 // toolTip.removeEventListener("blur")
                 // toolTip.removeEventListener("dblclick")
                 // map.removeLayer(toolTip)
@@ -700,35 +701,31 @@ function GeomanJsWrapper(props) {
                 onClick: addNewPolygonRegionClick,
                 name: 'PolygonCopy',
                 block: 'edit',
-                title: 'add new region',
+                title: 'Add New Region',
                 actions: extendedMenuActionCancel,
             });
 
             //each of the right geoman buttons, [their names, extra menu after click, function on initial click]
             //null means no popup actions
             const customButtonCollection = [
-                ["merge", mergeButtonAction, mergeButtonClick],
-                // ["addRegion" ], //these ones are baked in
-                ["addLegend", null, handleAddLegend],
-                ["changeBackgroundColor", null, handleChangeBackgroundColorModal],
-                ["changeRegionColor", changeRegionColorAction, colorButtonClick],
-                ["changeBorderColor", changeBorderColorAction,colorButtonClick],
-                ["addText", extendedMenuActionCancel, addTextButtonClick],
-                // ["editVertex", mergeButtonAction, mergeButtonClick], //baked
-                // ["moveRegion", mergeButtonAction, mergeButtonClick], //baked
-                ["splitRegion", null, splitButtonClick],
-                // ["deleteRegion", extendedMenuActionCancel, mergeButtonClick], //baked
-                ["undo", null, undoButtonClick],
-                ["redo", null, redoButtonClick],
+                ["merge", mergeButtonAction, mergeButtonClick, "Merge"],
+                ["addLegend", null, handleAddLegend, "Add Legend"],
+                ["changeBackgroundColor", null, handleChangeBackgroundColorModal, "Change Background Color"],
+                ["changeRegionColor", changeRegionColorAction, colorButtonClick, "Change Region Color"],
+                ["changeBorderColor", changeBorderColorAction,colorButtonClick, "Change Border Color"],
+                ["addText", extendedMenuActionCancel, addTextButtonClick, "Add New Textbox"],
+                ["splitRegion", null, splitButtonClick, "Split Region"],
+                ["undo", null, undoButtonClick, "Undo"],
+                ["redo", null, redoButtonClick, "Redo"],
             ]
 
             for (let index in customButtonCollection) {
-                const [name, action, onClickHandler] = customButtonCollection[index]
+                const [name, action, onClickHandler, title] = customButtonCollection[index]
 
                 map.pm.Toolbar.createCustomControl({
                     className: name,
                     name: name,
-                    title: name,
+                    title: title,
                     block: 'edit',
                     actions: action,
                     onClick: onClickHandler
