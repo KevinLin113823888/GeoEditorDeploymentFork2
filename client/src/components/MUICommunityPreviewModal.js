@@ -98,7 +98,7 @@ function MUICommunityPreviewModal() {
             })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data.id)
+                console.log(data)
                 let feat = JSON.parse(data.feature);
                 if(feat.length === 0){return;}
                 setTitle(data.title);
