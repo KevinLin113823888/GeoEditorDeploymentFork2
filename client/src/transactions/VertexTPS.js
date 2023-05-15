@@ -30,6 +30,8 @@ export default class VertexTPS extends jsTPS_Transaction {
                 break;
             }
         }
+        this.editingFeature=this.store.currentMapData.features[this.editingFeatureIndex]
+
         this.new2DVec = mappedData.new2DVec
 
         this.indexPath = mappedData.indexPath
@@ -86,9 +88,18 @@ export default class VertexTPS extends jsTPS_Transaction {
                 else
                     this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]] = this.new2DVec
             }
+
+
             this.oldVertex = this.polygon[this.vertexIndex]
             this.newVertex = this.new2DVec
             this.polygon[this.vertexIndex] = this.newVertex
+
+            if(this.vertexIndex===this.polygon.length-1){
+                this.polygon[0] = this.newVertex
+            }
+            else if(this.vertexIndex===0){
+                this.polygon[this.polygon.length-1] = this.newVertex
+            }
         }
         else if(this.type === "delete"){
             this.oldVertex = this.polygon[this.vertexIndex]
@@ -126,6 +137,13 @@ export default class VertexTPS extends jsTPS_Transaction {
                     this.sharedBorderFeature.geometry.coordinates[j[0]][j[1]] = this.oldVertex
             }
             this.polygon[this.vertexIndex] = this.oldVertex
+
+            if(this.vertexIndex===this.polygon.length-1){
+                this.polygon[0] = this.oldVertex
+            }
+            else if(this.vertexIndex===0){
+                this.polygon[this.polygon.length-1] = this.oldVertex
+            }
         }
         else if(this.type === "delete"){
             this.polygon.splice(this.vertexIndex,0,this.oldVertex)

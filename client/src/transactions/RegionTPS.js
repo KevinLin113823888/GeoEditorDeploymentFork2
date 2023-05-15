@@ -54,6 +54,9 @@ export default class RegionTPS extends jsTPS_Transaction {
         console.log("JSTPS for region changes")
         let features = this.store.currentMapData.features
         if(this.type === "add"){
+
+            console.log("add new polygon")
+            console.log(this.newPolygon)
             this.newPolygon.properties.name = this.newRegionName
             this.store.currentMapData.features.push(this.newPolygon)
             this.store.updateMapContainer()
