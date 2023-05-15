@@ -21,7 +21,7 @@ export default class ColorTPS extends jsTPS_Transaction {
     }
     refreshState () {
 
-        this.updateView()
+        //this.updateView()
         this.updateEditor()
     }
 
