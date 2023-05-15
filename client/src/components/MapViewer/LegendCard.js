@@ -36,7 +36,7 @@ function LegendCard(props) {
             oldIndex: index,
         }
         store.jstps.addTransaction(new EditLegendTPS(mappedData))
-        props.updateViewer();
+        // props.updateViewer();
     }
     function handleChangeLegendColor() {
 
@@ -63,7 +63,7 @@ function LegendCard(props) {
             oldIndex: index,
         }
         store.jstps.addTransaction(new EditLegendTPS(mappedData))
-        props.updateViewer();
+        // props.updateViewer();
     }
     function handleKeyPress(event) {
         if (event.key === 'Enter') {
@@ -83,7 +83,7 @@ function LegendCard(props) {
             oldIndex: index,
         }
         store.jstps.addTransaction(new EditLegendTPS(mappedData))
-        props.updateViewer();
+        // props.updateViewer();
     }
 
     return (
