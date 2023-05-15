@@ -11,7 +11,7 @@ export default class MergeAndSplitTPS extends jsTPS_Transaction {
         this.store = this.mappedData.store
         this.setStore = this.mappedData.setStore
         this.state = mappedData.state
-        this.updateView = mappedData.updateView
+        // this.updateView = mappedData.updateView
         this.updateEditor = mappedData.updateEditor
         this.type = mappedData.type
 

@@ -35,6 +35,9 @@ function MapEditor(props) {
   
     const [isPopup, setPopup] = useState(false);
     const [update, setUpdate] = useState(1);
+    const [updateMapContainer, setUpdateMapContainer] = useState(1);
+
+
     const { store, setStore} = useContext(GlobalStoreContext);
 
     const [bgColor,setBgColor] = useState("#ff0000")
@@ -845,6 +848,8 @@ function MapEditor(props) {
 
     };
     function handleUpdate(){
+        // console.log("handle update editor called")
+        // console.log("currently at",JSON.stringify(JSON.parse(update)))
         setUpdate(update=>update+1)
     }
 
@@ -959,9 +964,14 @@ function MapEditor(props) {
 
     }
 
+    function handleUpdateContainer(){
+        setUpdateMapContainer(update=>update+1)
+    }
+
 
     useEffect(() => {
         store.updateEditor = handleUpdate
+        store.updateMapContainer = handleUpdateContainer
     },[])
 
 
@@ -1011,7 +1021,9 @@ function MapEditor(props) {
 
             {geoJsonMapData.features ?
                 <div class="leafletmapdiv">
-                    <MapContainer id="mapitem"
+                    <MapContainer
+                        key={updateMapContainer}
+                        id="mapitem"
                         style={{ height: "85vh",
                         backgroundColor: store.currentMapData.graphicalData.backgroundColor }}sx={{marginTop:"30vh"}} zoom={store.zoomLevel} center={store.centerCoords}
                         editable={true}
@@ -1022,7 +1034,6 @@ function MapEditor(props) {
                                 attribution='&amp;copy <update href="http://osm.org/copyright">OpenStreetMap</update> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 opacity={.75}
-
                             />
                             <FeatureGroup>
                                 <GeoJSON
@@ -1044,7 +1055,9 @@ function MapEditor(props) {
                                 unselect = {unselect}
                                 regionsSelected = {regionsSelectedRef}
                         />
-                        <Legend data={store.currentMapData.graphicalData.legend} 
+                        <Legend
+                            key={updateMapContainer}
+                            data={store.currentMapData.graphicalData.legend}
                             updateEditor = {handleUpdate}
                             updateViewer = {props.updateViewer}/>
                     </MapContainer>

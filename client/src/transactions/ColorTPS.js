@@ -20,14 +20,13 @@ export default class ColorTPS extends jsTPS_Transaction {
 
     }
     refreshState () {
-
-        //this.updateView()
-        this.updateEditor()
+        this.store.updateEditor()
     }
 
     doTransaction() {
         if(this.type === "bg"){
             this.store.currentMapData.graphicalData.backgroundColor = this.newColor
+            this.store.updateMapContainer()
         }
         else if(this.type === "subRegionColor" || this.type === "borderColor"){
             for(let i=0;i<this.featureIndex.length;i++){
@@ -41,6 +40,7 @@ export default class ColorTPS extends jsTPS_Transaction {
     undoTransaction() {
         if(this.type === "bg"){
             this.store.currentMapData.graphicalData.backgroundColor = this.oldColor
+            this.store.updateMapContainer()
         }
         else if(this.type === "subRegionColor" || this.type === "borderColor"){
             for(let i=0;i<this.featureIndex.length;i++){
