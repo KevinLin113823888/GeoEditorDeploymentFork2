@@ -22,6 +22,14 @@ export default class VertexTPS extends jsTPS_Transaction {
             // this.polygon=mappedData.polygon
             this.index=mappedData.index
             this.editingFeature=mappedData.editingFeature
+
+        this.editingFeatureIndex = -1
+        for(let i=0;i<mappedData.store.currentMapData.features.length;i++){
+            if(mappedData.store.currentMapData.features[i] === this.editingFeature){
+                this.editingFeatureIndex = i
+                break;
+            }
+        }
         this.new2DVec = mappedData.new2DVec
 
         this.indexPath = mappedData.indexPath
@@ -55,6 +63,7 @@ export default class VertexTPS extends jsTPS_Transaction {
 
     doTransaction() {
 
+        this.editingFeature=this.store.currentMapData.features[this.editingFeatureIndex]
         if(this.type === "add"){
             this.polygon.splice(this.vertexIndex,0,this.new2DVec)
             if(this.sharedIndexPath!==null && this.sharedBorderFeature!==null){
@@ -96,6 +105,8 @@ export default class VertexTPS extends jsTPS_Transaction {
     }
 
     undoTransaction() {
+        this.editingFeature=this.store.currentMapData.features[this.editingFeatureIndex]
+
         if(this.type === "add"){
             this.polygon.splice(this.vertexIndex,1)
             if(this.sharedBorderFeature!==null){

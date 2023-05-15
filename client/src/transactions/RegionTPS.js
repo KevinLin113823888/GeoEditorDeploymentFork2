@@ -45,8 +45,10 @@ export default class RegionTPS extends jsTPS_Transaction {
     }
     refreshState () {
 
+        // this.store.updateViewer()
+        this.store.updateEditor()
         // this.updateView()
-        this.update()
+        // this.update()
     }
 
     doTransaction() {

@@ -159,6 +159,8 @@ export default class jsTPS {
      * a transaction (which also does it), or redoing a transaction.
      */
     doTransaction() {
+        // console.log("the result of all of our transactions that we have after do")
+        // console.log(this.transactions)
         if (this.hasTransactionToRedo()) {
             this.performingDo = true;
             let transaction = this.transactions[this.mostRecentTransaction+1];
@@ -173,6 +175,8 @@ export default class jsTPS {
      * TPS stack and undoes it, moving the TPS counter accordingly.
      */
     undoTransaction() {
+        // console.log("the result of all of our transactions that we have after undo")
+        // console.log(this.transactions)
         if (this.hasTransactionToUndo()) {
             this.performingUndo = true;
             let transaction = this.transactions[this.mostRecentTransaction];
