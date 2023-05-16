@@ -26,13 +26,13 @@ function LegendCard(props) {
     useEffect(()=>{
         setText(props.legendObj.legendText)
     },[props.legendObj.legendText])
-    const handleChangeColor= (color)=>{
+    const handleChangeColor= (newColor)=>{
         let mappedData = {
             store: store,
             setStore: setStore,
             type: "color",
             oldColor: color,
-            newColor: color,
+            newColor: newColor,
             oldIndex: index,
         }
         store.jstps.addTransaction(new EditLegendTPS(mappedData))
