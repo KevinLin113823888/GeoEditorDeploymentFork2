@@ -318,11 +318,12 @@ function MapViewerScreen(props) {
         temp.graphicalData = graphical;
         // setGeoJson(temp, false, true);
 
-        const stringify = JSON.stringify(temp)
-        temp = JSON.parse(stringify)
         temp.features.forEach((x, i) =>{
             x.subRegionColor = regionColor[i];
         })
+        
+        const stringify = JSON.stringify(temp)
+        temp = JSON.parse(stringify)
 
         setGeoJson(temp);
 
