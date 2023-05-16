@@ -25,9 +25,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import * as topoServer from 'topojson-server';
 import * as topoClient from 'topojson-client';
 import * as topoSimplify from 'topojson-simplify';
-import * as turf from '@turf/turf'
-import { download } from '@crmackey/shp-write'
-import Toastify from 'toastify-js'
+import * as turf from '@turf/turf';
+import { download } from '@crmackey/shp-write';
+import Toastify from 'toastify-js';
 
 
 function MapViewerScreen(props) {
@@ -208,7 +208,6 @@ function MapViewerScreen(props) {
                             setKeyid(keyid => keyid + 1)
                             setCompressVal(0);
                             screenshotMap();
-                            // store.takeScreenShot(true);
                         }
                     })
             })
@@ -283,9 +282,10 @@ function MapViewerScreen(props) {
             setCompressVal(0);
             screenshotMap();
             // store.takeScreenShot(true);
-            // setKeyid(keyid => keyid + 1);
+            setKeyid(keyid => keyid + 1);
         }
         setFileExist(true);
+        // store.centerScreen(true);
         // store.takeScreenShot(true);
 
         // setCompressCount(6);
