@@ -194,7 +194,8 @@ function GeomanJsWrapper(props) {
             // Add event listeners to the tooltip for drag events
             el.style.pointerEvents = 'auto';
         })
-    },[textBoxList,store.currentMapData])
+        console.log("someone called for the refresh the state of all of the textboxes")
+    },[textBoxList,store.currentMapData,store])
 
     //this will be the one to intialize the buttons, these are called once and are not stateful
     useEffect(() => {
