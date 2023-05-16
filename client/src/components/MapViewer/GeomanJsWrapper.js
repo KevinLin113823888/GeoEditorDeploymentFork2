@@ -282,7 +282,7 @@ function GeomanJsWrapper(props) {
                         newPoly.geometry.coordinates[0].push(firstCoord)
 
                         //to make stateful.
-                        store.polygonData = newPoly
+                        store.polygonData = JSON.parse(JSON.stringify(newPoly))
                         // props.file.features.push(sameFirstandLastCoords)
                         let center = map.getCenter()
                         store.setAddRegion(map.getZoom(), [center.lat,center.lng], "MAP_ADD_REGION_NAME")
