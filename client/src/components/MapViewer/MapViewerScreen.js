@@ -301,6 +301,12 @@ function MapViewerScreen(props) {
 
     function handleCompress() {
         var temp = GeoJson;
+
+        var regionColor = []
+        temp.features.forEach(i =>{
+            regionColor.push(i.subRegionColor)
+        })
+
         var graphical = GeoJson.graphicalData;
         var topo = topoServer.topology({ foo: temp });
         topo = topoSimplify.presimplify(topo);
@@ -314,6 +320,10 @@ function MapViewerScreen(props) {
 
         const stringify = JSON.stringify(temp)
         temp = JSON.parse(stringify)
+        temp.features.forEach((x, i) =>{
+            x.subRegionColor = regionColor[i];
+        })
+
         setGeoJson(temp);
 
         setKeyid(keyid => keyid + 1);
