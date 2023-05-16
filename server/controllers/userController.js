@@ -35,7 +35,7 @@ class userController {
             if(user)
                 mapCards = await MapCard.find({ _id: { $in: user.ownedMapCards } });
 
-            return res.status(200).json({status: 'OK', username: username, mapcards: mapCards});
+            return res.status(200).json({status: 'OK', username: username, mapcards: mapCards.reverse()});
         }
         catch(e){
             console.log(e.toString())
