@@ -57,8 +57,8 @@ export default class EditLegendTPS extends jsTPS_Transaction {
         else if (this.type === "delete"){
             let legendObj  = mapObj.graphicalData.legend[this.oldIndex]
 
-            this.oldColor = legendObj.color
-            this.oldText = legendObj.oldText
+            // this.oldColor = legendObj.color
+            // this.oldText = legendObj.oldText
 
             mapObj.graphicalData.legend.splice(this.oldIndex,1)
         }
