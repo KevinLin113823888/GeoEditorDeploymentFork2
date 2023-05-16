@@ -200,6 +200,9 @@ function MapViewerScreen(props) {
 
                             temp = topoClient.feature(topo, topo.objects.foo);
 
+                            const stringify = JSON.stringify(temp)
+                            temp = JSON.parse(stringify)
+
                             initGeojsonGraphicalData(temp);
                             setGeoJson(temp);
                             // setGeoJson(temp, true, false)
@@ -270,13 +273,18 @@ function MapViewerScreen(props) {
             topo = topoSimplify.simplify(topo, 0.00001);
             temp = topoClient.feature(topo, topo.objects.foo);
            
-            temp.graphicalData = graphical
-
+            
             temp.features.forEach((x, i) =>{
                 x.subRegionColor = regionColor[i];
             })
+            
+            temp.graphicalData = graphical
 
             initGeojsonGraphicalData(temp)
+
+            const stringify = JSON.stringify(temp)
+            temp = JSON.parse(stringify)
+
             setGeoJson(temp);
             sendImportReq(temp);
             setCompressVal(0);
@@ -303,7 +311,11 @@ function MapViewerScreen(props) {
         temp = topoClient.feature(topo, topo.objects.foo);
         temp.graphicalData = graphical;
         // setGeoJson(temp, false, true);
+
+        const stringify = JSON.stringify(temp)
+        temp = JSON.parse(stringify)
         setGeoJson(temp);
+
         setKeyid(keyid => keyid + 1);
         setCenter(center => center +1);
         // store.centerScreen(true);
