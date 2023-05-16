@@ -47,6 +47,7 @@ function MapAddRegionModal(props) {
     }
     function handleCloseModal(event) {
         store.changeModal("NONE");
+        store.updateMapContainer()
     }
     function handleUpdateSearch(event) {
         setAddRegionName(event.target.value);
