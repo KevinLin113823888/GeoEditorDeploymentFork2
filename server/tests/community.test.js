@@ -100,37 +100,7 @@ describe('Testing user controller', () => {
         expect(response1.statusCode).toBe(200)
     })
 
-    // test('fork community by id', async () => {
-    //     const response1 = await agent.post("/community/forkCommunityMap").send({
-    //         id:createdMapId,
-    //         newName: "New name"
-    //     })
-    //     expect(response1.statusCode).toBe(200)
-    // })
-    //
-    // test('report community by id', async () => {
-    //     const response1 = await agent.post("/community/reportCommunityMap").send({
-    //         id:createdMapId,
-    //         reportMessage: "report message"
-    //     })
-    //     expect(response1.statusCode).toBe(200)
-    // })
-    //
-    // test('like community by id', async () => {
-    //     const response1 = await agent.post("/community/likeCommunityMap").send({
-    //         id:createdMapId,
-    //     })
-    //     // expect(response1.status).toBe('LIKED')
-    //     expect(response1.statusCode).toBe(200)
-    // })
-    //
-    // test('dislike community by id', async () => {
-    //     const response1 = await agent.post("/community/dislikeCommunityMap").send({
-    //         id:createdMapId,
-    //     })
-    //     expect(response1.statusCode).toBe(200)
-    // })
-
+    
     test('leave comment', async () => {
         const response1 = await agent.post("/community/addComment").send({
             id:communityPreviewId,
