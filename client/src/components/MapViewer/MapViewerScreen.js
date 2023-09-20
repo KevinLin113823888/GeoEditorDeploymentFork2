@@ -51,28 +51,9 @@ function MapViewerScreen(props) {
     const [compressVal, setCompressVal] = useState(0);
     const compressLst = [0.0001, 0.001, 0.005, 0.01, 0.03, 0.05, 0.075 , 0.1];
 
-    const names = [];
-    let count = 0;
     let shpfile = null;
     let dbffile = null;
 
-    // useEffect(() => {
-    //     if (store) {
-    //         try {
-    //             function handleBeforeUnload() {
-    //                 console.log("Store update?")
-    //                 localStorage.setItem('store', JSON.stringify(store));
-    //                 localStorage.setItem('jsTPS', JSON.stringify(store.jstps));
-    //             }
-    //             window.addEventListener('beforeunload', handleBeforeUnload);
-    //             return () => {
-    //                 window.removeEventListener('beforeunload', handleBeforeUnload);
-    //             };
-    //         } catch (e) {
-
-    //         }
-    //     }
-    // }, [store]);
 
     useEffect(() => {
         initGeojsonGraphicalData(na)
@@ -167,9 +148,6 @@ function MapViewerScreen(props) {
 
     const handleSubmit = () => {
         setGeoJson({});
-        console.log("shapefile.open")
-        // console.log(shpfile)
-        // console.log(dbffile)
 
         let geoJson = {
             type: "FeatureCollection",
@@ -225,13 +203,10 @@ function MapViewerScreen(props) {
                 setGeoJson(temp);
             }
         })
-        // console.log("features", GeoJson.features);
-        // setState(!state);
     }
 
     const upload = () => {
-        // console.log("upload the stuff")
-        // console.log(na)
+
         setGeoJson(na);
         setFileExist(true);
     }
@@ -289,14 +264,9 @@ function MapViewerScreen(props) {
             sendImportReq(temp);
             setCompressVal(0);
             screenshotMap();
-            // store.takeScreenShot(true);
             setKeyid(keyid => keyid + 1);
         }
         setFileExist(true);
-        // store.centerScreen(true);
-        // store.takeScreenShot(true);
-
-        // setCompressCount(6);
     }
 
     function handleCompress() {
@@ -329,8 +299,7 @@ function MapViewerScreen(props) {
 
         setKeyid(keyid => keyid + 1);
         setCenter(center => center +1);
-        // store.centerScreen(true);
-        // store.setCenterScreen = true;
+
     }
 
     const handleImport = () => { store.changeModal(CurrentModal.MAP_IMPORT) }

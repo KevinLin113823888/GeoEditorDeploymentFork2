@@ -1,9 +1,6 @@
 import React, { useContext, useState,useEffect } from 'react'
 import { GlobalStoreContext } from '../../store'
 import Box from '@mui/material/Box';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import { Typography } from '@mui/material';
-import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SquareIcon from '@mui/icons-material/Square';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -18,10 +15,7 @@ function LegendCard(props) {
     const {color, legendText} = props.legendObj
 
     const [text,setText] = useState(legendText)
-    function handleUserNameClick() {
 
-        //store.showPublishedListsFilteredUsers(commentObj.user);
-    }
 
     useEffect(()=>{
         setText(props.legendObj.legendText)

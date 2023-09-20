@@ -123,69 +123,7 @@ function ImportModal(props) {
                         </Grid>
                 </Box>
             </Modal>
-        /*
-        <Modal open={store.currentModal === CurrentModal.MAP_IMPORT}
-               onClick={handleCloseModal}
-        >
-            <Box sx={style}
-                 onClick={e => e.stopPropagation()}
-            >
-                <Grid item xs >
-                    <IconButton sx={{
-                        float: 'right'
-                    }}
-                                onClick={handleCloseModal}>
-                        < CloseIcon/>
-                    </IconButton>
-                </Grid>
-                <header className="dialog-header">
-                    <Box style={{backgroundColor:"#f1f1f1", color:"black",paddingTop:"1vh",paddingBottom:"1vh"}}>
-                        <Typography style={{fontSize:"3.0rem",
-                        textAlign:"center"
-                        }}>
-                            <strong>Import Map</strong>
-                        </Typography>
-
-
-                        <Typography style={{fontSize:"1.0rem",
-                            textAlign:"center"}}>
-                            <strong>Import a geoJson map or shp/dbf map file combo</strong>
-                        </Typography>
-
-                    </Box>
-                </header>
-
-                <Grid container spacing={2}>
-
-
-                    <Grid item xs >
-                        <Button
-                            variant="contained"
-                            onClick={Function}
-                        >
-                            Browse
-                        </Button>
-                    </Grid>
-
-                    <Grid item xs >
-                        <Button
-                            variant="contained"
-                            onClick={Function}
-                            style={{
-                            }}
-                        >
-                            Confirm File Upload
-                        </Button>
-                    </Grid>
-
-
-
-                </Grid>
-
-
-
-            </Box>
-        </Modal>*/
+        
     );
 }
 export default ImportModal;

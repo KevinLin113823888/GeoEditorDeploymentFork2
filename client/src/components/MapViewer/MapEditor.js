@@ -2,25 +2,16 @@ import React, { useState, useEffect, useRef,useContext } from 'react';
 import { MapContainer, TileLayer, useMap, GeoJSON, LayerGroup, FeatureGroup, useMapEvents, Marker, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import MapColorwheelModal from "./MapViewerModal/MapColorwheelModal";
-import SubregionColorModal from "./MapViewerModal/SubregionColorModal";
-import BorderColorModal from "./MapViewerModal/BorderColorModal";
 import MapMergeChangeRegionNameModal from "./MapViewerModal/MapMergeChangeRegionNameModal";
 import MapAddRegionModal from "./MapViewerModal/MapAddRegionModal";
 import Legend from "./MapViewerModal/Legend";
-import { GeomanControls } from 'react-leaflet-geoman-v2';
-// import { topojson } from 'topojson';
-import { topology } from 'topojson-server';
-import { merge as mergeRegion } from 'topojson-client';
 import * as turf from '@turf/turf'
 import GeomanJsWrapper from './GeomanJsWrapper'
-import { empty } from "leaflet/src/dom/DomUtil";
-//import { useLeafletContext } from "@react-leaflet/core"; 
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import L from "leaflet";
 import { CurrentModal, GlobalStoreContext } from "../../store/index"
 import './mapEditor.css';
-
 import Screenshoter from './Screenshoter';
 import RegionTPS from "../../transactions/RegionTPS";
 import VertexTPS from "../../transactions/VertexTPS";
@@ -29,7 +20,6 @@ import MergeAndSplitTPS from "../../transactions/MergeAndSplitTPS";
 import MapChangeNameModal from "./MapViewerModal/MapChangeNameModal";
 import Toastify from 'toastify-js'
 import { useParams } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 
 function MapEditor(props) {
   
@@ -56,26 +46,12 @@ function MapEditor(props) {
 
     const [clickedLayer,setClickedLayer] = useState(null);
     
-    
-    // useEffect(() => {
-    //     function handleBeforeUnload() {
-            
-    //         localStorage.setItem('store', JSON.stringify(store));
-    //         localStorage.setItem('jsTPS', JSON.stringify(store.jstps));
-    //     }
-    //     window.addEventListener('beforeunload', handleBeforeUnload);
-    //     return () => {
-    //         window.removeEventListener('beforeunload', handleBeforeUnload);
-    //     };
-    // }, [store]);
 
     useEffect(() =>{
-        console.log("there((9999999999999999999999999))", props.center);
         store.centerScreen(true);
     }, [props.center]);
     
     useEffect(() =>{
-        console.log("here?????????????????????????????", props.sshot);
         if(!props.sshot){
             return
         }
@@ -114,11 +90,9 @@ function MapEditor(props) {
                 if (feature.geometry.type === "Polygon") {
                     coord1NextToLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1-1]
                     coord2NextToLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1]
-                    // geoJsonMapData.features[ind].geometry.coordinates[ind0].splice(ind1, 0,addedLatlng)
                 } else if (feature.geometry.type === "MultiPolygon") {
                     coord1NextToLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1][ind2-1]
                     coord2NextToLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1][ind2]
-                    // geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1].splice(ind2, 0,addedLatlng)
                 }
             }
         })
@@ -223,83 +197,6 @@ function MapEditor(props) {
         return
 
 
-        // console.log("this is our vertex add.")
-        // let vertexEditFeature = e.target.feature
-        // let newVertex = [e.latlng.lng,e.latlng.lat]
-
-        // let sharedBorderFeature = null
-        // let sharedIndexPath = null
-        // let sharedPoints = new Set()
-        // store.currentMapData.features.filter(x => x!=vertexEditFeature).forEach(feature1 => {
-        //     let res = turf.lineOverlap(feature1,vertexEditFeature)
-        //     if(res.features.length>0){
-        //             res.features[0].geometry.coordinates.forEach(x=>{
-        //                 sharedPoints.add(x.toString())
-        //             })
-        //         sharedBorderFeature = feature1
-        //     }
-        // })
-        // //time to find where is this new index located ig
-        // if(sharedBorderFeature !== null){
-        //     console.log("there contains a match ")
-        //     console.log(sharedPoints)
-
-        //     let i=e.indexPath
-        //     let vertexSinglePoly = vertexEditFeature.geometry.coordinates[i[0]]
-        //     let vertexMultiPoly =  vertexEditFeature.geometry.coordinates[i[0]][i[1]]
-        //     let vertexIndex = i[i.length-1]
-        //     let polygon = i.length===3?vertexMultiPoly:vertexSinglePoly
-        //     let orgVertex = polygon[vertexIndex]
-
-
-
-        //     let curr = polygon[vertexIndex]?.toString()
-        //     let prev = polygon[vertexIndex-1]?.toString()
-
-        //     console.log("this is the orgVertex poly bruh for curr")
-        //     console.log(vertexIndex)
-        //     console.log(orgVertex)
-        //     console.log(curr)
-        //     console.log(prev)
-
-        //     let multiPolygon = sharedBorderFeature.geometry.coordinates
-        //     if(sharedBorderFeature.geometry.type === "Polygon")
-        //         multiPolygon = [multiPolygon]
-        //     multiPolygon.forEach((singlePoly,i) => {
-        //         singlePoly.forEach((islandPoly,j) => {
-        //             islandPoly.every((vertex,k) => {
-        //                 let vertexStr = vertex.toString()
-        //                 let vertexStrNext = islandPoly[k+1]?.toString()
-
-        //                 if((vertexStr === curr && prev === vertexStrNext) ||
-        //                     (vertexStr === prev && curr === vertexStrNext) )
-        //                 {
-        //                     console.log("found someting idk")
-
-        //                             sharedIndexPath=sharedBorderFeature.geometry.type === "Polygon"
-        //                             ?[j,k] :[i,j,k+1]
-        //                             return false
-        //                 }
-        //                 })
-        //             })
-        //         })
-        // }
-        // console.log("this is the shared index.")
-        // console.log(sharedIndexPath)
-        // let transactionMappedData = {
-        //     type: "add",
-        //     store: store,
-        //     setStore: setStore,
-        //     updateView: store.updateViewer,
-        //     update:store.updateEditor,
-        //     indexPath : e.indexPath,
-        //     editingFeature: vertexEditFeature,
-        //     new2DVec:newVertex,
-        //     sharedBorderFeature: sharedBorderFeature,
-        //     sharedIndexPath:sharedIndexPath,
-        // }
-        // store.jstps.addTransaction(new VertexTPS(transactionMappedData))
-        // return;
 
     }
 
@@ -365,7 +262,6 @@ function MapEditor(props) {
                     let str = (JSON.stringify(res))
                     if(~str.indexOf(orgVertex))
                     {
-                        console.log("this should be it")
                         sharedBorderFeature = feature1
                         flag=true
                     }
@@ -373,8 +269,6 @@ function MapEditor(props) {
             }
             })
 
-        console.log("we we have any shared?")
-        console.log(sharedBorderFeature)
         if(sharedBorderFeature!== null) {
             let sharedCoords = sharedBorderFeature.geometry.coordinates
             if (sharedBorderFeature.geometry.type === "Polygon") {
@@ -401,12 +295,6 @@ function MapEditor(props) {
                 }
             }
 
-        console.log("final res")
-        console.log(sharedBorderFeature)
-        console.log(sharedIndexPath)
-
-
-
         let transactionMappedData = {
             type: "delete",
             store: store,
@@ -420,77 +308,7 @@ function MapEditor(props) {
         }
         store.jstps.addTransaction(new VertexTPS(transactionMappedData))
         return;
-        //
-        // let indexPath = e.indexPath;
-        // let ind0 = indexPath[0]
-        // let ind1 = indexPath[1]
-        // let featureName = e.target.feature.properties.name
-        // let ind2 = -1;
-        // if (indexPath.length > 2) {
-        //     ind2 = indexPath[2]
-        // }
-        //
-        // let removedLatlng=[]
-        // geoJsonMapData.features.forEach((feature, ind) => {
-        //     if (feature.properties.name == featureName) {
-        //         if (feature.geometry.type === "Polygon") {
-        //             removedLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1]
-        //             geoJsonMapData.features[ind].geometry.coordinates[ind0].splice(ind1, 1)
-        //         } else if (feature.geometry.type === "MultiPolygon") {
-        //             removedLatlng = geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1][ind2]
-        //             geoJsonMapData.features[ind].geometry.coordinates[ind0][ind1].splice(ind2, 1)
-        //         }
-        //     }
-        // })
-        // let featureInd2=-1
-        // geoJsonMapData.features.forEach(feature => {
-        //     featureInd2++
-        //     // Check if the feature is a polygon or a multipolygon
-        //
-        //     if (feature.geometry.type === 'Polygon') {
-        //         // Loop through each coordinate in the polygon
-        //         ind0 = -1
-        //         ind1 = -1
-        //         ind2 = -1
-        //         feature.geometry.coordinates.forEach(coordinates => {
-        //             ind0++;
-        //             ind1 = -1;
-        //             coordinates.forEach(coordinate => {
-        //                 ind1++;
-        //                 if(coordinate[0]==removedLatlng[0] &&coordinate[1]==removedLatlng[1] ){
-        //                     geoJsonMapData.features[featureInd2].geometry.coordinates[ind0].splice(ind1, 1)
-        //                 }
-        //
-        //             });
-        //         });
-        //     } else if (feature.geometry.type === 'MultiPolygon') {
-        //         // Loop through each polygon in the multipolygon
-        //         ind0 = -1
-        //         ind1 = -1
-        //         ind2 = -1
-        //         feature.geometry.coordinates.forEach(polygon => {
-        //             ind0++;
-        //             ind1 = -1;
-        //             ind2 = -1;
-        //             // Loop through each coordinate in the polygon
-        //
-        //             polygon.forEach(coordinates => {
-        //                 ind1++;
-        //                 ind2 = -1;
-        //
-        //                 coordinates.forEach(coordinate => {
-        //                     ind2++;
-        //
-        //                     if(coordinate[0]==removedLatlng[0] &&coordinate[1]==removedLatlng[1] ){
-        //                         geoJsonMapData.features[featureInd2].geometry.coordinates[ind0][ind1].splice(ind2, 1)
-        //                     }
-        //                 });
-        //             });
-        //         });
-        //     }
-        //
-        // });
-        // setUpdate(update => update + 1);
+        
 
     }
 
@@ -572,8 +390,6 @@ function MapEditor(props) {
                 })
             })
         })
-        console.log("this is the shared feature")
-        console.log(sharedBorderFeature)
 
 
         let vertexEditFeature = e.target.feature
@@ -592,53 +408,7 @@ function MapEditor(props) {
         }
         store.jstps.addTransaction(new VertexTPS(transactionMappedData))
         return;
-        //
-        // console.log(e.target)
-        // const layer = e.target;
-        // const newlatlng=[];
-        // const indexPath = e.indexPath;
-        //
-        // const featureName = e.target.feature.properties.name;
-        // let index2 = -1;
-        // let index0 = indexPath[0]
-        // let index1 = indexPath[1]
-        // let latlng = [];
-        //
-        // let featureInd = -1
-        // let currentFeatures = geoJsonMapData.features;
-        // if (indexPath.length == 3) {
-        //     index2 = indexPath[2]
-        //     for (let i = 0; i < currentFeatures.length; i++) {
-        //         let name = currentFeatures[i].properties.name;
-        //         if (name == featureName) {
-        //             featureInd = i;
-        //
-        //             latlng = currentFeatures[i].geometry.coordinates[index0][index1][index2]
-        //             newlatlng[0]=e.target._latlngs[index0][index1][index2].lng
-        //             newlatlng[1]=e.target._latlngs[index0][index1][index2].lat
-        //             console.log(newlatlng)
-        //             break;
-        //         }
-        //     }
-        // } else if (indexPath.length == 2) {
-        //
-        //     for (let i = 0; i < currentFeatures.length; i++) {
-        //         let name = currentFeatures[i].properties.name;
-        //         if (name == featureName) {
-        //             featureInd = i;
-        //
-        //             latlng = currentFeatures[i].geometry.coordinates[index0][index1]
-        //             newlatlng[0]=e.target._latlngs[index0][index1].lng
-        //             newlatlng[1]=e.target._latlngs[index0][index1].lat
-        //             break;
-        //         }
-        //     }
-        // }
-        //
-
-        // Loop through each feature in the GeoJSON file
-
-        // setUpdate(update => update + 1);
+       
     };
 
     function hexToRgb(hex) {
@@ -672,22 +442,17 @@ function MapEditor(props) {
             feature.borderColor="#0328fc"
         }
        layer.setStyle({
-        // color: "blue",
         fillColor: feature.subRegionColor,
         fillOpacity: 0.7,
         color: feature.borderColor
     });
         let a = `<div style="color:gray;"> ${countryName}</div>`
-        // a = countryName
         var tooltip = L.tooltip({
             content: a,
             permanent: true,
             direction:"center"
         })
         layer.bindTooltip(tooltip).openTooltip()
-        // layer.bindTooltip(layer.feature.properties.name,
-        //     { permanent: true, direction: 'center'}
-        // ).openTooltip()
 
         let propString = countryName
         layer.bindPopup(propString);
@@ -697,9 +462,6 @@ function MapEditor(props) {
 
         layer.on('click', function (e) {
             
-            // store.setRegionProperties({"hi":"hi","yo":"hey"})
-            // console.log("on layer click i guess")
-            // console.log(e)
             let featureName = e.target.feature.properties.name;
             geoJsonMapData.features.forEach((feature, index) => {
                 if (feature.properties.name === featureName) {
@@ -737,9 +499,6 @@ function MapEditor(props) {
 
         });
 
-        //right click to change region, absolutely spaghetti
-
-        //keywordto
 
         layer.on('contextmenu', function (e) {
             setClickedLayer(e)
@@ -785,11 +544,6 @@ function MapEditor(props) {
             handleRemoveRegion(e)
         })
 
-        // layer.on('pm:drag', e => {
-        //     console.log("pm:bruh")
-        //     console.log(e)
-        //     // handleDraggedRegion(e)
-        // });
     }
 
 
@@ -836,20 +590,9 @@ function MapEditor(props) {
         setUpdate(update => update + 1);
 
 
-        // if(boolean!==undefined){
-        //     boolean = !selectModeToggle.current
-        // }
-        // if(boolean ){
-        //
-        // }
-
-
-
 
     };
     function handleUpdate(){
-        // console.log("handle update editor called")
-        // console.log("currently at",JSON.stringify(JSON.parse(update)))
         setUpdate(update=>update+1)
     }
 
@@ -889,17 +632,14 @@ function MapEditor(props) {
                     oldRegionIndex.push(j)
                 }
             }
-            // allRegionArray = allRegionArray.filter((x,i) => x.properties.name !== region.properties.name) //remove all with same name regions
             let poly = region.geometry.coordinates
             poly = region.geometry.type === "Polygon" ? turf.polygon(poly) : turf.multiPolygon(poly)
             emptyPoly = turf.union(emptyPoly, poly);
         }
-        // emptyPoly.properties = regionsSelected[0].properties;
+
         emptyPoly.properties.name = newName;
         emptyPoly.subRegionColor = regionsSelected[0].subRegionColor
         emptyPoly.borderColor = regionsSelected[0].borderColor
-
-        // geoJsonMapData.features = [...allRegionArray, emptyPoly] // add to the geoJsonMapData.feature
 
         oldRegionIndex.sort(function(a,b){ return b-a; });
         let transactionMappedData = {
@@ -1014,7 +754,7 @@ function MapEditor(props) {
 
             />
             <MapAddRegionModal
-                // handleAddRegion={handleAddRegion}
+                
             />
             {/*<SubregionColorModal handleChangeRegionColor={handleChangeRegionColor} handleCancelRegionSelection={handleCancelRegionSelection}/>*/}
             {/*<BorderColorModal handleChangeBorderColor={handleChangeBorderColor} handleCancelRegionSelection={handleCancelRegionSelection}/>*/}

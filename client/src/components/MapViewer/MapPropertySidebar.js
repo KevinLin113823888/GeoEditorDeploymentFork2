@@ -18,8 +18,6 @@ function MapPropertySidebar() { //should not use props
     const [propertyObj, setPropertyObj] = useState({})
 
     useEffect(() =>{
-        console.log("use effect for the store.currentfeature index ig")
-        console.log(store.currentFeatureIndex)
         if(store.currentFeatureIndex===-1){
             setPropertyObj({})
             return

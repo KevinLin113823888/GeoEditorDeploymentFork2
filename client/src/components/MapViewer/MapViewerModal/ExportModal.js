@@ -3,14 +3,8 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import GlobalStoreContext, {CurrentModal} from "../../../store";
-import Grid from "@mui/material/Grid";
-import MapEditor from "../MapEditor";
-import MapPropertySidebar from "../MapPropertySidebar";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from '@mui/icons-material/Close';
 const style = {
     position: 'absolute',

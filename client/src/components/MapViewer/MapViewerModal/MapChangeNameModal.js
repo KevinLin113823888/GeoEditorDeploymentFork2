@@ -5,13 +5,6 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import GlobalStoreContext, {CurrentModal} from "../../../store";
-import Grid from "@mui/material/Grid";
-import MapEditor from "../MapEditor";
-import MapPropertySidebar from "../MapPropertySidebar";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import CloseIcon from '@mui/icons-material/Close';
 import MergeAndSplitTPS from "../../../transactions/MergeAndSplitTPS";
 const style = {
     position: 'absolute',
@@ -30,20 +23,8 @@ function MapMergeChangeRegionNameModal(props) {
     const [mergeRegionName, setMergeRegionName] = useState("");
 
     function handleChangeMapName(event) {
-        console.log("button click for handle change map name")
-        console.log(props.clickedLayer)
-        console.log(store.currentMapData)
 
         store.updateEditor()
-
-        // let foundI = -1
-        // for (let i=0;i<store.currentMapData.features.length;i++){
-        //     if(store.currentMapData.features[i]==props.clickedLayer.target.feature){
-        //         console.log("found")
-        //         foundI = i
-        //         break;
-        //     }
-        // }
 
         let transactionMappedData = {
             type: "rename",
@@ -57,7 +38,6 @@ function MapMergeChangeRegionNameModal(props) {
             oldName:props.clickedLayer.target.feature.properties.name
         }
         store.jstps.addTransaction(new MergeAndSplitTPS(transactionMappedData))
-        //lets just do all the jstps here for region change im too lazy for this
         store.changeModal("NONE");
 
     }

@@ -168,9 +168,7 @@ function ForgotPassword() {
                     </Button>
                     {passErr}
                 </Box>
-                {/* <Typography component="h3" variant="h5" color="#FF0000">
-                    {displayedCode}
-                </Typography> */}
+                
             </Box>
         </div>
     );

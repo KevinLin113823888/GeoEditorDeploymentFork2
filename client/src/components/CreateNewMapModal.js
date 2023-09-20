@@ -119,30 +119,3 @@ function CreateNewMapModal() {
 }
 export default CreateNewMapModal;
 
-{/* <Box sx={style}
-                 onClick={e => e.stopPropagation()}
-            >
-                <header className="dialog-header">
-                    <Box style={{marginBottom:"10%"}}>
-                    <Typography id="newmap-modal-title" variant="h6" component="h2" style={{fontSize:"2rem"}}>
-                        <strong>Enter new Map name</strong>
-                    </Typography>
-                    </Box>
-                </header>
-                    <TextField placeholder="Map name" onChange={changeMapName} />
-                    <Box>
-                    <div className="modal-footer" id="confirm-cancel-container">
-                        <input type="button" 
-                                    id="createmap-confirm-button" 
-                                    className="modal-confirm-button" 
-                                    onClick={() => {
-                                        createNewMap();}}
-                                    value='Confirm' />
-                        <input type="button" 
-                                className="modal-cancel-button" 
-                                onClick={() => {
-                                    handleCloseModal();}}
-                                    value='Cancel' />
-                    </div>
-                </Box>
-            </Box> */}

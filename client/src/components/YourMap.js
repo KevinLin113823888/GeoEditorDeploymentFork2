@@ -203,9 +203,6 @@ function YourMap() {
         store.changeModal(CurrentModal.CREATE_NEW_MAP)
     }
 
-    // function handleSort() {
-    //     console.log("sorting that needs to be implemented");
-    // }
     
     function displayMaps(){
         if(mapCards.length>0){
@@ -316,10 +313,6 @@ function YourMap() {
 
             </div>
 
-
-            {/* <IconButton data-cy="createmap-button" onClick={openCreateModal}>
-                <ControlPointIcon style={{ fill: "black" }} />
-            </IconButton> */}
 
             {sortMenu}
         </div>

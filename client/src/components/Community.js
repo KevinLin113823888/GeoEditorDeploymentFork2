@@ -204,9 +204,6 @@ function Community() {
         store.changeModal(CurrentModal.CREATE_NEW_MAP)
     }
 
-    // function handleSort() {
-    //     console.log("sorting that needs to be implemented");
-    // }
 
     function openPreview(){
         store.changeModal(CurrentModal.COMMUNITY_PREVIEW_MODAL);

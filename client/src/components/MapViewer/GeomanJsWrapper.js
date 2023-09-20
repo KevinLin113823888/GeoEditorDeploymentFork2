@@ -6,19 +6,15 @@ import './geomanButton.css';
 import { CurrentModal, GlobalStoreContext } from '../../store/index'
 import EditLegendTPS from '../../transactions/EditLegendTPS'
 import TextboxTPS from '../../transactions/TextboxTPS'
-import RegionTPS from '../../transactions/RegionTPS'
 import Toastify from 'toastify-js'
-
-
 
 import * as turf from '@turf/turf';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { CircleMarker,useMap } from 'react-leaflet';
+import { useMap } from 'react-leaflet';
 import MergeAndSplitTPS from "../../transactions/MergeAndSplitTPS";
 function GeomanJsWrapper(props) {
-    //with this we can actually customize all of the buttons
-    //we can also add a custom merge button as well.
+    
     const context = useLeafletContext();
     const isInitialRender = useRef(true);// in react, when refs are changed component dont re-render
     const { store, setStore } = useContext(GlobalStoreContext);
@@ -56,22 +52,19 @@ function GeomanJsWrapper(props) {
 
     const constructedNewPolyRegion = useRef(JSON.parse(JSON.stringify(originalNewPolygon)));
 
-    //called once to initialize the textboxs from geoJson
+    
     useEffect (()=>{
         const LL = context.layerContainer || context.map;
         const map = LL.pm.map
         const leafletContainer = LL
 
-        //this part adds the tooltip into the graphical data, lets not do that ig
 
-        // if(geoJsonTextbox.current.size===0 && textBoxList.length===0)
-        // {
             console.log("called once ??")
             map.eachLayer(function (layer) {
                 if(layer._latlng!==undefined)
                     geoJsonTextbox.current.add(layer)
             });
-        // }
+
 
     },[context])
 
@@ -126,10 +119,7 @@ function GeomanJsWrapper(props) {
             if (layer.options.needsRefresh === true){
                 layer.removeFrom(map);
             }
-            // if (layer.options.pane === "tooltipPane"){
-            //     if(!geoJsonTextbox.current.has(layer))
-            //         layer.removeFrom(map);
-            // }
+
         });
         // store.updateEditor()
         textBoxList.map(function(val,index){
@@ -173,11 +163,7 @@ function GeomanJsWrapper(props) {
             el.addEventListener('contextmenu',function(event){
                 event.preventDefault();
                 handleTooltipDeleteJSTPS(index)
-                // event.stopPropagation();
-                 
-                // toolTip.removeEventListener("blur")
-                // toolTip.removeEventListener("dblclick")
-                // map.removeLayer(toolTip)
+             
             })
             var draggable = new L.Draggable(el);
             draggable.enable();
@@ -187,8 +173,6 @@ function GeomanJsWrapper(props) {
                 var tooltipOrigin = L.point(toolTip._container.getBoundingClientRect().width / 2, toolTip._container.getBoundingClientRect().height);
                 var layerPoint = e.target._newPos.add(tooltipOrigin).subtract(tooltipOffset);
                 var latlng = map.layerPointToLatLng(layerPoint);
-                // toolTip.setLatLng(latlng)
-                // idk if we should include this as a jstps because this gives a lot of transactions
                 handleTooltipMoveJSTPS(index,latlng)
             })
             // Add event listeners to the tooltip for drag events
@@ -210,13 +194,6 @@ function GeomanJsWrapper(props) {
         const leafletContainer = LL
         let newLineLayer;
 
-        // map.on('zoomend', function () {
-        //     let centerArr = []
-        //     let center = map.getCenter()
-        //     centerArr[0] = center.lat
-        //     centerArr[1] = center.lng
-        //     store.setZoomLevel(map.getZoom(), centerArr)
-        // });
         map.on('click',(e)=>{
             props.unselect()
             store.setCurrentFeatureIndex(-1);
@@ -263,10 +240,7 @@ function GeomanJsWrapper(props) {
         map.on('pm:drawend', ({ workingLayer }) => {
 
             if(isAddNewRegionPolygon.current){
-                // console.log("dont want this")
-                // console.log(constructedNewPolyRegion.current.geometry.coordinates?.[0])
                 if(constructedNewPolyRegion.current.geometry.coordinates?.[0].length<=1){
-                    // console.log("no")
                     return
                 }
             }
@@ -280,38 +254,20 @@ function GeomanJsWrapper(props) {
                     if (newPoly.geometry.coordinates[0].length > 0) {
                         let firstCoord = newPoly.geometry.coordinates[0][0];
                         newPoly.geometry.coordinates[0].push(firstCoord)
-
-                        //to make stateful.
                         store.polygonData = JSON.parse(JSON.stringify(newPoly))
-                        // props.file.features.push(sameFirstandLastCoords)
                         let center = map.getCenter()
                         store.setAddRegion(map.getZoom(), [center.lat,center.lng], "MAP_ADD_REGION_NAME")
                     }
                 }
-                //clear what we have right now.
+               
                 constructedNewPolyRegion.current = JSON.parse(JSON.stringify(originalNewPolygon))
             }else{
-                console.log(constructedNewPolyRegion.current)
 
                 splitRegion()
             }
         });
         function removeToolTip(name){
 
-            // map.eachLayer((layer) => {
-            //     console.log(layer)
-            //     if (layer._tooltip) {
-            //       let tooltip = layer._tooltip;
-
-            //       if (tooltip._content === name) {
-            //         console.log("PA")
-            //         layer.unbindTooltip();
-
-            //       }
-            //     }
-            // });
-            // geoJsonMapData.graphicalData.textBoxList = geoJsonMapData.graphicalData.textBoxList.filter(textOverlay => textOverlay.overlayText !==name);
-            // console.log( geoJsonMapData.graphicalData)
         }
 
         function splitRegion(){
@@ -325,18 +281,15 @@ function GeomanJsWrapper(props) {
                     polygons.push(turf.multiPolygon(feature.geometry.coordinates));
                 }
             });
-            console.log(polygons)
-            // Check if the new polyline intersects with any polygons
+            
             if(lineLatlngsRef.current.length <= 1 ){
                 return
             }
             let newPolyline = turf.lineString(lineLatlngsRef.current);
-            console.log(newPolyline)
-
+            
 
             for (let i = 0; i < polygons.length; i++) {
 
-                //if(polygons[i].geometry.type=="Polygon"){
                 const intersectionPoints = turf.lineIntersect(newPolyline, polygons[i]);
 
                 if (intersectionPoints.features.length > 1) {
@@ -397,9 +350,8 @@ function GeomanJsWrapper(props) {
                             newPolygon.properties.name = (name2)+(num++)
                             listOfNewSplitRegionsToAdd.push(newPolygon)
                         })
-                        //multi..?
 
-                        let newPoly = clipped.geometry.coordinates //this one contains the new split region
+                        let newPoly = clipped.geometry.coordinates 
                         let existingPoly = geoJsonMapData.features[i].geometry.coordinates
 
                         let turfNew = turf.multiPolygon(newPoly)
@@ -420,11 +372,8 @@ function GeomanJsWrapper(props) {
                         console.log(turfExist)
                         let existingStrSet = new Map()
 
-                        newPoly = turfNew.geometry.coordinates //this one contains the new split region
+                        newPoly = turfNew.geometry.coordinates 
                         existingPoly = turfExist.geometry.coordinates
-
-
-
 
                         for(let i=0;i<existingPoly.length;i++){
                             existingStrSet.set(existingPoly[i].toString(),i)
@@ -441,16 +390,11 @@ function GeomanJsWrapper(props) {
                             }
                             else{
                                 notUniqueNews.push(newPoly[i])
-                                // existingStrSet.set(newPolyI,-1)
+                                
                             }
                         }
-                        console.log("so these are not the same")
-                        console.log(uniqueNews)
-                        console.log(notUniqueNews)
 
                         notUniqueNews.push(uniqueNews.pop())
-
-
 
                         let uniqueName = JSON.parse(JSON.stringify(geoJsonMapData.features[i].properties.name)).toString()
                         let uniqueName2 = JSON.parse(JSON.stringify(geoJsonMapData.features[i].properties.name)).toString()
@@ -491,7 +435,7 @@ function GeomanJsWrapper(props) {
                     }
                 }
             }
-        //all of these updates are done in the jstps
+        
             lineLatlngsRef.current = []
         }
         if (leafletContainer) {
@@ -565,13 +509,8 @@ function GeomanJsWrapper(props) {
                 },
             ]
             const mergeButtonClick = (e) => {
-                console.log(e)
                 if(e===undefined){
-                    console.log("huh")
                     props.toggleSelectMode()
-                    // props.handleCancelMergeSelection()
-                    // console.log("res of the after button click")
-                    // console.log(props.regionsSelected)
                     return
                 }
                 console.log("merge button toggle clicked")
@@ -579,17 +518,9 @@ function GeomanJsWrapper(props) {
                 props.toggleSelectMode()
             }
             const splitButtonClick = (e) => {
-
-                console.log("split button clicked")
-                console.log("result of the split clicked ref")
-                console.log(lineLatlngsRef.current.length)
-                console.log(splitClickedRef.current)
-                console.log(e)
                 console.trace()
 
                 if(e===undefined){
-                    // splitClickedRef.current = false
-                    // map.pm.disableDraw('Line');
                     return
                 }
                 if(lineLatlngsRef.current.length <= 1 &&  splitClickedRef.current === true){
@@ -623,13 +554,6 @@ function GeomanJsWrapper(props) {
                 isAddTextActive.current = true
 
                 map.on("click", function (e) {
-                    // var toolTip = L.tooltip({
-                    //     permanent: true,
-                    //     direction:"none",
-                    //     className:"leaflet-tooltip",
-                    //     tooltipAnchor: [0, 0]
-                    // }).setContent("This is a tooltip!").setLatLng(e.latlng)
-                    // toolTip.addTo(map)
 
                     let mappedData = {
                         store: store,
@@ -737,9 +661,6 @@ function GeomanJsWrapper(props) {
                     onClick: onClickHandler
                 });
             }
-
-
-
 
             LL.pm.addControls({
                 position: 'topleft',

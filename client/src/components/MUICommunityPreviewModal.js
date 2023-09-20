@@ -20,12 +20,8 @@ import DownloadIcon from '@mui/icons-material/Download';
 import AltRouteIcon from '@mui/icons-material/AltRoute';
 
 import CommentCard from './CommentCard.js'
-import MapEditor from "./MapViewer/MapEditor";
-import GeomanJsWrapper from "./MapViewer/GeomanJsWrapper";
 import {FeatureGroup, GeoJSON, LayerGroup, MapContainer, TileLayer} from "react-leaflet";
 import CommunityScreenshot from './CommunityScreenshot';
-import { useMap } from 'react-leaflet';
-import * as L from "leaflet";
 
 const style = {
     position: 'absolute',
